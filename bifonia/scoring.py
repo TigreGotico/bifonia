@@ -7,10 +7,10 @@ Negative scores signal anti-evidence for that POS.
 
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
-    DEFAULT_POS,
+    DEFAULT_POS, BASE_SCORE,
     DET, PRON, AUX_VERBS, NUMERIC,
     BEFORE_PREP, AFTER_PREP, NEVER_AFTER_PREP,
-    SOBRE_GOV, QUANT,
+    SOBRE_GOV, QUANT, STOPPABLE_THINGS,
 )
 
 # Enclitic/reflexive clitics that attach after a verb with a hyphen or in tmesis.
@@ -143,6 +143,25 @@ def score_adp(words: list, idx: int) -> int:
             score += 4
 
     if word == "pelo":
+        # Fixed idiomatic ADP phrases: "pelo menos", "pelo contrário", "pelo amor",
+        # "pelo visto", "pelo que", "pelo andar", "pelo sim pelo não", etc.
+        # Also possessives: "pelo seu bem", "pelo teu cálculo", "pelo meu entender".
+        # And temporal/occasion nouns: "pelo Natal", "pelo Páscoa", "pelo verão".
+        _PELO_FIXED = {
+            "menos", "contrário", "amor", "visto", "que", "andar",
+            "sim", "jeito", "modo", "caminho", "meio", "facto",
+            "bem", "mal", "qual", "quê", "mundo", "contrare",
+            # possessive determiners (already in DET → fire verb+3; need ADP override)
+            "meu", "minha", "meus", "minhas",
+            "teu", "tua", "teus", "tuas",
+            "seu", "sua", "seus", "suas",
+            "nosso", "nossa", "nossos", "nossas",
+            # temporal/seasonal occasions
+            "natal", "páscoa", "carnaval", "verão", "inverno",
+            "outono", "primavera", "natal", "véspera", "feriado",
+        }
+        if next_word in _PELO_FIXED:
+            score += 6
         # "pelo [route/place noun]" — por+o contracted ADP, common with geographic/
         # directional nouns that aren't in AFTER_PREP.
         _PELO_ROUTE = {
@@ -151,13 +170,22 @@ def score_adp(words: list, idx: int) -> int:
             "túnel", "arquipélago", "litoral", "continente", "país", "mundo",
             "território", "corredor", "percurso", "trajeto", "eixo", "bairro",
             "lado", "meio", "topo", "fundo", "alto", "baixo",
+            # urban / leisure spaces common after "pelo/para" ADP
+            "parque", "jardim", "bosque", "mercado", "centro", "bairro", "museu",
+            "hospital", "aeroporto", "porto", "aeródromo", "terminal", "cais",
         }
         if next_word in _PELO_ROUTE:
             score += 5
-        # "pelo" = por+o (masc.sg.); if followed by feminine/plural article it is
-        # NOT the preposition-article contraction — it must be the VERB "pelar".
+        # Passive-voice agent: "foi transmitido pelo X", "foi aprovado pelo Y"
+        # A past participle in the ±3 left context strongly signals ADP agent.
+        _PPT_SFXS = ("ado", "ido", "ada", "ida", "ados", "idos", "adas", "idas")
+        _left3 = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
+        if any(w.endswith(_PPT_SFXS) for w in _left3):
+            score += 5
+        # "pelo" = por+o (masc.sg.); if followed by any free-standing definite article
+        # it cannot be the ADP contraction (por+o already contains the article "o").
         # Return strongly negative so score_verb wins.
-        if next_word in {"a", "as", "os"}:
+        if next_word in {"o", "a", "as", "os"}:
             score -= 8
 
     if word == "sobre":
@@ -277,6 +305,16 @@ def score_verb(words: list, idx: int) -> int:
     # Infinitive after the word penalises "para" ADP being scored as VERB.
     if word == "para" and _is_infinitive(next_word):
         score -= 5
+
+    # "para" VERB ("parar") — subject or object is a stoppable thing.
+    # Check prev (subject) and next (object) for semantic stoppable entities
+    # (vehicles, machines, bodily processes, etc.).  European Portuguese usage.
+    if word == "para":
+        _left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
+        if any(w in STOPPABLE_THINGS for w in _left4):
+            score += 4
+        if next_word in STOPPABLE_THINGS:
+            score += 3
 
     # Infinitive immediately before → word is probably in a nominal/infinitival context.
     # Guard: if the raw prev token ends in punctuation (clause boundary), the infinitive
@@ -469,18 +507,26 @@ def guess_pos(words: list, idx: int) -> str:
     """Return the most likely UDEP POS tag for the ambiguous word at *idx*."""
     word = words[idx]
 
+    # Seed each candidate POS with its corpus-frequency prior (BASE_SCORE).
+    # Values are small (1–3) so any explicit context signal overrides them.
+    _bias = BASE_SCORE.get(word, {})
+
     scores = {}
     if word in ADP_IPA:
-        scores["ADP"] = score_adp(words, idx)
+        scores["ADP"] = score_adp(words, idx) + _bias.get("ADP", 0)
     if word in NOUNS_IPA:
-        scores["NOUN"] = score_noun(words, idx)
+        scores["NOUN"] = score_noun(words, idx) + _bias.get("NOUN", 0)
     if word in VERBS_IPA:
-        scores["VERB"] = score_verb(words, idx)
+        scores["VERB"] = score_verb(words, idx) + _bias.get("VERB", 0)
     if word in ADJ_IPA:
-        scores["ADJ"] = score_adj(words, idx)
+        scores["ADJ"] = score_adj(words, idx) + _bias.get("ADJ", 0)
 
-    best_pos = max(scores, key=scores.get)
-    if scores[best_pos] <= 0:
+    best_score = max(scores.values())
+    if best_score <= 0:
         return DEFAULT_POS.get(word, "NOUN")
 
-    return best_pos
+    # When multiple POS share the highest score, fall back to the frequency prior.
+    winners = [pos for pos, s in scores.items() if s == best_score]
+    if len(winners) == 1:
+        return winners[0]
+    return DEFAULT_POS.get(word, winners[0])

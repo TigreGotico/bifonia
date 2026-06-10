@@ -17,8 +17,9 @@ for i, w in enumerate(words):
 
 ## Accuracy
 
-99.51 % on a corpus of ~11 000 labelled sentences — vs 81.9 % for Stanza and 66.5 %
-for spaCy on the same test set.
+98.46 % on a corpus of ~13 500 labelled sentences — vs 81.9 % for Stanza and 66.5 %
+for spaCy on the same test set.  (Three-way homographs `para`/`pelo`/`sobre` are harder:
+90–95 % each; all other words score 98–100 %.)
 
 ## How it works
 

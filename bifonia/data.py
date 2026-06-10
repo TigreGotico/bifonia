@@ -64,6 +64,53 @@ assert set(DEFAULT_POS) == AMBIGUOUS_WORDS, (
     f"DEFAULT_POS missing: {AMBIGUOUS_WORDS - set(DEFAULT_POS)}"
 )
 
+# ── per-word POS bias (European Portuguese frequency priors) ──────────────────
+# Integer bonus added to each POS score before signal scoring begins.
+# Use to encode corpus-level frequency priors when the default tiebreaker
+# (DEFAULT_POS) is not granular enough.  Tune by running benchmark_tagger.py
+# and inspecting per-word accuracy.  Values are intentionally small (1–3) so
+# they lose to any explicit context signal.
+BASE_SCORE: dict = {
+    # Small frequency priors to break near-ties.
+    # Keep values ≤ 1 to avoid overriding any explicit context signal.
+    # "sobre" ADP prior is intentionally 0: the DET-before+7 NOUN boost already
+    # gives score_noun=12 for unambiguous envelope sentences, and a non-zero ADP
+    # prior would create ties that degrade NOUN accuracy.
+    # "pelo" most commonly ADP (por+o) in EP prose — +1 to break bare-context ties.
+    "pelo": {"ADP": 1, "NOUN": 0, "VERB": 0},
+    # three-way and two-way words: no safe non-zero prior without corpus tuning.
+}
+
+# ── semantic wordlists for specific words ─────────────────────────────────────
+
+# "para" VERB ("parar" = to stop) — things that stop in European Portuguese.
+# If any of these appears as the SUBJECT (nearby prev nouns) or OBJECT after
+# "para", the VERB reading "pára/para" (stops) is strongly supported.
+# European Portuguese usage: vehicles, machines, bodily functions, processes.
+# Easy to extend: add the canonical EP noun for any stoppable entity.
+STOPPABLE_THINGS = {
+    # vehicles & transport (EP names)
+    "autocarro", "comboio", "metro", "eléctrico", "elétrico",
+    "carro", "automóvel", "viatura", "caminhão", "camião", "veículo",
+    "barco", "navio", "avião", "helicóptero", "mota", "bicicleta",
+    "escada", "rolante", "tapete",  # escalators/conveyor belts
+    # machines & equipment
+    "máquina", "motor", "bomba", "gerador", "ventilador", "turbina",
+    "impressora", "computador", "servidor", "relógio",
+    "correia", "transportadora", "elevador", "grua",
+    # bodily / biological processes
+    "coração", "hemorragia", "sangramento", "sangue", "pulsação",
+    "respiração", "choro", "tosse", "vómito",
+    # flows & processes
+    "música", "música", "som", "sinal", "transmissão", "emissão",
+    "obra", "obras", "construção", "produção", "actividade", "atividade",
+    "narração", "gravação", "reprodução", "música", "som",
+    "chuva", "neve", "granizo", "vento",
+    # abstract stops
+    "guerra", "conflito", "violência", "disputa", "greve",
+    "funcionamento", "serviço", "atendimento",
+}
+
 # ── context wordlists ─────────────────────────────────────────────────────────
 
 DET = {
@@ -156,6 +203,17 @@ SOBRE_GOV = {
     "reportagem", "reportagens", "entrevista", "entrevistas", "crónica", "crónicas",
     "poema", "poemas", "conto", "contos", "romance", "romances", "ensaio", "ensaios",
     "teoria", "teorias", "hipótese", "hipóteses", "tese", "teses", "dissertação", "dissertações",
+    # event/course/workshop framing nouns that introduce "sobre" as ADP
+    "workshop", "workshops", "webinar", "webinars", "curso", "cursos",
+    "módulo", "módulos", "unidade", "unidades", "formação", "formações",
+    "programa", "programas", "projeto", "projetos", "iniciativa", "iniciativas",
+    "tratado", "tratados", "acordo", "acordos", "protocolo", "protocolos",
+    "convênio", "convênios", "convenção", "convenções", "resolução", "resoluções",
+    "questionário", "questionários", "inquérito", "inquéritos", "sondagem", "sondagens",
+    "inquérito", "relatório", "exposição", "exposições", "mostra", "mostras",
+    "campanha", "campanhas", "projeto", "projetos", "ação", "ações",
+    "legislação", "regulamento", "regulamentos", "norma", "normas", "decreto", "decretos",
+    "proposta", "propostas", "recomendação", "recomendações", "diretiva", "diretivas",
     # governing verbs (3rd-person or infinitive forms common in context)
     "falar", "fala", "falou", "falamos", "falam",
     "escrever", "escreve", "escreveu", "escrevemos", "escrevem",
@@ -173,9 +231,25 @@ SOBRE_GOV = {
 }
 
 AFTER_PREP = (
-    {"amanhã", "ontem", "depois", "sempre", "logo", "já", "quando", "todos", "ti", "mim"}
+    {"amanhã", "ontem", "depois", "sempre", "logo", "já", "quando", "todos", "ti", "mim",
+     # interrogative + relative pronouns following prepositions
+     "quê", "quem", "qual", "quais",
+     # possessive determiners (seu/teu/meu/nosso/vosso): "pelo seu bem", "pelo meu cálculo"
+     "meu", "minha", "meus", "minhas",
+     "teu", "tua", "teus", "tuas",
+     "seu", "sua", "seus", "suas",
+     "nosso", "nossa", "nossos", "nossas",
+     "vosso", "vossa", "vossos", "vossas",
+     # common Portuguese cities / destinations (lowercased; proper nouns lost after tokenize)
+     "lisboa", "porto", "coimbra", "braga", "faro", "évora", "setúbal", "viseu", "aveiro",
+     "sintra", "cascais", "almada", "funchal", "ponta", "angra", "horta",
+     "madrid", "paris", "berlim", "roma", "londres", "amsterdam", "bruxelas",
+     "brasil", "angola", "moçambique", "cabo", "guiné", "portugal", "espanha",
+    }
     | DET | PRON
-) - {"do", "da", "dos", "das", "no", "na", "nos", "nas"}
+) - {"do", "da", "dos", "das", "no", "na", "nos", "nas",
+     # contracted "em+article" forms signal NOUN, not valid after ADP "para/pelo/sobre"
+     "num", "numa", "nuns", "numas"}
 # contracted article forms are NOUN signals, not valid ADP complements
 
 NEVER_AFTER_PREP = {"ao", "aos", "à", "às", "no", "na", "nos", "nas"}
