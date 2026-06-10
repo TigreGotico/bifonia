@@ -1,16 +1,21 @@
 """
-Comprehensive parametrized tests for bifonia.
+Comprehensive parametrised tests for bifonia.
 
 Test sentences use the diacritized orthographic form to label the expected
 reading (e.g. "pára" = VERB para, "pêlo" = NOUN pelo).  _normalize() strips
 those non-canonical diacritics before disambiguation so the engine sees the
 plain base form in context.
 
-xfail markers document known hard cases for the current rule-based scorer:
-  - ADP "para" in "DET+NOUN+para+DET+NOUN" structures where prev_prev DET
-    creates a false VERB signal equal to the genuine ADP signal.
-  - "sobre" as ADP (prep "about/over") — pronounced like NOUN but contextual
-    cues currently score it as VERB.
+xfail markers document known hard cases for the current rule-based scorer
+(12 xfail, 10 xpass as of the last benchmark run):
+
+  - ADP "para" in "DET NOUN para DET NOUN" structures: the prev2-DET VERB
+    signal ties with or beats the AFTER_PREP ADP signal — local context is
+    insufficient; semantic (is the noun a destination?) is needed.
+  - "sobre" as bare ADP without a governing verb in context: ADP and NOUN
+    share the same IPA (closed-o), so only a VERB signal can tip the score.
+  - "para" with a transitive-stop reading ("pára o carro") vs purpose ADP
+    ("para o carro" = for the car): locally identical, requires world knowledge.
 """
 
 import pytest

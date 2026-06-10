@@ -2,7 +2,7 @@
 
 ## The problem
 
-Portuguese has 27 heterophonic homographs — words whose spelling is identical but whose
+Portuguese has 27 heterophonic bifoniaaphs — words whose spelling is identical but whose
 pronunciation depends on part of speech. A rule-based G2P engine that does not perform
 POS disambiguation will systematically mispronounce them.
 
@@ -52,11 +52,11 @@ the NOUN/VERB polarity is reversed for phonological reasons documented in `data.
 
 ## Rule-based scorer baseline
 
-`homogr` ships a hand-crafted context scorer (`scoring.py`) that inspects a ±2-word
+`bifonia` ships a hand-crafted context scorer (`scoring.py`) that inspects a ±2-word
 window and applies integer signals for determiners, pronouns, conjunctions, and
-preposition-governing nouns.  It achieves **97%+ accuracy** on the 11 000-sentence
-corpus vs **53%** for a generic Portuguese POS tagger (TugaTagger, which defaults
-to a single class per word).
+preposition-governing nouns.  It achieves **99.51% accuracy** on the 11 025-sentence
+corpus vs **81.9%** for Stanza, **66.5%** for spaCy, and **53.1%** for TugaTagger
+(Brill backend).
 
 Run the comparison yourself:
 
@@ -67,18 +67,23 @@ python benchmark_tagger.py --tagger stanza  # if stanza/pt model available
 
 ### When the scorer succeeds
 
+The scorer inspects a **±4-word window**.  Representative signals:
+
 - DET or QUANT immediately before → NOUN (+5)
 - PRON immediately before → VERB (+5)
 - Subjunctive conjunction (caso/embora/conquanto) before → VERB (+4)
-- Negation adverb (não/nunca/jamais) before → VERB (+4)
-- Passive auxiliary (foi/foram/fosse) before → VERB (+4)
-- SOBRE_GOV governing noun before → ADP (+6)
-- Intensifier (muito/pouco/bastante) before "sobre" → ADP (+5)
-- Infinitive following → ADP (−5 on VERB)
+- Negation/frequency adverb (não/nunca/sempre) before → VERB (+4)
+- Passive auxiliary (foi/foram/fosse) before `posto` → NOUN (+8) — PPT of *pôr* = closed-o
+- Governing verb before `sobre` (falou, discutiu, …) → ADP (+6)
+- `-mente` adverb directly after → VERB (+3); directly before → ADJ (+4)
+- Copular verb before (é, está, ficou) → ADJ (+5)
+- `DET NOUN ADJ` attributive pattern (DET at −2) → ADJ (+4); clause-boundary–guarded
+- Control verb (aprendeu, começou, …) in prev2–prev4 before `a colher` → VERB (+6)
 
 ### Where it struggles (xfail catalogue)
 
-The scorer fails on 15 sentences in the current test suite. Common failure modes:
+The scorer fails on 12 sentences in the current test suite (10 of which pass — xpass).
+Common failure modes:
 
 1. **No context**: sentence-initial or between-clause position where no signal fires.
 2. **DET NOUN VERB DET NOUN**: ADP AFTER_PREP (+5) beats VERB prev2-DET (+3).
@@ -121,7 +126,7 @@ The scoring approach *validates* the machine-learning path:
 
 ## Corpus
 
-The labeled corpus lives in `homogr/corpus.py` and is exported by `dataset.py`:
+The labeled corpus lives in `bifonia/corpus.py` and is exported by `dataset.py`:
 
 ```
 python dataset.py --out data/
@@ -131,12 +136,14 @@ python dataset.py --out data/
 
 | Metric | Value |
 |--------|-------|
-| Total sentences | ~11 000 |
+| Total sentences | ~11 025 |
 | Unique ambiguous words | 27 |
 | POS classes | 4 (NOUN, VERB, ADP, ADJ) |
-| Sentences per word | ~180–420 (varies by word) |
-| Rule-based scorer accuracy | 97.2% overall |
-| Generic tagger (TugaTagger) | 53.1% — barely above majority class |
+| Sentences per word | ~180–450 (varies by word) |
+| Rule-based scorer accuracy | **99.51%** overall |
+| Stanza (neural, pt) | 81.9% |
+| spaCy (pt_core_news_lg) | 66.5% |
+| TugaTagger (Brill backend) | 53.1% — barely above majority class |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
 
 ### CSV schema
@@ -196,7 +203,7 @@ python -m pytest tests/test_disambiguate.py -v
 For the ML models, use stratified 5-fold cross-validation over the corpus records,
 stratified by `(word, pos)` to ensure each fold has balanced examples.
 
-Key metrics: accuracy, precision/recall per POS class, and error analysis on the 14
+Key metrics: accuracy, precision/recall per POS class, and error analysis on the 12
 currently xfailed rule-based patterns (the hard cases).
 
 ## Potential Hugging Face dataset
@@ -209,6 +216,6 @@ from datasets import load_dataset
 ds = load_dataset("csv", data_files="dataset.csv")
 ```
 
-It fills a gap: no existing PT-PT benchmark targets heterophonic homograph pronunciation
+It fills a gap: no existing PT-PT benchmark targets heterophonic bifoniaaph pronunciation
 disambiguation at the grapheme level. The corpus is entirely synthetic but covers
 realistic domain diversity.
