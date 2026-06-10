@@ -1,5 +1,5 @@
 """
-bifonia — Portuguese heterophonic bifoniaaph disambiguation.
+bifonia — Portuguese heterophonic homograph disambiguation.
 
 Identifies the correct IPA pronunciation of words whose spelling is identical
 but whose phonology depends on their part of speech (e.g. NOUN vs VERB).
@@ -19,7 +19,7 @@ Quick start::
 import re
 
 from bifonia.data import AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS
-from bifonia.scoring import guess_pos
+from bifonia.scoring import guess_pos as _scoring_guess_pos
 from bifonia.version import VERSION_STR
 
 __version__ = VERSION_STR
@@ -40,7 +40,7 @@ def tokenize(text: str) -> list:
 
 
 def is_ambiguous(word: str) -> bool:
-    """Return True if *word* is a known heterophonic bifoniaaph."""
+    """Return True if *word* is a known heterophonic homograph."""
     return word.lower() in AMBIGUOUS_WORDS
 
 
@@ -60,13 +60,15 @@ def disambiguate(words: list, idx: int, pos: str = None) -> str:
     Raises
     ------
     ValueError
-        If the word is not a known bifoniaaph.
+        If the word is not a known homograph.
     KeyError
         If *pos* is given but has no IPA entry for this word.
     """
-    word = words[idx]
-    if not is_ambiguous(word):
-        raise ValueError(f"{word!r} is not a known heterophonic bifoniaaph")
+    token = words[idx]
+    # Accept pre-AO1990 / diacritized tokens by normalising to base form first.
+    word = _DIACRITIZED_TO_BASE.get(token, token)
+    if word not in AMBIGUOUS_WORDS:
+        raise ValueError(f"{token!r} is not a known heterophonic homograph")
 
     resolved_pos = pos or guess_pos(words, idx)
     return HOMOGRAPHS[word][resolved_pos]
@@ -134,13 +136,39 @@ _DIACRITIZED: dict = {
 }
 
 
-# Reverse map: diacritized form → base word (used for test normalization and
-# for accepting already-diacritized input back through the pipeline).
+# Reverse maps from diacritized form:
+#   → base word  (for test normalisation and pre-AO1990 input stripping)
+#   → POS        (for unambiguous pre-AO1990 / already-diacritized input)
 _DIACRITIZED_TO_BASE: dict = {v: k[0] for k, v in _DIACRITIZED.items()}
+_DIACRITIZED_TO_POS:  dict = {v: k[1] for k, v in _DIACRITIZED.items()}
+
+
+def guess_pos(words: list, idx: int) -> str:
+    """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
+
+    If the token is already a diacritized form (pre-AO1990 orthography or
+    output of :func:`add_extra_diacritics`), the POS is resolved directly from
+    the diacritic without context scoring.  This handles pre-reform text such as
+    *pára* (VERB), *pêlo* (NOUN), *acôrdo* (NOUN), *acórdo* (VERB), etc.
+
+    All other tokens fall through to the context-based scorer in
+    :mod:`bifonia.scoring`.
+    """
+    token = words[idx]
+    if token in _DIACRITIZED_TO_POS:
+        return _DIACRITIZED_TO_POS[token]
+    # For diacritized tokens whose base form is a known homograph, normalise
+    # and score in context (covers partial-diacritisation pipelines).
+    base = _DIACRITIZED_TO_BASE.get(token)
+    if base is not None:
+        normalised = list(words)
+        normalised[idx] = base
+        return _scoring_guess_pos(normalised, idx)
+    return _scoring_guess_pos(words, idx)
 
 
 def add_extra_diacritics(sentence: str) -> str:
-    """Return *sentence* with non-canonical diacritics on heterophonic bifoniaaphs.
+    """Return *sentence* with non-canonical diacritics on heterophonic homographs.
 
     The inserted diacritics are not AO1990-compliant but force a downstream
     rule-based G2P to emit the correct vowel quality:
