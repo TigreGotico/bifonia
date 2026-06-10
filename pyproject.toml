@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bifonia"
+dynamic = ["version"]
+description = "Rule-based Portuguese heterophonic bifoniaaph disambiguation"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "JarbasAi", email = "jarbasai@mailfence.com" }]
+requires-python = ">=3.9"
+dependencies = []
+keywords = ["portuguese", "nlp", "bifoniaaph", "ipa", "phonetics", "g2p", "tts"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/TigreGotico/bifonia"
+Repository = "https://github.com/TigreGotico/bifonia"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bifonia*"]
+
+[tool.setuptools.package-data]
+bifonia = ["data/*.csv", "data/*.py"]
+
+[tool.setuptools.dynamic]
+version = { attr = "bifonia.version.VERSION_STR" }

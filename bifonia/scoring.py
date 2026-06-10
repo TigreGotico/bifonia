@@ -1,0 +1,486 @@
+"""
+Context-based POS scoring for Portuguese heterophonic bifoniaaphs.
+
+Each scorer returns an integer; higher = more confident.
+Negative scores signal anti-evidence for that POS.
+"""
+
+from bifonia.data import (
+    ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
+    DEFAULT_POS,
+    DET, PRON, AUX_VERBS, NUMERIC,
+    BEFORE_PREP, AFTER_PREP, NEVER_AFTER_PREP,
+    SOBRE_GOV, QUANT,
+)
+
+# Enclitic/reflexive clitics that attach after a verb with a hyphen or in tmesis.
+# "nos"/"vos" excluded: they double as contracted prepositions ("nos transportes").
+_POST_CLITICS = {"me", "te", "se", "lhe", "lhes"}
+
+# Time adverbs / pronouns that can follow both ADP and VERB; give ADP weaker credit.
+_AFTER_PREP_WEAK = {"amanhã", "ontem", "depois", "sempre", "logo", "já", "quando", "todos"}
+
+# Copular and semi-copular verbs that introduce predicative adjectives.
+_COPULA = {
+    "é", "são", "era", "eram", "foi", "foram", "ser", "sido", "seja",
+    "sejas", "sejam", "está", "estão", "estava", "estavam", "estar",
+    "ficou", "ficam", "fica", "ficar", "ficara", "ficaste", "foste",
+    "fique", "fiques", "fiquem", "fiquemos",
+    "pareceu", "parece", "pareciam", "parecer", "parecia",
+    "tornou", "revelou", "aparenta", "aparentava",
+    "continua", "permanece",
+}
+
+# Degree/intensifier words that modify adjectives.
+_INTENSIFIERS = {
+    "muito", "bastante", "completamente", "demasiado", "tão",
+    "bem", "pouco", "nada",
+}
+
+# Temporal conjunctions introducing subordinate clauses (often VERB subjects).
+_TEMPORAL_CONJ = {"quando", "enquanto"}
+
+# Conjunctions that introduce subjunctive clauses.  When one of these
+# immediately precedes an ambiguous word, the word is almost certainly a verb
+# in the subjunctive (e.g. "caso sóbre comida" = "if/in case food is left over").
+_CONJ_SUBJ = {"caso", "embora", "conquanto", "contanto", "salvo"}
+
+# Exclamative determiners ("Que ideia tola!" / "Que tola!").
+# "que" here is a determiner in the exclamative sense ("what a ...").
+# Used ONLY in score_adj's prev2 attributive-position check — it must NOT fire
+# score_noun (que as conjunction precedes verbs) or score_verb (temporal/relative
+# "que" introduces verbal clauses).
+_EXCL_DET = {"que"}
+
+# Negation / frequency adverbs that directly precede a finite verb form.
+# "não gosto", "nunca faço", "nunca sobre" → strongly VERB.
+# Also covers "sempre sobre" / "raramente sobre" (sobrar, to be left over).
+_NEG_ADV = {"não", "nunca", "jamais", "raramente", "sempre", "ainda", "já"}
+
+# Passive auxiliaries (past/subjunctive of "ser"): "foi posto", "foram colocados".
+# Only past/subjunctive forms are included — present tense "é/são/era" doubles as
+# copula before nouns ("é gosto pessoal"), and ter/haver introduce active compound
+# tenses ("tem gosto refinado").  Using only these avoids false VERB signals in
+# nominal predicates.
+_PASSIVE_AUX = {"foi", "foram", "fora", "forem", "fosse", "fossem"}
+
+
+_PUNCT = str.maketrans("", "", ".,;:!?\"'()[]{}«»–—")
+
+
+def _strip(w: str) -> str:
+    return w.translate(_PUNCT)
+
+
+def _prev(words: list, idx: int) -> str:
+    return _strip(words[idx - 1]) if idx > 0 else ""
+
+
+def _next(words: list, idx: int) -> str:
+    return _strip(words[idx + 1]) if idx + 1 < len(words) else ""
+
+
+def _prev2(words: list, idx: int) -> str:
+    return _strip(words[idx - 2]) if idx > 1 else ""
+
+
+def _is_infinitive(word: str) -> bool:
+    w = word.rstrip(".,;:!?")
+    return w.endswith(("ar", "er", "ir"))
+
+
+def _is_numeric(word: str) -> bool:
+    try:
+        float(word)
+        return True
+    except ValueError:
+        return word in NUMERIC
+
+
+def score_adp(words: list, idx: int) -> int:
+    word = words[idx]
+    prev_word = _prev(words, idx)
+    next_word = _next(words, idx)
+
+    if next_word in NEVER_AFTER_PREP:
+        return 0
+
+    score = 0
+    if prev_word in BEFORE_PREP:
+        score += 5
+    if next_word in AFTER_PREP:
+        score += 2 if next_word in _AFTER_PREP_WEAK else 5
+    if _is_numeric(next_word):
+        score += 5
+    if _is_infinitive(next_word):
+        score += 2
+
+    # "para não/nunca/jamais X" is always purpose ADP + negated infinitive.
+    # Limited to pure negation adverbs — frequency adverbs ("sempre", "raramente")
+    # can follow a finite VERB "pára" ("pára sempre" = stops always).
+    if word == "para" and next_word in {"não", "nunca", "jamais"}:
+        score += 4
+
+    if word == "para":
+        # "para [deverbal noun]" — purpose ADP + nominalised VP (para análise, para
+        # revisão, para avaliação, para consideração, etc.).  Deverbal nouns typically
+        # end in -ção/-são/-ão, -gem, -ura, -ência/-ância, -mento, -ismo, or are
+        # bare infinitive-like forms ending in -ar/-er/-ir (already handled by
+        # _is_infinitive).  Detect by common suffix.
+        _DEVERBAL_SFXS = ("ção", "são", "gem", "ura", "ência", "ância",
+                          "mento", "ismo", "ise", "ise", "ção")
+        if next_word.endswith(_DEVERBAL_SFXS):
+            score += 4
+        # "para depois/amanhã" — deferred-purpose ADP.
+        # "depois" is in AFTER_PREP_WEAK (+2) but needs more to beat DET-2back VERB+3.
+        # Keep narrow: "sempre/logo/aqui/lá" can also follow finite VERB "pára".
+        if next_word in {"depois", "amanhã", "ontem"}:
+            score += 3
+        # "está/é [ADJ] para quando/…" — copula+predicative ADJ before "para" signals
+        # purpose ADP, not finite VERB "pára".
+        _para_prev2 = _strip(words[idx - 2]) if idx >= 2 else ""
+        if _para_prev2 in _COPULA:
+            score += 4
+
+    if word == "pelo":
+        # "pelo [route/place noun]" — por+o contracted ADP, common with geographic/
+        # directional nouns that aren't in AFTER_PREP.
+        _PELO_ROUTE = {
+            "interior", "exterior", "norte", "sul", "este", "oeste", "centro",
+            "campo", "bosque", "mato", "vale", "rio", "mar", "deserto", "polo",
+            "túnel", "arquipélago", "litoral", "continente", "país", "mundo",
+            "território", "corredor", "percurso", "trajeto", "eixo", "bairro",
+            "lado", "meio", "topo", "fundo", "alto", "baixo",
+        }
+        if next_word in _PELO_ROUTE:
+            score += 5
+        # "pelo" = por+o (masc.sg.); if followed by feminine/plural article it is
+        # NOT the preposition-article contraction — it must be the VERB "pelar".
+        # Return strongly negative so score_verb wins.
+        if next_word in {"a", "as", "os"}:
+            score -= 8
+
+    if word == "sobre":
+        # Explicit governing noun/verb before "sobre" (e.g. "caso sobre X",
+        # "falou sobre X") — strongest explicit ADP signal.
+        if prev_word in SOBRE_GOV:
+            score += 6
+        # Intensifier scale quantifiers before "sobre": "sabe muito sobre",
+        # "aprendeu pouco sobre" — always ADP (about/concerning).
+        if prev_word in {"muito", "pouco", "bastante", "nada", "tudo", "algo"}:
+            score += 5
+        # "sobre + DET/PRON" — "sobre o/a/este/ela..." is a clear ADP pattern
+        # meaning "about the..." (already handled by AFTER_PREP above, but
+        # reinforce it so it beats VERB signals from prev2-DET).
+        if next_word in DET | PRON:
+            score += 3
+        # Mild base prior: mid-sentence "sobre" after any non-pronoun is
+        # almost always ADP, not VERB — but when a negation/frequency adverb or
+        # temporal conjunction precedes, the word is likely a finite VERB, so
+        # withhold the prior there.
+        if idx > 0 and prev_word not in PRON | _NEG_ADV | _TEMPORAL_CONJ:
+            score += 2
+
+    return score
+
+
+def score_noun(words: list, idx: int) -> int:
+    prev_word = _prev(words, idx)
+    next_word = _next(words, idx)
+
+    word = words[idx]
+    score = 0
+    # Intensifiers (muito/pouco/bastante/…) can precede "sobre" as adverbs
+    # ("sabe muito sobre X") — don't treat them as NOUN determiners there.
+    _SOBRE_INTENS = {"muito", "pouco", "bastante", "nada", "tudo", "algo",
+                     "demais", "menos", "mais"}
+    if prev_word in DET | QUANT and not (word == "sobre" and prev_word in _SOBRE_INTENS):
+        score += 5
+        # "sobre" as a noun (envelope) is unambiguous when a DET immediately
+        # precedes — it cannot function as ADP after a determiner.  Boost
+        # strongly so the ADP signal from the following DET doesn't win.
+        if word == "sobre":
+            score += 7
+    # "posto" as PPT of "pôr" (to place/put) is pronounced like the NOUN (closed-o),
+    # not like the VERB "postar" (to post, open-o).  Boost NOUN when a passive
+    # auxiliary precedes, e.g. "foi posto", "estava posto", "ficou posto".
+    if word == "posto" and prev_word in _PASSIVE_AUX:
+        score += 8
+    # "do/da/dos/das" strongly indicate a following possessive/partitive phrase.
+    # Plain "de" excluded: ambiguous with "gosto de X" (VERB) constructions.
+    if next_word in {"do", "da", "dos", "das"}:
+        score += 3
+    return score
+
+
+def score_verb(words: list, idx: int) -> int:
+    word = words[idx]
+    prev_word = _prev(words, idx)
+    next_word = _next(words, idx)
+    prev2_word = _prev2(words, idx)
+
+    score = 0
+
+    # Sentence-initial position without a preceding article → likely 1st-person verb.
+    if idx == 0:
+        score += 3
+
+    if prev_word in PRON:
+        score += 5
+        if idx == 1:
+            score += 2
+
+    # Enclitic clitic pronoun right after the word → strong verb host signal.
+    # "para" excluded: "para se", "para me", "para te" are always ADP + clitic
+    # infinitive, not "para" the finite verb with an enclitic.
+    if word != "para" and next_word in _POST_CLITICS:
+        score += 4
+
+    # DET directly after signals a direct-object NP — strong VERB evidence.
+    # Exclusions:
+    #   "do/da/dos/das" — partitive/possessive PPs, not DOs
+    #   "ao/à/aos/às/no/na/nos/nas" — contracted preposition+article; introduce
+    #     locative or dative PPs, not direct objects ("seco no verão" → ADJ,
+    #     "gozo na prática" → NOUN; keeping these fired false VERB+3 there)
+    #   "para" entirely excluded: "para o/a" is ADP, not VERB
+    # DET/QUANT directly after signals a direct-object NP; excludes contracted
+    # preposition+article forms that introduce locative/dative PPs.
+    _VERB_DET_EXCL = {"do", "da", "dos", "das", "no", "na", "nos", "nas",
+                      "ao", "à", "aos", "às", "num", "numa", "nuns", "numas"}
+    # "posto a [infinitive]" = PPT of "pôr" + infinitival complement; "a" is the
+    # infinitive marker, not the article.  Suppress the DET-after signal only for
+    # "posto" (other words like "começo a [inf]" are genuine VERB+DO phrases).
+    _next_next = words[idx + 2] if idx + 2 < len(words) else ""
+    _posto_inf = word == "posto" and next_word == "a" and _is_infinitive(_next_next)
+    if word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL and not _posto_inf:
+        score += 3
+    elif idx == 0 and next_word in {"do", "da", "dos", "das"}:
+        score += 1
+
+    # Temporal or subjunctive-introducing conjunction before → word is a verb.
+    if prev_word in _TEMPORAL_CONJ:
+        score += 2
+    if prev_word in _CONJ_SUBJ:
+        score += 4
+
+    # Negation / frequency adverb directly before → finite verb form.
+    # "não gosto", "nunca sobre", "sempre sobre" etc.
+    if prev_word in _NEG_ADV:
+        score += 4
+
+    # Passive auxiliary directly before → word is a past participle (VERB).
+    # Restricted to clear past/subjunctive forms of "ser" to avoid firing on
+    # copular/active uses ("tem gosto", "é sobre X" were false positives).
+    if prev_word in _PASSIVE_AUX:
+        score += 4
+
+    # Infinitive after the word penalises "para" ADP being scored as VERB.
+    if word == "para" and _is_infinitive(next_word):
+        score -= 5
+
+    # Infinitive immediately before → word is probably in a nominal/infinitival context.
+    # Guard: if the raw prev token ends in punctuation (clause boundary), the infinitive
+    # is in a separate clause ("Depois de nadar, seco…") and must not penalise here.
+    _prev_raw_v = words[idx - 1] if idx > 0 else ""
+    if _is_infinitive(prev_word) and not (_prev_raw_v and _prev_raw_v[-1] in ".,;:!?"):
+        score -= 5
+
+    # Word itself is an infinitive → strong VERB evidence.
+    # Guard: if a DET immediately precedes, the word is likely a substantivised
+    # infinitive or a NOUN that happens to end in ar/er/ir (e.g. "colher" = spoon),
+    # so the infinitive VERB signal is unreliable there.
+    if _is_infinitive(word) and prev_word not in DET | QUANT:
+        score += 5
+    # "a colher <DET>" = infinitive + object NP (to harvest/collect X); contrast with
+    # "a colher de X" = the spoon of X (NOUN).  When "a" precedes and a DET/QUANT
+    # follows (not "de"), the word is an infinitive verb.
+    # "a colher de X" = NOUN (the spoon of X); signal handled by score_noun.
+    # "colher" as infinitive VERB: preceded by "a" and a control verb in recent context.
+    # Control verbs typically appear at prev2/prev3 distance: "começou a colher",
+    # "aprendeu a colher", "voltou a colher", etc.
+    # "a colher [article NP]" = to collect [the X] — article directly after is VERB.
+    # Exclude contracted preposition+article forms (no/na/ao/à/…) — those introduce
+    # locative PPs on the NOUN, not verbal objects.
+    _COLHER_DET_EXCL = {"ao", "à", "aos", "às", "do", "da", "dos", "das",
+                        "no", "na", "nos", "nas", "num", "numa", "nuns", "numas"}
+    if word == "colher" and prev_word == "a" and next_word in DET | QUANT \
+            and next_word not in _COLHER_DET_EXCL:
+        score += 6
+    # Control verb at prev2/prev3/prev4 distance → "colher" is an infinitive VERB.
+    _COLHER_CTRL = {
+        "aprendeu", "aprender", "começou", "começar", "demorou", "demorar",
+        "voltou", "voltar", "conseguiu", "conseguir", "tentou", "tentar",
+        "continuou", "continuar", "passou", "parou", "decidiu", "decidir",
+        "saiu", "sair",
+    }
+    prev3 = _strip(words[idx - 3]) if idx >= 3 else ""
+    prev4 = _strip(words[idx - 4]) if idx >= 4 else ""
+    # Guard: if prev2 is itself an infinitive (e.g. "aprendeu a usar a colher"),
+    # "colher" is the NOUN object of the intermediate verb, not of the control verb.
+    _colher_ctrl_ok = not _is_infinitive(prev2_word)
+    if word == "colher" and prev_word == "a" and _colher_ctrl_ok and (
+        prev2_word in _COLHER_CTRL or prev3 in _COLHER_CTRL or prev4 in _COLHER_CTRL
+    ):
+        score += 6
+
+    # DET two positions back indicates "DET NOUN VERB" subject-verb pattern.
+    # Contracted prepositions are excluded: they introduce prepositional phrases,
+    # not nominal subjects.
+    _SUBJ_DET = DET - {"ao", "à", "aos", "às", "do", "da", "dos", "das",
+                       "no", "na", "nos", "nas"}
+    if prev2_word in _SUBJ_DET:
+        score += 3
+
+    if word == "para" and prev_word in {"quando", "quem", "sempre", "nunca", "já"}:
+        score += 3
+
+    if word == "para":
+        # "pára [contracted-prep/during/after]" — finite verb followed by a
+        # locative/temporal PP.  "para no/ao/durante/após/entre/em" is impossible
+        # as ADP (NEVER_AFTER_PREP already zeros ADP; add VERB signal to tip the tie).
+        _PARA_VERB_NEXT = {"no", "na", "nos", "nas", "ao", "à", "aos", "às",
+                           "durante", "após", "entre", "em"}
+        if next_word in _PARA_VERB_NEXT:
+            score += 5
+        # "para de [infinitive]" = stops doing X (finite VERB + complement).
+        _next_next_v = words[idx + 2] if idx + 2 < len(words) else ""
+        if next_word == "de" and _is_infinitive(_next_next_v):
+            score += 5
+        # "para quando/enquanto" finite VERB: the machine stops when/while…
+        if next_word in {"quando", "enquanto"}:
+            score += 3
+
+    # Adverb ending in -mente directly after a word → the word is a finite verb.
+    # "seco rapidamente as mãos", "começo imediatamente".
+    if next_word.endswith("mente"):
+        score += 3
+
+    # DET/QUANT at distance +2 with a non-DET at +1 → finite verb with an intervening
+    # manner/sequence adverb before its object NP: "seco primeiro as mãos".
+    # Restricted to known short adverbs that commonly appear between a verb and its
+    # object NP; "debaixo/antes/depois/…" are prepositions and must not trigger this.
+    _ADV_BRIDGE = {"primeiro", "logo", "já", "então", "ainda", "apenas", "também",
+                   "sempre", "nunca", "bem", "mal", "rapidamente", "imediatamente"}
+    _next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    if next_word in _ADV_BRIDGE and _next2 in DET | QUANT:
+        score += 1
+
+    # "gozo de X" with no DET/QUANT before = 3rd person of "gozar de" (to enjoy/benefit from).
+    # "o gozo de X" with DET before = the enjoyment of (NOUN); that case gets NOUN+5 elsewhere.
+    # "gozo de X" with a nominal/adj subject before = 3rd person of "gozar de".
+    # Exclude: DET/QUANT before (→ NOUN via score_noun), or a preposition before
+    # ("em gozo de", "com gozo de" are NOUN complement phrases).
+    _GOZO_EXCL_PREV = DET | QUANT | {"em", "com", "de", "por", "sem", "entre"}
+    if word == "gozo" and next_word == "de" and prev_word not in _GOZO_EXCL_PREV:
+        score += 5
+
+    # "sempre sobre [uma/um/…]" — frequency adverb + "sobrar" (left over); not ADP.
+    # "sempre sobre" where a DET/QUANT follows and there is no governing verb is a
+    # finite VERB (sobrar) not a preposition.
+    if word == "sobre" and prev_word == "sempre" and next_word in DET | QUANT:
+        score += 8
+
+    return score
+
+
+def score_adj(words: list, idx: int) -> int:
+    prev_word = _prev(words, idx)
+    prev2_word = _prev2(words, idx)
+    next_word = _next(words, idx)
+
+    score = 0
+
+    # Predicative position: copula directly before the adjective.
+    if prev_word in _COPULA:
+        score += 5
+
+    # Comparative/superlative: "mais/menos" before — strong ADJ signal.
+    if prev_word in {"mais", "menos"}:
+        score += 4
+
+    # Degree intensifier before: "muito seco", "completamente seco".
+    if prev_word in _INTENSIFIERS:
+        score += 2
+    # Degree adverb ending in -mente: "particularmente seco", "especialmente seco".
+    if prev_word.endswith("mente"):
+        score += 4
+    # Copula + degree adverb: "foi particularmente seco" — strong predicative ADJ.
+    if prev2_word in _COPULA and prev_word.endswith("mente"):
+        score += 3
+
+    # Attributive position: "DET NOUN ADJ" or "Que NOUN ADJ" pattern.
+    # _EXCL_DET ("que") is included here only: "Que ideia tola" → ADJ.
+    # QUANT included: "nenhum produto seco", "algum produto seco" → ADJ.
+    # Guard: if prev is empty or the raw prev token ends in punctuation (comma =
+    # clause boundary), the DET-NOUN is in a different clause from the adjective
+    # ("Depois do banho, seco").
+    _prev_raw_adj = words[idx - 1] if idx > 0 else ""
+    _prev_across_boundary = (prev_word == ""
+                              or (_prev_raw_adj and _prev_raw_adj[-1] in ".,;:!?"))
+    if prev2_word in DET | QUANT | _EXCL_DET \
+            and prev_word not in DET | QUANT | _EXCL_DET \
+            and not _prev_across_boundary:
+        score += 4
+
+    # Bare DET/QUANT immediately before (determiner phrase head, less common for ADJ).
+    if prev_word in DET | QUANT | PRON:
+        score += 3
+
+    # Post-positive attributive position: "NOUN ADJ" (bare noun immediately before,
+    # no clause boundary between them).
+    # Portuguese freely places adjectives after nouns.  If prev is a non-empty content
+    # word that is NOT in any function-word set (DET/QUANT/PRON/AUX/connective) and
+    # is NOT separated from the adjective by punctuation, it is likely a noun head.
+    # Guards: prev not empty, len > 2 (exclude single-char preps), no trailing
+    # punctuation on the raw token (comma/period signals clause boundary), and prev
+    # does not look like a finite verb form (common past-tense endings).
+    _prev_raw = words[idx - 1] if idx > 0 else ""
+    _FUNC_WORDS = (DET | QUANT | PRON | AUX_VERBS
+                   | {"não", "e", "ou", "mas", "que", "de", "a", "o", "em",
+                      "com", "por", "se", "já", "mais", "menos", "muito",
+                      "como", "quando", "onde", "para", "sobre", "pelo", "pela",
+                      "lhe", "lhes"})
+    # Also suppress when next is a DET/article — "seco os pratos" is VERB+DO,
+    # not an ADJ with a following object.
+    # The "-ia" suffix is a verb imperfect ending only when preceded by a consonant
+    # (e.g. "comia", "dormia"); words like "areia", "galeria" end in vowel+"ia" and
+    # are nouns — do not suppress the postpositive signal for them.
+    # Also: verb+clitic forms like "chamaram-lhe", "disse-me" contain a hyphen followed
+    # by a clitic pronoun — clearly a verb, not a noun head.
+    _vowels = set("aeiouáéíóúâêîôûãõàèìòùäëïöü")
+    _CLITICS = {"me", "te", "se", "lhe", "lhes", "nos", "vos", "o", "a", "os", "as"}
+    _prev_looks_verb = (
+        prev_word.endswith(("ou", "eu", "iu", "ei", "ava", "ara", "era"))
+        or (prev_word.endswith("ia") and len(prev_word) >= 4
+            and prev_word[-3] not in _vowels)
+        or ("-" in prev_word and prev_word.rsplit("-", 1)[-1] in _CLITICS)
+    )
+    if (prev_word and len(prev_word) > 2
+            and not _prev_raw[-1] in ".,;:!?"
+            and prev_word not in _FUNC_WORDS
+            and next_word not in DET | QUANT
+            and not _prev_looks_verb):
+        score += 3
+
+    return score
+
+
+def guess_pos(words: list, idx: int) -> str:
+    """Return the most likely UDEP POS tag for the ambiguous word at *idx*."""
+    word = words[idx]
+
+    scores = {}
+    if word in ADP_IPA:
+        scores["ADP"] = score_adp(words, idx)
+    if word in NOUNS_IPA:
+        scores["NOUN"] = score_noun(words, idx)
+    if word in VERBS_IPA:
+        scores["VERB"] = score_verb(words, idx)
+    if word in ADJ_IPA:
+        scores["ADJ"] = score_adj(words, idx)
+
+    best_pos = max(scores, key=scores.get)
+    if scores[best_pos] <= 0:
+        return DEFAULT_POS.get(word, "NOUN")
+
+    return best_pos
