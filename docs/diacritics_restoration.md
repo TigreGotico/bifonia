@@ -2,7 +2,7 @@
 
 ## The problem
 
-Portuguese has 27 heterophonic bifoniaaphs — words whose spelling is identical but whose
+Portuguese has 27 heterophonic homographs — words whose spelling is identical but whose
 pronunciation depends on part of speech. A rule-based G2P engine that does not perform
 POS disambiguation will systematically mispronounce them.
 
@@ -18,43 +18,67 @@ The vowel difference is the AO1990-prohibited acute accent: the canonical writte
 
 ## Framing as diacritics restoration
 
-A natural formulation: insert a **non-standard diacritic** that encodes the correct vowel
-quality, then let a phonemiser that honours those diacritics emit the right IPA.
+### Diacritics are standard Portuguese phonology
+
+The acute and circumflex accents used here are **not** project-specific notation.
+They are the standard Portuguese orthographic markers for vowel quality and are already
+part of the language:
+
+- **Acute (´)** marks an open vowel: *ó* = /ɔ/, *é* = /ɛ/
+- **Circumflex (^)** marks a closed vowel: *ô* = /o/, *ê* = /e/
+
+Every Portuguese G2P engine, phonemiser, and TTS system already handles these accents
+correctly — they appear in thousands of unambiguous words (*ótimo*, *ônibus*, *êxito*,
+*pé*, *pó*, …).  The disambiguation output is therefore **drop-in compatible** with any
+existing Portuguese TTS pipeline: insert the diacritised form before G2P and the correct
+vowel is produced without any changes to the downstream system.
+
+The issue is only that AO1990 (the 1990 Orthographic Agreement) removed these accents
+from a small set of words that were heterophonic — the very words this package covers.
+Post-reform, *pára* (stops) became *para*, making it orthographically identical to the
+preposition.  Restoring the diacritic on the verbal reading re-establishes the phonological
+signal that the reform erased.
+
+### Mapping to a sequence-labelling problem
+
+The task: for each ambiguous token, decide whether to insert a diacritic and which one.
+All other tokens pass through unchanged.
 
 | Canonical | Restored | POS | Vowel |
 |-----------|----------|-----|-------|
-| para | para (unchanged) | ADP | closed ɐ |
+| para | para (unchanged) | ADP | ɐ |
 | para | **pára** | VERB | open a |
 | pelo | **pêlo** | NOUN | closed e (fur) |
 | pelo | pelo (unchanged) | ADP | — |
 | sobre | **sôbre** | NOUN | closed o (envelope) |
 | sobre | **sóbre** | VERB | open ɔ (to be left over) |
 
-This maps disambiguation onto a **token-level sequence labelling** problem:
-
 ```
 Input:  O autocarro para em frente ao hospital.
 Output: O autocarro pára em frente ao hospital.
+         ↓ standard Portuguese G2P / TTS
+IPA:    u ɐwtukɐˈʁu ˈpaɾɐ ẽj ˈfɾẽtɨ ɐu uʃpiˈtaɫ
 ```
 
-The model need only decide, for each occurrence of an ambiguous token, whether to insert
-a diacritic and which one. All other tokens pass through unchanged.
+Because the output uses only standard orthographic conventions, no TTS model retraining
+or phoneme-table modification is required.
 
-## Convention
+### Diacritic convention
 
 | Diacritic | Vowel quality | Typical POS |
 |-----------|--------------|-------------|
 | acute (ó/é) | open /ɔ/ or /ɛ/ | VERB |
 | circumflex (ô/ê) | closed /o/ or /e/ | NOUN |
 
-The exceptions (sede, colher, tola) follow the same acute/circumflex convention but
-the NOUN/VERB polarity is reversed for phonological reasons documented in `data.py`.
+The exceptions (*sede*, *colher*, *tola*) follow the same acute/circumflex convention but
+the NOUN/VERB polarity is reversed for phonological reasons documented in `bifonia/data.py`.
 
 ## Rule-based scorer baseline
 
-`bifonia` ships a hand-crafted context scorer (`scoring.py`) that inspects a ±2-word
-window and applies integer signals for determiners, pronouns, conjunctions, and
-preposition-governing nouns.  It achieves **99.51% accuracy** on the 11 025-sentence
+`bifonia` ships a hand-crafted context scorer (`scoring.py`) that inspects a ±4-word
+window using integer signals for determiners, pronouns, passive auxiliaries, copular
+verbs, infinitive markers, degree adverbs, and governing verbs.  It achieves **99.51%
+accuracy** on the 11 025-sentence
 corpus vs **81.9%** for Stanza, **66.5%** for spaCy, and **53.1%** for TugaTagger
 (Brill backend).
 
