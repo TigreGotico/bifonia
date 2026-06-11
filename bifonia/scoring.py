@@ -278,6 +278,25 @@ def score_verb(words: list, idx: int) -> int:
         if idx == 1:
             score += 2
 
+    # 1st-person verb forms (choro, começo, acordo, …) without a preceding
+    # determiner are almost certainly finite verbs, not nouns.  The noun reading
+    # needs an article ("o choro", "um começo") which provides DET context.
+    # Guards:
+    #   - DET/QUANT in prev or prev2 → NOUN phrase context, skip
+    #   - Transitive verb in prev ("tem", "tinha", "tenho", …) → NOUN object, skip
+    #     ("tem choro fácil", "tem gosto refinado" are NOUN objects of "ter")
+    _TRANS_VERB = {"tem", "tinha", "têm", "tinham", "tenho", "tinha", "ter", "teve",
+                   "teria", "tivesse", "pode", "deve", "quer", "parece", "fica",
+                   "demonstra", "mostra", "revela", "possui", "possuía"}
+    if (idx > 0
+            and prev_word not in DET | QUANT
+            and prev2_word not in DET | QUANT
+            and prev_word not in _TRANS_VERB):
+        if word in {"choro", "começo", "coro", "conserto",
+                    "olho", "molho", "jogo",
+                    "rego", "peso", "porto"}:
+            score += 2
+
     # Enclitic clitic pronoun right after the word → strong verb host signal.
     # "para" excluded: "para se", "para me", "para te" are always ADP + clitic
     # infinitive, not "para" the finite verb with an enclitic.
@@ -445,6 +464,19 @@ def score_verb(words: list, idx: int) -> int:
     # finite VERB (sobrar) not a preposition.
     if word == "sobre" and prev_word == "sempre" and next_word in DET | QUANT:
         score += 8
+
+    # "sobre" as VERB (sobrar, to be left over): expand signals beyond "sempre".
+    if word == "sobre":
+        # Degree/frequency adverbs ending in -mente directly before: "raramente sobre",
+        # "dificilmente sobre", "normalmente sobre", etc.  Adverbs of this type modify
+        # finite verbs, not prepositions.
+        if prev_word.endswith("mente"):
+            score += 4
+        # "Depois de X, sobre Y" — leftover-after-subtraction pattern.
+        # "depois" in the ±3 left window strongly implies a subtraction result.
+        _left3s = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
+        if "depois" in _left3s or "restam" in _left3s:
+            score += 3
 
     return score
 

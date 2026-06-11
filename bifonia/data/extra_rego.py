@@ -2,7 +2,6 @@
   "rego": {
     "NOUN": [
       "O rego de irrigação atravessa todo o campo de trigo.",
-      "Os agricultores limparam o rego antes do início da época de rega.",
       "A água escorria pelo rego até às hortas do vale.",
       "O rego foi cavado com uma enxada de cabo comprido.",
       "Durante a seca, o rego secou completamente em julho.",
@@ -193,7 +192,7 @@
       "O rego seco indicava que a captação estava interrompida.",
       "Limparam o rego com uma enxada antes de abrir a comporta.",
       "O rego cruza a propriedade de norte a sul.",
-      "Um rego bem conservado pode durar décadas sem reparações."
+      "Um rego bem conservado pode durar décadas sem reparações.",
     ],
     "VERB": [
       "Eu rego o jardim todas as manhãs antes de ir trabalhar.",
@@ -388,7 +387,7 @@
       "Normalmente rego os tomates na base para não molhar as folhas.",
       "Rego a relva uma vez por semana com o aspersor automático.",
       "No verão, rego todos os dias; no inverno, raramente rego.",
-      "Rego as ervas aromáticas com pouca água para não apodrecerem."
-    ]
+      "Rego as ervas aromáticas com pouca água para não apodrecerem.",
+    ],
   }
 }
