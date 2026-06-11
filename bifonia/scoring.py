@@ -230,7 +230,8 @@ def score_noun(words: list, idx: int) -> int:
     # ("sabe muito sobre X") — don't treat them as NOUN determiners there.
     _SOBRE_INTENS = {"muito", "pouco", "bastante", "nada", "tudo", "algo",
                      "demais", "menos", "mais"}
-    if prev_word in DET | QUANT and not (word == "sobre" and prev_word in _SOBRE_INTENS):
+    if prev_word in DET | QUANT and not (word == "sobre" and prev_word in _SOBRE_INTENS) \
+            and word != "tola":  # "a/uma tola" is equally DET+NOUN and DET+subst-ADJ
         score += 5
         # "sobre" as a noun (envelope) is unambiguous when a DET immediately
         # precedes — it cannot function as ADP after a determiner.  Boost
@@ -258,6 +259,36 @@ def score_noun(words: list, idx: int) -> int:
     # so a NOUN+6 here still loses to those fixed-phrase ADP signals (total ADP≥11).
     if word == "pelo" and prev_word == "de":
         score += 6
+    # "tola" as colloquial NOUN (head/skull): detected by verbs of hitting/filling/
+    # possessive clitic contexts — "bater com a tola", "meter na tola", "partir a tola",
+    # "dói-me a tola", "a tola à roda".
+    if word == "tola":
+        _HEAD_VERBS = {"bater", "bato", "bate", "bati", "bateu", "batem",
+                       "partir", "parto", "parte", "partiu",
+                       "meter", "meto", "mete", "meteu",
+                       "rachar", "racha", "rachou",
+                       "abrir", "abre", "abriu",
+                       "perder", "perco", "perde", "perdeu",
+                       "doer", "dói", "doía"}
+        _left3 = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
+        if any(v in _HEAD_VERBS for v in _left3):
+            score += 6
+        # "na tola" / "pela tola" — locative preposition signals body-part head
+        if prev_word in {"na", "pela"}:
+            score += 5
+        # "com a tola" — prev2="com" + prev="a" (article)
+        _prev2_tola = _strip(words[idx - 2]) if idx >= 2 else ""
+        if _prev2_tola == "com" and prev_word in {"a", "o"}:
+            score += 5
+        # "[a] tola à roda" / "tola ao ar" — "à/ao" immediately after signals idiom
+        if next_word in {"à", "ao"} and prev_word in {"a", "o", "na", "pela"}:
+            score += 4
+        # tola = African hardwood: "madeira de tola", "ripas de tola", "em tola"
+        _WOOD_CONTEXT = {"madeira", "ripas", "ripa", "tábua", "tabuas", "pranchas",
+                         "prancha", "deck", "revestimento", "móveis", "mobiliário"}
+        _right3 = [_strip(words[idx + k]) for k in range(1, 4) if idx + k < len(words)]
+        if any(w in _WOOD_CONTEXT for w in _left3 + _right3):
+            score += 6
     return score
 
 

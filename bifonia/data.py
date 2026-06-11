@@ -33,7 +33,7 @@ DEFAULT_POS: dict = {
     "pelo": "ADP",
     "sobre": "ADP",
     "seco": "ADJ",
-    "tola": "NOUN",
+    "tola": "ADJ",
     "porto": "NOUN",
     "acordo": "NOUN",
     "acerto": "NOUN",
