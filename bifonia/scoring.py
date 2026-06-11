@@ -178,9 +178,17 @@ def score_adp(words: list, idx: int) -> int:
             score += 5
         # Passive-voice agent: "foi transmitido pelo X", "foi aprovado pelo Y"
         # A past participle in the ±3 left context strongly signals ADP agent.
+        # Guard: the char before the suffix must be a consonant so that animal/proper
+        # names ending in -ida/-ada (e.g. "samoeida") don't fire as false positives.
         _PPT_SFXS = ("ado", "ido", "ada", "ida", "ados", "idos", "adas", "idas")
+        _VOWELS = frozenset("aeiouáéíóúâêîôûãõ")
         _left3 = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
-        if any(w.endswith(_PPT_SFXS) for w in _left3):
+        def _is_ppt(w):
+            for sfx in _PPT_SFXS:
+                if w.endswith(sfx) and len(w) > len(sfx) and w[-len(sfx)-1] not in _VOWELS:
+                    return True
+            return False
+        if any(_is_ppt(w) for w in _left3):
             score += 5
         # "pelo" = por+o (masc.sg.); if followed by any free-standing definite article
         # it cannot be the ADP contraction (por+o already contains the article "o").
@@ -238,6 +246,18 @@ def score_noun(words: list, idx: int) -> int:
     # Plain "de" excluded: ambiguous with "gosto de X" (VERB) constructions.
     if next_word in {"do", "da", "dos", "das"}:
         score += 3
+    # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
+    # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
+    _TER = {"tem", "tinha", "têm", "tinham", "ter", "tivesse", "tiver",
+            "possui", "possuía", "possuem", "teria", "tivera"}
+    if word == "pelo" and prev_word in _TER:
+        score += 6
+    # "cão de pelo comprido" — genitive "de" directly before "pelo" followed by a
+    # qualitative adjective is always the fur-type construction, not ADP (por+o).
+    # "pelo menos" / "pelo visto" etc. are guarded by _PELO_FIXED in score_adp (+6),
+    # so a NOUN+6 here still loses to those fixed-phrase ADP signals (total ADP≥11).
+    if word == "pelo" and prev_word == "de":
+        score += 6
     return score
 
 
@@ -315,6 +335,14 @@ def score_verb(words: list, idx: int) -> int:
             score += 4
         if next_word in STOPPABLE_THINGS:
             score += 3
+        # "pára o/a [STOPPABLE]" — when the object is introduced by a bare article,
+        # look one position further to find the stoppable noun head.
+        _next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+        if next_word in {"o", "a", "os", "as"} and _next2 in STOPPABLE_THINGS:
+            score += 3
+        # "para a meio" — stops halfway through; "meio" in this sense is never ADP.
+        if next_word == "a" and _next2 == "meio":
+            score += 4
 
     # Infinitive immediately before → word is probably in a nominal/infinitival context.
     # Guard: if the raw prev token ends in punctuation (clause boundary), the infinitive

@@ -1,21 +1,25 @@
 """
-Export the bifonia labeled corpus as CSV and JSON datasets.
+Export the bifonia labeled corpus as CSV, JSON, and HuggingFace-compatible splits.
 
 Output files
 ------------
-dataset.csv   — one row per sentence: word, pos, ipa, diacritized, sentence
-dataset.json  — same data as a JSON array
+dataset.csv          — full corpus: word, pos, ipa, diacritized, sentence, diacritized_sentence
+dataset.json         — same as JSON array
+hf/train.jsonl       — 80% stratified split (per word+POS) for HF upload
+hf/test.jsonl        — 20% stratified split
 
 Usage::
 
-    python dataset.py [--out <dir>]
+    python dataset.py [--out <dir>] [--hf]
 """
 
 import csv
 import json
 import argparse
 import pathlib
+import random
 import re
+from collections import defaultdict
 
 from bifonia import HOMOGRAPHS
 from bifonia.__init__ import _DIACRITIZED
@@ -23,11 +27,9 @@ from bifonia.corpus import CORPUS, iter_records
 
 
 def _diacritized_sentence(sentence: str, word: str, pos: str) -> str:
-    """Return sentence with the target word replaced by its diacritized form."""
     diac = _DIACRITIZED.get((word, pos))
     if not diac:
         return sentence
-    # case-insensitive word-boundary replacement, preserve surrounding case
     return re.sub(
         rf"\b{re.escape(word)}\b",
         diac,
@@ -54,9 +56,35 @@ def build_records() -> list[dict]:
     return records
 
 
+def stratified_split(records: list[dict], test_frac: float = 0.2,
+                     seed: int = 42) -> tuple[list[dict], list[dict]]:
+    """Stratified 80/20 split by (word, pos) so every class is represented in both."""
+    rng = random.Random(seed)
+    by_class: dict = defaultdict(list)
+    for r in records:
+        by_class[(r["word"], r["pos"])].append(r)
+
+    train, test = [], []
+    for key, group in sorted(by_class.items()):
+        rng.shuffle(group)
+        n_test = max(1, int(len(group) * test_frac))
+        test.extend(group[:n_test])
+        train.extend(group[n_test:])
+    return train, test
+
+
+def write_jsonl(records: list[dict], path: pathlib.Path) -> None:
+    with path.open("w", encoding="utf-8") as fh:
+        for r in records:
+            fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Export bifonia corpus to CSV/JSON.")
+    parser = argparse.ArgumentParser(description="Export bifonia corpus.")
     parser.add_argument("--out", default=".", help="Output directory (default: current)")
+    parser.add_argument("--hf", action="store_true",
+                        help="Also write HF-compatible train/test JSONL splits under <out>/hf/")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for split")
     args = parser.parse_args()
 
     out = pathlib.Path(args.out)
@@ -64,7 +92,7 @@ def main():
 
     records = build_records()
 
-    # CSV
+    # Full CSV
     csv_path = out / "dataset.csv"
     fields = ["word", "pos", "ipa", "diacritized", "sentence", "diacritized_sentence"]
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
@@ -73,13 +101,20 @@ def main():
         writer.writerows(records)
     print(f"Wrote {len(records)} rows → {csv_path}")
 
-    # JSON
+    # Full JSON
     json_path = out / "dataset.json"
     with json_path.open("w", encoding="utf-8") as fh:
         json.dump(records, fh, ensure_ascii=False, indent=2)
     print(f"Wrote {len(records)} records → {json_path}")
 
-    # Summary
+    if args.hf:
+        hf_dir = out / "hf"
+        hf_dir.mkdir(exist_ok=True)
+        train, test = stratified_split(records, seed=args.seed)
+        write_jsonl(train, hf_dir / "train.jsonl")
+        write_jsonl(test, hf_dir / "test.jsonl")
+        print(f"HF splits → {hf_dir}/  (train={len(train)}, test={len(test)})")
+
     from collections import Counter
     by_word = Counter(r["word"] for r in records)
     by_pos = Counter(r["pos"] for r in records)

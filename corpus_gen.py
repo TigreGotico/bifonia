@@ -25,27 +25,42 @@ from pathlib import Path
 # Format: (word, pos, current_count, target_count, notes)
 # ---------------------------------------------------------------------------
 TARGETS = [
-    # Three-way words: under-represented POS
-    ("sede",  "VERB", 60,  250, "3rd-person of sedear: to HOLD/HOST (meetings, events, sessions). Examples: 'O comité sede as suas reuniões em Lisboa', 'A empresa sede as suas conferências no auditório'. NOT the imperative of ser (be). NOT thirst. The subject is always an organisation holding an event somewhere."),
-    ("posto", "VERB", 60,  250, "1st-person of postar: 'eu posto fotos', 'posto o pacote', 'posto encomendas'"),
-    # Three-way words: top up all POS
-    ("sobre", "ADP",  135, 250, "preposition about/over/on: 'falou sobre', 'livro sobre', 'reflexão sobre'"),
-    ("sobre", "NOUN", 113, 250, "envelope: 'meteu no sobre', 'fechou o sobre', 'endereçou o sobre'"),
-    ("sobre", "VERB", 114, 250, "3rd-person of sobrar (to be left over): 'sobra comida', 'sobre dinheiro', 'sempre sobre pão'"),
-    ("pelo",  "ADP",  144, 250, "por+o: 'passou pelo parque', 'foi feito pelo governo', 'pelo menos'"),
-    ("pelo",  "NOUN", 123, 250, "body hair/fur: 'o pelo do gato', 'perdeu pelo', 'pelo longo'"),
-    ("pelo",  "VERB", 128, 250, "1st-person of pelar (to peel/skin): 'pelo as batatas', 'pelo o frango', 'pelo laranjas'"),
-    # Two-way words: under 420 total
-    ("para",  "ADP",  199, 280, "preposition to/for/towards: 'vou para casa', 'é para ti', 'para quê'"),
-    ("para",  "VERB", 183, 280, "3rd-person of parar (to stop): 'o carro para', 'o coração para', 'quando para de chover'"),
-    ("corte", "NOUN", 213, 280, "cut or royal court: 'um corte na mão', 'a corte do rei', 'corte de cabelo'"),
-    ("corte", "VERB", 190, 280, "subjunctive of cortar: 'espero que corte', 'para que corte', 'antes que corte'"),
-    ("forma", "NOUN", 212, 280, "baking mold ONLY (closed-o): 'a forma do bolo', 'untar a forma', 'forma redonda de tarte'"),
-    ("forma", "VERB", 195, 280, "3rd-person of formar OR noun meaning way/manner (open-o): 'desta forma', 'forma equipas', 'de que forma'"),
-    ("gozo",  "NOUN", 212, 280, "enjoyment / legal possession: 'no gozo das férias', 'gozo de direitos', 'pleno gozo'"),
-    ("gozo",  "VERB", 196, 280, "1st-person of gozar: 'gozo de boa saúde', 'gozo as férias', 'gozo muito'"),
-    ("transtorno", "NOUN", 207, 280, "inconvenience/disorder: 'que transtorno!', 'transtorno mental', 'causou um transtorno'"),
-    ("transtorno", "VERB", 196, 280, "1st-person of transtornar: 'transtorno os planos', 'transtorno tudo quando'"),
+    # ── Two-way words: bring all to ≥280 per POS ────────────────────────────
+    ("acerto",  "NOUN", 222, 320, "accuracy/correctness/settlement: 'um acerto de contas', 'o acerto do diagnóstico', 'com acerto'"),
+    ("acerto",  "VERB", 200, 320, "1st-person of acertar (to get right/hit): 'acerto no alvo', 'acerto sempre nas previsões', 'acerto a resposta'"),
+    ("acordo",  "NOUN", 222, 320, "agreement/accord: 'um acordo de paz', 'chegaram a um acordo', 'o acordo foi assinado'"),
+    ("acordo",  "VERB", 213, 320, "1st-person of acordar (to wake/agree): 'acordo cedo', 'acordo com o plano', 'acordo todos os dias às sete'"),
+    ("cerro",   "NOUN", 220, 320, "hill/mound: 'no topo do cerro', 'o cerro da aldeia', 'subiu o cerro'"),
+    ("cerro",   "VERB", 205, 320, "1st-person of cerrar (to close/clench): 'cerro os olhos', 'cerro o punho', 'cerro a porta devagar'"),
+    ("choro",   "NOUN", 212, 320, "crying/weeping: 'um choro de bebé', 'o choro da criança', 'conteve o choro'"),
+    ("choro",   "VERB", 203, 320, "1st-person of chorar (to cry): 'choro de alegria', 'choro sempre neste filme', 'choro sozinho'"),
+    ("colher",  "NOUN", 222, 320, "spoon: 'uma colher de sopa', 'mexeu com a colher', 'a colher de pau'"),
+    ("colher",  "VERB", 216, 320, "to harvest/collect: 'colher fruta', 'vou colher amoras', 'começou a colher os legumes'"),
+    ("começo",  "NOUN", 215, 320, "beginning/start: 'no começo do ano', 'um começo difícil', 'desde o começo'"),
+    ("começo",  "VERB", 203, 320, "1st-person of começar (to start): 'começo agora', 'começo o trabalho cedo', 'começo a perceber'"),
+    ("conserto", "NOUN", 225, 320, "repair/fix: 'o conserto da máquina', 'em conserto', 'levou ao conserto'"),
+    ("conserto", "VERB", 225, 320, "1st-person of consertar (to repair): 'conserto bicicletas', 'conserto o computador', 'conserto o estrago'"),
+    ("coro",    "NOUN", 227, 320, "choir/chorus: 'o coro da catedral', 'cantou no coro', 'um coro de vozes'"),
+    ("coro",    "VERB", 206, 320, "1st-person of corar (to blush/flush): 'coro de vergonha', 'coro facilmente', 'coro quando me elogiam'"),
+    ("gosto",   "NOUN", 216, 320, "taste/liking: 'um gosto refinado', 'ao gosto de cada um', 'gosto pessoal'"),
+    ("gosto",   "VERB", 218, 320, "1st-person of gostar (to like): 'gosto de música', 'gosto muito', 'gosto do teu trabalho'"),
+    ("jogo",    "NOUN", 226, 320, "game/play: 'um jogo de futebol', 'o jogo terminou', 'o jogo das palavras'"),
+    ("jogo",    "VERB", 203, 320, "1st-person of jogar (to play/gamble): 'jogo futebol', 'jogo aos dados', 'jogo bem sob pressão'"),
+    ("molho",   "NOUN", 224, 320, "sauce/bundle: 'o molho de tomate', 'molho de chaves', 'preparou o molho'"),
+    ("molho",   "VERB", 226, 320, "1st-person of molhar (to wet/soak): 'molho o pão no café', 'molho os pés na praia', 'molho a esponja'"),
+    ("olho",    "NOUN", 219, 320, "eye: 'o olho direito', 'com o olho vivo', 'olho azul'"),
+    ("olho",    "VERB", 199, 320, "1st-person of olhar (to look): 'olho pela janela', 'olho para o céu', 'olho com atenção'"),
+    ("peso",    "NOUN", 217, 320, "weight: 'o peso do saco', 'de peso', 'o peso da responsabilidade'"),
+    ("peso",    "VERB", 210, 320, "1st-person of pesar (to weigh): 'peso os ingredientes', 'peso 70 kg', 'peso tudo antes de decidir'"),
+    ("porto",   "NOUN", 211, 320, "port/harbour OR port wine: 'no porto de Lisboa', 'um copo de porto', 'atracou no porto'"),
+    ("porto",   "VERB", 209, 320, "1st-person of portar (to carry/behave): 'porto-me bem', 'porto as malas', 'porto a bandeira'"),
+    ("rego",    "NOUN", 223, 320, "irrigation ditch/furrow: 'o rego de rega', 'abriu o rego', 'o rego do campo'"),
+    ("rego",    "VERB", 223, 320, "1st-person of regar (to water/irrigate): 'rego as plantas', 'rego o jardim de manhã', 'rego os canteiros'"),
+    ("torre",   "NOUN", 225, 320, "tower: 'a torre do castelo', 'torre de controlo', 'a torre de Belém'"),
+    ("torre",   "VERB", 200, 320, "1st-person of torrar (to toast/roast): 'torre o pão', 'torre café', 'torre as amêndoas'"),
+    # ── Three-way words already near target — small top-up ──────────────────
+    ("pelo",  "NOUN", 286, 350, "body hair/fur: 'o pelo do gato', 'perdeu pelo', 'tem pelo comprido'. The animal subject typically OWNS the fur."),
+    ("para",  "VERB", 318, 380, "3rd-person of parar (to stop): 'o carro para', 'para de chover', 'o motor para'. Use a concrete stoppable subject in the sentence."),
 ]
 
 PROMPT_TEMPLATE = """\

@@ -281,7 +281,7 @@ PELO_VERB = [
     "Pélo o nabo para a sopa de legumes que faço todas as semanas.",
     "Pélo a abóbora antes de a assar no forno com mel e canela.",
     "Pélo sempre os kiwis antes de os comer ao pequeno-almoço.",
-    "Pélo os feijões verdes antes de os estufar com tomate e chouriço.",
+    "Pélo as batatas novas antes de as cozer com sal e azeite.",
     "Pélo o aipo antes de o cortar para o caldo de carne.",
     "Pélo as amêndoas depois de as escaldar em água quente uns minutos.",
     "Pélo as castanhas depois de as cozer para fazer o puré.",
@@ -365,7 +365,7 @@ SECO_ADJ = [
     "O ar seco da cabine do avião resseca muito a pele durante a viagem.",
     "O muro seco foi construído sem qualquer argamassa pelos pastores locais.",
     "O papel seco no fundo da caixa amortece o choque durante o transporte.",
-    "está seco e quente hoje.",
+    "O tempo está seco e quente esta semana.",
 ]
 
 @pytest.mark.parametrize("s", SECO_ADJ)
@@ -1746,7 +1746,7 @@ ACERTO_NOUN_X = [
     "O acerto nas previsões climáticas permitiu preparar as colheitas.",
     "O acerto na resposta garantiu-lhe a melhor pontuação do concurso.",
     "O acerto do diagnóstico precoce salvou-lhe a vida naquele momento.",
-    "O acerto no tim ing da decisão fez toda a diferença para o resultado.",
+    "O acerto no momento certo da decisão fez toda a diferença para o resultado.",
 ]
 
 @pytest.mark.parametrize("s", ACERTO_NOUN_X)
@@ -1835,7 +1835,7 @@ CHORO_VERB_X = [
     "Chóro sempre que ouço cantar fado numa tasca antiga de Lisboa.",
     "Chóro muito raramente mas quando acontece é fundo e prolongado.",
     "Chóro de alegria nos momentos que mais importam da minha vida.",
-    "Chóro quando vejo fotograf ias antigas da família reunida.",
+    "Chóro quando vejo fotografias antigas da família reunida.",
     "Chóro em silêncio para não assustar os filhos com a minha tristeza.",
     "Chóro quando o esforço de anos é finalmente reconhecido.",
     "Chóro ao despedir-me de pessoas queridas por longos períodos.",
@@ -2308,7 +2308,7 @@ def test_peso_verb_x(s):
 
 PORTO_NOUN_X = [
     "O porto de Aveiro é um porto artificial com uma longa barra.",
-    "O porto de Viana do Castelo é dos mais pitoresco s do país.",
+    "O porto de Viana do Castelo é dos mais pitorescos do país.",
     "O porto comercial operou sem interrupção durante o fim de semana.",
     "O porto de pesca estava animado ao amanhecer com as chegadas.",
     "O porto foi palco de grandes descobertas e partidas históricas.",
@@ -2387,7 +2387,7 @@ REGO_NOUN_X = [
     "O rego foi alargado para aumentar o caudal em anos secos.",
     "O rego marca a separação entre a propriedade pública e a privada.",
     "O rego foi reabilitado no âmbito de um projeto de recuperação rural.",
-    "O rego principal alimenta os rego s secundários durante a rega.",
+    "O rego principal alimenta os regos secundários durante a rega.",
 ]
 
 @pytest.mark.parametrize("s", REGO_NOUN_X)
@@ -2457,7 +2457,7 @@ SOBRE_ADP_X = [
     "Ela escreveu um poema sobre o tempo que passa e não volta.",
     "Ele sabe tudo sobre astronomia e gosta de partilhar esse saber.",
     "O professor falou sobre as causas da primeira guerra mundial.",
-    "Discutimos sobre o futuro do projeto durante toda a reunião.",
+    "Falámos sobre o futuro do projeto durante toda a reunião.",
     "A palestra sobre inteligência artificial encheu o auditório.",
     "Os especialistas divergem sobre as causas da crise financeira.",
     "Pensou muito sobre a decisão antes de a comunicar à família.",
