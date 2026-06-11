@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "corte" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "corte" (em minúsculas, sem acento diacrítico)
+- A palavra "corte" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) incisão, golpe, talho; (2) corte de cabelo/orçamento/luz; (3) corte real, séquito de um monarca; (4) tribunal.
+Exemplos de uso: «o corte na pele», «a corte do rei», «corte orçamental», «corte de energia», «a corte de D. Manuel».
+Pronúncia: /ˈkoɾtɨ/ — vogal O fechada.
+NÃO uses "corte" como forma verbal (subjuntivo de «cortar») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

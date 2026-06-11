@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "peso" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «pesar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "peso" (em minúsculas, sem acento diacrítico)
+- A palavra "peso" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu peso» (medir o peso de, ter determinado peso).
+Exemplos de uso: «peso os ingredientes antes de misturar», «peso 70 kg», «peso tudo antes de decidir».
+Pronúncia: /ˈpɛzu/ — vogal E aberta.
+NÃO uses "peso" como substantivo (= grandeza física/moeda) — essa leitura tem E fechado.
+Responde APENAS com as frases, uma por linha:

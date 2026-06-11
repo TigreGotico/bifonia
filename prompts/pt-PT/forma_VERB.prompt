@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "forma" é usada como VERBO (3.ª pessoa do singular do presente do indicativo de «formar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "forma" (em minúsculas, sem acento diacrítico)
+- A palavra "forma" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 3.ª pessoa do singular — «ele/ela/isso forma» (constituir, moldar, criar, graduar).
+Exemplos de uso: «forma uma equipa coesa», «a nuvem forma», «o instituto forma novos profissionais», «o rio forma um delta».
+Pronúncia: /ˈfɔɾmɐ/ — vogal O aberta.
+NÃO uses "forma" como substantivo (= figura/molde/modo) — essa leitura tem O fechado.
+Responde APENAS com as frases, uma por linha:

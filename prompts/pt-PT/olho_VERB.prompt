@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "olho" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «olhar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "olho" (em minúsculas, sem acento diacrítico)
+- A palavra "olho" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu olho» (dirigir o olhar, ver, observar).
+Exemplos de uso: «olho pela janela», «olho para o céu», «olho com atenção», «olho ao espelho todas as manhãs».
+Pronúncia: /ˈɔʎu/ — vogal O aberta.
+NÃO uses "olho" como substantivo (= órgão da visão) — essa leitura tem O fechado.
+Responde APENAS com as frases, uma por linha:

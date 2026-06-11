@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "acerto" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «acertar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "acerto" (em minúsculas, sem acento diacrítico)
+- A palavra "acerto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu acerto», «eu consigo acertar», «eu acerto bem/mal».
+Exemplos de uso: «acerto sempre nas previsões», «acerto no alvo com facilidade», «acerto a resposta certa».
+Pronúncia: /ɐˈsɛɾtu/ — vogal E aberta (acento gráfico agudo em "acérto").
+NÃO uses "acerto" como substantivo (= exatidão/ajuste) — essa leitura tem E fechado.
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "acordo" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «acordar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "acordo" (em minúsculas, sem acento diacrítico)
+- A palavra "acordo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu acordo» (despertar) ou «eu concordo/combino».
+Exemplos de uso: «acordo cedo todos os dias», «acordo sempre bem-disposto», «acordo às seis da manhã».
+Pronúncia: /ɐˈkɔɾdu/ — vogal O aberta.
+NÃO uses "acordo" como substantivo (= pacto) — essa leitura tem O fechado.
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "sobre" é usada como SUBSTANTIVO (sobra, excedente — uso raro e regional).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "sobre" (em minúsculas, sem acento diacrítico)
+- A palavra "sobre" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — excedente, sobra, aquilo que resta após uma distribuição ou cálculo.
+Exemplos de uso: «o sobre do orçamento», «ficou um sobre de material», «aproveitou o sobre da tinta», «usar o sobre da massa».
+Pronúncia: /ˈsobɾɨ/ — vogal O fechada (igual ao ADP).
+NÃO uses "sobre" como preposição nem como verbo.
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "pelo" é usada como PREPOSIÇÃO CONTRAÍDA (por + o).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "pelo" (em minúsculas, sem acento diacrítico)
+- A palavra "pelo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: contração da preposição «por» com o artigo «o» — indica agente, meio, motivo, percurso.
+Exemplos de uso: «passou pelo parque», «foi elogiado pelo professor», «andou pelo rio», «pelo menos», «pelo visto».
+Pronúncia: /ˈpɨlu/ — vogal E muito reduzida (schwa), forma átona.
+NÃO uses "pelo" como substantivo (= pelo do gato) nem como verbo (= eu pelo batatas).
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+Gera {n} frases em Português Europeu natural onde a palavra "conserto" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "conserto" (em minúsculas, sem acento diacrítico)
+- A palavra "conserto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — reparação, arranjo, concerto de algo avariado.
+Exemplos de uso: «o conserto da máquina», «em conserto», «levou ao conserto», «sem conserto possível».
+Pronúncia: /kõˈseɾtu/ — vogal E fechada.
+NÃO uses "conserto" como verbo de 1.ª pessoa (= «eu conserto») — essa leitura tem E aberto.
+NÃO confundas com «concerto» (espetáculo musical) — palavra diferente.
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "gosto" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "gosto" (em minúsculas, sem acento diacrítico)
+- A palavra "gosto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) sabor, paladar; (2) preferência, apreciação estética; (3) prazer.
+Exemplos de uso: «um gosto refinado», «ao gosto de cada um», «gosto pessoal», «tem gosto a morango», «com gosto».
+Pronúncia: /ˈgoʃtu/ — vogal O fechada.
+NÃO uses "gosto" como verbo de 1.ª pessoa (= «eu gosto de...») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

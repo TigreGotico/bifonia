@@ -1,0 +1,14 @@
+Gera {n} frases em Português Europeu natural onde a palavra "cerro" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «cerrar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "cerro" (em minúsculas, sem acento diacrítico)
+- A palavra "cerro" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular de «cerrar» — fechar, cravar, comprimir com força.
+Exemplos de uso: «cerro os olhos para não ver», «cerro o punho de raiva», «cerro a porta devagar».
+Pronúncia: /ˈsɛʁu/ — vogal E aberta.
+NÃO uses "cerro" como substantivo (= outeiro) — essa leitura tem E fechado.
+Responde APENAS com as frases, uma por linha:
