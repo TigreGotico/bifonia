@@ -20,7 +20,7 @@ Feature families (all sparse, value 1.0 unless noted):
   R1_mente / L1_inf / R1_deverbal          neighbour morphology
   pos0 / prev_looks_verb                   position / shape heuristics
 
-Pure stdlib — must stay import-light (no numpy / ovos) so it is safe on the
+Pure stdlib — must stay import-light (no numpy) so it is safe on the
 zero-dependency inference path.
 """
 import functools

@@ -6,8 +6,7 @@
 pip install -e /path/to/bifonia --no-deps
 ```
 
-No required dependencies. `ovos_spec_tools` is used for locale resolution when installed and
-falls back to the standard library otherwise, so the library runs fully dependency-free.
+No dependencies — pure standard library.
 
 ## Quick start
 

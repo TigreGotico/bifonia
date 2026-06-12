@@ -20,8 +20,8 @@ The diacritic convention used in this project encodes vowel quality:
 
 | Sense (pos) | IPA | Diacritized | Meaning | Example |
 |-------------|-----|-------------|---------|---------|
-| agreement (NOUN) | ˈkoɾdu | acôrdo | agreement, deal | *O acôrdo de paz foi assinado.* |
-| wake (VERB) | ˈkɔɾdu | acórdo | I wake up (1st person of *acordar*) | *Acórdo sempre cedo nos dias úteis.* |
+| agreement (NOUN) | ɐˈkoɾdu | acôrdo | agreement, deal | *O acôrdo de paz foi assinado.* |
+| wake (VERB) | ɐˈkɔɾdu | acórdo | I wake up (1st person of *acordar*) | *Acórdo sempre cedo nos dias úteis.* |
 
 **For non-native speakers:** the NOUN "acordo" (closed-o) is what you reach after a negotiation — "agreement". The VERB "acórdo" (open-o) is "I wake up" (from the verb *acordar*). The stressed vowel shifts from closed /o/ to open /ɔ/.
 
@@ -35,8 +35,8 @@ The diacritic convention used in this project encodes vowel quality:
 
 | Sense (pos) | IPA | Diacritized | Meaning | Example |
 |-------------|-----|-------------|---------|---------|
-| settlement (NOUN) | ˈseɾtu | acêrto | correct answer, hit, success | *Foi um acêrto de política económica.* |
-| adjust (VERB) | ˈsɛɾtu | acérto | I get right / I hit (1st person of *acertar*) | *Acérto sempre nas previsões do tempo.* |
+| settlement (NOUN) | ɐˈseɾtu | acêrto | correct answer, hit, success | *Foi um acêrto de política económica.* |
+| adjust (VERB) | ɐˈsɛɾtu | acérto | I get right / I hit (1st person of *acertar*) | *Acérto sempre nas previsões do tempo.* |
 
 **For non-native speakers:** "acerto" as a NOUN means something went right — a bull's-eye, a correct guess. As a VERB it means "I get it right / I hit the target".
 
@@ -74,10 +74,10 @@ The diacritic convention used in this project encodes vowel quality:
 
 | Sense (pos) | IPA | Diacritized | Meaning | Example |
 |-------------|-----|-------------|---------|---------|
-| spoon (NOUN) | kuˈʎɛɾ | colhêr | spoon | *A colhêr de sopa ficou na gaveta.* |
-| harvest (VERB) | kuˈʎeɾ | colhér | to gather, to harvest, to pick | *Vou colhér as maçãs amanhã.* |
+| spoon (NOUN) | kuˈʎɛɾ | colhér | spoon | *A colhér de sopa ficou na gaveta.* |
+| harvest (VERB) | kuˈʎeɾ | colhêr | to gather, to harvest, to pick | *Vou colhêr as maçãs amanhã.* |
 
-**For non-native speakers:** "colhêr" (NOUN, open-ê with written circumflex historically) is a spoon. "Colhér" (VERB, stress on the infinitive ending) means to harvest or to pick fruit/flowers. The VERB is an infinitive; most occurrences with a determiner before are NOUN.
+**For non-native speakers:** "colhér" (NOUN, open-e with written circumflex historically) is a spoon. "Colhêr" (VERB, closed-e, stress on the infinitive ending) means to harvest or to pick fruit/flowers. The VERB is an infinitive; most occurrences with a determiner before are NOUN.
 
 ---
 
@@ -88,9 +88,9 @@ The diacritic convention used in this project encodes vowel quality:
 | Sense (pos) | IPA | Diacritized | Meaning | Example |
 |-------------|-----|-------------|---------|---------|
 | beginning (NOUN) | kuˈmesu | comêço | beginning, start | *O comêço do projeto foi difícil.* |
-| begin (VERB) | kuˈmɛsu | comého | I begin / I start (1st person of *começar*) | *Comého sempre pelo mais difícil.* |
+| begin (VERB) | kuˈmɛsu | comého | I begin / I start (1st person of *começar*) | *Coméço sempre pelo mais difícil.* |
 
-**For non-native speakers:** "comêço" (NOUN, closed-e) is "the beginning". "Comého" (VERB, open-e) is "I begin/start". Same pattern as many -ar verbs with 1st-person present in -o.
+**For non-native speakers:** "comêço" (NOUN, closed-e) is "the beginning". "Coméço" (VERB, open-e) is "I begin/start". Same pattern as many -ar verbs with 1st-person present in -o.
 
 ---
 

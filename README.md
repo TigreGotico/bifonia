@@ -76,8 +76,7 @@ meaning-aware models still win, and the perceptron leads by ~7 points. Reproduce
 pip install -e . --no-deps
 ```
 
-No required dependencies. `ovos_spec_tools` is used for locale resolution when present and
-falls back to the standard library otherwise.
+No dependencies — pure standard library.
 
 ## API
 
