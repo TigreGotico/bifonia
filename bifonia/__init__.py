@@ -229,14 +229,30 @@ def add_extra_diacritics(sentence: str) -> str:
     - circumflex (ô/ê) → closed /o/ or /e/  (typically noun reading)
 
     Words that are not ambiguous, or whose POS reading needs no extra diacritic
-    (e.g. ADP *para*, ADP *pelo*), are returned unchanged.
+    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
+    is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
     """
     words = tokenize(sentence)
-    output = sentence
+    replacements = {}
     for i, word in enumerate(words):
         if is_ambiguous(word):
-            sense = guess_sense(words, i)
-            diacritized = _DIACRITIZED.get((word, sense))
+            diacritized = _DIACRITIZED.get((word, guess_sense(words, i)))
             if diacritized:
-                output = output.replace(word, diacritized, 1)
-    return output
+                replacements[i] = diacritized
+    if not replacements:
+        return sentence
+
+    # Walk the same \w+ tokens over the original string so each replacement lands
+    # on the right occurrence with its case preserved (a plain str.replace would
+    # miss a capitalised token and could hit a substring of another word).
+    out, pos, idx = [], 0, 0
+    for m in re.finditer(r"\w+", sentence, re.UNICODE):
+        out.append(sentence[pos:m.start()])
+        tok = m.group(0)
+        diac = replacements.get(idx)
+        if diac is not None and tok[:1].isupper():
+            diac = diac[:1].upper() + diac[1:]
+        out.append(diac if diac is not None else tok)
+        pos, idx = m.end(), idx + 1
+    out.append(sentence[pos:])
+    return "".join(out)
