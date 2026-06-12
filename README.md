@@ -39,6 +39,13 @@ each word is served by whichever engine scores at least as well on held-out data
 combined system never does worse than the rules alone. Both are pure Python with no heavy
 runtime dependencies.
 
+The learned engine ships in two forms — a Naive-Bayes model and an averaged perceptron —
+and `guess_sense` loads the **averaged perceptron** by default. The perceptron leads on both
+the synthetic and the real-world benchmarks and avoids the per-word collapses that Naive-Bayes
+suffers when correlated features violate its independence assumption; it is warm-started from
+the Naive-Bayes log-odds, so its weights stay readable as per-sense lexicons. Load the other
+model explicitly with `SenseModel.load(path)` if you want to compare.
+
 ## Accuracy
 
 Sense prediction, measured two ways:
@@ -48,10 +55,10 @@ Sense prediction, measured two ways:
 | most-common baseline | 52.7% | 47.5% |
 | spaCy POS → sense | 65.7% | 81.4% |
 | Stanza POS → sense | 75.5% | 82.5% |
-| rules (no corpus) | 94.0% | 83.2% |
+| rules (no corpus) | 94.5% | 84.6% |
 | Naive-Bayes | 98.1% | 86.7% |
 | averaged perceptron | 99.0% | 89.6% |
-| **shipped ensemble** | **95.7%** | **89.1%** |
+| **shipped ensemble** | **96.1%** | **90.5%** |
 
 The *synthetic* column is the held-out split of the generated training corpus, balanced
 across senses; the *OOD* column is real sentences from

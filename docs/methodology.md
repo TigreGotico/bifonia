@@ -182,18 +182,20 @@ held-out split (the test partition of the generated corpus). `benchmark_ood.py` 
 | most-common (majority sense per word) | 52.7 % | 47.5 % |
 | spaCy (`pt_core_news_lg`) POS→sense | 65.7 % | 81.4 % |
 | Stanza POS→sense | 75.5 % | 82.5 % |
-| rules (no corpus) | 94.0 % | 83.2 % |
+| rules (no corpus) | 94.5 % | 84.6 % |
 | Naive-Bayes | 98.1 % | 86.7 % |
 | averaged perceptron | 99.0 % | 89.6 % |
-| **shipped ensemble** | **95.7 %** | **89.1 %** |
+| **shipped ensemble** | **96.1 %** | **90.5 %** |
 
 **Synthetic splits overstate accuracy.** Their train and test sentences share phrasing, so every
 approach runs several points high; the OOD set is the honest measure. Every method drops on real
-text — but the corpus-trained perceptron still beats the rules by roughly six points there
-(89.6 vs 83.2): it generalises rather than memorising. The averaged perceptron leads on both
-measures; the shipped ensemble is slightly lower than the pure perceptron because its per-word
-route gate keeps a word on the rules wherever the model does not clearly win, trading a little
-peak accuracy for the guarantee that it never underperforms the rules on any word.
+text — but the corpus-trained perceptron still beats the rules by roughly five points there
+(89.6 vs 84.6): it generalises rather than memorising. On the balanced synthetic split the pure
+perceptron is highest, since the ensemble's per-word route gate keeps a word on the rules wherever
+the model does not clearly win. On real text that same routing pays off — the ensemble edges past
+the pure perceptron (90.5 vs 89.6), because the words it routes to the rules (such as `molho`) are
+read better by the rules there than by the model. Either way the ensemble never underperforms the
+rules on any word.
 
 The POS taggers (spaCy/Stanza) hit a **structural ceiling**: POS cannot separate two senses that
 share a part of speech, so the tagger gets the majority noun sense right but the minority sense

@@ -103,10 +103,10 @@ on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`benchm
 | most-common (majority sense per word) | 52.7% | 47.5% |
 | spaCy (`pt_core_news_lg`) POS→sense | 65.7% | 81.4% |
 | Stanza POS→sense | 75.5% | 82.5% |
-| rules (no corpus) | 94.0% | 83.2% |
+| rules (no corpus) | 94.5% | 84.6% |
 | Naive-Bayes | 98.1% | 86.7% |
 | averaged perceptron | 99.0% | 89.6% |
-| **shipped ensemble** | **95.7%** | **89.1%** |
+| **shipped ensemble** | **96.1%** | **90.5%** |
 
 Synthetic splits overstate accuracy — their train and test sentences share phrasing — so the OOD
 column is the honest measure. Every method drops on real text, but the corpus-trained perceptron
