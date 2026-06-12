@@ -5,13 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bifonia"
 dynamic = ["version"]
-description = "Rule-based Portuguese heterophonic bifoniaaph disambiguation"
+description = "Portuguese heterophonic homograph disambiguation (rule-based + learned)"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [{ name = "JarbasAi", email = "jarbasai@mailfence.com" }]
 requires-python = ">=3.9"
 dependencies = []
-keywords = ["portuguese", "nlp", "bifoniaaph", "ipa", "phonetics", "g2p", "tts"]
+keywords = ["portuguese", "nlp", "homograph", "ipa", "phonetics", "g2p", "tts"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
@@ -32,7 +32,7 @@ where = ["."]
 include = ["bifonia*"]
 
 [tool.setuptools.package-data]
-bifonia = ["data/*.csv", "data/*.py"]
+bifonia = ["data/*.csv", "data/*.py", "data/*.jsonl", "data/*.json", "locale/**/*.voc"]
 
 [tool.setuptools.dynamic]
 version = { attr = "bifonia.version.VERSION_STR" }

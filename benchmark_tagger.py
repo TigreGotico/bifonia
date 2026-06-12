@@ -32,6 +32,8 @@ warnings.filterwarnings("ignore")
 
 from bifonia import tokenize, guess_sense
 from bifonia.data import POS_SENSES
+from bifonia.scoring import guess_pos as _rule_pos, resolve_sense as _rule_resolve
+from bifonia.model import SenseModel, NB_PATH, PERCEPTRON_PATH
 
 ROOT = pathlib.Path(__file__).parent
 DATA = ROOT / "bifonia" / "data" / "corpus.jsonl"
@@ -111,25 +113,42 @@ def main():
             return sorted(cands, key=lambda s: -sense_freq[word][s])[0]
         return most_common.get(word)
 
+    # corpus-FREE rules: pure scoring path, independent of how guess_sense is wired
     def rule_sense(r):
+        toks = tokenize(r["sentence"].lower())
+        if r["word"] not in toks:
+            return None
+        idx = toks.index(r["word"])
+        return _rule_resolve(r["word"], toks, idx, _rule_pos(toks, idx))
+
+    nb = SenseModel.load(str(NB_PATH)) if NB_PATH.exists() else None
+    perc = SenseModel.load(str(PERCEPTRON_PATH)) if PERCEPTRON_PATH.exists() else None
+
+    def _model_sense(model, r):
+        toks = tokenize(r["sentence"].lower())
+        if not model or r["word"] not in toks or not model.has(r["word"]):
+            return None
+        return model.predict(r["word"], toks, toks.index(r["word"]))
+
+    def shipped(r):  # production guess_sense: per-word model routing + rule fallback
         toks = tokenize(r["sentence"].lower())
         return guess_sense(toks, toks.index(r["word"])) if r["word"] in toks else None
 
+    # corpus-free first, then corpus-using (most-common / NB / perceptron), then shipped ensemble
     approaches = {
+        "rules(free)": rule_sense,
         "most-common": lambda r: most_common.get(r["word"]),
-        "rule-based": rule_sense,
+        "NB": lambda r: _model_sense(nb, r),
+        "perceptron": lambda r: _model_sense(perc, r),
+        "shipped": shipped,
     }
     cache = {}
     if not args.no_taggers:
         sents = {r["sentence"]: r["word"] for r in full + train + test}
         print("Tagging corpus (spaCy + Stanza)…")
         cache = _tag_corpus(list(sents), sents)
-        approaches = {
-            "most-common": approaches["most-common"],
-            "spaCy": lambda r: pos_to_sense(r["word"], cache.get(r["sentence"], {}).get("spacy")),
-            "Stanza": lambda r: pos_to_sense(r["word"], cache.get(r["sentence"], {}).get("stanza")),
-            "rule-based": rule_sense,
-        }
+        approaches["spaCy"] = lambda r: pos_to_sense(r["word"], cache.get(r["sentence"], {}).get("spacy"))
+        approaches["Stanza"] = lambda r: pos_to_sense(r["word"], cache.get(r["sentence"], {}).get("stanza"))
 
     names = list(approaches)
     print(f"\n{'split':<6} {'n':>7} | " + " ".join(f"{a:>12}" for a in names))
@@ -142,23 +161,22 @@ def main():
             row.append(f"{ok / len(recs) * 100:>11.2f}%")
         print(f"{label:<6} {len(recs):>7} | " + " ".join(row))
 
-    if not args.no_taggers and not args.word:
-        print("\nPer-(word,sense) where POS tagging hits its ceiling (full corpus):")
-        hard = [("sede", "thirst"), ("sede", "seat"), ("corte", "cut"), ("corte", "court"),
-                ("forma", "mould"), ("forma", "shape"), ("molho", "sauce"), ("molho", "bundle")]
-        buckets = defaultdict(list)
-        for r in full:
-            buckets[(r["word"], r["sense"])].append(r)
-        print(f"{'word/sense':<16} {'n':>6} | {'spaCy':>7} {'Stanza':>7} {'rule':>7}")
-        for key in hard:
-            recs = buckets.get(key, [])
-            if not recs:
-                continue
+    # ── per-word TEST breakdown: rules(free) vs NB vs perceptron (adoption gate) ──
+    if not args.word:
+        print("\nPer-word accuracy on TEST  (corpus-free rules vs corpus-using NB / perceptron):")
+        by_word = defaultdict(list)
+        for r in test:
+            by_word[r["word"]].append(r)
+        print(f"{'word':<12} {'n':>5} | {'rules':>7} {'NB':>7} {'perc':>7}   best")
+        for word in sorted(by_word):
+            recs = by_word[word]
             n = len(recs)
-            sp = sum(1 for r in recs if approaches['spaCy'](r) == r['sense']) / n * 100
-            st = sum(1 for r in recs if approaches['Stanza'](r) == r['sense']) / n * 100
-            ru = sum(1 for r in recs if approaches['rule-based'](r) == r['sense']) / n * 100
-            print(f"{key[0] + '/' + key[1]:<16} {n:>6} | {sp:>6.1f}% {st:>6.1f}% {ru:>6.1f}%")
+            ru = sum(1 for r in recs if rule_sense(r) == r["sense"]) / n * 100
+            nbm = sum(1 for r in recs if _model_sense(nb, r) == r["sense"]) / n * 100
+            pe = sum(1 for r in recs if _model_sense(perc, r) == r["sense"]) / n * 100
+            best = max([("rules", ru), ("NB", nbm), ("perc", pe)], key=lambda x: x[1])[0]
+            flag = "" if max(nbm, pe) >= ru - 0.05 else "  ⚠ rules win"
+            print(f"{word:<12} {n:>5} | {ru:>6.1f}% {nbm:>6.1f}% {pe:>6.1f}%   {best}{flag}")
 
 
 if __name__ == "__main__":

@@ -17,6 +17,7 @@ Quick start::
 """
 
 import re
+from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
     AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS, POS_SENSES, SENSE_POS,
@@ -156,14 +157,32 @@ _DIACRITIZED_TO_BASE:  dict = {v: k[0] for k, v in _DIACRITIZED.items()}
 _DIACRITIZED_TO_SENSE: dict = {v: k[1] for k, v in _DIACRITIZED.items()}
 
 
+@_lru_cache(maxsize=1)
+def _sense_model():
+    """Lazy-load the learned sense model; None if absent (→ rule fallback)."""
+    try:
+        from bifonia.model import SenseModel
+        return SenseModel.load()
+    except Exception:
+        return None
+
+
+def _rule_sense(base: str, words: list, idx: int, pos: str = None) -> str:
+    resolved_pos = pos or _scoring_guess_pos(words, idx)
+    return _resolve_sense(base, words, idx, resolved_pos)
+
+
 def guess_sense(words: list, idx: int, pos: str = None) -> str:
     """Return the most likely MEANING slug for the ambiguous word at *idx*.
 
     If the token is already a diacritized form (pre-AO1990 orthography or output
     of :func:`add_extra_diacritics`), the sense is read straight off the diacritic
-    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop).  Otherwise the context
-    scorer guesses a POS and the sense is resolved within it (using meaning cues
-    when one POS covers several senses, as for *sede*).
+    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop).
+
+    Otherwise, where a trained statistical model covers the word and is flagged to
+    win over the rules (``route == "model"`` with sufficient margin), the model
+    predicts the sense; every other case falls back to the corpus-free rule engine.
+    An explicit *pos* override always uses the rule resolver.
     """
     token = words[idx]
     if token in _DIACRITIZED_TO_SENSE:
@@ -173,8 +192,13 @@ def guess_sense(words: list, idx: int, pos: str = None) -> str:
     if base != token:                       # normalise a diacritized base form
         normalised = list(words)
         normalised[idx] = base
-    resolved_pos = pos or _scoring_guess_pos(normalised, idx)
-    return _resolve_sense(base, normalised, idx, resolved_pos)
+    if pos is not None:
+        return _rule_sense(base, normalised, idx, pos)
+    model = _sense_model()
+    if (model is not None and model.has(base) and model.route(base) == "model"
+            and model.margin(base, normalised, idx) >= model.margin_tau(base)):
+        return model.predict(base, normalised, idx)
+    return _rule_sense(base, normalised, idx)
 
 
 def guess_pos(words: list, idx: int) -> str:
