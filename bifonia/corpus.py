@@ -5,13 +5,15 @@ The corpus lives in ``data/corpus.jsonl`` — one JSON record per line::
 
     {"word": "molho", "pos": "NOUN", "ipa": "ˈmoʎu", "sentence": "O molho de tomate ..."}
 
-``CORPUS`` maps each ambiguous word to ``{POS: [sentences]}``; ``IPA`` maps
-``(word, POS)`` to the European-Portuguese transcription that POS reading carries.
+``CORPUS`` maps each ambiguous word to ``{sense: [sentences]}``; ``IPA`` maps
+``(word, sense)`` to the European-Portuguese transcription that reading carries.
+The bucket key is MEANING (`sense`), not POS, so two senses sharing a POS
+(``sede`` thirst vs seat — both nouns) each get their own bucket.
 
 Usage::
 
     from bifonia.corpus import CORPUS, iter_records
-    for word, pos, sentence in iter_records():
+    for word, sense, sentence in iter_records():
         ...
 """
 
@@ -29,23 +31,23 @@ with _JSONL.open(encoding="utf-8") as _fh:
         if not _line:
             continue
         _r = json.loads(_line)
-        _word, _pos, _sent = _r["word"], _r["pos"], _r["sentence"]
-        CORPUS.setdefault(_word, {}).setdefault(_pos, []).append(_sent)
+        _word, _sense, _sent = _r["word"], _r["sense"], _r["sentence"]
+        CORPUS.setdefault(_word, {}).setdefault(_sense, []).append(_sent)
         if _r.get("ipa"):
-            IPA[(_word, _pos)] = _r["ipa"]
+            IPA[(_word, _sense)] = _r["ipa"]
 
 
 def iter_records():
-    """Yield (word, pos, sentence) triples for every sentence in CORPUS."""
-    for word, pos_sents in sorted(CORPUS.items()):
-        for pos, sents in sorted(pos_sents.items()):
+    """Yield (word, sense, sentence) triples for every sentence in CORPUS."""
+    for word, sense_sents in sorted(CORPUS.items()):
+        for sense, sents in sorted(sense_sents.items()):
             for sent in sents:
-                yield word, pos, sent
+                yield word, sense, sent
 
 
 def stats() -> dict:
-    """Return per-word sentence counts."""
+    """Return per-word sentence counts, keyed by sense."""
     return {
-        word: {pos: len(sents) for pos, sents in pos_sents.items()}
-        for word, pos_sents in sorted(CORPUS.items())
+        word: {sense: len(sents) for sense, sents in sense_sents.items()}
+        for word, sense_sents in sorted(CORPUS.items())
     }

@@ -11,23 +11,47 @@ from bifonia.vocab import voc
 
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
 
-# word → {POS: IPA}  e.g. {"para": {"ADP": "ˈpɐɾɐ", "VERB": "ˈpaɾɐ"}}
+# The dataset is keyed on MEANING (`sense`), not POS: a word's distinct readings
+# are identified by a meaning slug, because two senses can share a POS (e.g.
+# "sede" thirst and seat are both nouns).  `pos` is a descriptive attribute (the
+# dominant grammatical reading) used by the context scorer, and may repeat.
+#
+#   HOMOGRAPHS  : word → {sense: IPA}      e.g. {"sede": {"thirst": "ˈsedɨ", "seat": "ˈsɛdɨ"}}
+#   SENSE_POS   : word → {sense: pos}      the descriptive POS of each sense
+#   POS_SENSES  : word → {pos: [sense,…]}  senses the scorer's POS guess maps to
 HOMOGRAPHS: dict = {}
+SENSE_POS: dict = {}
+POS_SENSES: dict = {}
 with _CSV.open(encoding="utf-8") as fh:
     for row in csv.DictReader(fh):
-        HOMOGRAPHS.setdefault(row["word"], {})[row["pos"]] = row["ipa"]
-
-# "sobre" ADP (about/over) shares its closed-o IPA with the NOUN (nautical sail);
-# if an older CSV lacks the ADP row, fall back to the NOUN reading.
-HOMOGRAPHS["sobre"].setdefault("ADP", HOMOGRAPHS["sobre"].get("NOUN", "ˈsobɾɨ"))
-
-# derived per-POS dicts (backward-compatible)
-VERBS_IPA: dict = {w: d["VERB"] for w, d in HOMOGRAPHS.items() if "VERB" in d}
-NOUNS_IPA: dict = {w: d["NOUN"] for w, d in HOMOGRAPHS.items() if "NOUN" in d}
-ADP_IPA: dict = {w: d["ADP"] for w, d in HOMOGRAPHS.items() if "ADP" in d}
-ADJ_IPA: dict = {w: d["ADJ"] for w, d in HOMOGRAPHS.items() if "ADJ" in d}
+        w, s, p, ipa = row["word"], row["sense"], row["pos"], row["ipa"]
+        HOMOGRAPHS.setdefault(w, {})[s] = ipa
+        SENSE_POS.setdefault(w, {})[s] = p
+        POS_SENSES.setdefault(w, {}).setdefault(p, []).append(s)
 
 AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
+
+
+# Membership helpers for the POS scorer (word → representative IPA for that POS).
+# A word "has" a POS candidate iff some sense carries it; the scorer then narrows
+# to a single sense via POS_SENSES (+ resolve_sense when a POS maps to several).
+def _ipa_by_pos(pos: str) -> dict:
+    return {w: HOMOGRAPHS[w][senses[0]]
+            for w, pmap in POS_SENSES.items()
+            for p, senses in pmap.items() if p == pos}
+
+
+VERBS_IPA: dict = _ipa_by_pos("VERB")
+NOUNS_IPA: dict = _ipa_by_pos("NOUN")
+ADP_IPA: dict = _ipa_by_pos("ADP")
+ADJ_IPA: dict = _ipa_by_pos("ADJ")
+
+# Default sense when a word's guessed POS maps to several senses and no context
+# cue decides (only "sede": thirst is the prototypical reading).  See
+# scoring.resolve_sense.
+DEFAULT_SENSE: dict = {
+    "sede": "thirst",
+}
 
 # sensible linguistic defaults when context scoring yields no winner
 DEFAULT_POS: dict = {

@@ -18,8 +18,13 @@ Quick start::
 
 import re
 
-from bifonia.data import AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS
-from bifonia.scoring import guess_pos as _scoring_guess_pos
+from bifonia.data import (
+    AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS, POS_SENSES, SENSE_POS,
+)
+from bifonia.scoring import (
+    guess_pos as _scoring_guess_pos,
+    resolve_sense as _resolve_sense,
+)
 from bifonia.version import VERSION_STR
 
 __version__ = VERSION_STR
@@ -27,6 +32,7 @@ __all__ = [
     "tokenize",
     "is_ambiguous",
     "guess_pos",
+    "guess_sense",
     "disambiguate",
     "add_extra_diacritics",
     "AMBIGUOUS_WORDS",
@@ -44,8 +50,12 @@ def is_ambiguous(word: str) -> bool:
     return word.lower() in AMBIGUOUS_WORDS
 
 
-def disambiguate(words: list, idx: int, pos: str = None) -> str:
+def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> str:
     """Return the IPA transcription for the ambiguous word at position *idx*.
+
+    The reading is selected by MEANING (`sense`), not POS: most words have one
+    sense per POS, so a POS guess resolves directly, but words like ``sede``
+    (thirst vs seat — both nouns) are disambiguated by context meaning cues.
 
     Parameters
     ----------
@@ -54,15 +64,17 @@ def disambiguate(words: list, idx: int, pos: str = None) -> str:
     idx:
         Index of the ambiguous word within *words*.
     pos:
-        Override the POS guessing with an explicit UDEP tag
-        (``"ADP"``, ``"NOUN"``, ``"VERB"``, ``"ADJ"``).
+        Override POS guessing with an explicit UDEP tag (``"ADP"``, ``"NOUN"``,
+        ``"VERB"``, ``"ADJ"``); the sense is then resolved within that POS.
+    sense:
+        Override entirely with an explicit meaning slug (see the CSV / HOMOGRAPHS).
 
     Raises
     ------
     ValueError
         If the word is not a known homograph.
     KeyError
-        If *pos* is given but has no IPA entry for this word.
+        If *sense* is given but has no IPA entry for this word.
     """
     token = words[idx]
     # Accept pre-AO1990 / diacritized tokens by normalising to base form first.
@@ -70,8 +82,9 @@ def disambiguate(words: list, idx: int, pos: str = None) -> str:
     if word not in AMBIGUOUS_WORDS:
         raise ValueError(f"{token!r} is not a known heterophonic homograph")
 
-    resolved_pos = pos or guess_pos(words, idx)
-    return HOMOGRAPHS[word][resolved_pos]
+    if sense is None:
+        sense = guess_sense(words, idx, pos=pos)
+    return HOMOGRAPHS[word][sense]
 
 
 # ── diacritics lookup ─────────────────────────────────────────────────────────
@@ -80,87 +93,102 @@ def disambiguate(words: list, idx: int, pos: str = None) -> str:
 # Words with no meaningful diacritic change (ADP para/pelo) are omitted so
 # add_extra_diacritics returns them unchanged.
 _DIACRITIZED: dict = {
-    ("acordo",     "NOUN"): "acôrdo",
-    ("acordo",     "VERB"): "acórdo",
-    ("acerto",     "NOUN"): "acêrto",
-    ("acerto",     "VERB"): "acérto",
-    ("cerro",      "NOUN"): "cêrro",
-    ("cerro",      "VERB"): "cérro",
-    ("choro",      "NOUN"): "chôro",
-    ("choro",      "VERB"): "chóro",
-    ("colher",     "NOUN"): "colhér",   # noun = open ɛ
-    ("colher",     "VERB"): "colhêr",   # verb = closed e
-    ("começo",     "NOUN"): "comêço",
-    ("começo",     "VERB"): "coméço",
-    ("conserto",   "NOUN"): "consêrto",
-    ("conserto",   "VERB"): "consérto",
-    ("coro",       "NOUN"): "côro",
-    ("coro",       "VERB"): "córo",
-    ("corte",      "NOUN"): "côrte",
-    ("corte",      "VERB"): "córte",
-    ("forma",      "NOUN"): "fôrma",
-    ("forma",      "VERB"): "fórma",
-    ("gosto",      "NOUN"): "gôsto",
-    ("gosto",      "VERB"): "gósto",
-    ("gozo",       "NOUN"): "gôzo",
-    ("gozo",       "VERB"): "gózo",
-    ("jogo",       "NOUN"): "jôgo",
-    ("jogo",       "VERB"): "jógo",
-    ("molho",      "NOUN"): "môlho",
-    ("molho",      "VERB"): "mólho",
-    ("olho",       "NOUN"): "ôlho",
-    ("olho",       "VERB"): "ólho",
-    ("para",       "VERB"): "pára",
-    ("pelo",       "NOUN"): "pêlo",
-    ("pelo",       "VERB"): "pélo",
-    ("peso",       "NOUN"): "pêso",
-    ("peso",       "VERB"): "péso",
-    ("porto",      "NOUN"): "pôrto",
-    ("porto",      "VERB"): "pórto",
-    ("posto",      "NOUN"): "pôsto",
-    ("posto",      "VERB"): "pósto",
-    ("rego",       "NOUN"): "rêgo",
-    ("rego",       "VERB"): "régo",
-    ("seco",       "ADJ"):  "sêco",
-    ("seco",       "VERB"): "séco",
-    ("sede",       "NOUN"): "séde",     # noun = open ɛ
-    ("sede",       "VERB"): "sêde",     # verb = closed e
-    ("sobre",      "NOUN"): "sôbre",
-    ("sobre",      "VERB"): "sóbre",
-    ("tola",       "NOUN"): "tóla",     # noun = open ɔ
-    ("tola",       "ADJ"):  "tôla",     # adj  = closed o
-    ("torre",      "NOUN"): "tôrre",
-    ("torre",      "VERB"): "tórre",
-    ("transtorno", "NOUN"): "transtôrno",
-    ("transtorno", "VERB"): "transtórno",
+    ("acordo",     "agreement"):  "acôrdo",
+    ("acordo",     "wake"):       "acórdo",
+    ("acerto",     "settlement"): "acêrto",
+    ("acerto",     "adjust"):     "acérto",
+    ("cerro",      "hill"):       "cêrro",
+    ("cerro",      "shut"):       "cérro",
+    ("choro",      "weeping"):    "chôro",
+    ("choro",      "weep"):       "chóro",
+    ("colher",     "spoon"):      "colhér",   # noun = open ɛ
+    ("colher",     "harvest"):    "colhêr",   # verb = closed e
+    ("começo",     "beginning"):  "comêço",
+    ("começo",     "begin"):      "coméço",
+    ("conserto",   "repair"):     "consêrto",
+    ("conserto",   "mend"):       "consérto",
+    ("coro",       "choir"):      "côro",
+    ("coro",       "blush"):      "córo",
+    ("corte",      "court"):      "côrte",
+    ("corte",      "cut"):        "córte",
+    ("forma",      "mould"):      "fôrma",
+    ("forma",      "shape"):      "fórma",
+    ("gosto",      "taste"):      "gôsto",
+    ("gosto",      "like"):       "gósto",
+    ("gozo",       "enjoyment"):  "gôzo",
+    ("gozo",       "enjoy"):      "gózo",
+    ("jogo",       "game"):       "jôgo",
+    ("jogo",       "play"):       "jógo",
+    ("molho",      "sauce"):      "môlho",
+    ("molho",      "bundle"):     "mólho",
+    ("olho",       "eye"):        "ôlho",
+    ("olho",       "look"):       "ólho",
+    ("para",       "stop"):       "pára",
+    ("pelo",       "hair"):       "pêlo",
+    ("pelo",       "peel"):       "pélo",
+    ("peso",       "weight"):     "pêso",
+    ("peso",       "weigh"):      "péso",
+    ("porto",      "harbour"):    "pôrto",
+    ("porto",      "carry"):      "pórto",
+    ("posto",      "station"):    "pôsto",
+    ("posto",      "post"):       "pósto",
+    ("rego",       "furrow"):     "rêgo",
+    ("rego",       "water"):      "régo",
+    ("seco",       "dry"):        "sêco",
+    ("seco",       "dry_vb"):     "séco",
+    ("sede",       "seat"):       "séde",     # seat (HQ) = open ɛ
+    ("sede",       "thirst"):     "sêde",     # thirst    = closed e
+    ("sobre",      "sail"):       "sôbre",
+    ("sobre",      "leftover"):   "sóbre",
+    ("tola",       "head"):       "tóla",     # head/wood = open ɔ
+    ("tola",       "foolish"):    "tôla",     # adj       = closed o
+    ("torre",      "tower"):      "tôrre",
+    ("torre",      "roast"):      "tórre",
+    ("transtorno", "disorder"):   "transtôrno",
+    ("transtorno", "upset"):      "transtórno",
 }
 
 
 # Reverse maps from diacritized form:
-#   → base word  (for test normalisation and pre-AO1990 input stripping)
-#   → POS        (for unambiguous pre-AO1990 / already-diacritized input)
-_DIACRITIZED_TO_BASE: dict = {v: k[0] for k, v in _DIACRITIZED.items()}
-_DIACRITIZED_TO_POS:  dict = {v: k[1] for k, v in _DIACRITIZED.items()}
+#   → base word   (for test normalisation and pre-AO1990 input stripping)
+#   → sense slug  (for unambiguous pre-AO1990 / already-diacritized input)
+_DIACRITIZED_TO_BASE:  dict = {v: k[0] for k, v in _DIACRITIZED.items()}
+_DIACRITIZED_TO_SENSE: dict = {v: k[1] for k, v in _DIACRITIZED.items()}
+
+
+def guess_sense(words: list, idx: int, pos: str = None) -> str:
+    """Return the most likely MEANING slug for the ambiguous word at *idx*.
+
+    If the token is already a diacritized form (pre-AO1990 orthography or output
+    of :func:`add_extra_diacritics`), the sense is read straight off the diacritic
+    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop).  Otherwise the context
+    scorer guesses a POS and the sense is resolved within it (using meaning cues
+    when one POS covers several senses, as for *sede*).
+    """
+    token = words[idx]
+    if token in _DIACRITIZED_TO_SENSE:
+        return _DIACRITIZED_TO_SENSE[token]
+    base = _DIACRITIZED_TO_BASE.get(token, token)
+    normalised = words
+    if base != token:                       # normalise a diacritized base form
+        normalised = list(words)
+        normalised[idx] = base
+    resolved_pos = pos or _scoring_guess_pos(normalised, idx)
+    return _resolve_sense(base, normalised, idx, resolved_pos)
 
 
 def guess_pos(words: list, idx: int) -> str:
     """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
 
-    If the token is already a diacritized form (pre-AO1990 orthography or
-    output of :func:`add_extra_diacritics`), the POS is resolved directly from
-    the diacritic without context scoring.  This handles pre-reform text such as
-    *pára* (VERB), *pêlo* (NOUN), *acôrdo* (NOUN), *acórdo* (VERB), etc.
-
-    All other tokens fall through to the context-based scorer in
-    :mod:`bifonia.scoring`.
+    Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
+    its descriptive POS, preserving the pre-existing POS-tagging interface.
+    Diacritized input (e.g. *pára*, *acôrdo*) is resolved without context scoring.
     """
     token = words[idx]
-    if token in _DIACRITIZED_TO_POS:
-        return _DIACRITIZED_TO_POS[token]
-    # For diacritized tokens whose base form is a known homograph, normalise
-    # and score in context (covers partial-diacritisation pipelines).
-    base = _DIACRITIZED_TO_BASE.get(token)
-    if base is not None:
+    base = _DIACRITIZED_TO_BASE.get(token, token)
+    if token in _DIACRITIZED_TO_SENSE:
+        return SENSE_POS[base][_DIACRITIZED_TO_SENSE[token]]
+    if base != token:
         normalised = list(words)
         normalised[idx] = base
         return _scoring_guess_pos(normalised, idx)
@@ -183,8 +211,8 @@ def add_extra_diacritics(sentence: str) -> str:
     output = sentence
     for i, word in enumerate(words):
         if is_ambiguous(word):
-            pos = guess_pos(words, i)
-            diacritized = _DIACRITIZED.get((word, pos))
+            sense = guess_sense(words, i)
+            diacritized = _DIACRITIZED.get((word, sense))
             if diacritized:
                 output = output.replace(word, diacritized, 1)
     return output

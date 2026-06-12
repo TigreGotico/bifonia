@@ -135,8 +135,9 @@ disambiguation axis (what makes each homograph heterophonic).
 - **VERB** /ˈsɛku/ — 1.ª pessoa de *secar* (enxugar)
 
 ### sede
-- **NOUN** /ˈsɛdɨ/ — sede social de organização ou instituição («a sede da empresa»)
-- **VERB** /ˈsedɨ/ — sede (thirst/desire): «tenho sede», «sede de poder», «sede de justiça» (E fechado; «VERB» é apenas o rótulo do segundo balde IPA no CSV — semanticamente também é substantivo)
+Ambas as aceções são **substantivos**; distinguem-se pelo *sense*, não pelo POS.
+- **seat** /ˈsɛdɨ/ (E aberto) — sede social de organização ou instituição («a sede da empresa», «na sede do partido»)
+- **thirst** /ˈsedɨ/ (E fechado) — sede física ou figurada: «tenho sede», «matar a sede», «sede de poder», «sede de justiça»
 
 ### sobre
 - **ADP** /ˈsobɾɨ/ — preposição *acerca de / em cima de* (O fechado)

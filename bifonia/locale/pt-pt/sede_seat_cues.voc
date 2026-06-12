@@ -1,0 +1,67 @@
+# sede_seat_cues.voc
+#
+# WHAT: words that, appearing near "sede", signal the SEAT / headquarters
+#       reading — open ɛ, /ˈsɛdɨ/ ("a sede da empresa", "na sede do partido").
+# WHERE USED: bifonia/scoring.py → resolve_sense(), the meaning tiebreaker for
+#       "sede" (both its senses are NOUNS, so POS alone cannot disambiguate them).
+# EFFECT: each cue token found in the ±3 window adds to the "seat" score; the
+#       higher of seat/thirst wins. Organisation nouns that a HQ belongs to, plus
+#       location/establishment verbs.
+# HOW TO EXTEND: add any organisation type or "is-located/was-founded" verb that
+#       collocates with a headquarters. One term per line, lowercase, no diacritic
+#       stripping needed (matched against lowercased tokens).
+empresa
+empresas
+companhia
+multinacional
+organização
+organizações
+partido
+clube
+federação
+associação
+instituição
+instituto
+fundação
+banco
+seguradora
+autarquia
+câmara
+sindicato
+agência
+comissão
+conselho
+universidade
+igreja
+governo
+ministério
+sociedade
+cooperativa
+corporação
+holding
+startup
+ong
+liga
+ordem
+confederação
+sediada
+sediado
+situa
+situava
+fica
+ficava
+localiza
+localizava
+inaugurada
+inaugurado
+transferida
+transferido
+mudou
+permanece
+central
+mundial
+europeia
+nacional
+regional
+distrital
+oficial

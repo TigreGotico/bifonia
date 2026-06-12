@@ -23,9 +23,13 @@ for spaCy on the same test set.  (Three-way homographs `para`/`pelo`/`sobre` are
 
 ## How it works
 
-Context scoring assigns integer points to each candidate POS based on the ±4-word
-window: determiners, pronouns, passive auxiliaries, infinitive markers, copular verbs,
-degree adverbs.  The highest-scoring POS wins; ties fall back to a per-word default.
+Each reading is identified by **meaning** (`sense`), not POS — because two senses
+can share a part of speech (`sede` thirst and seat are both nouns).  Context scoring
+assigns integer points to each candidate POS based on the ±4-word window
+(determiners, pronouns, passive auxiliaries, infinitive markers, copular verbs,
+degree adverbs); the highest-scoring POS then narrows to a sense.  When one POS
+covers several senses, a meaning resolver reads sense-specific cues (e.g.
+`sede de X` → thirst, `sede da empresa` → seat).  Ties fall back to a per-word default.
 
 See [`docs/methodology.md`](docs/methodology.md) for the full algorithm description and
 benchmark comparison.
@@ -39,14 +43,16 @@ pip install -e . --no-deps
 ## API
 
 ```python
-from bifonia import tokenize, is_ambiguous, guess_pos, disambiguate, add_extra_diacritics
+from bifonia import (tokenize, is_ambiguous, guess_pos, guess_sense,
+                     disambiguate, add_extra_diacritics)
 
 words = tokenize("Vou para casa depois do trabalho.")
 for i, word in enumerate(words):
     if is_ambiguous(word):
-        pos  = guess_pos(words, i)          # "ADP"
-        ipa  = disambiguate(words, i)       # "ˈpɐɾɐ"
-        rich = add_extra_diacritics("Vou para casa depois do trabalho.")
+        sense = guess_sense(words, i)        # "purpose"
+        pos   = guess_pos(words, i)          # "ADP"
+        ipa   = disambiguate(words, i)       # "ˈpɐɾɐ"
+        rich  = add_extra_diacritics("Vou para casa depois do trabalho.")
 
 print(rich)  # "Vou para casa depois do trabalho."  (unchanged — ADP needs no diacritic)
 ```
@@ -65,9 +71,10 @@ See [`docs/words.md`](docs/words.md) for IPA, diacritized forms, and usage notes
 Data is kept separate from code:
 
 - **`bifonia/data/corpus.jsonl`** — the labelled corpus, one record per line
-  (`{"word", "pos", "ipa", "sentence"}`). Single source of truth; `dataset.py`
-  derives the CSV/JSON/HuggingFace splits from it.
-- **`bifonia/data/heterophonic_homographs.csv`** — the `word,pos,ipa` schema.
+  (`{"word", "sense", "pos", "ipa", "sentence"}`). The bucket key is `sense`
+  (meaning); `pos` is descriptive. Single source of truth; `dataset.py` derives
+  the CSV/JSON/HuggingFace splits from it.
+- **`bifonia/data/heterophonic_homographs.csv`** — the `word,sense,pos,ipa` schema.
 - **`bifonia/locale/<lang>/*.voc`** — context wordlists (determiners, cut-context
   nouns, court terms, stoppable things, …), one term per line. Edit these to extend
   the scorer without touching code; loaded via `bifonia/vocab.py` using

@@ -38,16 +38,20 @@ Useful for grapheme-to-phoneme / TTS front-ends and for POS disambiguation.
 | field | description |
 |-------|-------------|
 | `word` | the ambiguous headword |
-| `pos` | the reading label (`NOUN` / `VERB` / `ADP` / `ADJ`) — the bucket that selects the IPA |
+| `sense` | the **meaning** slug that selects the IPA (e.g. `thirst` / `seat`, `mould` / `shape`) — the bucket key |
+| `pos` | descriptive part of speech of this reading (`NOUN` / `VERB` / `ADP` / `ADJ`); may repeat across senses |
 | `ipa` | European-Portuguese transcription of `word` in this reading |
-| `sentence` | a natural sentence using `word` in that reading |
-| `diacritized` | `word` with the disambiguating diacritic restored (e.g. `pêlo`, `fôrma`) |
-| `diacritized_sentence` | the sentence with the diacritic restored on `word` |
+| `sentence` | a natural sentence using `word` in that meaning |
+
+The reading is keyed on **meaning, not POS**: two senses can share a part of
+speech (`sede` thirst and seat are both nouns, distinguished only by their open/
+closed vowel), so `sense` — not `pos` — is the label a model should predict.
 
 ## Splits
 
-- `train`: 80% (stratified per word+POS)
-- `test`: 20% (stratified per word+POS)
+- `train`: 80%, `test`: 20%
+- shuffled and stratified per `(word, sense)` with a fixed seed, so each bucket
+  is represented i.i.d. in both splits (no tail/ordering skew).
 
 ## Construction & validation
 

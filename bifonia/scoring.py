@@ -7,7 +7,8 @@ Negative scores signal anti-evidence for that POS.
 
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
-    DEFAULT_POS, BASE_SCORE,
+    DEFAULT_POS, DEFAULT_SENSE, BASE_SCORE,
+    POS_SENSES,
     DET, PRON, AUX_VERBS, NUMERIC,
     BEFORE_PREP, AFTER_PREP, NEVER_AFTER_PREP,
     SOBRE_GOV, QUANT, STOPPABLE_THINGS,
@@ -67,6 +68,9 @@ _CLITICS_ALL  = voc("clitics_all")
 _EXCL_DET     = voc("exclamative_det")
 _LOCATIVE_CONTRACTIONS = voc("locative_contractions")
 _FUNC_EXTRA = voc("function_words")
+# meaning-level cues for words whose senses share a POS (only "sede" today)
+_SEDE_SEAT   = voc("sede_seat_cues")
+_SEDE_THIRST = voc("sede_thirst_cues")
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
@@ -641,3 +645,65 @@ def guess_pos(words: list, idx: int) -> str:
     if len(winners) == 1:
         return winners[0]
     return DEFAULT_POS.get(word, winners[0])
+
+
+def _resolve_sede(words: list, idx: int) -> str:
+    """Disambiguate "sede" between SEAT (HQ, open ɛ) and THIRST (closed e).
+
+    Both senses are nouns, so POS scoring cannot separate them — this reads
+    meaning cues from the local context instead. The preposition frame is the
+    strongest signal ("sede de X" → thirst, "sede da/do X" → seat), reinforced
+    by the sede_{seat,thirst}_cues.voc wordlists in the ±3 window.
+    """
+    prev_word = _prev(words, idx)
+    next_word = _next(words, idx)
+    next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+
+    seat = thirst = 0
+    # preposition frame
+    if next_word in {"da", "do", "das", "dos"}:
+        seat += 3
+    if next_word == "de":                      # "sede de <abstract>" = figurative thirst
+        thirst += 2
+        if next2 in _SEDE_THIRST:
+            thirst += 3
+        if next2 in _SEDE_SEAT:                # "sede de futebol clube" etc.
+            seat += 3
+    if prev_word == "de":                       # "morto de sede", "queixou-se de sede"
+        thirst += 3
+    if prev_word in {"na", "à", "numa", "pela", "duma"}:   # locative: the HQ building
+        seat += 2
+    # content cues in the window
+    window = [_strip(words[i]) for i in range(max(0, idx - 3), min(len(words), idx + 4))
+              if i != idx]
+    seat += sum(w in _SEDE_SEAT for w in window)
+    thirst += sum(w in _SEDE_THIRST for w in window)
+
+    if seat > thirst:
+        return "seat"
+    if thirst > seat:
+        return "thirst"
+    return DEFAULT_SENSE.get("sede", "thirst")
+
+
+# words whose senses share a POS need a meaning-level resolver after guess_pos
+_SENSE_RESOLVERS = {"sede": _resolve_sede}
+
+
+def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
+    """Return the meaning slug for *word* at *idx*, given its guessed *pos*.
+
+    For the common case (each POS maps to exactly one sense) this is a direct
+    lookup; only words with two senses under one POS invoke a context resolver.
+    """
+    senses = POS_SENSES.get(word, {}).get(pos)
+    if not senses:
+        # guessed POS has no sense for this word → fall back to its default POS
+        senses = POS_SENSES.get(word, {}).get(DEFAULT_POS.get(word, ""))
+    if not senses:
+        # last resort: any sense
+        senses = next(iter(POS_SENSES.get(word, {}).values()), [None])
+    if len(senses) == 1:
+        return senses[0]
+    resolver = _SENSE_RESOLVERS.get(word)
+    return resolver(words, idx) if resolver else senses[0]

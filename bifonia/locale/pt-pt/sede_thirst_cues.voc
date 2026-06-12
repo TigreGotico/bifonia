@@ -1,0 +1,70 @@
+# sede_thirst_cues.voc
+#
+# WHAT: words that, appearing near "sede", signal the THIRST reading —
+#       closed e, /ˈsedɨ/ ("matar a sede", "sede de poder", "morto de sede").
+# WHERE USED: bifonia/scoring.py → resolve_sense(), the meaning tiebreaker for
+#       "sede" (both senses are NOUNS — POS cannot tell them apart).
+# EFFECT: each cue token in the ±3 window adds to the "thirst" score; higher of
+#       seat/thirst wins, ties default to thirst (the prototypical reading).
+#       Two cue families: (1) physical-thirst collocates — quench/feel/dying-of;
+#       (2) abstract desires that follow "sede de X" (figurative thirst).
+# HOW TO EXTEND: add quench/feel verbs, body/heat nouns, or abstract-desire nouns
+#       that take "sede de …". One term per line, lowercase.
+# ── physical thirst: quench / feel / suffer ──
+matar
+mata
+matava
+matou
+saciar
+saciava
+sacia
+saciou
+aplacar
+aplacava
+ter
+tem
+tinha
+tenho
+sentir
+sentia
+sente
+queixou
+queixava
+morto
+mortos
+morrer
+morria
+morrendo
+desidratação
+garganta
+boca
+seca
+calor
+deserto
+água
+beber
+bebida
+sequioso
+sequiosa
+ressente
+# ── figurative "sede de X": abstract desires ──
+poder
+vingança
+conhecimento
+saber
+justiça
+liberdade
+glória
+sangue
+riqueza
+aventura
+fama
+amor
+ódio
+domínio
+lucro
+vitória
+sucesso
+guerra
+paz
+verdade

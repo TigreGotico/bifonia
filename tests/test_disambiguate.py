@@ -22,13 +22,13 @@ def _dis(sentence: str, word: str) -> str:
     return disambiguate(words, idx)
 
 
-def _expect(sentence: str, word: str, pos: str) -> None:
+def _expect(sentence: str, word: str, sense: str) -> None:
     ipa = _dis(sentence, word)
-    expected = HOMOGRAPHS[word][pos]
+    expected = HOMOGRAPHS[word][sense]
     assert ipa == expected, (
         f"  sentence : {sentence!r}\n"
         f"  got      : [{ipa}]\n"
-        f"  expected : {pos} = [{expected}]"
+        f"  expected : {sense} = [{expected}]"
     )
 
 
@@ -46,10 +46,10 @@ _XFAIL  = [c for c in _ALL if c["xfail"]]
 @pytest.mark.parametrize(
     "case",
     _NORMAL,
-    ids=[f"{c['word']}/{c['pos']}:{c['sentence'][:40]}" for c in _NORMAL],
+    ids=[f"{c['word']}/{c['sense']}:{c['sentence'][:40]}" for c in _NORMAL],
 )
 def test_disambiguate(case):
-    _expect(case["sentence"], case["word"], case["pos"])
+    _expect(case["sentence"], case["word"], case["sense"])
 
 
 # ── known-hard xfail cases ────────────────────────────────────────────────────
@@ -60,10 +60,10 @@ def test_disambiguate(case):
         pytest.param(c, marks=pytest.mark.xfail(reason=c["xfail"], strict=False))
         for c in _XFAIL
     ],
-    ids=[f"{c['word']}/{c['pos']}:{c['sentence'][:40]}" for c in _XFAIL],
+    ids=[f"{c['word']}/{c['sense']}:{c['sentence'][:40]}" for c in _XFAIL],
 )
 def test_disambiguate_xfail(case):
-    _expect(case["sentence"], case["word"], case["pos"])
+    _expect(case["sentence"], case["word"], case["sense"])
 
 
 # ── add_extra_diacritics smoke tests ─────────────────────────────────────────
