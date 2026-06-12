@@ -1,0 +1,71 @@
+# bundle_verbs.voc
+#
+# WHAT: verbs of picking / buying / tying / holding that, near «molho de <green>»,
+#       resolve the ambiguous greens (bundle_ambiguous.voc) to the BUNDLE reading
+#       (open ɔ «mólho») rather than the sauce: «colhi/comprei/atei um molho de
+#       salsa» (a bunch) vs «o bife tinha molho de salsa» (a sauce — no such verb).
+# WHERE USED: bifonia/scoring.py → score_verb(), checked in the ±4-token left window.
+# EFFECT: presence in the left context flips an ambiguous «molho de <green>» to bundle.
+# HOW TO EXTEND: add gathering/tying/holding verbs (physical-bunch actions only —
+#       NOT culinary verbs like «temperar», nor ambiguous ones like «levar/fazer»,
+#       which appear with sauces too). One term per line, lowercase.
+# colher (to pick/harvest)
+colher
+colhi
+colheu
+colheste
+colhemos
+colheram
+colhia
+colhendo
+colhe
+colha
+# apanhar (to gather)
+apanhar
+apanhei
+apanhou
+apanha
+apanhámos
+apanharam
+apanhando
+# comprar (to buy)
+comprar
+comprei
+comprou
+compra
+comprámos
+compraram
+comprando
+# atar / amarrar (to tie)
+atar
+atei
+atou
+ata
+amarrar
+amarrei
+amarrou
+amarrando
+# arrancar (to pull up)
+arrancar
+arranquei
+arrancou
+arranca
+arrancando
+# segurar / agarrar / pegar (to hold)
+segurar
+segurava
+segurou
+segurando
+agarrar
+agarrei
+agarrou
+pegar
+peguei
+pegou
+# vender (sold in bunches) / trazer
+vender
+vendia
+vendendo
+vendem
+trazer
+trouxe

@@ -1,0 +1,47 @@
+# soak_verbs.voc
+#
+# WHAT: verbs that put «molho» into the «de molho» = SOAKING idiom (open ɔ «mólho»,
+#       the same open reading as bundle / the verb «molhar»), distinguishing it from
+#       «gosto de molho» / «prato com molho» = sauce (closed o «môlho»).
+#       «deixei o grão de molho» (soaking) vs «gosto de molho picante» (sauce).
+# WHERE USED: bifonia/scoring.py → score_verb(), pattern «… de molho» with one of
+#       these verbs in the ±4-token left window.
+# EFFECT: presence flips «de molho» to the open soaking reading; without it «de molho»
+#       defaults to the sauce reading.
+# HOW TO EXTEND: add verbs that take «de molho» = leave/put to soak. One per line.
+# deixar
+deixar
+deixei
+deixou
+deixa
+deixámos
+deixaram
+deixando
+deixado
+# pôr / meter
+pôr
+pus
+pôs
+põe
+ponho
+meter
+meti
+meteu
+mete
+metendo
+# estar / ficar / andar (de molho)
+estar
+está
+esteve
+estava
+estiveram
+ficar
+ficou
+fica
+ficar
+ficaram
+andar
+anda
+andou
+# de molho followed by water/vinegar (the soaking medium) is also a cue
+imersão

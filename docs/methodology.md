@@ -84,6 +84,15 @@ sense-specific cues from the local context: the preposition frame is the stronge
 `bifonia/locale/pt-pt/sede_{seat,thirst}_cues.voc` wordlists in the ±3 window. The rule engine
 needs no corpus, which makes it the right fit for a fork of a low-resource language.
 
+A handful of readings are genuinely ambiguous on the local pattern alone and need a wider cue
+to resolve. `molho` is the clearest: `molho de chaves`/`lenha` is a bundle (open ɔ), `molho de
+tomate` a sauce (closed o), and an edible green can go either way — `colhi um molho de salsa`
+(a bunch) versus `o bife tinha molho de salsa` (a sauce) — decided by a gathering verb in the
+left window; `deixar/pôr de molho` is the soaking idiom, while `gosto de molho` is the sauce
+genitive. These hooks live in `bundle_things.voc`, `bundle_ambiguous.voc`, `bundle_verbs.voc`,
+and `soak_verbs.voc`. The remaining cases that need full-sentence understanding are rare, and
+the learned models cover most of them.
+
 ### Learned models
 
 `bifonia/model.py` loads per-word classifiers trained by `train.py` from the labelled corpus:

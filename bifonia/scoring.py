@@ -71,6 +71,11 @@ _FUNC_EXTRA = voc("function_words")
 # meaning-level cues for words whose senses share a POS (only "sede" today)
 _SEDE_SEAT   = voc("sede_seat_cues")
 _SEDE_THIRST = voc("sede_thirst_cues")
+# "molho" bundle/soak cues (open ɔ) vs the default sauce reading (closed o)
+_BUNDLE_THINGS = voc("bundle_things")       # unambiguous bundles: "molho de chaves"
+_BUNDLE_AMBIG  = voc("bundle_ambiguous")    # greens, bundle only with a gathering verb
+_BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the greens
+_SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
@@ -513,6 +518,27 @@ def score_verb(words: list, idx: int) -> int:
     _GOZO_EXCL_PREV = DET | QUANT | _PREP_GOVERNING
     if word == "gozo" and next_word == "de" and prev_word not in _GOZO_EXCL_PREV:
         score += 5
+
+    # "molho" — open-ɔ bundle/soak reading vs the default closed-o sauce. These are
+    # the genuinely ambiguous cases where a nearby word, not the local pattern, decides:
+    #   • "molho de chaves/lenha/…"      — unambiguous bundle (bundle_things.voc)
+    #   • "colhi um molho de salsa"      — green (bundle_ambiguous) + gathering verb
+    #   • "deixar/pôr/estar de molho"    — soaking idiom (soak_verbs in left window)
+    # Sauce stays the default: "molho de tomate", "gosto de molho", "o bife tinha molho".
+    if word == "molho":
+        _m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+        _left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
+        if next_word == "de" and _m2 in _BUNDLE_THINGS:
+            score += 8
+        elif (next_word == "de" and _m2 in _BUNDLE_AMBIG
+              and any(v in _BUNDLE_VERBS for v in _left4)):
+            score += 8
+        elif prev_word == "de" and any(v in _SOAK_VERBS for v in _left4):
+            score += 8
+        elif prev_word == "de":
+            # "gosto de molho", "fio de molho" — genitive "of sauce", not soaking;
+            # cancel the generic 1st-person ("eu molho") prior so sauce wins.
+            score -= 2
 
     # "sempre sobre [uma/um/…]" — frequency adverb + "sobrar" (left over); not ADP.
     # "sempre sobre" where a DET/QUANT follows and there is no governing verb is a

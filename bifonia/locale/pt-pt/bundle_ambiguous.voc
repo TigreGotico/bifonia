@@ -1,0 +1,34 @@
+# bundle_ambiguous.voc
+#
+# WHAT: edible greens/herbs that, after «molho de …», are AMBIGUOUS between a bunch
+#       (bundle, open ɔ «mólho») and a sauce (closed o «môlho»): «colhi um molho de
+#       salsa» (a bunch) vs «o bife tinha molho de salsa» (parsley sauce).
+# WHERE USED: bifonia/scoring.py → score_verb(), pattern «molho de <thing>».
+# EFFECT: a match here reads as BUNDLE only when a gathering/tying verb (see
+#       bundle_verbs.voc) is in the left context; otherwise it defaults to the sauce
+#       reading. Unambiguous bundles (chaves, lenha, …) live in bundle_things.voc and
+#       fire unconditionally.
+# HOW TO EXTEND: add greens that are sold/picked in bunches yet also occur as sauces.
+#       One term per line, lowercase.
+salsa
+coentros
+hortelã
+hortelãs
+manjericão
+cebolinho
+agrião
+agriões
+espinafres
+couves
+grelos
+nabiças
+brócolos
+espargos
+aipo
+acelgas
+rúcula
+alfaces
+cenouras
+rabanetes
+nabos
+ervas

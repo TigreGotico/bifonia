@@ -1,0 +1,32 @@
+# bundle_things.voc
+#
+# WHAT: things tied in a bunch / sheaf (um molho de …) — the cue that "molho" is
+#       the BUNDLE reading (open ɔ, /ˈmɔʎu/, written «mólho»), not the culinary
+#       sauce (closed o, /ˈmoʎu/).
+# WHERE USED: bifonia/scoring.py → score_verb(), pattern «molho de <thing>».
+# EFFECT: a match two tokens after "molho" (i.e. "molho de X") boosts the open /
+#       bundle reading, overriding the determiner-before sauce signal
+#       («um molho de chaves» = a bunch of keys, not a sauce).
+# WHY ONLY NON-FOOD ITEMS: edible greens are ambiguous — «molho de salsa» can be a
+#       bunch of parsley OR a parsley sauce, and «molho de alho/cebola/ervas» is
+#       usually a sauce — so they are deliberately excluded to protect sauce
+#       precision. Keep this list to things that are tied together but never a sauce.
+# HOW TO EXTEND: add only unambiguous bundled objects (never a sauce ingredient).
+#       One term per line, lowercase.
+chaves
+lenha
+flores
+rosas
+palha
+feno
+espigas
+varas
+canas
+ramos
+paus
+trigo
+cevada
+vime
+junco
+lenhos
+gravetos
