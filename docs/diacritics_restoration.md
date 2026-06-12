@@ -78,28 +78,48 @@ both nouns) or invert the usual mapping (`colher`, `tola`), the diacritic still 
 correct open/closed vowel. The full `(word, sense) → diacritized` table is in
 `bifonia/__init__.py`.
 
-## Rule-based scorer baseline
+## Engines and accuracy
 
-`bifonia` ships a hand-crafted context scorer (`scoring.py`) that inspects a ±4-word
-window using integer signals for determiners, pronouns, passive auxiliaries, copular
-verbs, infinitive markers, degree adverbs, and governing verbs, then narrows the winning POS
-to a `sense`.  Sense-prediction accuracy on the full 56 891-sentence corpus:
+`bifonia` resolves the sense with **two interchangeable engines**, both pure Python (see
+`docs/methodology.md`):
 
-| Approach | Full-corpus accuracy |
-|---|---|
-| **rule-based (bifonia)** | **94.17%** |
-| Stanza POS→sense | 75.47% |
-| spaCy (`pt_core_news_lg`) POS→sense | 65.74% |
-| most-common (majority sense per word) | 52.66% |
+- a **rule engine** (`scoring.py`) — a hand-crafted context scorer that inspects a ±4-word window
+  using integer signals for determiners, pronouns, passive auxiliaries, copular verbs, infinitive
+  markers, degree adverbs, and governing verbs, then narrows the winning POS to a `sense`. It needs
+  no corpus.
+- **learned per-word models** (`model.py`, trained by `train.py`) — a Naive-Bayes log-odds
+  classifier and an averaged perceptron, fit from the labelled corpus over the language-agnostic
+  features in `features.py`.
 
-The POS taggers plateau because they cannot separate two senses that share a POS (e.g.
+`guess_sense` is a per-word ensemble that routes each word to whichever engine is at least as
+accurate on held-out data, with the rule engine as the fallback.
+
+Sense-prediction accuracy, measured on a **synthetic** held-out split (`benchmark_tagger.py`) and
+on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`benchmark_ood.py`,
+`TigreGotico/bifonia-pt-homographs-wild`):
+
+| Approach | Synthetic test | OOD (real text) |
+|---|---|---|
+| most-common (majority sense per word) | 52.7% | 47.5% |
+| spaCy (`pt_core_news_lg`) POS→sense | 65.7% | 81.4% |
+| Stanza POS→sense | 75.5% | 82.5% |
+| rules (no corpus) | 94.0% | 83.2% |
+| Naive-Bayes | 98.1% | 86.7% |
+| averaged perceptron | 99.0% | 89.6% |
+| **shipped ensemble** | **95.7%** | **89.1%** |
+
+Synthetic splits overstate accuracy — their train and test sentences share phrasing — so the OOD
+column is the honest measure. Every method drops on real text, but the corpus-trained perceptron
+still beats the rules by about six points there (89.6 vs 83.2): it generalises rather than
+memorising. The POS taggers plateau because they cannot separate two senses that share a POS (e.g.
 `sede`): they nail the dominant noun sense and miss the minority one by construction.
 
 Run the comparison yourself:
 
 ```bash
-python benchmark_tagger.py
+python benchmark_tagger.py            # synthetic held-out split
 python benchmark_tagger.py --word sede --errors
+python benchmark_ood.py               # OOD real-text set
 ```
 
 ### When the scorer succeeds
@@ -141,22 +161,30 @@ defaults to open-o. `molho` is parallel: *sauce* (`ˈmoʎu`, `NOUN`) vs *bundle*
 `VERB`). Separating "baking mould" from "manner/way" — or "sauce" from "bundle of keys" —
 requires comprehension of the noun phrase that local context cannot always supply.
 
-These are precisely the cases where a sequence model should excel.
+These are precisely the cases the learned models address: trained over the corpus, the
+perceptron beats the rule engine on real text (see the accuracy table above), recovering some of
+the harder shared-POS and long-range cases the rules cannot reach.
 
-## Decision tree vs. scoring function
+## Learned statistical models
 
-The current scorer is effectively a manual decision tree with soft (additive) edges.
-A hard decision tree would be more transparent but more brittle — a single missing node
-breaks the subtree, whereas the scorer degrades gracefully when signals conflict.
+A learned path is **implemented and benchmarked**, not hypothetical. `train.py` fits per-word
+classifiers from the corpus using the language-agnostic features in `features.py` — positional
+skipgrams, a bag-of-window overlap, structural `.voc` membership, and morphology/position cues —
+and serialises them to `bifonia/data/sense_model_{nb,perceptron}.json`:
 
-The scoring approach *validates* the machine-learning path:
+- **Naive-Bayes** — per-sense log-odds of each feature; interpretable, the weights *are* the
+  learned lexicons.
+- **Averaged perceptron** — warm-started from the NB weights, discounting correlated cues NB
+  double-counts. This is the model the ensemble ships.
 
-- Each signal corresponds to a learnable feature (DET before, PRON before, CONJ_SUBJ before).
-- A BiLSTM or transformer with character and word embeddings can learn these patterns
-  automatically from the corpus, and generalise to long-range dependencies the rule
-  system cannot reach.
-- The scorer provides a strong interpretable baseline and an upper-bound estimate of
-  what context-local signals can achieve.
+Inference is a sparse dot product in pure stdlib (no numpy/sklearn), so the learned engine runs
+under the same zero-dependency install as the rules. The rule engine remains the corpus-free
+baseline and the fallback for any word the model is not routed to.
+
+The rule scorer is effectively a manual decision tree with soft (additive) edges: it degrades
+gracefully when signals conflict, and each of its signals corresponds to a learnable feature
+(DET before, PRON before, CONJ_SUBJ before) that the learned models pick up automatically from
+the corpus.
 
 ## Corpus
 
@@ -175,11 +203,10 @@ python dataset.py --out data/
 | Train / test split | 45 492 / 11 400 |
 | Unique ambiguous words | 27 |
 | POS attributes | NOUN, VERB, ADP, ADJ |
-| Rule-based sense accuracy | **94.17%** (full corpus) |
-| Stanza POS→sense | 75.47% |
-| spaCy (pt_core_news_lg) POS→sense | 65.74% |
-| most-common (majority sense) | 52.66% |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
+
+Sense-prediction accuracy for every approach is in the [Engines and accuracy](#engines-and-accuracy)
+table above.
 
 ### Record schema (`corpus.jsonl`)
 
@@ -194,7 +221,11 @@ python dataset.py --out data/
 The IPA table `bifonia/data/heterophonic_homographs.csv` carries the same fields minus
 `sentence` (columns `word,sense,pos,ipa`), one row per `(word, sense)`.
 
-## Suggested model architectures
+## Heavier model architectures (forward-looking)
+
+The shipped learned engine is a lightweight per-word linear model. Larger neural models are
+options for pushing past it — particularly on the long-range and shared-POS cases — at the cost of
+the zero-dependency runtime. The corpus and `{word, sense, ipa}` labels support all of them:
 
 ### BiLSTM (sequence labeller)
 
@@ -204,8 +235,6 @@ Output: per-token label ∈ {UNCHANGED, ACUTE, CIRCUMFLEX}
         (only applied at positions of known ambiguous words)
 Loss:   cross-entropy, ignore non-ambiguous positions
 ```
-
-Baseline expected to exceed 95 % accuracy with 1 000+ training sentences per word.
 
 ### BERTimbau fine-tune
 
@@ -244,16 +273,23 @@ stratified k-folds over the corpus records by `(word, sense)` for cross-validati
 Key metrics: sense accuracy, precision/recall per `sense`, and the per-bucket breakdown that
 isolates the minority shared-POS senses (`sede`, `forma`, `molho`) — the hardest cases.
 
-## Potential Hugging Face dataset
+## Hugging Face datasets
 
-The `sense` label and per-reading `ipa` make this dataset directly publishable as a
-heterophonic-homograph disambiguation benchmark:
+The `sense` label and per-reading `ipa` make this a heterophonic-homograph disambiguation
+benchmark, published as two datasets (schema `{word, sense, pos, ipa, sentence}`):
+
+- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs)
+  — the synthetic corpus with stratified train/test splits, for training and synthetic evaluation.
+- [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild)
+  — real Wikipedia and web sentences forming an OOD test set, labels annotated by an LLM, licensed
+  CC-BY-SA-4.0.
 
 ```python
 from datasets import load_dataset
-ds = load_dataset("json", data_files={"train": "hf/train.jsonl", "test": "hf/test.jsonl"})
+synthetic = load_dataset("TigreGotico/bifonia-pt-homographs")
+wild = load_dataset("TigreGotico/bifonia-pt-homographs-wild")
 ```
 
-It fills a gap: no existing PT-PT benchmark targets heterophonic-homograph pronunciation
-disambiguation at the sense level. The corpus is entirely synthetic but covers realistic
-domain diversity.
+Together they fill a gap: no other PT-PT benchmark targets heterophonic-homograph pronunciation
+disambiguation at the sense level, and the wild set supplies the out-of-distribution measure that
+synthetic splits cannot.

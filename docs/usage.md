@@ -6,6 +6,9 @@
 pip install -e /path/to/bifonia --no-deps
 ```
 
+No required dependencies. `ovos_spec_tools` is used for locale resolution when installed and
+falls back to the standard library otherwise, so the library runs fully dependency-free.
+
 ## Quick start
 
 ```python
@@ -35,9 +38,11 @@ True if the word is a known heterophonic homograph.
 
 ### `guess_sense(words, idx, pos=None) → str`
 Primary entry point. Return the most likely **meaning slug** (the label to predict) for the
-word at position *idx* based on its context — e.g. `"thirst"`, `"seat"`, `"stop"`. The context
-scorer guesses a POS and the sense is resolved within it; for words whose senses share a POS
-(only `sede`), a meaning resolver reads sense-specific cues. Pass `pos=` to fix the POS.
+word at position *idx* based on its context — e.g. `"thirst"`, `"seat"`, `"stop"`. This
+transparently uses the **per-word ensemble**: the learned model serves words it is routed to and
+clears its margin on, and the rule engine serves the rest (and is always the fallback), so a
+caller gets the best available reading without choosing an engine. Passing `pos=` forces the rule
+resolver within that POS.
 
 ### `guess_pos(words, idx) → str`
 Return the descriptive UDEP POS tag (`"ADP"`, `"NOUN"`, `"VERB"`, `"ADJ"`) of the resolved
@@ -143,3 +148,23 @@ The scorer operates on plain (AO1990) orthography. Diacritized input (`pára`, `
 `côrte`, …) is handled directly: `guess_sense` reads the sense straight off the diacritic
 (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop) without context scoring. The
 `bifonia._DIACRITIZED_TO_BASE` and `_DIACRITIZED_TO_SENSE` maps back this lookup.
+
+## Engines, training, and benchmarks
+
+`guess_sense` draws on two interchangeable engines (see `docs/methodology.md`): the corpus-free
+rule engine and corpus-trained learned models (Naive-Bayes and an averaged perceptron). The
+shipped model artefacts are `bifonia/data/sense_model_{nb,perceptron}.json`.
+
+Retrain the learned models from the labelled corpus:
+
+```bash
+python train.py --model both          # rebuilds both JSON artefacts
+python train.py --model perceptron --min-count 3 --seed 1337
+```
+
+Measure sense-prediction accuracy two ways:
+
+```bash
+python benchmark_tagger.py            # synthetic held-out split (per-word breakdown)
+python benchmark_ood.py               # out-of-distribution real-text set (downloads from Hugging Face)
+```

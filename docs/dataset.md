@@ -90,7 +90,9 @@ This dataset is suitable for:
    context. Input: `(sentence, word, word_index)`. Output: `sense` (or `ipa`).
 
 2. **TTS pronunciation prediction** — given a sentence, predict the IPA of each ambiguous
-   word. The rule-based `bifonia` scorer reaches **94.17% sense accuracy** on the full corpus.
+   word. `bifonia` ships both a corpus-free rule engine and corpus-trained learned models
+   (Naive-Bayes and an averaged perceptron) trained from this corpus; see `docs/methodology.md`
+   for the accuracy comparison on a synthetic split and on a real-text OOD set.
 
 3. **Portuguese sense disambiguation** — a targeted sub-task for the 27 homograph types
    listed above.
@@ -139,9 +141,18 @@ for i, w in enumerate(words):
 
 ---
 
-## HuggingFace Upload
+## Hugging Face datasets
 
-After generating splits:
+Two datasets on the Hub, both with schema `{word, sense, pos, ipa, sentence}`:
+
+- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs)
+  — 56 891 sentences over 27 words, with stratified train/test splits, for training and synthetic
+  evaluation.
+- [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild)
+  — real Wikipedia and web sentences forming an out-of-distribution (OOD) test set, labels
+  annotated by an LLM, licensed CC-BY-SA-4.0. `benchmark_ood.py` evaluates against it.
+
+After generating splits, push the synthetic dataset:
 
 ```bash
 python dataset.py --hf --out .

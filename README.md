@@ -1,38 +1,67 @@
 # bifonia
 
-Rule-based Portuguese heterophonic homograph disambiguation for TTS.
+Pronunciation disambiguation for European-Portuguese **heterophonic homographs** —
+words spelled identically whose pronunciation depends on **meaning**.
 
-Identifies the correct IPA pronunciation of 27 words whose orthography is identical
-but whose phonology depends on part of speech (NOUN vs VERB vs ADP vs ADJ).
+`sede` is *thirst* (`ˈsedɨ`, closed e) or a *headquarters* (`ˈsɛdɨ`, open e); `forma`
+is a *mould* (`ˈfoɾmɐ`) or a *shape* (`ˈfɔɾmɐ`); `molho` is *sauce* (`ˈmoʎu`) or a
+*bundle* (`ˈmɔʎu`). A text-to-speech front-end that guesses wrong says the wrong word
+out loud. bifonia picks the right reading — and therefore the right IPA — from context.
 
 ```python
-from bifonia import tokenize, is_ambiguous, disambiguate
+from bifonia import tokenize, is_ambiguous, guess_sense, disambiguate
 
-words = tokenize("O autocarro para em frente ao hospital.")
-for i, w in enumerate(words):
-    if is_ambiguous(w):
-        print(w, "→", disambiguate(words, i))
-# para → ˈpaɾɐ  (VERB reading — stops)
+words = tokenize("Tinha tanta sede que bebi a garrafa toda.")
+i = words.index("sede")
+guess_sense(words, i)    # 'thirst'
+disambiguate(words, i)   # 'ˈsedɨ'
 ```
+
+## Why meaning, not part of speech
+
+The obvious approach — tag the part of speech and pick the pronunciation from it —
+cannot work when two readings share a POS. `sede` thirst and seat are **both nouns**;
+`corte` cut and court are both nominal; `forma` mould and shape likewise. A POS tagger
+labels them identically and is wrong on the minority reading by construction. bifonia
+keys every reading on **`sense`** (a meaning slug) and resolves the meaning directly.
+
+## Two interchangeable engines
+
+| engine | needs a corpus? | how it decides |
+|--------|-----------------|----------------|
+| **rules** | no | hand-written context rules + wordlists (`.voc`) |
+| **learned** | yes | per-word Naive-Bayes / averaged-perceptron over context features |
+
+The rule engine is self-contained and needs no training data — the right fit for a fork
+of a low-resource language. The learned models are trained from the labelled corpus and
+generalise better where enough data exists. `guess_sense` uses a **per-word ensemble**:
+each word is served by whichever engine scores at least as well on held-out data, so the
+combined system never does worse than the rules alone. Both are pure Python with no heavy
+runtime dependencies.
 
 ## Accuracy
 
-98.46 % on a corpus of ~13 500 labelled sentences — vs 81.9 % for Stanza and 66.5 %
-for spaCy on the same test set.  (Three-way homographs `para`/`pelo`/`sobre` are harder:
-90–95 % each; all other words score 98–100 %.)
+Sense prediction, measured two ways:
 
-## How it works
+| approach | synthetic test | real-world (OOD) |
+|----------|:--------------:|:----------------:|
+| most-common baseline | 52.7% | 47.5% |
+| spaCy POS → sense | 65.7% | 81.4% |
+| Stanza POS → sense | 75.5% | 82.5% |
+| rules (no corpus) | 94.0% | 83.2% |
+| Naive-Bayes | 98.1% | 86.7% |
+| averaged perceptron | 99.0% | 89.6% |
+| **shipped ensemble** | **95.7%** | **89.1%** |
 
-Each reading is identified by **meaning** (`sense`), not POS — because two senses
-can share a part of speech (`sede` thirst and seat are both nouns).  Context scoring
-assigns integer points to each candidate POS based on the ±4-word window
-(determiners, pronouns, passive auxiliaries, infinitive markers, copular verbs,
-degree adverbs); the highest-scoring POS then narrows to a sense.  When one POS
-covers several senses, a meaning resolver reads sense-specific cues (e.g.
-`sede de X` → thirst, `sede da empresa` → seat).  Ties fall back to a per-word default.
-
-See [`docs/methodology.md`](docs/methodology.md) for the full algorithm description and
-benchmark comparison.
+The *synthetic* column is the held-out split of the generated training corpus, balanced
+across senses; the *OOD* column is real sentences from
+[`bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild).
+The two columns answer different questions. The synthetic set is balanced, so it exposes
+how badly POS tagging handles minority readings (a tagger cannot separate two senses that
+share a part of speech — both score 0% on `sede`/thirst). Real text is skewed toward the
+majority readings POS taggers do get right, which lifts them to ~82% — yet the
+meaning-aware models still win, and the perceptron leads by ~7 points. Reproduce with
+`python benchmark_tagger.py` (synthetic) and `python benchmark_ood.py` (OOD).
 
 ## Install
 
@@ -40,55 +69,64 @@ benchmark comparison.
 pip install -e . --no-deps
 ```
 
+No required dependencies. `ovos_spec_tools` is used for locale resolution when present and
+falls back to the standard library otherwise.
+
 ## API
 
 ```python
-from bifonia import (tokenize, is_ambiguous, guess_pos, guess_sense,
+from bifonia import (tokenize, is_ambiguous, guess_sense, guess_pos,
                      disambiguate, add_extra_diacritics)
 
-words = tokenize("Vou para casa depois do trabalho.")
-for i, word in enumerate(words):
-    if is_ambiguous(word):
-        sense = guess_sense(words, i)        # "purpose"
-        pos   = guess_pos(words, i)          # "ADP"
-        ipa   = disambiguate(words, i)       # "ˈpɐɾɐ"
-        rich  = add_extra_diacritics("Vou para casa depois do trabalho.")
+sentence = "Resolveu o problema desta forma simples."
+words = tokenize(sentence)
+i = words.index("forma")
 
-print(rich)  # "Vou para casa depois do trabalho."  (unchanged — ADP needs no diacritic)
+guess_sense(words, i)              # 'shape'
+guess_pos(words, i)                # 'NOUN'   (descriptive)
+disambiguate(words, i)             # 'ˈfɔɾmɐ'
+disambiguate(words, i, sense="mould")   # 'ˈfoɾmɐ'  (override)
+add_extra_diacritics(sentence)     # '...desta fórma simples.'  (acute = open vowel)
 ```
+
+`add_extra_diacritics` rewrites each homograph with a disambiguating diacritic
+(acute → open vowel, circumflex → closed) that a downstream grapheme-to-phoneme stage
+can read directly.
+
+## Datasets
+
+Both on the Hugging Face Hub, schema `{word, sense, pos, ipa, sentence}`:
+
+- [`bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs)
+  — 56,891 labelled sentences over 27 words, with stratified train/test splits, for
+  training and synthetic evaluation.
+- [`bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild)
+  — real Wikipedia and web sentences, an out-of-distribution test set.
 
 ## Word coverage
 
-27 words across NOUN / VERB / ADP / ADJ:
-`acordo`, `acerto`, `cerro`, `choro`, `colher`, `começo`, `conserto`, `coro`, `corte`,
-`forma`, `gosto`, `gozo`, `jogo`, `molho`, `olho`, `para`, `pelo`, `peso`, `porto`,
-`posto`, `rego`, `seco`, `sede`, `sobre`, `tola`, `torre`, `transtorno`.
+27 homographs: `acordo`, `acerto`, `cerro`, `choro`, `colher`, `começo`, `conserto`,
+`coro`, `corte`, `forma`, `gosto`, `gozo`, `jogo`, `molho`, `olho`, `para`, `pelo`,
+`peso`, `porto`, `posto`, `rego`, `seco`, `sede`, `sobre`, `tola`, `torre`, `transtorno`.
 
-See [`docs/words.md`](docs/words.md) for IPA, diacritized forms, and usage notes per word.
+Per-word IPA, senses, and diacritized forms are in [`docs/words.md`](docs/words.md).
 
-## Data layout
+## Project layout
 
-Data is kept separate from code:
+- `bifonia/data/corpus.jsonl` — the labelled corpus (single source of truth).
+- `bifonia/data/heterophonic_homographs.csv` — the `word,sense,pos,ipa` table.
+- `bifonia/data/sense_model_{nb,perceptron}.json` — trained models (JSON weights).
+- `bifonia/locale/<lang>/*.voc` — context wordlists, one term per line, editable.
+- `bifonia/features.py` — language-agnostic feature extraction (shared by train and inference).
 
-- **`bifonia/data/corpus.jsonl`** — the labelled corpus, one record per line
-  (`{"word", "sense", "pos", "ipa", "sentence"}`). The bucket key is `sense`
-  (meaning); `pos` is descriptive. Single source of truth; `dataset.py` derives
-  the CSV/JSON/HuggingFace splits from it.
-- **`bifonia/data/heterophonic_homographs.csv`** — the `word,sense,pos,ipa` schema.
-- **`bifonia/locale/<lang>/*.voc`** — context wordlists (determiners, cut-context
-  nouns, court terms, stoppable things, …), one term per line. Edit these to extend
-  the scorer without touching code; loaded via `bifonia/vocab.py` using
-  `ovos_spec_tools` for locale resolution.
-
-New corpus sentences are generated with [`corpus_gen.py`](corpus_gen.py) (one
-`prompts/<lang>/<word>_<pos>_<sense>.prompt` per meaning) and appended to
-`corpus.jsonl` after validation.
+Porting to a related language means supplying a corpus and `.voc` files and retraining —
+the algorithm carries no hardcoded Portuguese.
 
 ## See also
 
-- [`docs/methodology.md`](docs/methodology.md) — dataset construction, algorithm, benchmark
+- [`docs/methodology.md`](docs/methodology.md) — algorithm, features, and benchmarks
 - [`docs/usage.md`](docs/usage.md) — full API reference
-- [`docs/diacritics_restoration.md`](docs/diacritics_restoration.md) — framing as a diacritics-restoration task and ML model suggestions
+- [`docs/words.md`](docs/words.md) — per-word pronunciation notes
+- [`docs/diacritics_restoration.md`](docs/diacritics_restoration.md) — the diacritics-restoration task
 - [`examples/basic_usage.py`](examples/basic_usage.py) — runnable demo
-- [`dataset.py`](dataset.py) — export corpus to CSV / JSON for HuggingFace publication
-- [`benchmark_tagger.py`](benchmark_tagger.py) — reproduce the accuracy comparison
+- [`train.py`](train.py) · [`benchmark_tagger.py`](benchmark_tagger.py) · [`benchmark_ood.py`](benchmark_ood.py)
