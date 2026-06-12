@@ -8,7 +8,7 @@ one JSON shape and one scoring rule — a sparse dot product:
 
 and the predicted sense is the argmax. For NB the weights are per-sense log-odds and
 the bias is the log-prior; for the perceptron they are learned. Either way inference
-is plain dict arithmetic — no numpy, no sklearn, no ovos on this path (only ``json``
+is plain dict arithmetic — no numpy, no sklearn (only ``json``
 + ``pathlib`` + :mod:`bifonia.features`), so it is safe under the zero-dependency
 install.
 
