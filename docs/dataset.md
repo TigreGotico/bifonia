@@ -4,11 +4,19 @@
 
 A labeled sentence corpus for **heterophonic homograph disambiguation** in European Portuguese.
 Heterophonic homographs are words spelled identically but pronounced differently depending on
-their syntactic function (POS). Correct disambiguation is critical for TTS pipelines.
+their **meaning** (`sense`). Correct disambiguation is critical for TTS pipelines.
+
+Example: **"sede"** — both senses are nouns, distinguished only by vowel quality:
+- *thirst* (closed e): /ˈsedɨ/ — "Tenho *sede* depois do exercício."
+- *seat / HQ* (open ɛ): /ˈsɛdɨ/ — "A *sede* da empresa fica em Lisboa."
 
 Example: **"para"**
-- as ADP (preposition to/for): /ˈpɐɾɐ/ — "Vou *para* casa."
-- as VERB (parar, to stop): /ˈpaɾɐ/ — "O autocarro *pára*."
+- *purpose* (ADP, preposition to/for): /ˈpɐɾɐ/ — "Vou *para* casa."
+- *stop* (VERB, parar): /ˈpaɾɐ/ — "O autocarro *pára*."
+
+The bucket key is the **meaning** (`sense`), not part of speech. Each record also carries a
+`pos` attribute — the dominant grammatical reading of that sense — which is descriptive only
+and may repeat across senses of the same word (both senses of `sede` are `NOUN`).
 
 ---
 
@@ -16,58 +24,61 @@ Example: **"para"**
 
 | Metric | Value |
 |--------|-------|
-| Total sentences | ~13 900 |
+| Total sentences | 56 891 |
+| Train / test split | 45 492 / 11 400 |
 | Ambiguous words | 27 |
-| POS classes | NOUN, VERB, ADP, ADJ |
+| POS attributes | NOUN, VERB, ADP, ADJ |
 | Language | European Portuguese (pt-PT) |
 | License | Apache-2.0 |
 
 ### Per-word sentence counts
 
-| Word | POS variants | Sentences |
+| Word | Senses (pos) | Sentences |
 |------|-------------|-----------|
-| acerto | NOUN / VERB | ~440 |
-| acordo | NOUN / VERB | ~435 |
-| cerro | NOUN / VERB | ~425 |
-| choro | NOUN / VERB | ~415 |
-| colher | NOUN / VERB | ~438 |
-| começo | NOUN / VERB | ~418 |
-| conserto | NOUN / VERB | ~450 |
-| coro | NOUN / VERB | ~433 |
-| corte | NOUN / VERB | ~585 |
-| forma | NOUN / VERB | ~636 |
-| gosto | NOUN / VERB | ~434 |
-| gozo | NOUN / VERB | ~640 |
-| jogo | NOUN / VERB | ~429 |
-| molho | NOUN / VERB | ~450 |
-| olho | NOUN / VERB | ~418 |
-| para | ADP / VERB | ~636 |
-| pelo | ADP / NOUN / VERB | ~860 |
-| peso | NOUN / VERB | ~427 |
-| porto | NOUN / VERB | ~420 |
-| posto | NOUN / VERB | ~669 |
-| rego | NOUN / VERB | ~446 |
-| seco | ADJ / VERB | ~445 |
-| sede | NOUN / VERB | ~596 |
-| sobre | ADP / NOUN / VERB | ~870 |
-| tola | NOUN / ADJ | ~430 |
-| torre | NOUN / VERB | ~425 |
-| transtorno | NOUN / VERB | ~637 |
+| acerto | settlement (NOUN) / adjust (VERB) | 2403 |
+| acordo | agreement (NOUN) / wake (VERB) | 2021 |
+| cerro | hill (NOUN) / shut (VERB) | 2024 |
+| choro | weeping (NOUN) / weep (VERB) | 1956 |
+| colher | spoon (NOUN) / harvest (VERB) | 2033 |
+| começo | beginning (NOUN) / begin (VERB) | 2050 |
+| conserto | repair (NOUN) / mend (VERB) | 2010 |
+| coro | choir (NOUN) / blush (VERB) | 1973 |
+| corte | court (NOUN) / cut (VERB) | 2248 |
+| forma | mould (NOUN) / shape (VERB) | 2107 |
+| gosto | taste (NOUN) / like (VERB) | 2089 |
+| gozo | enjoyment (NOUN) / enjoy (VERB) | 1874 |
+| jogo | game (NOUN) / play (VERB) | 1986 |
+| molho | sauce (NOUN) / bundle (VERB) | 1815 |
+| olho | eye (NOUN) / look (VERB) | 1967 |
+| para | purpose (ADP) / stop (VERB) | 2087 |
+| pelo | by_the (ADP) / hair (NOUN) / peel (VERB) | 2256 |
+| peso | weight (NOUN) / weigh (VERB) | 2406 |
+| porto | harbour (NOUN) / carry (VERB) | 3010 |
+| posto | station (NOUN) / post (VERB) | 2709 |
+| rego | furrow (NOUN) / water (VERB) | 1967 |
+| seco | dry (ADJ) / dry_vb (VERB) | 1889 |
+| sede | thirst (NOUN) / seat (NOUN) | 1445 |
+| sobre | about (ADP) / sail (NOUN) / leftover (VERB) | 1645 |
+| tola | foolish (ADJ) / head (NOUN) | 1921 |
+| torre | tower (NOUN) / roast (VERB) | 2527 |
+| transtorno | disorder (NOUN) / upset (VERB) | 2473 |
 
 ---
 
 ## Schema
 
-Each record contains:
+`bifonia/data/corpus.jsonl` is the single source of truth — one JSON record per line:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `word` | str | The ambiguous word (lowercase, no diacritics) |
-| `pos` | str | UPOS tag: NOUN, VERB, ADP, or ADJ |
-| `ipa` | str | IPA transcription for this word in this POS reading |
-| `diacritized` | str | Orthographic form with non-standard diacritics marking the reading (e.g. `pára` for VERB, `para` for ADP) |
+| `sense` | str | Meaning slug — the label to predict (e.g. `thirst`, `seat`) |
+| `pos` | str | Descriptive UPOS attribute of that sense: NOUN, VERB, ADP, or ADJ |
+| `ipa` | str | IPA transcription this `(word, sense)` reading carries |
 | `sentence` | str | Full sentence context using the plain (undiacritized) word form |
-| `diacritized_sentence` | str | Same sentence with `word` replaced by `diacritized` |
+
+`bifonia/data/heterophonic_homographs.csv` carries the per-reading IPA table with columns
+`word,sense,pos,ipa` (one row per `(word, sense)`).
 
 ---
 
@@ -75,40 +86,29 @@ Each record contains:
 
 This dataset is suitable for:
 
-1. **Homograph disambiguation** — classify the POS/reading of an ambiguous word given its
-   sentence context. Input: `(sentence, word, word_index)`. Output: `pos` (or `ipa`).
+1. **Sense disambiguation** — predict the `sense` of an ambiguous word given its sentence
+   context. Input: `(sentence, word, word_index)`. Output: `sense` (or `ipa`).
 
 2. **TTS pronunciation prediction** — given a sentence, predict the IPA of each ambiguous
-   word. Baseline: the rule-based `bifonia` scorer reaches **98.8% accuracy** on this corpus.
+   word. The rule-based `bifonia` scorer reaches **94.17% sense accuracy** on the full corpus.
 
-3. **Portuguese POS disambiguation** — a targeted sub-task of POS tagging for the 27
-   homograph types listed above.
+3. **Portuguese sense disambiguation** — a targeted sub-task for the 27 homograph types
+   listed above.
 
 ---
 
 ## Splits
 
-Use `python dataset.py --hf` to generate stratified 80/20 train/test splits under `hf/`:
+`python dataset.py --hf` generates stratified 80/20 train/test splits under `hf/`:
 
 ```
 hf/
-  train.jsonl   # 80% per (word, pos) stratum
-  test.jsonl    # 20% per (word, pos) stratum
+  train.jsonl   # 80% per (word, sense) stratum
+  test.jsonl    # 20% per (word, sense) stratum
 ```
 
----
-
-## Data Generation
-
-Sentences were collected from two sources:
-- **LLM-generated**: produced by free coding agents (opencode-free, antigravity-flash-low)
-  via `corpus_gen.py`, then manually reviewed before merging
-- **Human-curated**: the initial seed set in `bifonia/data/grp_*.py`
-
-Generation prompts enforce:
-- Unambiguous usage of the target word in the specified POS
-- Varied register, sentence length (6–20 words), and vocabulary
-- No repetition of existing corpus sentences
+Sentences are shuffled and stratified per `(word, sense)` with a fixed seed, so train and
+test are i.i.d. — important for downstream consumers such as a BiLSTM sense classifier.
 
 ---
 
@@ -118,24 +118,23 @@ Generation prompts enforce:
 from bifonia.corpus import CORPUS, iter_records
 
 # Iterate all labeled sentences
-for word, pos, sentence in iter_records():
-    print(word, pos, sentence[:60])
+for word, sense, sentence in iter_records():
+    print(word, sense, sentence[:60])
 
 # Access by word
-for pos, sentences in CORPUS["para"].items():
-    print(f"para/{pos}: {len(sentences)} sentences")
+for sense, sentences in CORPUS["sede"].items():
+    print(f"sede/{sense}: {len(sentences)} sentences")
 ```
 
 Disambiguation:
 ```python
-from bifonia import tokenize, is_ambiguous, disambiguate
+from bifonia import tokenize, is_ambiguous, guess_sense, disambiguate
 
-words = tokenize("O autocarro para em frente ao hospital.")
+words = tokenize("A sede de conhecimento move-nos.")
 for i, w in enumerate(words):
     if is_ambiguous(w):
-        ipa = disambiguate(words, i)
-        print(f"{w} → [{ipa}]")
-# para → [ˈpaɾɐ]  (VERB reading)
+        print(f"{w} → {guess_sense(words, i)} → [{disambiguate(words, i)}]")
+# sede → thirst → [ˈsedɨ]
 ```
 
 ---
@@ -156,10 +155,9 @@ huggingface-cli upload TigreGotico/bifonia-pt-homographs hf/ --repo-type dataset
 ## Citation
 
 ```bibtex
-@misc{bifonia2025,
+@misc{bifonia,
   title  = {bifonia: Portuguese Heterophonic Homograph Disambiguation},
   author = {JarbasAI / TigreGotico},
-  year   = {2025},
   url    = {https://github.com/TigreGotico/bifonia},
   license = {Apache-2.0},
 }

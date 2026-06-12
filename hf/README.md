@@ -42,6 +42,8 @@ Useful for grapheme-to-phoneme / TTS front-ends and for POS disambiguation.
 | `pos` | descriptive part of speech of this reading (`NOUN` / `VERB` / `ADP` / `ADJ`); may repeat across senses |
 | `ipa` | European-Portuguese transcription of `word` in this reading |
 | `sentence` | a natural sentence using `word` in that meaning |
+| `diacritized` | `word` with the disambiguating diacritic restored (acute = open vowel, circumflex = closed): `sêde`/`séde`, `fôrma`/`fórma` |
+| `diacritized_sentence` | the sentence with that diacritic restored on `word` — target for a diacritics-restoration model |
 
 The reading is keyed on **meaning, not POS**: two senses can share a part of
 speech (`sede` thirst and seat are both nouns, distinguished only by their open/

@@ -1,0 +1,15 @@
+# sense: about
+Gera {n} frases em Português Europeu natural onde a palavra "sobre" é usada como PREPOSIÇÃO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "sobre" (em minúsculas, sem acento diacrítico)
+- A palavra "sobre" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: preposição — acerca de, em cima de, por cima de.
+Exemplos de uso: «falou sobre o tema», «um livro sobre Portugal», «debruçou-se sobre o problema», «colocou sobre a mesa».
+Pronúncia: /ˈsobɾɨ/ — vogal O fechada (igual à do substantivo "sobre=envelope").
+NÃO uses "sobre" como verbo (= «sobra dinheiro») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

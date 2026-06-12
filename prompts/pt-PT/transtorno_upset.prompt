@@ -1,0 +1,15 @@
+# sense: upset
+Gera {n} frases em Português Europeu natural onde a palavra "transtorno" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «transtornar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "transtorno" (em minúsculas, sem acento diacrítico)
+- A palavra "transtorno" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu transtorno» (perturbar, desorganizar, desarranjar).
+Exemplos de uso: «transtorno os planos», «transtorno a rotina», «transtorno tudo quando estou stressado».
+Pronúncia: /tɾɐ̃ʃˈtɔɾnu/ — vogal O aberta na sílaba tónica.
+NÃO uses "transtorno" como substantivo (= perturbação) — essa leitura tem O fechado.
+Responde APENAS com as frases, uma por linha:

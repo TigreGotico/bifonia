@@ -3,88 +3,50 @@
 ## Overview
 
 The `bifonia` package disambiguates 27 Portuguese heterophonic homographs — words spelled
-identically but pronounced differently depending on part of speech.  The work involves two
-tightly coupled artefacts:
+identically but pronounced differently depending on their **meaning** (`sense`).  The package
+comprises two tightly coupled artefacts:
 
-1. **A labelled corpus** of ~11 000 Portuguese sentences, one ambiguous word per sentence,
-   with a UDEP POS label (NOUN / VERB / ADP / ADJ).
-2. **A rule-based scorer** that predicts the POS label from the local ±4-word context.
+1. **A labelled corpus** of 56 891 Portuguese sentences, one ambiguous word per sentence,
+   labelled with a meaning slug (`sense`) and a descriptive `pos` attribute.
+2. **A rule-based scorer** that predicts the `sense` from the local ±4-word context.
 
-The two improve together in an iterative loop: add hard sentences → find scorer weaknesses →
-fix rules → add more hard sentences → repeat.
+The bucket key is the **meaning**, not part of speech: two senses can share a POS — `sede`
+*thirst* (closed /ˈsedɨ/) and *seat/HQ* (open /ˈsɛdɨ/) are both nouns, separated only by vowel
+quality.  `pos` is a descriptive attribute (the dominant grammatical reading of a sense) and
+may repeat across the senses of a word.
 
 ---
 
 ## Dataset Construction
 
-### Seed sentences (human-written, ~500)
+### Source of truth
 
-The corpus was seeded with approximately 500 sentences written by hand by a native speaker.
-These cover the canonical disambiguation patterns and serve as the ground truth that all
-subsequent work is validated against.  They are stored in `bifonia/data/grp_*.py`.
+The canonical corpus is `bifonia/data/corpus.jsonl` — one JSON record per line,
+`{"word", "sense", "pos", "ipa", "sentence"}`.  The per-reading IPA table lives in
+`bifonia/data/heterophonic_homographs.csv` (columns `word,sense,pos,ipa`), keyed on
+`(word, sense)`.  `bifonia/corpus.py` loads the JSONL into a `CORPUS` dict
+(`word → {sense: [sentences]}`) at import time.
 
-### LLM-assisted expansion with agentpipe (guided and reviewed)
+### LLM-assisted generation, native review, scorer filtering
 
-After the human seed, the corpus was expanded using
-[**agentpipe**](https://github.com/TigreGoticoLda/agentpipe) — an open-source Python
-library that fans work out to multiple coding-agent providers in parallel.  Three
-providers were used:
+`corpus_gen.py` fans sentence generation out to multiple coding-agent providers in parallel
+(free bulk providers plus a stronger provider reserved for hard patterns and quality review).
+For each `(word, sense)`, a prompt specifies the target meaning and the hard patterns to cover
+(e.g. passive-voice frames for `posto` *station*, control-verb phrases for `colher` *harvest*,
+route-noun context for `pelo` *by_the*).  Generated sentences are run through the scorer:
+misclassifications either reveal a real scorer weakness (fix the rule) or a labelling error
+(fix the label or discard).  Only sentences the scorer handles correctly are admitted, so the
+corpus carries no blind-generation label noise.  Using several independently prompted agents
+widens vocabulary and phrasing variety.
 
-| Provider | Model | Cost |
-|---|---|---|
-| `opencode-free` | DeepSeek Coder | free |
-| `antigravity-flash-low` | Gemini Flash | free |
-| `claude` (Claude Code) | Claude Sonnet / Haiku | paid, monitor usage |
-
-Each provider received the same prompt and returned independent candidate sentences;
-results were deduplicated and staged for human review before being committed.  When
-running `corpus_gen.py` with Claude-based providers, watch token consumption — the
-free providers are suitable for bulk generation; Claude is best reserved for hard
-patterns or quality review.
-
-The generation process was:
-
-1. A human provided the target word, the target POS, and a description of the hard patterns
-   to cover (e.g. "passive-voice sentences for `posto` NOUN", "control-verb phrases for
-   `colher` VERB", "route-noun context for `pelo` ADP").
-2. `agentpipe` dispatched the prompt concurrently to all selected providers and merged the
-   results.
-3. All generated sentences were run through the scorer.  Misclassified sentences either
-   revealed real scorer weaknesses (fix the rules) or were labelling errors (fix the label
-   or discard).
-4. Only sentences that the scorer handles correctly after any necessary rule improvement
-   were committed to the corpus.
-
-Using multiple independently prompted agents increases vocabulary variety — each model
-has different priors on phrasing and lexical choice.  The generation script
-(`corpus_gen.py`) is included in the repository and can be used to extend the corpus
-further.
-
-This human-guided, automatically-filtered pipeline means the final corpus is both large
-enough for statistically meaningful evaluation and free from label noise caused by blind
-bulk generation.
-
-### Corpus structure
-
-| File pattern | Contents |
-|---|---|
-| `bifonia/data/grp_a.py` … `grp_pps.py` | Original human-curated batches |
-| `bifonia/data/extra_<word>.py` | Per-word extension packs (LLM-assisted) |
-
-Each file is a Python module containing a JSON-serialisable dict
-`{word: {POS: [sentence, …]}}`.  `bifonia/corpus.py` merges all sources into a single
-`CORPUS` dict at import time.
-
-**Statistics (as of latest build):**
+**Statistics:**
 
 | Metric | Value |
 |---|---|
-| Total sentences | ~13 570 |
+| Total sentences | 56 891 |
+| Train / test split | 45 492 / 11 400 |
 | Words covered | 27 |
-| Human-written seed sentences | ~500 |
-| LLM-assisted (human-guided) | ~13 070 |
-| Rule-based accuracy on full corpus | **98.46 %** |
-| Hard three-way words (`para`/`pelo`/`sobre`) | 90–95 % each |
+| Rule-based sense accuracy on full corpus | **94.17 %** |
 
 ---
 
@@ -94,6 +56,15 @@ The scorer (`bifonia/scoring.py`) is a context-based integer-scoring system.  Fo
 candidate POS, a function (`score_adp`, `score_noun`, `score_verb`, `score_adj`) produces
 an integer score from signals in the ±4-word window.  The POS with the highest score wins;
 ties break to `DEFAULT_POS[word]`.
+
+The scorer then **narrows the winning POS to a `sense`** (`resolve_sense`).  For 26 of the 27
+words each POS maps to exactly one sense, so this is a direct lookup.  For `sede`, whose two
+senses (*thirst*, *seat/HQ*) are both nouns, a meaning resolver (`_resolve_sede`) reads
+sense-specific cues from the local context: the preposition frame is the strongest signal
+(`sede de X` → thirst, `sede da/do X` → seat), reinforced by the
+`bifonia/locale/pt-pt/sede_{seat,thirst}_cues.voc` wordlists in the ±3 window.  `guess_sense`
+returns the meaning slug; `guess_pos` maps it back to its descriptive POS; `disambiguate`
+selects the IPA for the resolved `(word, sense)`.
 
 ### Signal types
 
@@ -120,48 +91,53 @@ Token neighbours are stripped of trailing punctuation (`.,;:!?`) before set look
 This prevents false negatives when a word occurs before a comma or period in the source
 text (e.g. `"ti,"` failing to match the `AFTER_PREP` entry `"ti"`).
 
-### Iterative refinement methodology
+### Rule design principles
 
-Each round follows the pattern:
-
-```
-1. Identify the worst-performing words (lowest accuracy on current corpus).
-2. Inspect misclassified sentences: what local signal is missing or firing incorrectly?
-3. Formulate a rule hypothesis.
-4. Implement and test.  Run full corpus accuracy + pytest.
-5. If accuracy improves without regressions, commit the rule.
-6. Add hard sentences that exercise the new/fixed rule.
-7. Return to step 1.
-```
-
-Rules are kept conservative: they must fire on clear linguistic patterns, not statistical
-quirks of the current training set.  Every added signal is motivated by a grammatical
-argument (e.g. "contracted prepositions cannot introduce verbal direct objects").
+Rules are conservative: each fires on a clear linguistic pattern, not a statistical quirk of
+the corpus, and every signal is motivated by a grammatical argument (e.g. "contracted
+prepositions cannot introduce verbal direct objects").  `benchmark_tagger.py` measures
+per-word and per-sense accuracy so a new signal can be validated against the full corpus and
+the test suite before it is kept.
 
 ---
 
 ## Benchmark Comparison
 
-The rule-based scorer was compared against three external taggers using the same corpus
-(taggers see the un-diacritised form, an equal-footing test):
+`benchmark_tagger.py` runs a four-way comparison of sense-prediction accuracy on the full
+56 891-sentence corpus (train 45 492 / test 11 400).  Each tagger sees the plain
+(un-diacritised) form; the POS taggers map their POS output back to a sense.
 
-| System | Accuracy |
-|---|---|
-| **bifonia rule-based** | **99.51 %** |
-| Stanza (neural, `pt`) | 81.9 % |
-| spaCy (`pt_core_news_lg`) | 66.5 % |
-| TugaTagger (spaCy backend) | 66.5 % |
-| TugaTagger (Brill backend) | 53.1 % |
+| Approach | Train | Test | Full |
+|---|---|---|---|
+| most-common (majority sense per word) | 52.66 % | 52.64 % | 52.66 % |
+| spaCy (`pt_core_news_lg`) POS→sense | 65.64 % | 66.11 % | 65.74 % |
+| Stanza POS→sense | 75.44 % | 75.62 % | 75.47 % |
+| **rule-based (bifonia)** | **94.08 %** | **94.50 %** | **94.17 %** |
 
-The rule-based system dominates because it was designed specifically for this narrow task;
-general-purpose neural taggers are not trained with heterophonic homograph disambiguation
-as an objective.
+The key insight: a POS tagger hits a **structural ceiling** on senses that share a POS.  It
+gets the majority noun sense right but the minority sense wrong *by construction*, because POS
+carries no information that separates them.  Per-bucket accuracy on the full corpus makes this
+concrete:
+
+| word/sense | n | spaCy | Stanza | rule-based |
+|---|---|---|---|---|
+| sede/thirst | 410 | 0.0 % | 0.0 % | 100.0 % |
+| sede/seat | 1035 | 100.0 % | 100.0 % | 76.8 % |
+| corte/cut | 1256 | 19.2 % | 55.4 % | 99.6 % |
+| corte/court | 992 | 99.5 % | 100.0 % | 99.9 % |
+| forma/mould | 1017 | 100.0 % | 100.0 % | 55.4 % |
+| forma/shape | 1090 | 17.2 % | 49.4 % | 97.1 % |
+| molho/sauce | 790 | 100.0 % | 100.0 % | 89.7 % |
+| molho/bundle | 1025 | 0.0 % | 13.3 % | 71.7 % |
+
+The POS taggers score 100 % on the dominant sense of each pair and near-0 % on its minority
+twin; the rule-based scorer, by reading meaning cues, recovers the minority sense.
 
 Run the benchmark yourself:
 
 ```bash
-python benchmark_tagger.py --tagger all
-python benchmark_tagger.py --word para --errors
+python benchmark_tagger.py
+python benchmark_tagger.py --word sede --errors
 ```
 
 ---
@@ -173,16 +149,17 @@ unusually small set of heterophonic homographs that matter for TTS.  This packag
 27 words.  That is not a limitation of the dataset; it is close to the full inventory of
 the phenomenon in standard European Portuguese.
 
-For each word, the disambiguation reduces to a few clear grammatical contrasts (NOUN vs VERB,
-ADP vs VERB) that are reliably signalled by the ±4-word context: determiners, pronouns,
-infinitive markers, passive auxiliaries, copular verbs.  The scorer does **not** attempt to
-tag full sentences; it only resolves the POS of one pre-identified ambiguous token.  That is
-a much easier problem than full POS tagging.
+For most words the disambiguation reduces to a few clear grammatical contrasts (NOUN vs VERB,
+ADP vs VERB) reliably signalled by the ±4-word context: determiners, pronouns, infinitive
+markers, passive auxiliaries, copular verbs.  Where two senses share a POS (`sede`), a
+meaning resolver reads sense-specific cues from the same window.  The scorer does **not**
+attempt to tag full sentences; it only resolves the meaning of one pre-identified ambiguous
+token.  That is a much easier problem than full POS tagging.
 
 This approach does **not** generalise to other languages:
 
 - Languages with large homograph inventories (e.g. English, where hundreds of words are
-  heterophonic: *lead*, *wind*, *row*, *wound*, …) would require a general POS tagger, not
+  heterophonic: *lead*, *wind*, *row*, *wound*, …) would require a general tagger, not
   a hand-crafted rule set of this size.
 - Languages with free word order make the ±4-word window less reliable as a signal.
 - Languages with rich morphology often resolve ambiguity through agreement suffixes that
@@ -195,50 +172,32 @@ disambiguated by strong, local grammatical cues.
 
 ## Orthographic Normalisation (AO1990)
 
-Pre-AO1990 (pre-1990 Orthographic Agreement) text uses diacritics on words that are
-unambiguous in modern Portuguese: *pára* (now *para*), *pêlo* (now *pelo*),
-*côrte* (now *corte*), etc.  For the purpose of this package:
+Some diacritized forms are unambiguous: *pára* (stop), *pêlo* (hair), *côrte* (court), etc.
+The acute/circumflex marks the vowel quality directly, so:
 
-- Text that contains these forms is simply **pre-AO1990 text** and requires no special
-  handling — the scorer will naturally see the pre-reform spelling and score it correctly
-  because the context signals are the same.
-- For **normalisation pipelines** that want to enforce AO1990, the correct approach is to
-  replace unambiguous pre-reform forms with their post-reform equivalents before calling
-  the scorer.  The `_DIACRITIZED_TO_BASE` mapping in `bifonia/__init__.py` covers the
-  relevant substitutions.
-- The scorer's `_DIACRITIZED_TO_BASE` map is intentionally **not** applied globally inside
-  `guess_pos`; it is the caller's responsibility to normalise input if required.  This
-  keeps the scorer stateless and transparent.
+- `guess_sense` reads the meaning straight off a diacritized token (e.g. *séde* → seat,
+  *sêde* → thirst, *pára* → stop) without invoking the context scorer.  The
+  `_DIACRITIZED_TO_SENSE` and `_DIACRITIZED_TO_BASE` maps in `bifonia/__init__.py` back this
+  lookup.
+- Plain (AO1990) tokens are resolved by the context scorer.  `add_extra_diacritics` performs
+  the reverse: it inserts the non-canonical diacritic that forces the resolved reading in a
+  downstream rule-based G2P.
 
 ---
 
-## Transparency and Limitations
+## Limitations
 
-- **LLM usage:** approximately 96 % of corpus sentences were generated by LLMs via
-  [agentpipe](https://github.com/TigreGoticoLda/agentpipe) under close human supervision
-  (providers: `opencode-free` / DeepSeek; `antigravity-flash-low` / Gemini Flash; and
-  Claude Sonnet / Haiku via Claude Code for hard patterns and quality review).  No
-  sentence was admitted to the corpus without passing the scorer (and any necessary rule
-  fix).  The human seed (~500 sentences) defines the disambiguation gold standard; LLM
-  sentences expand coverage of hard patterns.
-- **European Portuguese only:** all phonology, wordlists, and orthographic conventions
-  are specific to **European Portuguese (EP)**.  Brazilian Portuguese (BP) has different
-  stress patterns, clitic placement rules, and some of these 27 words may not be
-  heterophonic in BP at all.  A BP dialect round is planned as a future extension.
-- **tugamorph integration (planned):** morphological analysis from
-  [tugamorph](https://github.com/TigreGoticoLda/tugamorph) could improve disambiguation
-  of `pelo NOUN` ("body hair") by recognising possession verbs (`ter`, `possuir`) that
-  govern nominal `pelo`, and by identifying past participles robustly for the passive-agent
-  `pelo ADP` pattern.  Currently handled by suffix heuristics.
-- **Context window:** the scorer only inspects ±4 words.  Long-range dependencies (e.g.
-  a subject noun phrase 5+ words before the verb) are outside the model's reach and
-  represent an irreducible error source for a local rule-based system.
+- **European Portuguese only:** all phonology, wordlists, and orthographic conventions are
+  specific to **European Portuguese (EP)**.  Brazilian Portuguese has different stress
+  patterns and clitic placement, and some of these 27 words are not heterophonic in BP.
+- **`pelo` hair vs by_the:** the body-hair NOUN reading is recognised by possession verbs
+  (`ter`, `possuir`) governing `pelo` and by past-participle context for the passive-agent
+  `by_the` ADP pattern, handled by suffix heuristics in the scorer.
+- **Context window:** the scorer inspects only ±4 words.  Long-range dependencies (e.g. a
+  subject noun phrase 5+ words before the verb) are outside its reach and are an irreducible
+  error source for a local rule-based system.
 - **Sentence-level ambiguity:** a small number of sentences are genuinely ambiguous without
-  full semantic interpretation (e.g. `para sempre` = VERB "stops always" vs ADP "forever").
-  These are left as known limitations, not over-fitted with fragile rules.
-- **Dialect:** the corpus reflects European Portuguese phonology and orthographic conventions.
-  Brazilian Portuguese may differ in some disambiguation patterns (e.g. verbal clitic
-  placement).
-- **Dataset licence:** sentence content is original; no copyrighted text was used.  The
-  corpus is intended for HuggingFace publication under a permissive licence (CC-BY or
-  similar).
+  full semantic interpretation (e.g. `para sempre` = *stop* "stops always" vs *purpose*
+  "forever").  These remain known limitations rather than being over-fitted with fragile rules.
+- **Dataset licence:** sentence content is original; no copyrighted text is used.  The corpus
+  is published under a permissive licence.

@@ -3,10 +3,15 @@ Export the bifonia labeled corpus as CSV, JSON, and HuggingFace-compatible split
 
 Output files
 ------------
-dataset.csv          — full corpus: word, pos, ipa, diacritized, sentence, diacritized_sentence
+dataset.csv          — full corpus: word, sense, pos, ipa, diacritized, sentence, diacritized_sentence
 dataset.json         — same as JSON array
-hf/train.jsonl       — 80% stratified split (per word+POS) for HF upload
-hf/test.jsonl        — 20% stratified split
+hf/train.jsonl       — 80% split, stratified per (word, sense), for HF upload
+hf/test.jsonl        — 20% split
+
+The bucket key is MEANING (`sense`); `pos` is a descriptive attribute. The
+`diacritized*` columns carry the disambiguating diacritic (acute = open vowel,
+circumflex = closed) restored on the homograph — the target for a
+diacritics-restoration model.
 
 Usage::
 
@@ -19,50 +24,44 @@ import argparse
 import pathlib
 import random
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from bifonia import HOMOGRAPHS
+from bifonia.data import SENSE_POS
 from bifonia.__init__ import _DIACRITIZED
-from bifonia.corpus import CORPUS, iter_records
+from bifonia.corpus import iter_records
 
 
-def _diacritized_sentence(sentence: str, word: str, pos: str) -> str:
-    diac = _DIACRITIZED.get((word, pos))
+def _diacritized_sentence(sentence: str, word: str, sense: str) -> str:
+    diac = _DIACRITIZED.get((word, sense))
     if not diac:
         return sentence
-    return re.sub(
-        rf"\b{re.escape(word)}\b",
-        diac,
-        sentence,
-        flags=re.IGNORECASE,
-    )
+    return re.sub(rf"\b{re.escape(word)}\b", diac, sentence, flags=re.IGNORECASE)
 
 
 def build_records() -> list[dict]:
     records = []
-    for word, pos, sentence in iter_records():
-        ipa = HOMOGRAPHS.get(word, {}).get(pos, "")
-        diac_sent = _diacritized_sentence(sentence, word, pos)
-        records.append(
-            {
-                "word": word,
-                "pos": pos,
-                "ipa": ipa,
-                "diacritized": _DIACRITIZED.get((word, pos), word),
-                "sentence": sentence,
-                "diacritized_sentence": diac_sent,
-            }
-        )
+    for word, sense, sentence in iter_records():
+        records.append({
+            "word": word,
+            "sense": sense,
+            "pos": SENSE_POS.get(word, {}).get(sense, ""),
+            "ipa": HOMOGRAPHS.get(word, {}).get(sense, ""),
+            "diacritized": _DIACRITIZED.get((word, sense), word),
+            "sentence": sentence,
+            "diacritized_sentence": _diacritized_sentence(sentence, word, sense),
+        })
     return records
 
 
 def stratified_split(records: list[dict], test_frac: float = 0.2,
                      seed: int = 42) -> tuple[list[dict], list[dict]]:
-    """Stratified 80/20 split by (word, pos) so every class is represented in both."""
+    """Stratified, shuffled 80/20 split per (word, sense) so every bucket is
+    represented i.i.d. in both splits."""
     rng = random.Random(seed)
     by_class: dict = defaultdict(list)
     for r in records:
-        by_class[(r["word"], r["pos"])].append(r)
+        by_class[(r["word"], r["sense"])].append(r)
 
     train, test = [], []
     for key, group in sorted(by_class.items()):
@@ -70,6 +69,8 @@ def stratified_split(records: list[dict], test_frac: float = 0.2,
         n_test = max(1, int(len(group) * test_frac))
         test.extend(group[:n_test])
         train.extend(group[n_test:])
+    rng.shuffle(train)
+    rng.shuffle(test)
     return train, test
 
 
@@ -83,25 +84,22 @@ def main():
     parser = argparse.ArgumentParser(description="Export bifonia corpus.")
     parser.add_argument("--out", default=".", help="Output directory (default: current)")
     parser.add_argument("--hf", action="store_true",
-                        help="Also write HF-compatible train/test JSONL splits under <out>/hf/")
+                        help="Also write HF train/test JSONL splits under <out>/hf/")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for split")
     args = parser.parse_args()
 
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-
     records = build_records()
+    fields = ["word", "sense", "pos", "ipa", "diacritized", "sentence", "diacritized_sentence"]
 
-    # Full CSV
     csv_path = out / "dataset.csv"
-    fields = ["word", "pos", "ipa", "diacritized", "sentence", "diacritized_sentence"]
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=fields)
         writer.writeheader()
         writer.writerows(records)
     print(f"Wrote {len(records)} rows → {csv_path}")
 
-    # Full JSON
     json_path = out / "dataset.json"
     with json_path.open("w", encoding="utf-8") as fh:
         json.dump(records, fh, ensure_ascii=False, indent=2)
@@ -115,14 +113,9 @@ def main():
         write_jsonl(test, hf_dir / "test.jsonl")
         print(f"HF splits → {hf_dir}/  (train={len(train)}, test={len(test)})")
 
-    from collections import Counter
     by_word = Counter(r["word"] for r in records)
-    by_pos = Counter(r["pos"] for r in records)
-    print(f"\nTotal: {len(records)} sentences across {len(by_word)} words")
-    print("POS distribution:", dict(sorted(by_pos.items())))
-    print("\nPer-word counts:")
-    for w, n in sorted(by_word.items()):
-        print(f"  {w}: {n}")
+    by_sense = Counter(f"{r['word']}/{r['sense']}" for r in records)
+    print(f"\nTotal: {len(records)} sentences across {len(by_word)} words, {len(by_sense)} senses")
 
 
 if __name__ == "__main__":

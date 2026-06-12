@@ -10,7 +10,7 @@ disambiguation axis (what makes each homograph heterophonic).
 
 ## Words
 
-| Word | POS variants | IPA contrast | Infopedia |
+| Word | Senses (pos) | IPA contrast | Infopedia |
 |------|-------------|--------------|-----------|
 | acerto | NOUN / VERB | E fechado /e/ vs E aberto /ɛ/ | [acerto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/acerto) |
 | acordo | NOUN / VERB | O fechado /o/ vs O aberto /ɔ/ | [acordo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/acordo) |

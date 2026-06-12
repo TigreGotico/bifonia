@@ -1,0 +1,16 @@
+# sense: bundle
+Gera {n} frases em Português Europeu natural onde a palavra "molho" é usada como SUBSTANTIVO no sentido de «feixe ou conjunto atado».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "molho" (em minúsculas, sem acento diacrítico)
+- A palavra "molho" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — feixe ou conjunto atado de coisas: «molho de chaves», «molho de palha», «molho de lenha», «molho de flores»; também «de molho» (em remojo, a embeber).
+IPA: /ˈmɔʎu/ — vogal O aberta (o mesmo que /ó/).
+Exemplos: «um molho de chaves na mão», «perdeu o molho de chaves», «um molho de lenha para a lareira», «um molho de palha», «pôr o bacalhau de molho», «deixou o feijão de molho durante a noite», «trouxe um molho de flores silvestres».
+NÃO uses "molho" no sentido de condimento/molho de tomate — esse tem O fechado.
+NÃO uses "molho" como verbo de 1.ª pessoa (= «eu molho»).
+Responde APENAS com as frases, uma por linha:

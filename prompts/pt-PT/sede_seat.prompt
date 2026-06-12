@@ -1,0 +1,16 @@
+# sense: seat
+Gera {n} frases em Português Europeu natural onde a palavra "sede" é usada como SUBSTANTIVO no sentido de «sede social, localização central ou sede de instituição».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "sede" (em minúsculas, sem acento diacrítico)
+- A palavra "sede" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo feminino — localização central de uma organização, empresa, instituição ou governo; sede social.
+IPA: /ˈsɛdɨ/ — vogal E aberta (o mesmo que /é/).
+Exemplos: «a sede da empresa fica em Lisboa», «a sede das Nações Unidas», «a sede do partido foi inaugurada», «transferiram a sede para o Porto», «a sede do tribunal constitucional», «a sede social da associação».
+NÃO uses "sede" no sentido de sede de beber (thirst) ou desejo intenso — esses têm E fechado.
+NÃO uses "sede" como verbo (= «cede», 3.ª pessoa de «ceder») — esse tem E fechado.
+Responde APENAS com as frases, uma por linha:

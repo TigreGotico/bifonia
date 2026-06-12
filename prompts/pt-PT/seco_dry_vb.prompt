@@ -1,0 +1,15 @@
+# sense: dry_vb
+Gera {n} frases em Português Europeu natural onde a palavra "seco" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «secar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "seco" (em minúsculas, sem acento diacrítico)
+- A palavra "seco" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular — «eu seco» (tornar seco, enxugar, desidratar).
+Exemplos de uso: «seco o cabelo com o secador», «seco a louça com o pano», «seco as mãos na toalha».
+Pronúncia: /ˈsɛku/ — vogal E aberta.
+NÃO uses "seco" como adjetivo (= sem humidade) — essa leitura tem E fechado.
+Responde APENAS com as frases, uma por linha:

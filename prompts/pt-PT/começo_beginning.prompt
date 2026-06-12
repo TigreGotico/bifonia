@@ -1,0 +1,15 @@
+# sense: beginning
+Gera {n} frases em Português Europeu natural onde a palavra "começo" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "começo" (em minúsculas, sem acento diacrítico)
+- A palavra "começo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — início, princípio, ponto de partida.
+Exemplos de uso: «no começo do ano», «um começo difícil», «desde o começo», «ao começo parecia impossível».
+Pronúncia: /kuˈmesu/ — vogal E fechada.
+NÃO uses "começo" como verbo de 1.ª pessoa (= «eu começo agora») — essa leitura tem E aberto.
+Responde APENAS com as frases, uma por linha:

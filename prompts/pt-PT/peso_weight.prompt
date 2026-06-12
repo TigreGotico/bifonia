@@ -1,0 +1,15 @@
+# sense: weight
+Gera {n} frases em Português Europeu natural onde a palavra "peso" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "peso" (em minúsculas, sem acento diacrítico)
+- A palavra "peso" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) grandeza física (massa/gravidade); (2) objeto usado para pesar; (3) encargo, responsabilidade; (4) moeda de vários países.
+Exemplos de uso: «o peso do saco», «peso bantam», «o peso da responsabilidade», «peso em quilogramas», «peso-mosca».
+Pronúncia: /ˈpezu/ — vogal E fechada.
+NÃO uses "peso" como verbo de 1.ª pessoa (= «eu peso os ingredientes») — essa leitura tem E aberto.
+Responde APENAS com as frases, uma por linha:

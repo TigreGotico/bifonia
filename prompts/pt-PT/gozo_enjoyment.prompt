@@ -1,0 +1,15 @@
+# sense: enjoyment
+Gera {n} frases em Português Europeu natural onde a palavra "gozo" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "gozo" (em minúsculas, sem acento diacrítico)
+- A palavra "gozo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) prazer, fruição, desfrute; (2) zombaria, troça; (3) posse e uso de um direito («em gozo de licença»).
+Exemplos de uso: «o gozo das férias», «em gozo de licença», «para gozo do público», «que gozo!», «em gozo de direitos».
+Pronúncia: /ˈgozu/ — vogal O fechada.
+NÃO uses "gozo" como verbo de 1.ª pessoa (= «eu gozo») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

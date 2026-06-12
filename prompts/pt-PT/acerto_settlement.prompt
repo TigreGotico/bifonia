@@ -1,0 +1,15 @@
+# sense: settlement
+Gera {n} frases em Português Europeu natural onde a palavra "acerto" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "acerto" (em minúsculas, sem acento diacrítico)
+- A palavra "acerto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — correção, exatidão, ajuste ou resultado certeiro.
+Exemplos de uso: «um acerto de contas», «o acerto do diagnóstico», «com grande acerto», «acerto final».
+Pronúncia: /ɐˈseɾtu/ — vogal E fechada (acento gráfico circunflexo em "acêrto").
+NÃO uses "acerto" como verbo de 1.ª pessoa (= «eu acerto no alvo») — essa leitura tem E aberto.
+Responde APENAS com as frases, uma por linha:

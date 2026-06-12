@@ -1,113 +1,67 @@
 """
-Parallel corpus generation via free coding agents (opencode-free + antigravity-flash-low).
+Parallel corpus generation, bucketed by MEANING (`sense`).
 
 Usage
 -----
-Generate for words that need more sentences:
-    python corpus_gen.py                         # all priority words
-    python corpus_gen.py --word sede --pos VERB  # specific word/POS
-    python corpus_gen.py --word sobre            # all POS for a word
+Generate for senses that need more sentences:
+    python corpus_gen.py                            # all targets
+    python corpus_gen.py --word sede --sense thirst # one sense
+    python corpus_gen.py --word sobre               # all senses of a word
 
-Output is written to staged/<word>_<pos>.txt for human review before merging.
+Output is written to staged/<word>__<sense>.txt for human review, then:
+    python corpus_gen.py --merge staged/<word>__<sense>.txt
 
-After review, run:
-    python corpus_gen.py --merge staged/<word>_<pos>.txt
+The bucket key is `sense` (a meaning slug); `pos` and `ipa` for each record are
+looked up from heterophonic_homographs.csv. Each prompt file carries a
+`# sense: <slug>` header that assigns it to a sense (filenames are cosmetic).
 """
 
 import argparse
 import asyncio
+import os
+import json as _json
 import re
 import sys
+import urllib.request
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Targets: words that need more sentences.
-# Format: (word, pos, current_count, target_count, notes)
+# Targets: (word, sense, target_count). The bucket is topped up to target.
 # ---------------------------------------------------------------------------
 TARGETS = [
-    # ── Two-way words: 555 per POS → ~30k total ─────────────────────────────
-    ("acerto",     "NOUN", 290, 1000),
-    ("acerto",     "VERB", 280, 1000),
-    ("acordo",     "NOUN", 292, 1000),
-    ("acordo",     "VERB", 287, 1000),
-    ("cerro",      "NOUN", 290, 1000),
-    ("cerro",      "VERB", 281, 1000),
-    ("choro",      "NOUN", 288, 1000),
-    ("choro",      "VERB", 281, 1000),
-    ("colher",     "NOUN", 357, 1000),
-    ("colher",     "VERB", 359, 1000),
-    ("começo",     "NOUN", 356, 1000),
-    ("começo",     "VERB", 358, 1000),
-    ("conserto",   "NOUN", 358, 1000),
-    ("conserto",   "VERB", 359, 1000),
-    # coro: 2 prompt files (choir, blush) → meaning-balanced generation
-    ("coro",       "NOUN", 293, 1000),
-    ("coro",       "VERB", 281, 1000),
-    # corte: NOUN = royal court only (fem, closed o)
-    #        VERB = cut/incision (masc, open o) + subjunctive of cortar (open o)
-    ("corte",      "NOUN", 266, 1000),
-    ("corte",      "VERB", 321, 1000),
-    # forma: NOUN = mould/fôrma (closed o): forma de bolo/pão/sapato
-    #        VERB = figura/modo/maneira/formato/condição física/formatura militar
-    #               (open o, common) + 3sg of formar (open o)
-    ("forma",      "NOUN", 319, 1000),
-    ("forma",      "VERB", 317, 1000),
-    ("gosto",      "NOUN", 287, 1000),
-    ("gosto",      "VERB", 286, 1000),
-    ("gozo",       "NOUN", 320, 1000),
-    ("gozo",       "VERB", 320, 1000),
-    # jogo: 2 prompt files (game, play)
-    ("jogo",       "NOUN", 294, 1000),
-    ("jogo",       "VERB", 280, 1000),
-    # molho: NOUN = sauce only (closed o)
-    #        VERB = bundle/sheaf (open o) + 1sg molhar (open o)
-    ("molho",      "NOUN", 288, 1000),
-    ("molho",      "VERB", 292, 1000),
-    ("olho",       "NOUN", 286, 1000),
-    ("olho",       "VERB", 281, 1000),
-    ("para",       "ADP",  319, 1000),
-    ("para",       "VERB", 362, 1000),
-    # pelo: 3-way → 400 per POS
-    ("pelo",       "ADP",  287, 700),
-    ("pelo",       "NOUN", 339, 700),
-    ("pelo",       "VERB", 289, 700),
-    ("peso",       "NOUN", 286, 1000),
-    ("peso",       "VERB", 284, 1000),
-    ("porto",      "NOUN", 280, 1000),
-    ("porto",      "VERB", 281, 1000),
-    # posto: NOUN = cargo / posto de gasolina (closed o); the participle of
-    #        pôr ("foi posto") shares this closed reading — not a heterophone.
-    #        VERB = 1sg of postar ("eu posto") — the only open-o reading.
-    ("posto",      "NOUN", 385, 1000),
-    ("posto",      "VERB", 285, 1000),
-    ("rego",       "NOUN", 290, 1000),
-    ("rego",       "VERB", 291, 1000),
-    ("seco",       "ADJ",  228, 1000),
-    ("seco",       "VERB", 217, 1000),
-    # sede: NOUN = headquarters/seat only (open ɛ)
-    #       VERB = thirst+desire (closed e) — both senses are nouns; "sede" is
-    #              NOT a verb form (not from ceder → that conjugates to "cede")
-    ("sede",       "NOUN", 310, 1000),
-    ("sede",       "VERB", 287, 1000),
-    # sobre: 3-way → 400 per POS
-    #   ADP  = preposition (closed o)
-    #   NOUN = nautical "vela alta de um navio" (closed o, homophone of ADP)
-    #          — rare term: modest target to avoid model repetition/hallucination
-    #   VERB = pres. subjunctive / imperative of sobrar (open o)
-    ("sobre",      "ADP",  292, 700),
-    ("sobre",      "NOUN",   0, 150),
-    ("sobre",      "VERB",  90, 700),
-    # tola: NOUN = head/skull (colloquial) + hardwood (open ɔ)
-    #       ADJ  = foolish/silly + substantivized "a tola" (closed o)
-    ("tola",       "NOUN",   0, 1000),
-    ("tola",       "ADJ",  430, 1000),
-    ("torre",      "NOUN", 293, 1000),
-    ("torre",      "VERB", 281, 1000),
-    ("transtorno", "NOUN", 319, 1000),
-    ("transtorno", "VERB", 320, 1000),
+    ("acerto", "settlement", 1000), ("acerto", "adjust", 1000),
+    ("acordo", "agreement", 1000),  ("acordo", "wake", 1000),
+    ("cerro", "hill", 1000),        ("cerro", "shut", 1000),
+    ("choro", "weeping", 1000),     ("choro", "weep", 1000),
+    ("colher", "spoon", 1000),      ("colher", "harvest", 1000),
+    ("começo", "beginning", 1000),  ("começo", "begin", 1000),
+    ("conserto", "repair", 1000),   ("conserto", "mend", 1000),
+    ("coro", "choir", 1000),        ("coro", "blush", 1000),
+    ("corte", "court", 1000),       ("corte", "cut", 1000),
+    ("forma", "mould", 1000),       ("forma", "shape", 1000),
+    ("gosto", "taste", 1000),       ("gosto", "like", 1000),
+    ("gozo", "enjoyment", 1000),    ("gozo", "enjoy", 1000),
+    ("jogo", "game", 1000),         ("jogo", "play", 1000),
+    ("molho", "sauce", 1000),       ("molho", "bundle", 1000),
+    ("olho", "eye", 1000),          ("olho", "look", 1000),
+    ("para", "purpose", 1000),      ("para", "stop", 1000),
+    # 3-way word → smaller per-sense target
+    ("pelo", "by_the", 700),        ("pelo", "hair", 700), ("pelo", "peel", 700),
+    ("peso", "weight", 1000),       ("peso", "weigh", 1000),
+    ("porto", "harbour", 1000),     ("porto", "carry", 1000),
+    ("posto", "station", 1000),     ("posto", "post", 1000),
+    ("rego", "furrow", 1000),       ("rego", "water", 1000),
+    ("seco", "dry", 1000),          ("seco", "dry_vb", 1000),
+    ("sede", "seat", 1000),         ("sede", "thirst", 1000),
+    # 3-way word; "sail" (nautical) is rare → modest target to avoid repetition
+    ("sobre", "about", 700),        ("sobre", "sail", 150), ("sobre", "leftover", 700),
+    ("tola", "head", 1000),         ("tola", "foolish", 1000),
+    ("torre", "tower", 1000),       ("torre", "roast", 1000),
+    ("transtorno", "disorder", 1000), ("transtorno", "upset", 1000),
 ]
 
 _PROMPTS_DIR = Path(__file__).parent / "prompts" / "pt-PT"
+_CORPUS_JSONL = Path(__file__).parent / "bifonia" / "data" / "corpus.jsonl"
 
 # European-Portuguese word characters, for standalone-token matching.
 _PT_WORD = "a-zA-ZáéíóúàâêôãõçÁÉÍÓÚÀÂÊÔÃÕÇ"
@@ -119,23 +73,39 @@ def _has_token(word: str, line: str) -> bool:
                      line.lower()) is not None
 
 
-def _load_prompts(word: str, pos: str) -> list[str]:
-    """Return all .prompt files for this word/POS (one per meaning, sorted by name)."""
-    files = sorted(_PROMPTS_DIR.glob(f"{word}_{pos}*.prompt"))
-    if files:
-        return [f.read_text(encoding="utf-8") for f in files]
-    # fallback generic template
+def _prompt_sense(path: Path) -> str | None:
+    """Read the `# sense: <slug>` header that assigns a prompt to a sense."""
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = re.match(r"#\s*sense:\s*(\S+)", line)
+        if m:
+            return m.group(1)
+    return None
+
+
+def _strip_meta(text: str) -> str:
+    """Drop `#` header lines so the model never sees the sense tag."""
+    return "\n".join(l for l in text.splitlines() if not l.lstrip().startswith("#"))
+
+
+def _load_prompts(word: str, sense: str) -> list[str]:
+    """All prompt templates whose `# sense:` header matches (word, sense)."""
+    out = []
+    for f in sorted(_PROMPTS_DIR.glob(f"{word}_*.prompt")):
+        if _prompt_sense(f) == sense:
+            out.append(_strip_meta(f.read_text(encoding="utf-8")))
+    if out:
+        return out
     return [
-        f"Gera {{n}} frases em Português Europeu onde \"{word}\" é usado como {pos} "
-        f"(contexto: {{existing_sample}}).\nApenas uma frase por linha:"
+        f"Gera {{n}} frases em Português Europeu onde \"{word}\" é usado no sentido "
+        f"'{sense}' (contexto: {{existing_sample}}).\nApenas uma frase por linha:"
     ]
 
 
-def _load_existing(word: str, pos: str) -> set:
-    """Return the set of existing sentences for this word/POS from the corpus."""
+def _load_existing(word: str, sense: str) -> set:
+    """Existing sentences for this (word, sense) bucket from the corpus."""
     try:
         from bifonia.corpus import CORPUS
-        return set(CORPUS.get(word, {}).get(pos, []))
+        return set(CORPUS.get(word, {}).get(sense, []))
     except Exception:
         return set()
 
@@ -145,67 +115,49 @@ def _sample(existing: set, n: int = 5) -> str:
     return "; ".join(f'"{s[:50]}"' for s in sample) if sample else "(none yet)"
 
 
-async def _generate_one(provider: str, word: str, pos: str,
-                         existing: set, n: int, cwd: str,
-                         template: str | None = None,
-                         model: str | None = None) -> list[str]:
-    """Ask one agent to generate n sentences; return cleaned list."""
-    from agentpipe import Agent
-    if template is None:
-        template = _load_prompts(word, pos)[0]
-    prompt = template.replace("{n}", str(n)).replace(
-        "{existing_sample}", _sample(existing)
-    )
-    try:
-        raw = await Agent(provider, model=model).generate(prompt, cwd=cwd)
-    except Exception as e:
-        print(f"  [{provider}] ERROR: {e}", file=sys.stderr)
-        return []
-
+def _clean(raw: str, word: str) -> list[str]:
     lines = []
     for line in raw.splitlines():
         line = line.strip().strip('"').strip("'")
-        # Drop lines that look like meta-commentary or numbering
         if not line or line.startswith(("#", "-", "*", "```")):
             continue
         if re.match(r"^\d+[\.\)]", line):
             line = re.sub(r"^\d+[\.\)]\s*", "", line)
-        # Must contain the target word as a STANDALONE TOKEN (not a substring:
-        # rejects plurals "colheres", inflections "formam", and accented
-        # disambiguating variants "pára"/"pêlo" that aren't the headword).
+        # Must contain the headword as a STANDALONE TOKEN (rejects plurals,
+        # inflections, and diacritized variants like "pára"/"pêlo").
         if not _has_token(word, line):
             continue
-        # Sanity: at least 4 words
         if len(line.split()) < 4:
             continue
         lines.append(line)
     return lines
 
 
-import os
-import json as _json
-import urllib.request
-
 # Local Gemma server (no API keys, not rate-limited) — see workspace policy.
 LLM_ENDPOINT = os.environ.get("LLM_ENDPOINT", "http://192.168.1.200:8000")
 LLM_MODEL = os.environ.get("LLM_MODEL", "ggml-org/gemma-4-26B-A4B-it-GGUF")
-# Provider for generation: "haiku" (Claude Haiku via free agents), "gemma"
-# (local server), or "agents" (legacy free coding agents).
+# Provider: "haiku" (Claude Haiku via the claude CLI) or "gemma" (local server).
 GEN_PROVIDER = os.environ.get("GEN_PROVIDER", "haiku")
-
 # Claude Haiku via the Claude Code CLI ONLY (never opencode / third-party agents).
-# How many parallel claude-haiku calls to fan out per meaning.
 _HAIKU_FANOUT = int(os.environ.get("HAIKU_FANOUT", "3"))
 
 
-async def _live_haiku_agents() -> list:
-    """Claude Haiku reached only through the claude CLI provider."""
-    return [("claude-haiku", None)] * _HAIKU_FANOUT
+async def _generate_one(provider: str, word: str, existing: set, n: int, cwd: str,
+                        template: str, model: str | None = None) -> list[str]:
+    """Ask one agent to generate n sentences; return cleaned list."""
+    from agentpipe import Agent
+    prompt = template.replace("{n}", str(n)).replace("{existing_sample}", _sample(existing))
+    try:
+        raw = await Agent(provider, model=model).generate(prompt, cwd=cwd)
+    except Exception as e:
+        print(f"  [{provider}] ERROR: {e}", file=sys.stderr)
+        return []
+    return _clean(raw, word)
 
 
-async def _generate_one_gemma(word: str, pos: str, existing: set, n: int,
+async def _generate_one_gemma(word: str, existing: set, n: int,
                               template: str, temperature: float) -> list[str]:
-    """Generate via the local Gemma chat-completions endpoint; return cleaned list."""
+    """Generate via the local Gemma chat-completions endpoint."""
     prompt = template.replace("{n}", str(n)).replace("{existing_sample}", _sample(existing))
     body = {"model": LLM_MODEL, "temperature": temperature, "max_tokens": 1400,
             "messages": [{"role": "user", "content": prompt}]}
@@ -223,157 +175,121 @@ async def _generate_one_gemma(word: str, pos: str, existing: set, n: int,
     except Exception as e:
         print(f"  [gemma] ERROR: {e}", file=sys.stderr)
         return []
-
-    lines = []
-    for line in raw.splitlines():
-        line = line.strip().strip('"').strip("'")
-        if not line or line.startswith(("#", "-", "*", "```")):
-            continue
-        if re.match(r"^\d+[\.\)]", line):
-            line = re.sub(r"^\d+[\.\)]\s*", "", line)
-        if not _has_token(word, line):
-            continue
-        if len(line.split()) < 4:
-            continue
-        lines.append(line)
-    return lines
+    return _clean(raw, word)
 
 
-async def generate_batch(word: str, pos: str,
-                          current: int, target: int, cwd: str) -> list[str]:
-    """Fan out across all meaning-prompts; balance by meaning."""
-    existing = _load_existing(word, pos)
+async def generate_batch(word: str, sense: str, target: int, cwd: str) -> list[str]:
+    """Fan out across all prompts for this sense; collect new unique sentences."""
+    existing = _load_existing(word, sense)
     needed = max(0, target - len(existing))
     if needed <= 0:
-        print(f"  {word}/{pos}: already at target ({len(existing)}≥{target}), skipping")
+        print(f"  {word}/{sense}: already at target ({len(existing)}≥{target}), skipping")
         return []
 
-    prompts = _load_prompts(word, pos)
-    print(f"  {word}/{pos}: need {needed} more, {len(prompts)} meaning(s) via {GEN_PROVIDER}")
+    prompts = _load_prompts(word, sense)
+    print(f"  {word}/{sense}: need {needed} more, {len(prompts)} prompt(s) via {GEN_PROVIDER}")
 
     tasks = []
     if GEN_PROVIDER == "haiku":
-        # Claude Haiku via whichever free agents are live (not rate-limited).
-        agents = await _live_haiku_agents()
-        n_per_meaning = max(20, needed // len(prompts) // len(agents) + 15)
+        agents = [("claude-haiku", None)] * _HAIKU_FANOUT
+        n_each = max(20, needed // len(prompts) // len(agents) + 15)
         for template in prompts:
             for provider, model in agents:
-                tasks.append(_generate_one(provider, word, pos, existing,
-                                           n_per_meaning, cwd, template, model))
+                tasks.append(_generate_one(provider, word, existing, n_each, cwd, template, model))
     elif GEN_PROVIDER == "gemma":
-        # Several Gemma calls per meaning at varied temperature for diversity.
         per_call = min(40, max(20, needed // len(prompts) // 3 + 10))
         for template in prompts:
             for temp in (0.8, 0.95, 1.1, 1.2):
-                tasks.append(_generate_one_gemma(word, pos, existing, per_call, template, temp))
+                tasks.append(_generate_one_gemma(word, existing, per_call, template, temp))
     else:
-        n_per_meaning = max(20, needed // len(prompts) // 2 + 15)
-        for template in prompts:
-            tasks.append(_generate_one("opencode-free", word, pos, existing, n_per_meaning, cwd, template))
-            tasks.append(_generate_one("antigravity-flash-low", word, pos, existing, n_per_meaning, cwd, template))
-    results = await asyncio.gather(*tasks)
+        raise SystemExit(f"unknown GEN_PROVIDER={GEN_PROVIDER!r} (use haiku or gemma)")
 
-    all_sents = []
-    seen = set(s.lower() for s in existing)
+    results = await asyncio.gather(*tasks)
+    all_sents, seen = [], set(s.lower() for s in existing)
     for batch in results:
         for s in batch:
-            key = s.lower()
-            if key not in seen:
-                seen.add(key)
+            if s.lower() not in seen:
+                seen.add(s.lower())
                 all_sents.append(s)
-
     print(f"    → {len(all_sents)} new unique sentences collected")
     return all_sents
 
 
-def save_staged(word: str, pos: str, sentences: list[str], staged_dir: Path):
+def save_staged(word: str, sense: str, sentences: list[str], staged_dir: Path) -> Path:
     staged_dir.mkdir(exist_ok=True)
-    path = staged_dir / f"{word}_{pos}.txt"
-    with path.open("w", encoding="utf-8") as f:
-        for s in sentences:
-            f.write(s + "\n")
+    path = staged_dir / f"{word}__{sense}.txt"      # double underscore: sense may contain "_"
+    path.write_text("".join(s + "\n" for s in sentences), encoding="utf-8")
     print(f"    staged → {path}  ({len(sentences)} sentences)")
     return path
 
 
-_CORPUS_JSONL = Path(__file__).parent / "bifonia" / "data" / "corpus.jsonl"
-
-
-def _ipa_for(word: str, pos: str) -> str | None:
+def _pos_ipa(word: str, sense: str) -> tuple[str | None, str | None]:
     try:
-        from bifonia.data import HOMOGRAPHS
-        return HOMOGRAPHS.get(word, {}).get(pos)
+        from bifonia.data import HOMOGRAPHS, SENSE_POS
+        return SENSE_POS.get(word, {}).get(sense), HOMOGRAPHS.get(word, {}).get(sense)
     except Exception:
-        return None
+        return None, None
 
 
 def merge_staged(staged_file: Path):
-    """Append a staged file's sentences to corpus.jsonl (deduped, with IPA)."""
+    """Append a staged file's sentences to corpus.jsonl (globally deduped)."""
     import json
-    name = staged_file.stem          # e.g. "sobre_ADP"
-    parts = name.rsplit("_", 1)
-    if len(parts) != 2:
-        print(f"Cannot parse word/POS from filename {staged_file.name}")
+    word, _, sense = staged_file.stem.partition("__")
+    if not sense:
+        print(f"Cannot parse word__sense from filename {staged_file.name}")
         return
-    word, pos = parts
 
     sentences = [l.strip() for l in staged_file.read_text(encoding="utf-8").splitlines() if l.strip()]
-    if not sentences:
-        print("No sentences to merge.")
-        return
-
-    # reject any sentence where the headword is not a standalone token
     bad = [s for s in sentences if not _has_token(word, s)]
     if bad:
         print(f"  skipping {len(bad)} sentences without a standalone '{word}' token")
     sentences = [s for s in sentences if _has_token(word, s)]
+    if not sentences:
+        print("No sentences to merge.")
+        return
 
-    # existing (word,pos,sentence) keys for dedup
+    # global dedup: a sentence may live in only one bucket
     seen = set()
     if _CORPUS_JSONL.exists():
-        with _CORPUS_JSONL.open(encoding="utf-8") as fh:
-            for line in fh:
-                line = line.strip()
-                if not line:
-                    continue
-                r = json.loads(line)
-                seen.add((r["word"], r["pos"], r["sentence"].lower()))
+        for line in _CORPUS_JSONL.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                seen.add(json.loads(line)["sentence"].lower())
 
-    ipa = _ipa_for(word, pos)
+    pos, ipa = _pos_ipa(word, sense)
+    if ipa is None:
+        print(f"  unknown (word, sense) = ({word}, {sense}); not in CSV")
+        return
     added = 0
     with _CORPUS_JSONL.open("a", encoding="utf-8") as fh:
         for s in sentences:
-            key = (word, pos, s.lower())
-            if key in seen:
+            if s.lower() in seen:
                 continue
-            seen.add(key)
-            fh.write(json.dumps({"word": word, "pos": pos, "ipa": ipa,
-                                 "sentence": s}, ensure_ascii=False) + "\n")
+            seen.add(s.lower())
+            fh.write(json.dumps({"word": word, "sense": sense, "pos": pos,
+                                 "ipa": ipa, "sentence": s}, ensure_ascii=False) + "\n")
             added += 1
-    print(f"Merged {added}/{len(sentences)} new sentences ({word}/{pos}) into corpus.jsonl")
+    print(f"Merged {added}/{len(sentences)} new sentences ({word}/{sense}) into corpus.jsonl")
 
 
-async def main_async(word_filter: str | None, pos_filter: str | None, cwd: str):
+async def main_async(word_filter, sense_filter, cwd):
     staged_dir = Path(__file__).parent / "staged"
     targets = [t for t in TARGETS
                if (word_filter is None or t[0] == word_filter)
-               and (pos_filter is None or t[1] == pos_filter)]
-
+               and (sense_filter is None or t[1] == sense_filter)]
     if not targets:
         print("No matching targets.")
         return
-
-    for word, pos, current, target, *_ in targets:
-        print(f"\n── {word} / {pos} ──")
-        sentences = await generate_batch(word, pos, current, target, cwd)
+    for word, sense, target in targets:
+        print(f"\n── {word} / {sense} ──")
+        sentences = await generate_batch(word, sense, target, cwd)
         if sentences:
-            save_staged(word, pos, sentences, staged_dir)
+            save_staged(word, sense, sentences, staged_dir)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--word", default=None)
-    parser.add_argument("--pos", default=None)
+    parser.add_argument("--sense", default=None)
     parser.add_argument("--merge", default=None, help="Staged file to merge into corpus")
     parser.add_argument("--cwd", default=str(Path(__file__).parent))
     args = parser.parse_args()
@@ -381,8 +297,7 @@ def main():
     if args.merge:
         merge_staged(Path(args.merge))
         return
-
-    asyncio.run(main_async(args.word, args.pos, args.cwd))
+    asyncio.run(main_async(args.word, args.sense, args.cwd))
 
 
 if __name__ == "__main__":

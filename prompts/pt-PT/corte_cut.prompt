@@ -1,0 +1,17 @@
+# sense: cut
+Gera {n} frases em Português Europeu natural onde a palavra "corte" é usada como SUBSTANTIVO MASCULINO no sentido de «incisão, talho ou supressão».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "corte" (em minúsculas, sem acento diacrítico)
+- A palavra "corte" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo masculino — (1) ferimento ou incisão («o corte na mão»); (2) corte de cabelo; (3) corte orçamental/de energia/de pessoal; (4) corte de estrada/água/luz.
+IPA: /ˈkɔɾtɨ/ — vogal O aberta (o mesmo que /ó/).
+Dica gramatical: neste sentido "corte" é MASCULINO — «o corte», «do corte», «um corte», «esse corte».
+Exemplos: «o corte na pele», «fiz um corte no dedo», «o corte de cabelo ficou bem», «o corte orçamental afetou os serviços», «o corte de eletricidade durou horas», «o médico viu o corte», «um corte profundo no braço».
+NÃO uses "corte" no sentido de corte real/monarquia — esse tem O fechado.
+NÃO uses "corte" como forma verbal (conjuntivo de «cortar») — essa leitura também tem O aberto mas é verbo.
+Responde APENAS com as frases, uma por linha:

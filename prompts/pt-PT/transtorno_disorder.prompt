@@ -1,0 +1,15 @@
+# sense: disorder
+Gera {n} frases em Português Europeu natural onde a palavra "transtorno" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "transtorno" (em minúsculas, sem acento diacrítico)
+- A palavra "transtorno" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) perturbação mental (transtorno bipolar, TOC); (2) contratempo, transtorno logístico, inconveniente.
+Exemplos de uso: «transtorno obsessivo-compulsivo», «causou um transtorno enorme», «sem transtorno», «o transtorno da greve».
+Pronúncia: /tɾɐ̃ʃˈtoɾnu/ — vogal O fechada na sílaba tónica.
+NÃO uses "transtorno" como verbo de 1.ª pessoa (= «eu transtorno os planos») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

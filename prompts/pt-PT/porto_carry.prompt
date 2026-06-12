@@ -1,0 +1,15 @@
+# sense: carry
+Gera {n} frases em Português Europeu natural onde a palavra "porto" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «portar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "porto" (em minúsculas, sem acento diacrítico)
+- A palavra "porto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular de «portar» — comportar-se, conduzir-se; ou transportar/carregar.
+Exemplos de uso: «porto-me bem em qualquer circunstância», «porto as malas sem ajuda», «porto a bandeira com orgulho».
+Pronúncia: /ˈpɔɾtu/ — vogal O aberta.
+NÃO uses "porto" como substantivo (= harbour/vinho) — essa leitura tem O fechado.
+Responde APENAS com as frases, uma por linha:

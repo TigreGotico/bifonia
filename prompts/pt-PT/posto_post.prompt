@@ -1,0 +1,16 @@
+# sense: post
+Gera {n} frases em Português Europeu natural onde a palavra "posto" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «postar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "posto" (em minúsculas, sem acento diacrítico)
+- A palavra "posto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular de «postar» — (1) enviar pelo correio, depositar nos correios; (2) publicar online, nas redes sociais; (3) colocar/estacionar (uma sentinela, um guarda). O sujeito é «eu» (explícito ou implícito).
+Pronúncia: /ˈpɔʃtu/ — vogal O aberta.
+Exemplos: «eu posto as cartas todas as manhãs», «posto as fotografias no Instagram», «posto a encomenda ainda hoje», «eu posto sempre as atualizações no blogue», «posto um vigia à entrada», «todos os dias posto qualquer coisa nas redes sociais».
+NÃO uses "posto" como substantivo (= cargo, posto de gasolina/saúde) — essa leitura tem O fechado.
+NÃO uses "posto" como particípio passado de «pôr» (= colocado, «foi posto») — essa leitura tem O fechado, igual ao substantivo.
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+# sense: station
+Gera {n} frases em Português Europeu natural onde a palavra "posto" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "posto" (em minúsculas, sem acento diacrítico)
+- A palavra "posto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) cargo, função, posição; (2) posto de gasolina/saúde/fronteira; (3) instalação militar.
+Exemplos de uso: «um posto de trabalho», «posto de saúde», «o posto de gasolina», «posto da GNR», «posto de comandante».
+Pronúncia: /ˈpoʃtu/ — vogal O fechada.
+NÃO uses "posto" como particípio passado de «pôr» (= colocado) — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

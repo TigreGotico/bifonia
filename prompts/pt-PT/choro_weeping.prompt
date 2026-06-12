@@ -1,0 +1,15 @@
+# sense: weeping
+Gera {n} frases em Português Europeu natural onde a palavra "choro" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "choro" (em minúsculas, sem acento diacrítico)
+- A palavra "choro" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — pranto, ato de chorar; também género musical brasileiro.
+Exemplos de uso: «um choro de bebé», «o choro da criança», «conteve o choro», «rompeu em choro».
+Pronúncia: /ˈʃoɾu/ — vogal O fechada.
+NÃO uses "choro" como verbo de 1.ª pessoa (= «eu choro») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

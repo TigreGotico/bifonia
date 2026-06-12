@@ -1,0 +1,15 @@
+# sense: eye
+Gera {n} frases em Português Europeu natural onde a palavra "olho" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "olho" (em minúsculas, sem acento diacrítico)
+- A palavra "olho" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — órgão da visão; abertura, buraco («olho da agulha»); nódulo de gordura («olhos de gordura»).
+Exemplos de uso: «o olho direito», «com o olho vivo», «olho da agulha», «olho azul», «olho do furacão».
+Pronúncia: /ˈoʎu/ — vogal O fechada.
+NÃO uses "olho" como verbo de 1.ª pessoa (= «eu olho pela janela») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

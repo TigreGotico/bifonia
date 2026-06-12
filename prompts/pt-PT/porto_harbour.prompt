@@ -1,0 +1,15 @@
+# sense: harbour
+Gera {n} frases em Português Europeu natural onde a palavra "porto" é usada como SUBSTANTIVO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "porto" (em minúsculas, sem acento diacrítico)
+- A palavra "porto" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) porto/harbour, infraestrutura marítima; (2) vinho do Porto (escreve-se com maiúscula quando se refere ao vinho DOC, mas "porto" minúscula é aceite em contexto informal).
+Exemplos de uso: «no porto de Lisboa», «atracou no porto», «um copo de porto», «o porto de pesca», «porto comercial».
+Pronúncia: /ˈpoɾtu/ — vogal O fechada.
+NÃO uses "porto" como verbo de 1.ª pessoa (= «eu porto-me bem») — essa leitura tem O aberto.
+Responde APENAS com as frases, uma por linha:

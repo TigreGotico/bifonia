@@ -1,0 +1,15 @@
+# sense: blush
+Gera {n} frases em Português Europeu natural onde a palavra "coro" é usada como VERBO (1.ª pessoa do singular do presente do indicativo de «corar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "coro" (em minúsculas, sem acento diacrítico)
+- A palavra "coro" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: 1.ª pessoa do singular de «corar» — ruborizar-se de vergonha, timidez ou embaraço.
+IPA: /ˈkɔɾu/ — vogal O aberta (o mesmo que /ó/).
+Exemplos: «coro sempre que me fazem um elogio», «coro facilmente quando me confrontam», «coro só de lembrar o que disse», «coro de vergonha quando erro em público», «coro quando ele me olha assim», «coro sem querer e toda a gente vê».
+NÃO uses "coro" como substantivo (= conjunto de cantores, refrão) — esse tem O fechado.
+Responde APENAS com as frases, uma por linha:

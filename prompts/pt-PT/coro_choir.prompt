@@ -1,0 +1,15 @@
+# sense: choir
+Gera {n} frases em Português Europeu natural onde a palavra "coro" é usada como SUBSTANTIVO no sentido de «conjunto de cantores ou refrão».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "coro" (em minúsculas, sem acento diacrítico)
+- A palavra "coro" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: substantivo — (1) grupo de cantores («o coro da catedral», «coro polifónico»); (2) refrão de uma música («cantaram o coro em conjunto»); (3) expressão «em coro» = em uníssono; (4) conjunto de vozes ou protestos concordantes («um coro de protestos»).
+IPA: /ˈkoɾu/ — vogal O fechada (o mesmo que /ô/).
+Exemplos: «o coro da Sé cantou na cerimónia», «ensaiou com o coro durante meses», «cantaram o coro em uníssono», «um coro de aplausos», «em coro responderam que não», «o coro da catedral era famoso», «o coro entoou o hino».
+NÃO uses "coro" como verbo de 1.ª pessoa (= «eu coro de vergonha») — esse tem O aberto.
+Responde APENAS com as frases, uma por linha:
