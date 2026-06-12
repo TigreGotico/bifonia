@@ -1,0 +1,7 @@
+# sing_articles.voc — Singular articles o/a. Used in 'com a tola' (head) and 'forma para o bolo'
+# (mould purpose) checks. Subset of articles.voc.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+o
+a

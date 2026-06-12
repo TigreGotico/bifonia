@@ -1,0 +1,12 @@
+# sobre_adp_quant.voc — Scale quantifiers before 'sobre' used adverbially ('sabe MUITO sobre X',
+# 'aprendeu POUCO sobre') → about/concerning ADP → +5, and they must NOT be read
+# as noun determiners. Add degree quantifiers.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+muito
+pouco
+bastante
+nada
+tudo
+algo

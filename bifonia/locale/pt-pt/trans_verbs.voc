@@ -1,0 +1,25 @@
+# trans_verbs.voc — Transitive verbs whose object is a noun (tem, pode, quer, mostra…). Before a
+# 1st-person-spelled word they mean it's a NOUN object, not a finite verb ('tem
+# gosto refinado') — so the 1sg-verb signal is suppressed. Add transitive verbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+demonstra
+deve
+fica
+mostra
+parece
+pode
+possui
+possuía
+quer
+revela
+tem
+tenho
+ter
+teria
+teve
+tinha
+tinham
+tivesse
+têm

@@ -1,0 +1,26 @@
+# colher_control_verbs.voc — Control verbs that take an infinitive ('aprendeu A colher', 'voltou a
+# colher'). When one precedes 'a colher', colher is the infinitive VERB (to
+# harvest), not the spoon NOUN → score_verb +6. Add more control verbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+aprender
+aprendeu
+começar
+começou
+conseguir
+conseguiu
+continuar
+continuou
+decidir
+decidiu
+demorar
+demorou
+parou
+passou
+sair
+saiu
+tentar
+tentou
+voltar
+voltou

@@ -1,0 +1,14 @@
+# after_prep_weak.voc — Time adverbs/pronouns that can follow BOTH a preposition and the
+# finite verb 'pára' (amanhã, depois, sempre…). score_adp gives them only +2
+# (weak) instead of +5, so they don't over-claim ADP. Extend cautiously.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+amanhã
+depois
+já
+logo
+ontem
+quando
+sempre
+todos

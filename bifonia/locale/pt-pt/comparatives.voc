@@ -1,0 +1,7 @@
+# comparatives.voc — mais/menos — comparative degree before an adjective ('mais seco') →
+# score_adj +4. Strong adjective signal.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+mais
+menos

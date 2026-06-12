@@ -1,0 +1,7 @@
+# head_locative.voc — Locative prepositions before 'tola' (na, pela) → body-part head NOUN ('bati
+# NA tola') → +5. Add locatives that introduce the head sense.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+na
+pela

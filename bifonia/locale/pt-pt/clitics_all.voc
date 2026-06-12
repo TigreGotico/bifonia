@@ -1,0 +1,16 @@
+# clitics_all.voc — Every clitic pronoun. Used by score_adj to spot verb+clitic forms
+# ('chamaram-lhe') so a hyphen+clitic isn't mistaken for a noun head.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+me
+te
+se
+lhe
+lhes
+nos
+vos
+o
+a
+os
+as

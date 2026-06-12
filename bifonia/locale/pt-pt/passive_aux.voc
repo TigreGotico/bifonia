@@ -1,0 +1,12 @@
+# passive_aux.voc — Past/subjunctive forms of ser (foi, foram, fosse…) = passive auxiliary. Mark a
+# following past participle as VERB (+4) and 'posto' as the closed-o noun-like
+# participle (+8). Only past/subjunctive forms — present 'é/são' is a copula.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+foi
+fora
+foram
+forem
+fosse
+fossem

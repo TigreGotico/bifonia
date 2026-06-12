@@ -1,0 +1,9 @@
+# pure_negation.voc — Pure negation adverbs (não, nunca, jamais). 'para não/nunca X' = purpose ADP
+# + negated infinitive → score_adp +4. Distinct from frequency adverbs which can
+# follow the finite verb 'pára'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+não
+nunca
+jamais

@@ -1,0 +1,10 @@
+# articles.voc — Definite articles o/a/os/as. A free-standing article right AFTER 'pelo'
+# means it cannot be the contraction por+o (score_adp −8); after 'para' before a
+# stoppable noun it supports parar (VERB). Core grammar — rarely extended.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+o
+a
+os
+as

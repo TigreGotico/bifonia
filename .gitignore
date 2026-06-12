@@ -10,3 +10,11 @@ TODO.md
 ROADMAP.md
 dataset.csv
 dataset.json
+
+# scratch / staged working dirs and one-off temp files (not part of the lib)
+scratch/
+staged/
+fix_mislabeled.py
+verify.py
+*_verbo*.txt
+sede_verbo_115.txt

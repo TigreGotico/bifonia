@@ -1,0 +1,13 @@
+# intensifiers.voc — Degree intensifiers that modify adjectives (muito, completamente, tão…) →
+# score_adj +2 ('muito seco'). Add adverbs of degree.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+bastante
+bem
+completamente
+demasiado
+muito
+nada
+pouco
+tão

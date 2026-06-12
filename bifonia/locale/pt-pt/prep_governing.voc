@@ -1,0 +1,12 @@
+# prep_governing.voc — Prepositions that govern a noun complement (em, com, de, por, sem, entre).
+# Used to EXCLUDE 'em/com gozo de' from the 'gozar de' verb signal (those are
+# NOUN complement phrases). Add prepositions introducing a nominal complement.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+em
+com
+de
+por
+sem
+entre

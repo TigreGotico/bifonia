@@ -7,6 +7,8 @@ IPA data is loaded from tugalex's heterophonic_homographs.csv (sibling package).
 import csv
 import pathlib
 
+from bifonia.vocab import voc
+
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
 
 # word → {POS: IPA}  e.g. {"para": {"ADP": "ˈpɐɾɐ", "VERB": "ˈpaɾɐ"}}
@@ -15,9 +17,9 @@ with _CSV.open(encoding="utf-8") as fh:
     for row in csv.DictReader(fh):
         HOMOGRAPHS.setdefault(row["word"], {})[row["pos"]] = row["ipa"]
 
-# "sobre" ADP (about/concerning/over) shares IPA with NOUN (envelope) — the CSV
-# only carries NOUN and VERB entries, so inject the ADP reading explicitly.
-HOMOGRAPHS["sobre"]["ADP"] = HOMOGRAPHS["sobre"]["NOUN"]
+# "sobre" ADP (about/over) shares its closed-o IPA with the NOUN (nautical sail);
+# if an older CSV lacks the ADP row, fall back to the NOUN reading.
+HOMOGRAPHS["sobre"].setdefault("ADP", HOMOGRAPHS["sobre"].get("NOUN", "ˈsobɾɨ"))
 
 # derived per-POS dicts (backward-compatible)
 VERBS_IPA: dict = {w: d["VERB"] for w, d in HOMOGRAPHS.items() if "VERB" in d}
@@ -74,182 +76,30 @@ BASE_SCORE: dict = {
     # Small frequency priors to break near-ties.
     # Keep values ≤ 1 to avoid overriding any explicit context signal.
     # "sobre" ADP prior is intentionally 0: the DET-before+7 NOUN boost already
-    # gives score_noun=12 for unambiguous envelope sentences, and a non-zero ADP
-    # prior would create ties that degrade NOUN accuracy.
+    # gives score_noun=12 for unambiguous "a/um sobre" (nautical) sentences, and a
+    # non-zero ADP prior would create ties that degrade NOUN accuracy.
     # "pelo" most commonly ADP (por+o) in EP prose — +1 to break bare-context ties.
     "pelo": {"ADP": 1, "NOUN": 0, "VERB": 0},
     # three-way and two-way words: no safe non-zero prior without corpus tuning.
 }
 
-# ── semantic wordlists for specific words ─────────────────────────────────────
+# ── context wordlists (loaded from locale/<lang>/*.voc — see vocab.py) ─────────
+# Edit the .voc files to extend these without touching code.
 
-# "para" VERB ("parar" = to stop) — things that stop in European Portuguese.
-# If any of these appears as the SUBJECT (nearby prev nouns) or OBJECT after
-# "para", the VERB reading "pára/para" (stops) is strongly supported.
-# European Portuguese usage: vehicles, machines, bodily functions, processes.
-# Easy to extend: add the canonical EP noun for any stoppable entity.
-STOPPABLE_THINGS = {
-    # vehicles & transport (EP names)
-    "autocarro", "comboio", "metro", "eléctrico", "elétrico",
-    "carro", "automóvel", "viatura", "caminhão", "camião", "veículo",
-    "barco", "navio", "avião", "helicóptero", "mota", "bicicleta",
-    "escada", "rolante", "tapete",  # escalators/conveyor belts
-    # machines & equipment
-    "máquina", "motor", "bomba", "gerador", "ventilador", "turbina",
-    "impressora", "computador", "servidor", "relógio",
-    "correia", "transportadora", "elevador", "grua",
-    # bodily / biological processes
-    "coração", "hemorragia", "sangramento", "sangue", "pulsação",
-    "respiração", "choro", "tosse", "vómito",
-    # flows & processes
-    "música", "música", "som", "sinal", "transmissão", "emissão",
-    "obra", "obras", "construção", "produção", "actividade", "atividade",
-    "narração", "gravação", "reprodução", "música", "som",
-    "chuva", "neve", "granizo", "vento",
-    # abstract stops
-    "guerra", "conflito", "violência", "disputa", "greve",
-    "funcionamento", "serviço", "atendimento",
-}
+STOPPABLE_THINGS = set(voc("stoppable_things"))   # "para"=parar (VERB) subjects/objects
+DET   = set(voc("determiners"))                    # determiners + contracted prep+article
+QUANT = set(voc("quantifiers"))                    # quantifier determiners
+PRON  = set(voc("pronouns"))                        # personal / relative / clitic pronouns
+AUX_VERBS = set(voc("aux_verbs"))                  # auxiliary / movement verbs
+NUMERIC   = set(voc("numeric"))                    # cardinal number words
+SOBRE_GOV = set(voc("sobre_governors"))            # govern "sobre" as preposition
+NEVER_AFTER_PREP = set(voc("never_after_prep"))    # contracted forms invalid after ADP
 
-# ── context wordlists ─────────────────────────────────────────────────────────
+PREP = set(voc("ambiguous_preps"))
 
-DET = {
-    "o", "a", "os", "as",
-    "um", "uma", "uns", "umas",
-    "este", "esta", "estes", "estas",
-    "esse", "essa", "esses", "essas",
-    "aquele", "aquela", "aqueles", "aquelas",
-    "meu", "minha", "meus", "minhas",
-    "teu", "tua", "teus", "tuas",
-    "seu", "sua", "seus", "suas",
-    "do", "da", "dos", "das",
-    # contracted forms: "a+o/a/os/as" — treated as DET so NOUN scoring fires
-    "ao", "à", "aos", "às",
-    # contracted "em+article": "no/na/nos/nas" — appear before nouns in
-    # locative phrases ("no sobre", "na forma", "no porto"), strong NOUN signal
-    "no", "na", "nos", "nas",
-    # contracted "em+indefinite": "num/numa/nuns/numas" — same locative pattern
-    # ("num sobre", "numa forma", "num porto"), also NOUN signal
-    "num", "numa", "nuns", "numas",
-}
+BEFORE_PREP = set(voc("before_prep_extra")) | AUX_VERBS
 
-# Quantifier determiners: precede noun phrases like DET but are NOT included in
-# AFTER_PREP (to avoid giving ADP an inflated +5 bonus for "sobre algum X").
-# Used in score_noun and score_adj attributive checks.
-QUANT = {
-    "nenhum", "nenhuma", "nenhuns", "nenhumas",
-    "todo", "toda", "todos", "todas",
-    "cada",
-    "algum", "alguma", "alguns", "algumas",
-    "outro", "outra", "outros", "outras",
-    "certo", "certa", "certos", "certas",
-    "qualquer", "quaisquer",
-    "pouco", "pouca", "poucos", "poucas",
-    "muito", "muita", "muitos", "muitas",
-    "tanto", "tanta", "tantos", "tantas",
-}
-
-PRON = {
-    "eu", "tu", "ele", "ela",
-    "nós", "vós", "eles", "elas",
-    "me", "te", "se", "nos", "vos",
-    "quem", "que", "qual",
-}
-
-PREP = {"para", "pelo", "sobre"}
-
-AUX_VERBS = {
-    "vou", "vais", "vai", "vamos", "vão",
-    "fui", "foste", "foi", "fomos", "fostes", "foram",
-    "ficar", "ficou", "ficam", "fica",
-}
-
-NUMERIC = {
-    "um", "uma", "uns", "umas", "dois", "duas",
-    "três", "quatro", "cinco", "seis", "sete", "oito", "nove",
-    "dez", "onze", "doze", "treze", "catorze", "quinze", "dezasseis",
-    "dezassete", "dezoito", "dezanove", "vinte", "trinta", "quarenta",
-    "cinquenta", "sessenta", "setenta", "oitenta", "noventa", "cem",
-    "duzentos", "duzentas", "trezentos", "trezentas", "quatrocentos",
-    "mil", "milhões", "triliões",
-}
-
-BEFORE_PREP = {"parte"} | AUX_VERBS
-
-# Nouns and verbs that strongly govern "sobre" as a preposition meaning
-# "about/concerning".  Presence of any of these immediately before "sobre"
-# is a reliable ADP signal (e.g. "caso sobre X", "falou sobre X").
-SOBRE_GOV = {
-    # governing nouns ("caso" excluded: doubles as conditional conjunction + subjunctive VERB,
-    # e.g. "caso sóbre comida" = "if food is left over"; plural "casos" is unambiguous)
-    "casos", "artigo", "artigos", "livro", "livros", "livrete",
-    "debate", "debates", "discussão", "discussões", "opinião", "opiniões",
-    "informação", "informações", "notícia", "notícias", "relatório", "relatórios",
-    "dados", "evidência", "evidências", "estudo", "estudos", "análise", "análises",
-    "investigação", "investigações", "pesquisa", "pesquisas", "texto", "textos",
-    "documento", "documentos", "declaração", "declarações", "comentário", "comentários",
-    "reflexão", "reflexões", "pergunta", "perguntas", "dúvida", "dúvidas",
-    "conferência", "conferências", "palestra", "palestras", "seminário", "seminários",
-    "apresentação", "apresentações", "consenso", "unanimidade", "acordo",
-    "posição", "posições", "ponto", "pontos", "questão", "questões",
-    "problema", "problemas", "tema", "temas", "assunto", "assuntos",
-    "situação", "situações", "aspeto", "aspetos", "aspecto", "aspectos",
-    "direito", "direitos", "lei", "leis", "regra", "regras",
-    # publications, media, documents, talks that introduce "sobre" as ADP
-    "manual", "manuais", "monografia", "monografias", "capítulo", "capítulos",
-    "biografia", "biografias", "blog", "blogs", "podcast", "podcasts",
-    "simpósio", "simpósios", "colóquio", "colóquios", "congresso", "congressos",
-    "vídeo", "vídeos", "filme", "filmes", "série", "séries", "documentário", "documentários",
-    "reportagem", "reportagens", "entrevista", "entrevistas", "crónica", "crónicas",
-    "poema", "poemas", "conto", "contos", "romance", "romances", "ensaio", "ensaios",
-    "teoria", "teorias", "hipótese", "hipóteses", "tese", "teses", "dissertação", "dissertações",
-    # event/course/workshop framing nouns that introduce "sobre" as ADP
-    "workshop", "workshops", "webinar", "webinars", "curso", "cursos",
-    "módulo", "módulos", "unidade", "unidades", "formação", "formações",
-    "programa", "programas", "projeto", "projetos", "iniciativa", "iniciativas",
-    "tratado", "tratados", "acordo", "acordos", "protocolo", "protocolos",
-    "convênio", "convênios", "convenção", "convenções", "resolução", "resoluções",
-    "questionário", "questionários", "inquérito", "inquéritos", "sondagem", "sondagens",
-    "inquérito", "relatório", "exposição", "exposições", "mostra", "mostras",
-    "campanha", "campanhas", "projeto", "projetos", "ação", "ações",
-    "legislação", "regulamento", "regulamentos", "norma", "normas", "decreto", "decretos",
-    "proposta", "propostas", "recomendação", "recomendações", "diretiva", "diretivas",
-    # governing verbs (3rd-person or infinitive forms common in context)
-    "falar", "fala", "falou", "falamos", "falam",
-    "escrever", "escreve", "escreveu", "escrevemos", "escrevem",
-    "pensar", "pensa", "pensou", "pensamos", "pensam",
-    "saber", "sabe", "soube", "sabemos", "sabem",
-    "aprender", "aprende", "aprendeu", "aprendemos", "aprendem",
-    "ensinar", "ensina", "ensinou", "ensinamos", "ensinam",
-    "discutir", "discute", "discutiu", "discutimos", "discutem",
-    "concordar", "concorda", "concordou",
-    "discordar", "discorda", "discordou",
-    "decidir", "decide", "decidiu",
-    "conversar", "conversa", "conversou",
-    "refletir", "reflete", "refletiu",
-    "unanimidade", "consenso",
-}
-
-AFTER_PREP = (
-    {"amanhã", "ontem", "depois", "sempre", "logo", "já", "quando", "todos", "ti", "mim",
-     # interrogative + relative pronouns following prepositions
-     "quê", "quem", "qual", "quais",
-     # possessive determiners (seu/teu/meu/nosso/vosso): "pelo seu bem", "pelo meu cálculo"
-     "meu", "minha", "meus", "minhas",
-     "teu", "tua", "teus", "tuas",
-     "seu", "sua", "seus", "suas",
-     "nosso", "nossa", "nossos", "nossas",
-     "vosso", "vossa", "vossos", "vossas",
-     # common Portuguese cities / destinations (lowercased; proper nouns lost after tokenize)
-     "lisboa", "porto", "coimbra", "braga", "faro", "évora", "setúbal", "viseu", "aveiro",
-     "sintra", "cascais", "almada", "funchal", "ponta", "angra", "horta",
-     "madrid", "paris", "berlim", "roma", "londres", "amsterdam", "bruxelas",
-     "brasil", "angola", "moçambique", "cabo", "guiné", "portugal", "espanha",
-    }
-    | DET | PRON
-) - {"do", "da", "dos", "das", "no", "na", "nos", "nas",
-     # contracted "em+article" forms signal NOUN, not valid after ADP "para/pelo/sobre"
-     "num", "numa", "nuns", "numas"}
-# contracted article forms are NOUN signals, not valid ADP complements
-
-NEVER_AFTER_PREP = {"ao", "aos", "à", "às", "no", "na", "nos", "nas"}
+# Tokens that may follow a preposition (ADP complements). Built from the .voc
+# leaf list plus DET|PRON, minus contracted article forms (those signal NOUN).
+_AFTER_PREP_EXCL = set(voc("after_prep_exclude"))
+AFTER_PREP = (set(voc("after_prep_extra")) | DET | PRON) - _AFTER_PREP_EXCL

@@ -1,0 +1,17 @@
+# locative_contractions.voc — de/em/a + article contractions excluded from the subject-DET check (they
+# introduce PPs, not nominal subjects). Subtracted from DET for _SUBJ_DET.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ao
+aos
+da
+das
+do
+dos
+na
+nas
+no
+nos
+à
+às

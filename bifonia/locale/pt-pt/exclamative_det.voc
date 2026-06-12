@@ -1,0 +1,6 @@
+# exclamative_det.voc — Exclamative 'que' ('Que ideia tola!'). Used ONLY in score_adj's attributive
+# check so 'que NOUN ADJ' scores the adjective. Keep minimal.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+que

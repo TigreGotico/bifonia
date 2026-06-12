@@ -1,0 +1,44 @@
+# copula.voc — Copular & semi-copular verbs (é, está, ficou, parece…). A copula directly
+# before the word introduces a predicative ADJECTIVE → score_adj +5
+# ('o tempo está seco'). Add other linking/becoming verbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+aparenta
+aparentava
+continua
+era
+eram
+estar
+estava
+estavam
+está
+estão
+fica
+ficam
+ficar
+ficara
+ficaste
+ficou
+fique
+fiquem
+fiquemos
+fiques
+foi
+foram
+foste
+parece
+parecer
+pareceu
+parecia
+pareciam
+permanece
+revelou
+seja
+sejam
+sejas
+ser
+sido
+são
+tornou
+é

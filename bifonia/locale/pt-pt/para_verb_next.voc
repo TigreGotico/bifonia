@@ -1,0 +1,17 @@
+# para_verb_next.voc — Contracted prepositions/temporal words after 'para' (no, ao, durante, após…)
+# → finite verb parar + locative/temporal PP → +5 VERB ('pára no cruzamento').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ao
+aos
+após
+durante
+em
+entre
+na
+nas
+no
+nos
+à
+às

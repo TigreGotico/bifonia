@@ -1,0 +1,40 @@
+# quantifiers.voc — Quantifier determiners (nenhum, todo, cada, algum…). Behave like determiners
+# before noun phrases (score_noun/score_adj). Add quantifier/indefinite forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+algum
+alguma
+algumas
+alguns
+cada
+certa
+certas
+certo
+certos
+muita
+muitas
+muito
+muitos
+nenhum
+nenhuma
+nenhumas
+nenhuns
+outra
+outras
+outro
+outros
+pouca
+poucas
+pouco
+poucos
+quaisquer
+qualquer
+tanta
+tantas
+tanto
+tantos
+toda
+todas
+todo
+todos

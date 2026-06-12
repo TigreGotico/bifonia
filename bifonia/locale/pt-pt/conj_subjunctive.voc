@@ -1,0 +1,10 @@
+# conj_subjunctive.voc — Conjunctions that open a subjunctive clause (caso, embora…). Before an
+# ambiguous word they mark it a finite VERB ('caso sobre comida') → +4 VERB.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+caso
+conquanto
+contanto
+embora
+salvo

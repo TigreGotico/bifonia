@@ -1,0 +1,19 @@
+# forma_shape_prev.voc — Words BEFORE 'forma' that fix the shape/manner sense (desta, dessa, boa, má,
+# perfeita…) → open-o VERB, overriding any stray baking word. Add demonstratives
+# /quality adjectives that introduce 'forma' = manner/figure.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+boa
+dessa
+desta
+grande
+ma
+má
+nessa
+nesta
+otima
+optima
+perfeita
+ótima
+óptima

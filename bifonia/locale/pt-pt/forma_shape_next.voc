@@ -1,0 +1,9 @@
+# forma_shape_next.voc — Words AFTER 'forma' that fix the shape sense (geométrica, física) → open-o
+# VERB bucket, never the mould. Add shape/state nouns that follow 'forma'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+fisica
+física
+geometrica
+geométrica

@@ -1,0 +1,20 @@
+# adv_bridge.voc — Short adverbs that sit between a finite verb and its object NP
+# ("seco PRIMEIRO as mãos"). Used by score_verb: <word> ADV DET → +1 VERB,
+# helping a verb reading beat a noun reading when an adverb intervenes.
+# Extend with other manner/sequence adverbs that can split verb + object.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ainda
+apenas
+bem
+então
+imediatamente
+já
+logo
+mal
+nunca
+primeiro
+rapidamente
+sempre
+também

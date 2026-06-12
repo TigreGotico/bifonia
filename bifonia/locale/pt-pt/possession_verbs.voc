@@ -1,0 +1,17 @@
+# possession_verbs.voc — Possession verbs (tem, tinha, possui…) before 'pelo' → body-hair/fur NOUN
+# ('o cão tem pelo comprido') → +6. Add 'have/possess' verb forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+possuem
+possui
+possuía
+tem
+ter
+teria
+tinha
+tinham
+tiver
+tivera
+tivesse
+têm

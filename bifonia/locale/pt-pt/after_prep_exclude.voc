@@ -1,0 +1,18 @@
+# after_prep_exclude.voc — de/em + article contractions (do, no, num …).
+# Subtracted from AFTER_PREP: they signal a NOUN phrase, so they are NOT valid
+# complements of the prepositions para/pelo/sobre. Rarely needs extending.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+da
+das
+do
+dos
+na
+nas
+no
+nos
+num
+numa
+numas
+nuns

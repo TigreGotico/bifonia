@@ -1,4 +1,4 @@
-Gera {n} frases em Português Europeu natural onde a palavra "sobre" é usada como VERBO (3.ª pessoa do singular do presente do indicativo de «sobrar»).
+Gera {n} frases em Português Europeu natural onde a palavra "sobre" é usada como VERBO (presente do conjuntivo ou imperativo de «sobrar»).
 
 Regras obrigatórias:
 - Exatamente uma frase por linha, sem numeração, marcadores ou explicações
@@ -7,8 +7,8 @@ Regras obrigatórias:
 - Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 
-Significado: 3.ª pessoa do singular de «sobrar» — ficar em excesso, restar, não ser consumido.
-Exemplos de uso: «sobre dinheiro no fim do mês», «sobre comida depois do jantar», «sobre tempo se trabalharmos bem», «não sobre nada».
+Significado: forma «sobre» do verbo «sobrar» (ficar em excesso, restar) — presente do conjuntivo («que eu/ele sobre») ou imperativo. NOTA: a 3.ª pessoa do presente do indicativo é «sobra», NÃO «sobre»; por isso usa contextos de conjuntivo/imperativo, normalmente introduzidos por «que», «talvez», «espero que», «tomara que», «oxalá».
+Exemplos de uso: «espero que sobre dinheiro no fim do mês», «talvez sobre comida depois do jantar», «tomara que sobre tempo para descansar», «oxalá não sobre ninguém de fora», «que sobre sempre algum para os imprevistos».
 Pronúncia: /ˈsɔbɾɨ/ — vogal O aberta.
 NÃO uses "sobre" como preposição nem como substantivo.
 Responde APENAS com as frases, uma por linha:

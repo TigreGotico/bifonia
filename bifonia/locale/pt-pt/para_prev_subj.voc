@@ -1,0 +1,10 @@
+# para_prev_subj.voc — Subjects/adverbs before 'para' (quando, quem, sempre, nunca, já) that mark
+# the finite verb parar → +3 VERB. Add wh-words/adverbs preceding 'pára'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+quando
+quem
+sempre
+nunca
+já

@@ -1,0 +1,21 @@
+# fem_det.voc — Feminine determiners before 'corte' (a, da, uma, à…). Royal-court 'corte' is
+# exclusively feminine, so these mark the closed-o NOUN reading → +7. Add
+# feminine determiner forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+a
+aquela
+da
+daquela
+essa
+esta
+minha
+na
+naquela
+nossa
+pela
+sua
+tua
+uma
+à

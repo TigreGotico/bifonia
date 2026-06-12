@@ -472,18 +472,18 @@
 {"sentence": "Coro quando me fazem uma pergunta que não sei responder.", "word": "coro", "pos": "VERB", "xfail": null}
 {"sentence": "Coro ao ver a minha fotografia nos jornais após o evento.", "word": "coro", "pos": "VERB", "xfail": null}
 {"sentence": "Coro quando me agradecem de forma muito efusiva e pública.", "word": "coro", "pos": "VERB", "xfail": null}
-{"sentence": "O corte de cabelo ficou exactamente como ela pediu ao cabeleireiro.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte orçamental afectou os serviços públicos de todo o país.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de electricidade durou três horas sem aviso prévio.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte do bolo de aniversário foi feito pela própria aniversariante.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de água foi necessário para fazer a reparação na tubagem.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte do cabelo é feito de três em três meses normalmente.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte da carne deve ser feito contra as fibras para ficar mais macio.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte das comunicações isolou a aldeia durante dois dias inteiros.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte do financiamento obrigou à suspensão do projeto de investigação.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de faixa inaugurou oficialmente o novo hospital da cidade.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte fino do presunto revela o talento do cortador experiente.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de cabelo novo deu-lhe uma aparência completamente diferente.", "word": "corte", "pos": "NOUN", "xfail": null}
+{"sentence": "O corte de cabelo ficou exactamente como ela pediu ao cabeleireiro.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte orçamental afectou os serviços públicos de todo o país.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de electricidade durou três horas sem aviso prévio.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte do bolo de aniversário foi feito pela própria aniversariante.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de água foi necessário para fazer a reparação na tubagem.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte do cabelo é feito de três em três meses normalmente.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte da carne deve ser feito contra as fibras para ficar mais macio.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte das comunicações isolou a aldeia durante dois dias inteiros.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte do financiamento obrigou à suspensão do projeto de investigação.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de faixa inaugurou oficialmente o novo hospital da cidade.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte fino do presunto revela o talento do cortador experiente.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de cabelo novo deu-lhe uma aparência completamente diferente.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "A corte real reuniu-se no palácio para a cerimónia de abertura.", "word": "corte", "pos": "NOUN", "xfail": null}
 {"sentence": "A corte do rei era famosa pelo seu luxo e intrigas políticas.", "word": "corte", "pos": "NOUN", "xfail": null}
 {"sentence": "A corte medieval era composta por nobres, clérigos e conselheiros.", "word": "corte", "pos": "NOUN", "xfail": null}
@@ -501,19 +501,19 @@
 {"sentence": "Corte o tecido com muito cuidado para não desperdiçar material.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte os galhos secos da árvore antes que caiam por si mesmos.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte o acesso ao sistema se detectar actividade suspeita.", "word": "corte", "pos": "VERB", "xfail": null}
-{"sentence": "A forma do vaso é muito elegante e combina com a decoração.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma como ele tratou os colegas foi completamente inaceitável.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "Não há outra forma de resolver este problema sem diálogo aberto.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma da cozedura influencia muito o resultado final do bolo.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma do edifício foi inspirada nas ondas do oceano Atlântico.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma como ela fala cativa toda a gente à volta imediatamente.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma de preparar o bacalhau varia consoante a região do país.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma mais eficaz é a preventiva, antes de o problema surgir.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma geométrica mais comum na natureza é a espiral logarítmica.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma de avaliar os alunos mudou muito nos últimos vinte anos.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma como ele se vestia revelava muito sobre a sua personalidade.", "word": "forma", "pos": "NOUN", "xfail": null}
+{"sentence": "A forma do vaso é muito elegante e combina com a decoração.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma como ele tratou os colegas foi completamente inaceitável.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "Não há outra forma de resolver este problema sem diálogo aberto.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma da cozedura influencia muito o resultado final do bolo.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma do edifício foi inspirada nas ondas do oceano Atlântico.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma como ela fala cativa toda a gente à volta imediatamente.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma de preparar o bacalhau varia consoante a região do país.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma mais eficaz é a preventiva, antes de o problema surgir.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma geométrica mais comum na natureza é a espiral logarítmica.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma de avaliar os alunos mudou muito nos últimos vinte anos.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma como ele se vestia revelava muito sobre a sua personalidade.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A forma que ela usa para fazer o bolo é de silicone resistente ao forno.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma da ilha vista do ar parece um dragão deitado no oceano.", "word": "forma", "pos": "NOUN", "xfail": null}
+{"sentence": "A forma da ilha vista do ar parece um dragão deitado no oceano.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A empresa forma técnicos especializados todos os anos com rigor.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A escola forma cidadãos responsáveis e conscientes do mundo.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A experiência forma o carácter melhor do que qualquer livro lido.", "word": "forma", "pos": "VERB", "xfail": null}
@@ -1123,16 +1123,16 @@
 {"sentence": "Coro quando me pedem para cantar mesmo que conheça a letra.", "word": "coro", "pos": "VERB", "xfail": null}
 {"sentence": "Coro ao lembrar as coisas menos inteligentes que já disse.", "word": "coro", "pos": "VERB", "xfail": null}
 {"sentence": "Coro quando me apresentam como a melhor da turma ao pai.", "word": "coro", "pos": "VERB", "xfail": null}
-{"sentence": "O corte de luz afectou todo o bairro durante a manhã inteira.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de gastos foi necessário para equilibrar o orçamento.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte do fio revelou o interior colorido do cabo eléctrico.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de financiamento suspendeu o programa de investigação.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de relações diplomáticas foi um sinal grave de tensão.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de energia solar deixou o sistema de aquecimento parado.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte transversal do tronco revelou os anéis de crescimento.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte de acesso à autoestrada obrigou os condutores a desviar.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte final do filme ficou diferente do que a realizadora tinha previsto.", "word": "corte", "pos": "NOUN", "xfail": null}
-{"sentence": "O corte do tecido foi feito na diagonal para maior elasticidade.", "word": "corte", "pos": "NOUN", "xfail": null}
+{"sentence": "O corte de luz afectou todo o bairro durante a manhã inteira.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de gastos foi necessário para equilibrar o orçamento.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte do fio revelou o interior colorido do cabo eléctrico.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de financiamento suspendeu o programa de investigação.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de relações diplomáticas foi um sinal grave de tensão.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de energia solar deixou o sistema de aquecimento parado.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte transversal do tronco revelou os anéis de crescimento.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte de acesso à autoestrada obrigou os condutores a desviar.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte final do filme ficou diferente do que a realizadora tinha previsto.", "word": "corte", "pos": "VERB", "xfail": null}
+{"sentence": "O corte do tecido foi feito na diagonal para maior elasticidade.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte o fio com a tesoura afiada para um resultado limpo.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte as rosas antes que murchem e ponha-as num vaso com água.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte a ligação à internet se não precisar dela durante o estudo.", "word": "corte", "pos": "VERB", "xfail": null}
@@ -1143,16 +1143,16 @@
 {"sentence": "Corte as beiras do bolo para ficarem todas iguais e apresentáveis.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte o molde com precisão para que o tecido fique perfeito.", "word": "corte", "pos": "VERB", "xfail": null}
 {"sentence": "Corte a conversa quando perceber que está a ser manipulada.", "word": "corte", "pos": "VERB", "xfail": null}
-{"sentence": "A forma como ele sorriu disse tudo sem precisar de palavras.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma do cristal é determinada pela sua estrutura molecular.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "Não há outra forma de conseguir isso sem muito esforço diário.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma de comunicar influencia muito o resultado das negociações.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma dos montes ao fundo lembrava um perfil humano deitado.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma mais simples nem sempre é a mais eficaz para todos.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma como ela reage à pressão revela muito do seu carácter.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma de preparar a massa folhada exige paciência e técnica.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma como o projeto foi apresentado foi o segredo do sucesso.", "word": "forma", "pos": "NOUN", "xfail": null}
-{"sentence": "A forma geométrica do pavilhão foi inspirada numa concha marinha.", "word": "forma", "pos": "NOUN", "xfail": null}
+{"sentence": "A forma como ele sorriu disse tudo sem precisar de palavras.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma do cristal é determinada pela sua estrutura molecular.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "Não há outra forma de conseguir isso sem muito esforço diário.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma de comunicar influencia muito o resultado das negociações.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma dos montes ao fundo lembrava um perfil humano deitado.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma mais simples nem sempre é a mais eficaz para todos.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma como ela reage à pressão revela muito do seu carácter.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma de preparar a massa folhada exige paciência e técnica.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma como o projeto foi apresentado foi o segredo do sucesso.", "word": "forma", "pos": "VERB", "xfail": null}
+{"sentence": "A forma geométrica do pavilhão foi inspirada numa concha marinha.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A prática forma os hábitos que moldam o nosso carácter ao longo dos anos.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A leitura forma leitores críticos capazes de questionar o que lêem.", "word": "forma", "pos": "VERB", "xfail": null}
 {"sentence": "A família forma os valores essenciais que nos guiam durante a vida.", "word": "forma", "pos": "VERB", "xfail": null}

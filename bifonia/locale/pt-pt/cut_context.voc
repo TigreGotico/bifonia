@@ -1,0 +1,23 @@
+# cut_context.voc — Nouns/adjectives of cutting around 'corte' (cabelo, energia, orçamental…).
+# Mark the cut/incision sense (open-o, VERB bucket) → +4. Add things that get cut
+# or that 'corte de X' commonly refers to.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+braço
+cabelo
+custos
+de
+dedo
+eletricidade
+energia
+fundo
+mão
+orçamental
+orçamento
+pele
+perna
+pessoal
+profundo
+superficial
+água

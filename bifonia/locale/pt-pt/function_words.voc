@@ -1,0 +1,31 @@
+# function_words.voc — Function words that can never be a noun head. Guards score_adj's
+# post-positive 'NOUN ADJ' rule so a preposition/conjunction before the adjective
+# isn't mistaken for the noun. Extend with closed-class words only.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+a
+com
+como
+de
+e
+em
+já
+lhe
+lhes
+mais
+mas
+menos
+muito
+não
+o
+onde
+ou
+para
+pela
+pelo
+por
+quando
+que
+se
+sobre

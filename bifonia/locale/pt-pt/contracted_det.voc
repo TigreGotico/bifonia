@@ -1,0 +1,22 @@
+# contracted_det.voc — Contracted preposition+article forms (do/no/ao/num …). They introduce
+# locative/partitive PPs, NOT direct objects — so score_verb does NOT count them
+# as a DET-after object signal. Shared by the colher/verb-object checks.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ao
+aos
+da
+das
+do
+dos
+na
+nas
+no
+nos
+num
+numa
+numas
+nuns
+à
+às

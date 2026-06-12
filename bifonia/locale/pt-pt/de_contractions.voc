@@ -1,0 +1,9 @@
+# de_contractions.voc — de + article (do/da/dos/das). After a word they signal a possessive/partitive
+# phrase → mild NOUN evidence (score_noun +3). Core grammar.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+do
+da
+dos
+das

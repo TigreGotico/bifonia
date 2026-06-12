@@ -1,0 +1,48 @@
+# mould_cues.voc — Unambiguous baking/casting cues anywhere in the sentence (untar, forno,
+# desenformar, silicone, verteu…) → 'forma' = mould (closed-o NOUN). Ambiguous
+# bakeware nouns are NOT here (see bakeware.voc). Add tools/verbs/materials of
+# baking and metal casting.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+alumínio
+aluminio
+amassar
+antiaderente
+assar
+barro
+congelador
+confeiteiro
+cozer
+derretido
+desenforma
+desenformado
+desenformar
+desenforme
+desenformes
+desenformou
+farinha
+forno
+forrar
+forrou
+fundido
+levedar
+manteiga
+molde
+padaria
+padeiro
+pastelaria
+pasteleiro
+redonda
+silicone
+tabuleiro
+unta
+untada
+untado
+untar
+untares
+untaste
+untei
+untou
+verter
+verteu

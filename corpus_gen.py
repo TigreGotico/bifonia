@@ -25,78 +25,110 @@ from pathlib import Path
 # Format: (word, pos, current_count, target_count, notes)
 # ---------------------------------------------------------------------------
 TARGETS = [
-    # ── Two-way words: bring all to 465 per POS (≈930/word → 25k total) ────
-    ("acerto",     "NOUN", 290, 465, "accuracy/correctness/settlement: 'um acerto de contas', 'o acerto do diagnóstico', 'com acerto'"),
-    ("acerto",     "VERB", 280, 465, "1st-person of acertar (to get right/hit): 'acerto no alvo', 'acerto sempre nas previsões', 'acerto a resposta'"),
-    ("acordo",     "NOUN", 292, 465, "agreement/accord: 'um acordo de paz', 'chegaram a um acordo', 'o acordo foi assinado'"),
-    ("acordo",     "VERB", 287, 465, "1st-person of acordar (to wake/agree): 'acordo cedo', 'acordo com o plano', 'acordo todos os dias às sete'"),
-    ("cerro",      "NOUN", 290, 465, "hill/mound: 'no topo do cerro', 'o cerro da aldeia', 'subiu o cerro'"),
-    ("cerro",      "VERB", 281, 465, "1st-person of cerrar (to close/clench): 'cerro os olhos', 'cerro o punho', 'cerro a porta devagar'"),
-    ("choro",      "NOUN", 288, 465, "crying/weeping: 'um choro de bebé', 'o choro da criança', 'conteve o choro'"),
-    ("choro",      "VERB", 281, 465, "1st-person of chorar (to cry): 'choro de alegria', 'choro sempre neste filme', 'choro sozinho'"),
-    ("colher",     "NOUN", 357, 465, "spoon: 'uma colher de sopa', 'mexeu com a colher', 'a colher de pau'"),
-    ("colher",     "VERB", 359, 465, "to harvest/collect: 'colher fruta', 'vou colher amoras', 'começou a colher os legumes'"),
-    ("começo",     "NOUN", 356, 465, "beginning/start: 'no começo do ano', 'um começo difícil', 'desde o começo'"),
-    ("começo",     "VERB", 358, 465, "1st-person of começar (to start): 'começo agora', 'começo o trabalho cedo', 'começo a perceber'"),
-    ("conserto",   "NOUN", 358, 465, "repair/fix: 'o conserto da máquina', 'em conserto', 'levou ao conserto'"),
-    ("conserto",   "VERB", 359, 465, "1st-person of consertar (to repair): 'conserto bicicletas', 'conserto o computador', 'conserto o estrago'"),
-    ("coro",       "NOUN", 293, 465, "choir/chorus: 'o coro da catedral', 'cantou no coro', 'um coro de vozes'"),
-    ("coro",       "VERB", 281, 465, "1st-person of corar (to blush/flush): 'coro de vergonha', 'coro facilmente', 'coro quando me elogiam'"),
-    ("corte",      "NOUN", 266, 465, "cut/slash OR royal court: 'o corte na pele', 'a corte do rei', 'corte orçamental'"),
-    ("corte",      "VERB", 321, 465, "subjunctive/imperative of cortar (to cut): 'que o médico corte', 'corte o papel', 'espero que corte'"),
-    ("forma",      "NOUN", 319, 465, "shape/form/mold: 'a forma do bolo', 'de forma clara', 'em boa forma'"),
-    ("forma",      "VERB", 317, 465, "3rd-person of formar (to form/shape): 'forma uma equipa', 'a nuvem forma', 'forma novos profissionais'"),
-    ("gosto",      "NOUN", 287, 465, "taste/liking: 'um gosto refinado', 'ao gosto de cada um', 'gosto pessoal'"),
-    ("gosto",      "VERB", 286, 465, "1st-person of gostar (to like): 'gosto de música', 'gosto muito', 'gosto do teu trabalho'"),
-    ("gozo",       "NOUN", 320, 465, "enjoyment/pleasure OR mockery: 'o gozo das férias', 'em gozo de licença', 'que gozo!'"),
-    ("gozo",       "VERB", 320, 465, "1st-person of gozar (to enjoy/mock): 'gozo das minhas férias', 'gozo com os amigos', 'gozo de boa saúde'"),
-    ("jogo",       "NOUN", 294, 465, "game/play: 'um jogo de futebol', 'o jogo terminou', 'o jogo das palavras'"),
-    ("jogo",       "VERB", 280, 465, "1st-person of jogar (to play/gamble): 'jogo futebol', 'jogo aos dados', 'jogo bem sob pressão'"),
-    ("molho",      "NOUN", 288, 465, "sauce/bundle: 'o molho de tomate', 'molho de chaves', 'preparou o molho'"),
-    ("molho",      "VERB", 292, 465, "1st-person of molhar (to wet/soak): 'molho o pão no café', 'molho os pés na praia', 'molho a esponja'"),
-    ("olho",       "NOUN", 286, 465, "eye: 'o olho direito', 'com o olho vivo', 'olho azul'"),
-    ("olho",       "VERB", 281, 465, "1st-person of olhar (to look): 'olho pela janela', 'olho para o céu', 'olho com atenção'"),
-    ("para",       "ADP",  319, 465, "preposition to/for: 'vou para casa', 'comprei para ti', 'útil para todos'"),
-    ("para",       "VERB", 362, 465, "3rd-person of parar (to stop): 'o carro para', 'para de chover', 'o motor para'. Use a concrete stoppable subject."),
-    ("pelo",       "ADP",  287, 350, "preposition por+o: 'passou pelo parque', 'foi elogiado pelo professor', 'andou pelo rio'"),
-    ("pelo",       "NOUN", 339, 350, "body hair/fur: 'o pelo do gato', 'perdeu pelo', 'tem pelo comprido'"),
-    ("pelo",       "VERB", 289, 350, "1st-person of pelar (to peel/skin): 'pelo as batatas', 'pelo os pêssegos', 'pelo a cenoura'"),
-    ("peso",       "NOUN", 286, 465, "weight: 'o peso do saco', 'de peso', 'o peso da responsabilidade'"),
-    ("peso",       "VERB", 284, 465, "1st-person of pesar (to weigh): 'peso os ingredientes', 'peso 70 kg', 'peso tudo antes de decidir'"),
-    ("porto",      "NOUN", 280, 465, "port/harbour OR port wine: 'no porto de Lisboa', 'um copo de porto', 'atracou no porto'"),
-    ("porto",      "VERB", 281, 465, "1st-person of portar (to carry/behave): 'porto-me bem', 'porto as malas', 'porto a bandeira'"),
-    ("posto",      "NOUN", 385, 465, "post/position/petrol station: 'um posto de trabalho', 'posto de saúde', 'o posto de gasolina'"),
-    ("posto",      "VERB", 285, 465, "past participle of pôr (placed/put): 'foi posto à disposição', 'o livro posto na mesa', 'tendo sido posto em prática'"),
-    ("rego",       "NOUN", 290, 465, "irrigation ditch/furrow: 'o rego de rega', 'abriu o rego', 'o rego do campo'"),
-    ("rego",       "VERB", 291, 465, "1st-person of regar (to water/irrigate): 'rego as plantas', 'rego o jardim de manhã', 'rego os canteiros'"),
-    ("seco",       "ADJ",  228, 465, "dry (adjective): 'o clima seco', 'pão seco', 'tempo seco e frio'"),
-    ("seco",       "VERB", 217, 465, "1st-person of secar (to dry): 'seco o cabelo', 'seco a louça', 'seco as mãos na toalha'"),
-    ("sede",       "NOUN", 310, 465, "thirst OR headquarters: 'tenho sede', 'a sede da empresa', 'matar a sede'"),
-    ("sede",       "VERB", 287, 465, "3rd-person of ceder (to yield/cede): 'o governo sede terreno', 'a empresa sede os direitos', 'nunca sede às pressões'"),
-    ("sobre",      "ADP",  292, 350, "preposition about/on: 'falou sobre o tema', 'um livro sobre Portugal', 'debruçou-se sobre o problema'"),
-    ("sobre",      "NOUN", 291, 350, "surplus/leftover: 'o sobre do orçamento', 'ficou um sobre', 'aproveitou o sobre'"),
-    ("sobre",      "VERB", 290, 350, "3rd-person of sobrar (to be left over): 'sobre dinheiro', 'sobre tempo', 'não sobre nada no fim'"),
-    ("tola",       "NOUN", 0, 465, "colloquial for head/skull OR a type of lightweight African hardwood (tola wood, Pterygopodium oxyphyllum): 'bater com a tola', 'meter na tola', 'partir a tola', 'a tola à roda', 'dói-me a tola', 'madeira de tola', 'ripas de tola'. Mix both meanings. NEVER use to mean fool — that is the ADJ reading."),
-    ("tola",       "ADJ",  370, 465, "foolish/silly (adj or substantivized adj): 'uma ideia tola', 'a rapariga é tola', 'comportou-se como uma tola', 'és uma tola'"),
-    ("torre",      "NOUN", 293, 465, "tower: 'a torre do castelo', 'torre de controlo', 'a torre de Belém'"),
-    ("torre",      "VERB", 281, 465, "1st-person of torrar (to toast/roast): 'torre o pão', 'torre café', 'torre as amêndoas'"),
-    ("transtorno", "NOUN", 319, 465, "disorder/disruption: 'um transtorno mental', 'causou transtorno', 'sem transtorno'"),
-    ("transtorno", "VERB", 320, 465, "1st-person of transtornar (to disrupt/upset): 'transtorno os planos', 'transtorno a rotina', 'transtorno tudo'"),
+    # ── Two-way words: 555 per POS → ~30k total ─────────────────────────────
+    ("acerto",     "NOUN", 290, 1000),
+    ("acerto",     "VERB", 280, 1000),
+    ("acordo",     "NOUN", 292, 1000),
+    ("acordo",     "VERB", 287, 1000),
+    ("cerro",      "NOUN", 290, 1000),
+    ("cerro",      "VERB", 281, 1000),
+    ("choro",      "NOUN", 288, 1000),
+    ("choro",      "VERB", 281, 1000),
+    ("colher",     "NOUN", 357, 1000),
+    ("colher",     "VERB", 359, 1000),
+    ("começo",     "NOUN", 356, 1000),
+    ("começo",     "VERB", 358, 1000),
+    ("conserto",   "NOUN", 358, 1000),
+    ("conserto",   "VERB", 359, 1000),
+    # coro: 2 prompt files (choir, blush) → meaning-balanced generation
+    ("coro",       "NOUN", 293, 1000),
+    ("coro",       "VERB", 281, 1000),
+    # corte: NOUN = royal court only (fem, closed o)
+    #        VERB = cut/incision (masc, open o) + subjunctive of cortar (open o)
+    ("corte",      "NOUN", 266, 1000),
+    ("corte",      "VERB", 321, 1000),
+    # forma: NOUN = mould/fôrma (closed o): forma de bolo/pão/sapato
+    #        VERB = figura/modo/maneira/formato/condição física/formatura militar
+    #               (open o, common) + 3sg of formar (open o)
+    ("forma",      "NOUN", 319, 1000),
+    ("forma",      "VERB", 317, 1000),
+    ("gosto",      "NOUN", 287, 1000),
+    ("gosto",      "VERB", 286, 1000),
+    ("gozo",       "NOUN", 320, 1000),
+    ("gozo",       "VERB", 320, 1000),
+    # jogo: 2 prompt files (game, play)
+    ("jogo",       "NOUN", 294, 1000),
+    ("jogo",       "VERB", 280, 1000),
+    # molho: NOUN = sauce only (closed o)
+    #        VERB = bundle/sheaf (open o) + 1sg molhar (open o)
+    ("molho",      "NOUN", 288, 1000),
+    ("molho",      "VERB", 292, 1000),
+    ("olho",       "NOUN", 286, 1000),
+    ("olho",       "VERB", 281, 1000),
+    ("para",       "ADP",  319, 1000),
+    ("para",       "VERB", 362, 1000),
+    # pelo: 3-way → 400 per POS
+    ("pelo",       "ADP",  287, 700),
+    ("pelo",       "NOUN", 339, 700),
+    ("pelo",       "VERB", 289, 700),
+    ("peso",       "NOUN", 286, 1000),
+    ("peso",       "VERB", 284, 1000),
+    ("porto",      "NOUN", 280, 1000),
+    ("porto",      "VERB", 281, 1000),
+    # posto: NOUN = cargo / posto de gasolina (closed o); the participle of
+    #        pôr ("foi posto") shares this closed reading — not a heterophone.
+    #        VERB = 1sg of postar ("eu posto") — the only open-o reading.
+    ("posto",      "NOUN", 385, 1000),
+    ("posto",      "VERB", 285, 1000),
+    ("rego",       "NOUN", 290, 1000),
+    ("rego",       "VERB", 291, 1000),
+    ("seco",       "ADJ",  228, 1000),
+    ("seco",       "VERB", 217, 1000),
+    # sede: NOUN = headquarters/seat only (open ɛ)
+    #       VERB = thirst+desire (closed e) — both senses are nouns; "sede" is
+    #              NOT a verb form (not from ceder → that conjugates to "cede")
+    ("sede",       "NOUN", 310, 1000),
+    ("sede",       "VERB", 287, 1000),
+    # sobre: 3-way → 400 per POS
+    #   ADP  = preposition (closed o)
+    #   NOUN = nautical "vela alta de um navio" (closed o, homophone of ADP)
+    #          — rare term: modest target to avoid model repetition/hallucination
+    #   VERB = pres. subjunctive / imperative of sobrar (open o)
+    ("sobre",      "ADP",  292, 700),
+    ("sobre",      "NOUN",   0, 150),
+    ("sobre",      "VERB",  90, 700),
+    # tola: NOUN = head/skull (colloquial) + hardwood (open ɔ)
+    #       ADJ  = foolish/silly + substantivized "a tola" (closed o)
+    ("tola",       "NOUN",   0, 1000),
+    ("tola",       "ADJ",  430, 1000),
+    ("torre",      "NOUN", 293, 1000),
+    ("torre",      "VERB", 281, 1000),
+    ("transtorno", "NOUN", 319, 1000),
+    ("transtorno", "VERB", 320, 1000),
 ]
 
 _PROMPTS_DIR = Path(__file__).parent / "prompts" / "pt-PT"
 
+# European-Portuguese word characters, for standalone-token matching.
+_PT_WORD = "a-zA-ZáéíóúàâêôãõçÁÉÍÓÚÀÂÊÔÃÕÇ"
 
-def _load_prompt(word: str, pos: str) -> str:
-    """Load the .prompt file for this word/POS pair."""
-    path = _PROMPTS_DIR / f"{word}_{pos}.prompt"
-    if path.exists():
-        return path.read_text(encoding="utf-8")
-    # fallback: generic template (should not be needed once all .prompt files exist)
-    return (
+
+def _has_token(word: str, line: str) -> bool:
+    """True if `word` appears as a whole token (not a substring) in `line`."""
+    return re.search(rf"(?<![{_PT_WORD}]){re.escape(word.lower())}(?![{_PT_WORD}])",
+                     line.lower()) is not None
+
+
+def _load_prompts(word: str, pos: str) -> list[str]:
+    """Return all .prompt files for this word/POS (one per meaning, sorted by name)."""
+    files = sorted(_PROMPTS_DIR.glob(f"{word}_{pos}*.prompt"))
+    if files:
+        return [f.read_text(encoding="utf-8") for f in files]
+    # fallback generic template
+    return [
         f"Gera {{n}} frases em Português Europeu onde \"{word}\" é usado como {pos} "
         f"(contexto: {{existing_sample}}).\nApenas uma frase por linha:"
-    )
+    ]
 
 
 def _load_existing(word: str, pos: str) -> set:
@@ -114,15 +146,18 @@ def _sample(existing: set, n: int = 5) -> str:
 
 
 async def _generate_one(provider: str, word: str, pos: str,
-                         existing: set, n: int, cwd: str) -> list[str]:
+                         existing: set, n: int, cwd: str,
+                         template: str | None = None,
+                         model: str | None = None) -> list[str]:
     """Ask one agent to generate n sentences; return cleaned list."""
     from agentpipe import Agent
-    template = _load_prompt(word, pos)
+    if template is None:
+        template = _load_prompts(word, pos)[0]
     prompt = template.replace("{n}", str(n)).replace(
         "{existing_sample}", _sample(existing)
     )
     try:
-        raw = await Agent(provider).generate(prompt, cwd=cwd)
+        raw = await Agent(provider, model=model).generate(prompt, cwd=cwd)
     except Exception as e:
         print(f"  [{provider}] ERROR: {e}", file=sys.stderr)
         return []
@@ -135,8 +170,10 @@ async def _generate_one(provider: str, word: str, pos: str,
             continue
         if re.match(r"^\d+[\.\)]", line):
             line = re.sub(r"^\d+[\.\)]\s*", "", line)
-        # Must contain the target word (case-insensitive)
-        if word.lower() not in line.lower():
+        # Must contain the target word as a STANDALONE TOKEN (not a substring:
+        # rejects plurals "colheres", inflections "formam", and accented
+        # disambiguating variants "pára"/"pêlo" that aren't the headword).
+        if not _has_token(word, line):
             continue
         # Sanity: at least 4 words
         if len(line.split()) < 4:
@@ -145,22 +182,96 @@ async def _generate_one(provider: str, word: str, pos: str,
     return lines
 
 
+import os
+import json as _json
+import urllib.request
+
+# Local Gemma server (no API keys, not rate-limited) — see workspace policy.
+LLM_ENDPOINT = os.environ.get("LLM_ENDPOINT", "http://192.168.1.200:8000")
+LLM_MODEL = os.environ.get("LLM_MODEL", "ggml-org/gemma-4-26B-A4B-it-GGUF")
+# Provider for generation: "haiku" (Claude Haiku via free agents), "gemma"
+# (local server), or "agents" (legacy free coding agents).
+GEN_PROVIDER = os.environ.get("GEN_PROVIDER", "haiku")
+
+# Claude Haiku via the Claude Code CLI ONLY (never opencode / third-party agents).
+# How many parallel claude-haiku calls to fan out per meaning.
+_HAIKU_FANOUT = int(os.environ.get("HAIKU_FANOUT", "3"))
+
+
+async def _live_haiku_agents() -> list:
+    """Claude Haiku reached only through the claude CLI provider."""
+    return [("claude-haiku", None)] * _HAIKU_FANOUT
+
+
+async def _generate_one_gemma(word: str, pos: str, existing: set, n: int,
+                              template: str, temperature: float) -> list[str]:
+    """Generate via the local Gemma chat-completions endpoint; return cleaned list."""
+    prompt = template.replace("{n}", str(n)).replace("{existing_sample}", _sample(existing))
+    body = {"model": LLM_MODEL, "temperature": temperature, "max_tokens": 1400,
+            "messages": [{"role": "user", "content": prompt}]}
+
+    def _call():
+        req = urllib.request.Request(
+            LLM_ENDPOINT + "/v1/chat/completions",
+            data=_json.dumps(body).encode("utf-8"),
+            headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=180) as r:
+            return _json.loads(r.read())["choices"][0]["message"]["content"]
+
+    try:
+        raw = await asyncio.to_thread(_call)
+    except Exception as e:
+        print(f"  [gemma] ERROR: {e}", file=sys.stderr)
+        return []
+
+    lines = []
+    for line in raw.splitlines():
+        line = line.strip().strip('"').strip("'")
+        if not line or line.startswith(("#", "-", "*", "```")):
+            continue
+        if re.match(r"^\d+[\.\)]", line):
+            line = re.sub(r"^\d+[\.\)]\s*", "", line)
+        if not _has_token(word, line):
+            continue
+        if len(line.split()) < 4:
+            continue
+        lines.append(line)
+    return lines
+
+
 async def generate_batch(word: str, pos: str,
                           current: int, target: int, cwd: str) -> list[str]:
-    """Fan out to both free agents and merge unique results."""
+    """Fan out across all meaning-prompts; balance by meaning."""
     existing = _load_existing(word, pos)
     needed = max(0, target - len(existing))
     if needed <= 0:
         print(f"  {word}/{pos}: already at target ({len(existing)}≥{target}), skipping")
         return []
 
-    n_each = max(30, needed // 2 + 20)
-    print(f"  {word}/{pos}: need {needed} more → asking each agent for {n_each}")
+    prompts = _load_prompts(word, pos)
+    print(f"  {word}/{pos}: need {needed} more, {len(prompts)} meaning(s) via {GEN_PROVIDER}")
 
-    results = await asyncio.gather(
-        _generate_one("opencode-free",        word, pos, existing, n_each, cwd),
-        _generate_one("antigravity-flash-low", word, pos, existing, n_each, cwd),
-    )
+    tasks = []
+    if GEN_PROVIDER == "haiku":
+        # Claude Haiku via whichever free agents are live (not rate-limited).
+        agents = await _live_haiku_agents()
+        n_per_meaning = max(20, needed // len(prompts) // len(agents) + 15)
+        for template in prompts:
+            for provider, model in agents:
+                tasks.append(_generate_one(provider, word, pos, existing,
+                                           n_per_meaning, cwd, template, model))
+    elif GEN_PROVIDER == "gemma":
+        # Several Gemma calls per meaning at varied temperature for diversity.
+        per_call = min(40, max(20, needed // len(prompts) // 3 + 10))
+        for template in prompts:
+            for temp in (0.8, 0.95, 1.1, 1.2):
+                tasks.append(_generate_one_gemma(word, pos, existing, per_call, template, temp))
+    else:
+        n_per_meaning = max(20, needed // len(prompts) // 2 + 15)
+        for template in prompts:
+            tasks.append(_generate_one("opencode-free", word, pos, existing, n_per_meaning, cwd, template))
+            tasks.append(_generate_one("antigravity-flash-low", word, pos, existing, n_per_meaning, cwd, template))
+    results = await asyncio.gather(*tasks)
 
     all_sents = []
     seen = set(s.lower() for s in existing)
@@ -185,8 +296,20 @@ def save_staged(word: str, pos: str, sentences: list[str], staged_dir: Path):
     return path
 
 
+_CORPUS_JSONL = Path(__file__).parent / "bifonia" / "data" / "corpus.jsonl"
+
+
+def _ipa_for(word: str, pos: str) -> str | None:
+    try:
+        from bifonia.data import HOMOGRAPHS
+        return HOMOGRAPHS.get(word, {}).get(pos)
+    except Exception:
+        return None
+
+
 def merge_staged(staged_file: Path):
-    """Read a staged file and append its sentences to the appropriate extra_*.py."""
+    """Append a staged file's sentences to corpus.jsonl (deduped, with IPA)."""
+    import json
     name = staged_file.stem          # e.g. "sobre_ADP"
     parts = name.rsplit("_", 1)
     if len(parts) != 2:
@@ -199,37 +322,35 @@ def merge_staged(staged_file: Path):
         print("No sentences to merge.")
         return
 
-    extra_file = Path(__file__).parent / "bifonia" / "data" / f"extra_{word}.py"
-    if not extra_file.exists():
-        print(f"No extra file found at {extra_file}")
-        return
+    # reject any sentence where the headword is not a standalone token
+    bad = [s for s in sentences if not _has_token(word, s)]
+    if bad:
+        print(f"  skipping {len(bad)} sentences without a standalone '{word}' token")
+    sentences = [s for s in sentences if _has_token(word, s)]
 
-    src = extra_file.read_text(encoding="utf-8")
+    # existing (word,pos,sentence) keys for dedup
+    seen = set()
+    if _CORPUS_JSONL.exists():
+        with _CORPUS_JSONL.open(encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                r = json.loads(line)
+                seen.add((r["word"], r["pos"], r["sentence"].lower()))
 
-    # Find the insertion point: the list for this POS
-    # Pattern: "POS": [   ...   ]
-    pattern = rf'"{pos}":\s*\['
-    m = re.search(pattern, src)
-    if not m:
-        print(f'No "{pos}" list found in {extra_file}')
-        return
-
-    # Find the closing bracket of this list
-    start = m.end()
-    depth = 1
-    i = start
-    while i < len(src) and depth > 0:
-        if src[i] == "[":
-            depth += 1
-        elif src[i] == "]":
-            depth -= 1
-        i += 1
-    insert_pos = i - 1  # just before the closing ]
-
-    new_entries = "\n".join(f'        "{s}",' for s in sentences)
-    new_src = src[:insert_pos] + "\n" + new_entries + "\n    " + src[insert_pos:]
-    extra_file.write_text(new_src, encoding="utf-8")
-    print(f"Merged {len(sentences)} sentences into {extra_file}")
+    ipa = _ipa_for(word, pos)
+    added = 0
+    with _CORPUS_JSONL.open("a", encoding="utf-8") as fh:
+        for s in sentences:
+            key = (word, pos, s.lower())
+            if key in seen:
+                continue
+            seen.add(key)
+            fh.write(json.dumps({"word": word, "pos": pos, "ipa": ipa,
+                                 "sentence": s}, ensure_ascii=False) + "\n")
+            added += 1
+    print(f"Merged {added}/{len(sentences)} new sentences ({word}/{pos}) into corpus.jsonl")
 
 
 async def main_async(word_filter: str | None, pos_filter: str | None, cwd: str):

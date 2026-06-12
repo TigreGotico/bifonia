@@ -1,9 +1,12 @@
 """
-Canonical labeled sentence corpus for Portuguese heterophonic bifoniaaph disambiguation.
+Canonical labeled sentence corpus for Portuguese heterophonic homograph disambiguation.
 
-CORPUS maps each ambiguous word to a dict of {POS: [sentences]} where the sentence
-uses that word in that POS reading (with non-standard diacritics on the target word
-to show the expected pronunciation, e.g. "pára" = VERB, "pêlo" = NOUN fur).
+The corpus lives in ``data/corpus.jsonl`` — one JSON record per line::
+
+    {"word": "molho", "pos": "NOUN", "ipa": "ˈmoʎu", "sentence": "O molho de tomate ..."}
+
+``CORPUS`` maps each ambiguous word to ``{POS: [sentences]}``; ``IPA`` maps
+``(word, POS)`` to the European-Portuguese transcription that POS reading carries.
 
 Usage::
 
@@ -12,36 +15,24 @@ Usage::
         ...
 """
 
-import ast
+import json
 import pathlib
 
-_DATA = pathlib.Path(__file__).parent / "data"
-
-
-def _load(name: str) -> dict:
-    text = (_DATA / name).read_text(encoding="utf-8")
-    return ast.literal_eval(text)
-
-
-# Load agent-generated sentence groups
-_GROUPS = [
-    _load("grp_a.py"),
-    _load("grp_b.py"),
-    _load("grp_c.py"),
-    _load("grp_d.py"),
-    _load("grp_pps.py"),
-]
-# append extra_*.py files if present
-for _extra_path in sorted(_DATA.glob("extra_*.py")):
-    _GROUPS.append(_load(_extra_path.name))
+_JSONL = pathlib.Path(__file__).parent / "data" / "corpus.jsonl"
 
 CORPUS: dict[str, dict[str, list[str]]] = {}
-for _group in _GROUPS:
-    for _word, _pos_sents in _group.items():
-        if _word not in CORPUS:
-            CORPUS[_word] = {}
-        for _pos, _sents in _pos_sents.items():
-            CORPUS[_word].setdefault(_pos, []).extend(_sents)
+IPA: dict[tuple[str, str], str] = {}
+
+with _JSONL.open(encoding="utf-8") as _fh:
+    for _line in _fh:
+        _line = _line.strip()
+        if not _line:
+            continue
+        _r = json.loads(_line)
+        _word, _pos, _sent = _r["word"], _r["pos"], _r["sentence"]
+        CORPUS.setdefault(_word, {}).setdefault(_pos, []).append(_sent)
+        if _r.get("ipa"):
+            IPA[(_word, _pos)] = _r["ipa"]
 
 
 def iter_records():

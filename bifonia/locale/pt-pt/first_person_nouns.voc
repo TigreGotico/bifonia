@@ -1,0 +1,16 @@
+# first_person_nouns.voc — Words whose 1st-person verb form is spelled like the noun (choro, começo,
+# olho…). Without a determiner before them they lean finite VERB → +2. Add words
+# with the same noun = 1sg-verb ambiguity.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+choro
+começo
+coro
+conserto
+olho
+molho
+jogo
+rego
+peso
+porto

@@ -1,0 +1,9 @@
+# ambiguous_preps.voc — The three words bifonia treats as prepositions (para/pelo/sobre).
+# Defines PREP. Only add a token here if it is a new heterograph preposition
+# whose ADP reading must be scored.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+para
+pelo
+sobre

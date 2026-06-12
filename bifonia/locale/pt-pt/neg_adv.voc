@@ -1,0 +1,12 @@
+# neg_adv.voc — Negation/frequency adverbs directly before a finite verb (não, nunca,
+# sempre…) → +4 VERB ('nunca sobre nada', 'não gosto'). Add pre-verbal adverbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ainda
+jamais
+já
+nunca
+não
+raramente
+sempre

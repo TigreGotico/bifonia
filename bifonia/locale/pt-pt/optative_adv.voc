@@ -1,0 +1,11 @@
+# optative_adv.voc — Optative adverbs (talvez, oxalá, tomara) that trigger the present subjunctive.
+# Before 'sobre' they mark the subjunctive of sobrar (open-o VERB) → +6. Add
+# optative/desiderative adverbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+talvez
+oxalá
+tomara
+quiçá
+oxala

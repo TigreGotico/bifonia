@@ -1,0 +1,22 @@
+# pronouns.voc — Personal/relative/clitic pronouns. A pronoun before the word marks a VERB
+# subject (score_verb +5, 'eu choro'); also part of AFTER_PREP and function words.
+# Core grammar — extend with pronoun forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ela
+elas
+ele
+eles
+eu
+me
+nos
+nós
+qual
+que
+quem
+se
+te
+tu
+vos
+vós

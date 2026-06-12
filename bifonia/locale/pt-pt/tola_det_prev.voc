@@ -1,0 +1,9 @@
+# tola_det_prev.voc — Determiners/prepositions before 'tola' in the 'à roda / ao ar' idiom (a, o,
+# na, pela) → head NOUN. Pairs with contracted_a.voc.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+a
+o
+na
+pela

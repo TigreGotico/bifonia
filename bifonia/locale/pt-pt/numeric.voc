@@ -1,0 +1,45 @@
+# numeric.voc — Cardinal number words. A number after 'para/sobre' supports the ADP reading
+# (score_adp +5, 'sobre cinco', 'para três'). Add number words/forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+catorze
+cem
+cinco
+cinquenta
+dez
+dezanove
+dezasseis
+dezassete
+dezoito
+dois
+doze
+duas
+duzentas
+duzentos
+mil
+milhões
+nove
+noventa
+oitenta
+oito
+onze
+quarenta
+quatro
+quatrocentos
+quinze
+seis
+sessenta
+sete
+setenta
+treze
+trezentas
+trezentos
+triliões
+trinta
+três
+um
+uma
+umas
+uns
+vinte

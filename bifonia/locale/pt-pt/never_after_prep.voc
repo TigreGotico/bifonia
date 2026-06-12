@@ -1,0 +1,13 @@
+# never_after_prep.voc — Contracted forms (ao/no/na…) that can NEVER follow para/pelo/sobre as ADP;
+# their presence zeroes the ADP score. Core grammar — rarely extended.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ao
+aos
+na
+nas
+no
+nos
+à
+às

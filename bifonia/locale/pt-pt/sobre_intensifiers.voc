@@ -1,0 +1,15 @@
+# sobre_intensifiers.voc — Intensifiers that may precede 'sobre' as adverbs (muito, pouco, demais,
+# menos, mais). score_noun uses them to AVOID treating an adverb as a noun
+# determiner before 'sobre'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+algo
+bastante
+demais
+mais
+menos
+muito
+nada
+pouco
+tudo

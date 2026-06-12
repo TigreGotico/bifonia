@@ -1,0 +1,20 @@
+# aux_verbs.voc — Auxiliary / movement verbs (vou, vai, fui, ficou…). Feed BEFORE_PREP and
+# the function-word guard in score_adj. Extend with other auxiliaries/light verbs.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+fica
+ficam
+ficar
+ficou
+foi
+fomos
+foram
+foste
+fostes
+fui
+vai
+vais
+vamos
+vou
+vão

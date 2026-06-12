@@ -1,0 +1,54 @@
+# determiners.voc — Determiners + contracted prep+article forms. A DET immediately before the
+# word is the primary NOUN-phrase signal (score_noun +5) and feeds many other
+# checks. The most-used list — extend with any new determiner/contraction.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+a
+ao
+aos
+aquela
+aquelas
+aquele
+aqueles
+as
+da
+das
+do
+dos
+essa
+essas
+esse
+esses
+esta
+estas
+este
+estes
+meu
+meus
+minha
+minhas
+na
+nas
+no
+nos
+num
+numa
+numas
+nuns
+o
+os
+seu
+seus
+sua
+suas
+teu
+teus
+tua
+tuas
+um
+uma
+umas
+uns
+à
+às

@@ -1,0 +1,57 @@
+# after_prep_extra.voc — Extra tokens that may legitimately follow a preposition
+# (cities, ti/mim, possessives) beyond DET|PRON. Used to build AFTER_PREP →
+# score_adp +5 when one follows para/pelo/sobre. Add destinations/complements
+# that should count as 'preposition + X'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+almada
+amanhã
+amsterdam
+angola
+angra
+aveiro
+berlim
+braga
+brasil
+bruxelas
+cabo
+cascais
+coimbra
+depois
+espanha
+faro
+funchal
+guiné
+horta
+já
+lisboa
+logo
+londres
+madrid
+mim
+moçambique
+nossa
+nossas
+nosso
+nossos
+ontem
+paris
+ponta
+porto
+portugal
+quais
+quando
+quê
+roma
+sempre
+setúbal
+sintra
+ti
+todos
+viseu
+vossa
+vossas
+vosso
+vossos
+évora

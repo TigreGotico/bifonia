@@ -1,0 +1,10 @@
+# tola_poss_prev.voc — Determiners before 'a tola dele/dela' (a, o, minha, sua, tua) → possessed
+# head NOUN. Pairs with person_possessive.voc.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+a
+o
+minha
+sua
+tua

@@ -1,0 +1,12 @@
+# court_terms.voc — Royal-court qualifiers after 'corte' (real, régia, medieval…). Confirm the
+# feminine royal-court reading (closed-o NOUN) → +3. Add court-related adjectives.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+imperial
+medieval
+portuguesa
+português
+real
+régia
+régio

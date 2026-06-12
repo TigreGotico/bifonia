@@ -1,0 +1,17 @@
+# bakeware.voc — Bakeware nouns: 'forma DE <bolo/tarte/pudim…>' = a baking mould (closed-o
+# NOUN), as opposed to 'a forma do bolo' = shape (open-o VERB). Only counted
+# ADJACENT to 'forma de'. Add tins/items a mould is named after.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+bolo
+gelado
+gelo
+madalenas
+pao
+pudim
+pão
+queijo
+queques
+sapateiro
+tarte

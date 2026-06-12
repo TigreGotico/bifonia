@@ -1,0 +1,49 @@
+# pelo_fixed.voc — Fixed idiomatic phrases & possessives after 'pelo' (pelo menos, pelo
+# contrário, pelo seu bem, pelo Natal) → contraction por+o ADP → +6. Add frozen
+# 'pelo X' expressions and seasonal/occasion nouns.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+amor
+andar
+bem
+caminho
+carnaval
+contrare
+contrário
+facto
+feriado
+inverno
+jeito
+mal
+meio
+menos
+meu
+meus
+minha
+minhas
+modo
+mundo
+natal
+nossa
+nossas
+nosso
+nossos
+outono
+primavera
+páscoa
+qual
+que
+quê
+seu
+seus
+sim
+sua
+suas
+teu
+teus
+tua
+tuas
+verão
+visto
+véspera

@@ -1,0 +1,21 @@
+# masc_det.voc — Masculine determiners before 'corte' (o, do, um, este…). Royal court is
+# always feminine, so a masculine determiner DECISIVELY marks the cut /
+# tennis-court reading (open-o VERB) → +10. Add masculine determiner forms.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+aquele
+daquele
+deste
+do
+esse
+este
+meu
+naquele
+neste
+no
+nosso
+o
+seu
+teu
+um

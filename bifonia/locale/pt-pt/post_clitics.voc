@@ -1,0 +1,11 @@
+# post_clitics.voc — Enclitic reflexive clitics (me, te, se, lhe, lhes) right after the word →
+# the word hosts a clitic, so it is a finite VERB → +4. nos/vos excluded (they
+# double as contracted prepositions).
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+lhe
+lhes
+me
+se
+te

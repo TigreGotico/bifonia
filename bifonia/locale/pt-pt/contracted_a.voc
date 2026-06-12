@@ -1,0 +1,7 @@
+# contracted_a.voc — a + article contractions (à, ao). Used in the 'tola à roda / ao ar' idiom
+# (head NOUN). Add other a+article contracted forms if needed.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+à
+ao

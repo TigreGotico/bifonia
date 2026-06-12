@@ -1,0 +1,18 @@
+# head_state.voc — Body-state verbs to the RIGHT of 'tola' where the head is the SUBJECT
+# ('a tola dele LATEJAVA', 'DÓI') → head NOUN → +6. Only intransitive state verbs
+# belong here (action verbs like perder go in head_verbs, object position).
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+andava
+arde
+ardia
+doer
+doía
+dói
+encheu
+lateja
+latejar
+latejava
+ressoa
+ressoou

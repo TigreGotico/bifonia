@@ -1,0 +1,11 @@
+# person_possessive.voc — Possessive-of-person tokens after 'tola' (dele, dela, do, da) → 'a tola dele'
+# = his head (NOUN) → +5. Add possessive/genitive markers attaching a person.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+dele
+dela
+deles
+delas
+do
+da

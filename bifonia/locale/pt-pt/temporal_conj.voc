@@ -1,0 +1,7 @@
+# temporal_conj.voc — Temporal conjunctions quando/enquanto. Introduce a subordinate clause whose
+# verb may be the ambiguous word → +2 VERB ('quando sobre tempo').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+enquanto
+quando

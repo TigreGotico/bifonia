@@ -60,6 +60,23 @@ print(rich)  # "Vou para casa depois do trabalho."  (unchanged — ADP needs no 
 
 See [`docs/words.md`](docs/words.md) for IPA, diacritized forms, and usage notes per word.
 
+## Data layout
+
+Data is kept separate from code:
+
+- **`bifonia/data/corpus.jsonl`** — the labelled corpus, one record per line
+  (`{"word", "pos", "ipa", "sentence"}`). Single source of truth; `dataset.py`
+  derives the CSV/JSON/HuggingFace splits from it.
+- **`bifonia/data/heterophonic_homographs.csv`** — the `word,pos,ipa` schema.
+- **`bifonia/locale/<lang>/*.voc`** — context wordlists (determiners, cut-context
+  nouns, court terms, stoppable things, …), one term per line. Edit these to extend
+  the scorer without touching code; loaded via `bifonia/vocab.py` using
+  `ovos_spec_tools` for locale resolution.
+
+New corpus sentences are generated with [`corpus_gen.py`](corpus_gen.py) (one
+`prompts/<lang>/<word>_<pos>_<sense>.prompt` per meaning) and appended to
+`corpus.jsonl` after validation.
+
 ## See also
 
 - [`docs/methodology.md`](docs/methodology.md) — dataset construction, algorithm, benchmark

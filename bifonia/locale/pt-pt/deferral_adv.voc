@@ -1,0 +1,8 @@
+# deferral_adv.voc — Deferral adverbs in 'para depois/amanhã/ontem' = deferred-purpose ADP →
+# score_adp +3 (so it beats the finite-verb 'pára' reading).
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+depois
+amanhã
+ontem

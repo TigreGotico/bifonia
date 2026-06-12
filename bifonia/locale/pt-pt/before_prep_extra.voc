@@ -1,0 +1,6 @@
+# before_prep_extra.voc — Non-auxiliary words that may precede a preposition (e.g. 'parte').
+# Combined with AUX_VERBS to form BEFORE_PREP → score_adp +5. Extend rarely.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+parte
