@@ -74,8 +74,8 @@ The diacritic convention used in this project encodes vowel quality:
 
 | Sense (pos) | IPA | Diacritized | Meaning | Example |
 |-------------|-----|-------------|---------|---------|
-| spoon (NOUN) | kuˈʎɛɾ | colhêr | spoon | *A colhér de sopa ficou na gaveta.* |
-| harvest (VERB) | kuˈʎeɾ | colhér | to gather, to harvest, to pick | *Vou colhêr as maçãs amanhã.* |
+| spoon (NOUN) | kuˈʎɛɾ | colhér | spoon | *A colhér de sopa ficou na gaveta.* |
+| harvest (VERB) | kuˈʎeɾ | colhêr | to gather, to harvest, to pick | *Vou colhêr as maçãs amanhã.* |
 
 **For non-native speakers:** "colhér" (NOUN, open-e with written circumflex historically) is a spoon. "Colhêr" (VERB, closed-e, stress on the infinitive ending) means to harvest or to pick fruit/flowers. The VERB is an infinitive; most occurrences with a determiner before are NOUN.
 
