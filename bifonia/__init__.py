@@ -461,6 +461,13 @@ def proper_flags(text: str) -> list:
         prev = toks[i - 1]
         if core[:1].isupper() and not (prev and prev[-1] in ".!?:…"):
             flags[i] = True
+    # Sentence-initial proper-noun phrase / title: the first word is always
+    # capitalised, so only flag it when the *next* token is itself a proper-noun
+    # continuation ("Cerro Corá") or a number / nº marking a title ("Choro nº 13").
+    if len(toks) > 1:
+        nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
+        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "n.º", "no", "nr"}:
+            flags[0] = True
     return flags
 
 
