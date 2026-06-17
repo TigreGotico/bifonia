@@ -20,7 +20,7 @@ import json
 import pathlib
 from collections import Counter, defaultdict
 
-from bifonia import tokenize, guess_sense
+from bifonia import tokenize, guess_sense, proper_flags
 from bifonia.data import POS_SENSES
 from bifonia.scoring import guess_pos as _rule_pos, resolve_sense as _rule_resolve
 from bifonia.model import SenseModel, NB_PATH, PERCEPTRON_PATH
@@ -112,21 +112,23 @@ def main():
         # on the stripped form and normalise the target slot for the scorer.
         i = next((j for j, w in enumerate(t) if w.strip(".,;:!?-") == r["word"]), None)
         if i is None:
-            return (None, None)
+            return (None, None, False)
+        pf = proper_flags(r["sentence"])
+        pr = pf[i] if i < len(pf) else False
         t = list(t); t[i] = r["word"]
-        return (t, i)
+        return (t, i, pr)
 
     def rules(r):
-        t, i = toks(r)
-        return _rule_resolve(r["word"], t, i, _rule_pos(t, i)) if t else None
+        t, i, pr = toks(r)
+        return _rule_resolve(r["word"], t, i, _rule_pos(t, i, proper=pr)) if t else None
 
     def model(m, r):
-        t, i = toks(r)
+        t, i, pr = toks(r)
         return m.predict(r["word"], t, i) if t and m.has(r["word"]) else None
 
     def shipped(r):
-        t, i = toks(r)
-        return guess_sense(t, i) if t else None
+        t, i, pr = toks(r)
+        return guess_sense(t, i, proper=pr) if t else None
 
     appr = {
         "most-common": lambda r: most_common.get(r["word"]),

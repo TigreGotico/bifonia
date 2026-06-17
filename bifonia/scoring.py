@@ -676,8 +676,14 @@ def score_adj(words: list, idx: int) -> int:
     return score
 
 
-def guess_pos(words: list, idx: int) -> str:
-    """Return the most likely UDEP POS tag for the ambiguous word at *idx*."""
+def guess_pos(words: list, idx: int, proper: bool = False) -> str:
+    """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
+
+    *proper*: the token is a mid-sentence capitalised word (a likely proper noun
+    — place/person/title, e.g. "Cerro Corá"). Real text is noun-dominant and a
+    proper noun is a NOUN, so this strongly biases the NOUN reading unless an
+    enclitic clitic right after marks a genuine verb host.
+    """
     word = words[idx]
 
     # Seed each candidate POS with its corpus-frequency prior (BASE_SCORE).
@@ -693,6 +699,13 @@ def guess_pos(words: list, idx: int) -> str:
         scores["VERB"] = score_verb(words, idx) + _bias.get("VERB", 0)
     if word in ADJ_IPA:
         scores["ADJ"] = score_adj(words, idx) + _bias.get("ADJ", 0)
+
+    # Proper-noun override: a capitalised mid-sentence token is a name, not a
+    # finite verb — unless it hosts an enclitic clitic ("Torno-me…").
+    if proper and "NOUN" in scores:
+        nxt = _next(words, idx)
+        if not (nxt.startswith("-") and nxt[1:] in _ENCLITICS):
+            scores["NOUN"] += 12
 
     best_score = max(scores.values())
     if best_score <= 0:

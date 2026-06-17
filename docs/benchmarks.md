@@ -8,8 +8,8 @@
 | approach | OOD accuracy |
 |---|---|
 | most-common (majority sense per word) | 74.6% |
-| **rules (corpus-free)** | **87.2%** |
-| shipped ensemble (model ⊕ rules) | **87.6%** |
+| **rules (corpus-free)** | **88.7%** |
+| shipped ensemble (model ⊕ rules) | **88.9%** |
 | **spaCy `pt_core_news_lg` (POS → sense)** | **93.2%** |
 | Naive-Bayes / perceptron | ~38% \* |
 

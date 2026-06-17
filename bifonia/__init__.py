@@ -390,12 +390,13 @@ def _sense_model():
         return None
 
 
-def _rule_sense(base: str, words: list, idx: int, pos: str = None) -> str:
-    resolved_pos = pos or _scoring_guess_pos(words, idx)
+def _rule_sense(base: str, words: list, idx: int, pos: str = None,
+                proper: bool = False) -> str:
+    resolved_pos = pos or _scoring_guess_pos(words, idx, proper=proper)
     return _resolve_sense(base, words, idx, resolved_pos)
 
 
-def guess_sense(words: list, idx: int, pos: str = None) -> str:
+def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False) -> str:
     """Return the most likely MEANING slug for the ambiguous word at *idx*.
 
     If the token is already a diacritized form (pre-AO1990 orthography or output
@@ -418,6 +419,10 @@ def guess_sense(words: list, idx: int, pos: str = None) -> str:
         normalised[idx] = base
     if pos is not None:
         return _rule_sense(base, normalised, idx, pos)
+    # A mid-sentence proper noun is a name, not a finite verb — resolve by rules
+    # (with the proper-noun bias) and skip the statistical model.
+    if proper:
+        return _rule_sense(base, normalised, idx, proper=True)
     model = _sense_model()
     if (model is not None and model.has(base) and model.route(base) == "model"
             and model.margin(base, normalised, idx) >= model.margin_tau(base)):
@@ -425,12 +430,13 @@ def guess_sense(words: list, idx: int, pos: str = None) -> str:
     return _rule_sense(base, normalised, idx)
 
 
-def guess_pos(words: list, idx: int) -> str:
+def guess_pos(words: list, idx: int, proper: bool = False) -> str:
     """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
 
     Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
     its descriptive POS, preserving the pre-existing POS-tagging interface.
     Diacritized input (e.g. *pára*, *acôrdo*) is resolved without context scoring.
+    *proper* biases the NOUN reading for a mid-sentence capitalised token.
     """
     raw = words[idx]
     token = _strip_edge(raw)
@@ -440,8 +446,22 @@ def guess_pos(words: list, idx: int) -> str:
     if base != raw:
         normalised = list(words)
         normalised[idx] = base
-        return _scoring_guess_pos(normalised, idx)
-    return _scoring_guess_pos(words, idx)
+        return _scoring_guess_pos(normalised, idx, proper=proper)
+    return _scoring_guess_pos(words, idx, proper=proper)
+
+
+def proper_flags(text: str) -> list:
+    """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
+    noun: a mid-sentence capitalised token (not sentence-initial). Used to bias
+    the NOUN reading (names like "Cerro Corá" are not finite verbs)."""
+    toks = re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)
+    flags = [False] * len(toks)
+    for i in range(1, len(toks)):
+        core = toks[i].lstrip("-")
+        prev = toks[i - 1]
+        if core[:1].isupper() and not (prev and prev[-1] in ".!?:…"):
+            flags[i] = True
+    return flags
 
 
 def add_extra_diacritics(sentence: str) -> str:
@@ -458,11 +478,12 @@ def add_extra_diacritics(sentence: str) -> str:
     is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
     """
     words = tokenize(sentence)
+    caps = proper_flags(sentence)
     replacements = {}
     for i, word in enumerate(words):
         base = _strip_edge(word)
         if is_ambiguous(base):
-            diacritized = _DIACRITIZED.get((base, guess_sense(words, i)))
+            diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
             if diacritized:
                 replacements[i] = diacritized
     if not replacements:
