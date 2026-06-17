@@ -41,7 +41,12 @@ def _diacritized_sentence(sentence: str, word: str, sense: str) -> str:
 
 def build_records() -> list[dict]:
     records = []
+    seen = set()
     for word, sense, sentence in iter_records():
+        key = (word, sense, sentence.strip().lower())
+        if key in seen:                    # dedup so a duplicate can't span train/test
+            continue
+        seen.add(key)
         records.append({
             "word": word,
             "sense": sense,
@@ -71,6 +76,8 @@ def stratified_split(records: list[dict], test_frac: float = 0.2,
         train.extend(group[n_test:])
     rng.shuffle(train)
     rng.shuffle(test)
+    overlap = {r["sentence"] for r in train} & {r["sentence"] for r in test}
+    assert not overlap, f"train/test leakage: {len(overlap)} shared sentences"
     return train, test
 
 

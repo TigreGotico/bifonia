@@ -49,7 +49,7 @@ def rule_sense(word, words, idx):
     return _rule_resolve(word, words, idx, _rule_pos(words, idx))
 
 
-def load_examples(path, vocs, skip_xfail=False):
+def load_examples(path, vocs, skip_xfail=False, exclude=None):
     by_word = defaultdict(list)
     for line in path.read_text(encoding="utf-8").splitlines():
         if not line.strip():
@@ -57,6 +57,8 @@ def load_examples(path, vocs, skip_xfail=False):
         r = json.loads(line)
         if skip_xfail and r.get("xfail"):
             continue
+        if exclude is not None and r["sentence"].strip().lower() in exclude:
+            continue                       # keep the behavioral set disjoint from train
         words = tokenize(r["sentence"].lower())
         w = r["word"]
         # tokens may carry trailing punctuation ("torno." at a clause end) — match
@@ -250,7 +252,12 @@ def main():
     vocs = load_structural_vocs("pt-pt")
     print("loading examples…")
     by_word = load_examples(TRAIN, vocs)
-    behav = load_examples(BEHAV, vocs, skip_xfail=True) if BEHAV.exists() else {}
+    # The behavioral set gates model adoption as an out-of-distribution proxy, so
+    # it must not contain any sentence the model trained on.
+    train_sents = {json.loads(l)["sentence"].strip().lower()
+                   for l in TRAIN.read_text(encoding="utf-8").splitlines() if l.strip()}
+    behav = (load_examples(BEHAV, vocs, skip_xfail=True, exclude=train_sents)
+             if BEHAV.exists() else {})
     print(f"{sum(len(v) for v in by_word.values())} train examples, "
           f"{sum(len(v) for v in behav.values())} behavioral, across {len(by_word)} words")
 

@@ -44,7 +44,10 @@ def _tag(recs):
     words = {r["sentence"]: r["word"] for r in recs}
     if TAG_CACHE.exists():
         cache = json.loads(TAG_CACHE.read_text(encoding="utf-8"))
-        if all(s in cache for s in words):
+        # Require a real tag, not just a present key — an all-None cache must not
+        # short-circuit tagging (it would collapse spaCy/Stanza onto most-common).
+        if all(cache.get(s, {}).get("spacy") is not None
+               or cache.get(s, {}).get("stanza") is not None for s in words):
             return cache
     cache = {s: {} for s in words}
     sents = list(words)
@@ -95,6 +98,8 @@ def main():
     most_common = {w: c.most_common(1)[0][0] for w, c in freq.items()}
 
     def pos_to_sense(word, upos):
+        if upos is None:        # tagger produced no tag → abstain (scored as wrong),
+            return None         # never borrow the most-common answer
         cands = POS_SENSES.get(word, {}).get(upos)
         if cands:
             return sorted(cands, key=lambda s: -freq[word][s])[0]

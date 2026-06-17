@@ -381,16 +381,37 @@ def merge_staged(staged_file: Path):
     if ipa is None:
         print(f"  unknown (word, sense) = ({word}, {sense}); not in CSV")
         return
-    added = 0
+    # A staged line is admitted only if the rule engine independently reads it as
+    # the claimed sense — token-presence alone would let mislabelled sentences in.
+    from bifonia import tokenize, disambiguate, _DIACRITIZED_TO_BASE
+
+    def _reads_as_sense(s):
+        toks = tokenize(s.lower())
+        idx = next((i for i, t in enumerate(toks)
+                    if t.strip(".,;:!?-") == word
+                    or _DIACRITIZED_TO_BASE.get(t.strip(".,;:!?-")) == word), None)
+        if idx is None:
+            return False
+        try:
+            return disambiguate(toks, idx) == ipa
+        except Exception:
+            return False
+
+    added = rejected = 0
     with _CORPUS_JSONL.open("a", encoding="utf-8") as fh:
         for s in sentences:
-            if s.lower() in seen:
+            key = s.strip().lower()
+            if key in seen:
                 continue
-            seen.add(s.lower())
+            if not _reads_as_sense(s):
+                rejected += 1
+                continue
+            seen.add(key)
             fh.write(json.dumps({"word": word, "sense": sense, "pos": pos,
                                  "ipa": ipa, "sentence": s}, ensure_ascii=False) + "\n")
             added += 1
-    print(f"Merged {added}/{len(sentences)} new sentences ({word}/{sense}) into corpus.jsonl")
+    print(f"Merged {added}/{len(sentences)} ({word}/{sense}); "
+          f"{rejected} rejected (rule disagreement)")
 
 
 async def main_async(word_filter, sense_filter, cwd):

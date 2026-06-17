@@ -43,7 +43,8 @@ with _CSV.open(encoding="utf-8") as fh:
 AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
 
 # Words a part-of-speech tag cannot disambiguate (some POS maps to ≥2 senses):
-# the genuine same-POS / overlapping-POS heterophones (sede, molho, corte, forma).
+# the genuine same-POS / overlapping-POS heterophones (e.g. sede, molho,
+# corte, forma, tola, bola, cor, lobo, polo).
 POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
                       if any(len(senses) > 1 for senses in pm.values())}
 
@@ -68,6 +69,7 @@ ADJ_IPA: dict = _ipa_by_pos("ADJ")
 DEFAULT_SENSE: dict = {
     "sede": "thirst",
     "bola": "ball", "cor": "colour", "lobo": "wolf", "polo": "pole",
+    "corte": "cut", "forma": "shape", "molho": "sauce", "tola": "foolish",
 }
 
 # sensible linguistic defaults when context scoring yields no winner

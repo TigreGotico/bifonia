@@ -153,7 +153,7 @@ def score_adp(words: list, idx: int) -> int:
         # bare infinitive-like forms ending in -ar/-er/-ir (already handled by
         # _is_infinitive).  Detect by common suffix.
         _DEVERBAL_SFXS = ("ção", "são", "gem", "ura", "ência", "ância",
-                          "mento", "ismo", "ise", "ise", "ção")
+                          "mento", "ismo", "ise")
         if next_word.endswith(_DEVERBAL_SFXS):
             score += 4
         # "para depois/amanhã" — deferred-purpose ADP.
