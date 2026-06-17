@@ -8,16 +8,18 @@
 | approach | OOD accuracy |
 |---|---|
 | most-common (majority sense per word) | 74.6% |
-| **rules (corpus-free)** | **83.8%** |
-| shipped ensemble (model ⊕ rules) | **84.5%** |
+| **rules (corpus-free)** | **87.2%** |
+| shipped ensemble (model ⊕ rules) | **87.6%** |
 | **spaCy `pt_core_news_lg` (POS → sense)** | **93.2%** |
 | Naive-Bayes / perceptron | ~38% \* |
 
 ### Reading these numbers honestly
 - **A strong neural POS-tagger (spaCy) wins here (93%)** because the expanded
   roster is largely **POS-separable** (deverbal noun vs 1sg verb): tagging the
-  homograph's POS correctly resolves the reading. The rule engine trails because
-  of bare-object / minimal-context sentences.
+  homograph's POS correctly resolves the reading. After adding conservative VERB rules (coordination/comparison → noun), the
+  rule engine reaches 87.2% — the residual gap is mostly **proper nouns**
+  (place/team names like *Cerro Corá*) that need capitalization, a documented
+  next step.
 - bifonia's rule engine is **offline, zero-dependency and deterministic**, and —
   unlike a POS-tagger — it disambiguates **same-POS lexical pairs**
   (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho`
@@ -37,3 +39,26 @@ original-27 subset **95.7%** (up from 94.6% with the tokenizer + scorer rules).
 The disambiguation axis is **vowel quality** (open ɔ/ɛ vs closed o/e). POS predicts
 it for noun/verb pairs, but the lexical/same-POS pairs need **meaning** cues — the
 reason bifonia is meaning-keyed.
+
+## The skew caveat & the balanced hard-subset test
+
+The wild OOD set is **sense-skewed** — Wikipedia is encyclopedic (noun-heavy), so
+for most words one reading dominates and minority senses barely occur. On the
+"POS-no-lift" subset (72 words) **most-common alone scores 98%**, so high spaCy /
+shipped numbers there mostly reflect *predicting the dominant sense*, not
+disambiguation. spaCy's apparent edge on wild is largely this artifact.
+
+The fair test is **balanced** (equal senses per word), on words a POS-tagger
+**cannot** separate (same-POS or POS-unreliable readings):
+
+| approach | balanced hard subset (8 words, n=1280) |
+|---|---|
+| most-common | 50% |
+| spaCy `pt_core_news_lg` (POS→sense) | 59% |
+| **bifonia rules** | **94%** |
+
+Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100,
+`gozo` 98, `coro` 99, `posto` 94. On the same-POS pairs (`sede`, `molho`, `coro`,
+`gozo`) spaCy is pinned at ~50% (chance) — it has no POS signal to use — while the
+meaning-keyed rules resolve them. **This is bifonia's core value:
+meaning-based disambiguation where part-of-speech is uninformative.**

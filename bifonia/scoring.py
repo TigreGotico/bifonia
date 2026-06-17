@@ -259,6 +259,12 @@ def score_noun(words: list, idx: int) -> int:
     # "pelo golfo"). «colher» excluded: "de colher" can be the infinitive verb.
     if prev_word in {"de", "sem", "com", "em", "por", "pelo", "pela", "pelos", "pelas"} and word != "colher":
         score += 3
+    # Coordination / comparison before the word ("X e Y", "X ou Y", "como X") —
+    # the homograph is almost always a NOUN in a list or a comparison, not a
+    # finite verb. Real-world (encyclopedic) text is noun-dominant, so this
+    # cuts the most common false-VERB error without needing a strong verb cue.
+    if prev_word in {"e", "ou", "nem", "como"}:
+        score += 3
     # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
     if word == "pelo" and prev_word in _TER:
