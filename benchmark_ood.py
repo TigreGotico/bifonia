@@ -83,7 +83,13 @@ def main():
     recs = _load_ood()
     train = [json.loads(l) for l in TRAIN.read_text(encoding="utf-8").splitlines() if l.strip()]
 
+    # majority/frequency baseline from the full bundled corpus (covers every
+    # roster word, not just the 27-word train split — otherwise new words have
+    # no most-common baseline and the column under-reports).
+    from bifonia.corpus import iter_records
     freq = defaultdict(Counter)
+    for w, s, _ in iter_records():
+        freq[w][s] += 1
     for r in train:
         freq[r["word"]][r["sense"]] += 1
     most_common = {w: c.most_common(1)[0][0] for w, c in freq.items()}
