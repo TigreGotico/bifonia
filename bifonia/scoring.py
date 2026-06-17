@@ -779,8 +779,22 @@ def _resolve_molho(words: list, idx: int) -> str:
     return "sauce"
 
 
+def _resolve_tola(words: list, idx: int) -> str:
+    """Resolve "tola" once the POS guess is NOUN.
+
+    The concrete noun readings — colloquial head/skull and the *tola* hardwood,
+    both open ˈtɔlɐ — share the "head" slug. The foolish adjective (closed ˈtolɐ),
+    even used substantively ("aquela tola comprou…"), is a subject/predicate that
+    the POS scorer routes to ADJ, not NOUN; so reaching this resolver means the
+    open concrete reading. (`foolish` carries pos ``ADJ|NOUN`` only so an external
+    NOUN tag from the hybrid ensemble defers to these rules instead of forcing
+    head.)
+    """
+    return "head"
+
+
 # words whose senses share a POS need a meaning-level resolver after guess_pos
-_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho}
+_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
