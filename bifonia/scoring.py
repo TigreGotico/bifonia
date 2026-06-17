@@ -571,27 +571,6 @@ def score_verb(words: list, idx: int) -> int:
     if word == "gozo" and next_word == "de" and prev_word not in _GOZO_EXCL_PREV:
         score += 5
 
-    # "molho" — open-ɔ bundle/soak reading vs the default closed-o sauce. These are
-    # the genuinely ambiguous cases where a nearby word, not the local pattern, decides:
-    #   • "molho de chaves/lenha/…"      — unambiguous bundle (bundle_things.voc)
-    #   • "colhi um molho de salsa"      — green (bundle_ambiguous) + gathering verb
-    #   • "deixar/pôr/estar de molho"    — soaking idiom (soak_verbs in left window)
-    # Sauce stays the default: "molho de tomate", "gosto de molho", "o bife tinha molho".
-    if word == "molho":
-        _m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-        _left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
-        if next_word == "de" and _m2 in _BUNDLE_THINGS:
-            score += 8
-        elif (next_word == "de" and _m2 in _BUNDLE_AMBIG
-              and any(v in _BUNDLE_VERBS for v in _left4)):
-            score += 8
-        elif prev_word == "de" and any(v in _SOAK_VERBS for v in _left4):
-            score += 8
-        elif prev_word == "de":
-            # "gosto de molho", "fio de molho" — genitive "of sauce", not soaking;
-            # cancel the generic 1st-person ("eu molho") prior so sauce wins.
-            score -= 2
-
     # "sempre sobre [uma/um/…]" — frequency adverb + "sobrar" (left over); not ADP.
     # "sempre sobre" where a DET/QUANT follows and there is no governing verb is a
     # finite VERB (sobrar) not a preposition.
@@ -782,8 +761,26 @@ def _resolve_sede(words: list, idx: int) -> str:
     return DEFAULT_SENSE.get("sede", "thirst")
 
 
+def _resolve_molho(words: list, idx: int) -> str:
+    """Disambiguate the NOUN reading of "molho": BUNDLE (open ɔ, "um molho de
+    chaves") vs SAUCE (closed o).  The closed reading also covers the verb molhar
+    ("eu molho", ˈmoʎu) — that is handled upstream as pos=VERB → sauce — so here
+    only the noun pair remains.  Bundle requires an explicit bundled thing; the
+    culinary sauce is the default.
+    """
+    next_word = _next(words, idx)
+    m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
+    if next_word == "de" and m2 in _BUNDLE_THINGS:                 # "molho de chaves/lenha"
+        return "bundle"
+    if (next_word == "de" and m2 in _BUNDLE_AMBIG                   # "colhi um molho de salsa"
+            and any(v in _BUNDLE_VERBS for v in left4)):
+        return "bundle"
+    return "sauce"
+
+
 # words whose senses share a POS need a meaning-level resolver after guess_pos
-_SENSE_RESOLVERS = {"sede": _resolve_sede}
+_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:

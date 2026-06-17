@@ -623,20 +623,20 @@
 {"sentence": "O molho picante não é para toda a gente, mas eu adoro intensidade.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
 {"sentence": "O molho de pesto é fácil de fazer e dura vários dias no frigorífico.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
 {"sentence": "O molho de camarão ficou delicioso com o toque de brandy no final.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
-{"sentence": "Molho os pés na bacia com água morna e sal ao fim do dia longo.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o pão no café antes de o comer ao pequeno-almoço da manhã.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as plantas de manhã cedo antes de o sol ficar demasiado quente.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho sempre as leguminosas secas de véspera antes de as cozinhar.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho os pincéis depois de usar para limpar bem a tinta acrílica.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho os pés no mar logo que chego à praia no primeiro dia.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho os biscoitos no leite antes de os dar às crianças pequenas.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as sementes antes de as plantar para acelerar a germinação.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o pano com água fria quando me arrepia durante o verão.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as passas em rum antes de as adicionar ao bolo de natal.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as amêndoas durante a noite para ficarem mais fáceis de pelar.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho a esponja antes de a usar para limpar as superfícies da cozinha.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o cacho de uvas antes de o servir para ficarem bem frescas.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as escovas de dentes antes de aplicar a pasta dentífrica.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
+{"sentence": "Molho os pés na bacia com água morna e sal ao fim do dia longo.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o pão no café antes de o comer ao pequeno-almoço da manhã.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as plantas de manhã cedo antes de o sol ficar demasiado quente.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho sempre as leguminosas secas de véspera antes de as cozinhar.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho os pincéis depois de usar para limpar bem a tinta acrílica.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho os pés no mar logo que chego à praia no primeiro dia.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho os biscoitos no leite antes de os dar às crianças pequenas.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as sementes antes de as plantar para acelerar a germinação.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o pano com água fria quando me arrepia durante o verão.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as passas em rum antes de as adicionar ao bolo de natal.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as amêndoas durante a noite para ficarem mais fáceis de pelar.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho a esponja antes de a usar para limpar as superfícies da cozinha.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o cacho de uvas antes de o servir para ficarem bem frescas.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as escovas de dentes antes de aplicar a pasta dentífrica.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
 {"sentence": "Ela tem um olho azul e outro castanho, uma característica rara.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}
 {"sentence": "O olho do furacão é surpreendentemente calmo comparado com a periferia.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}
 {"sentence": "O olho da agulha é demasiado pequeno para este fio tão grosso.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}
@@ -1233,16 +1233,16 @@
 {"sentence": "O molho de vinho tinto combina perfeitamente com o javali assado.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
 {"sentence": "O molho de legumes reduce muito e fica muito mais concentrado.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
 {"sentence": "O molho de manteiga e limão finaliza o peixe grelhado na perfeição.", "word": "molho", "sense": "sauce", "pos": "NOUN", "xfail": null}
-{"sentence": "Molho as leguminosas durante a noite para reduzirem o tempo de cozinha.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o pão torrado no café com leite ao pequeno-almoço.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as mãos antes de aplicar o creme para maior absorção.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as tâmaras em água quente antes de as triturar para o bolo.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o pincel antes de mergulhá-lo na tinta para suavizar.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as amêndoas em água fria para ficar mais fácil pelá-las.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho os pés quando chego a casa depois de um dia longo de caminhada.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as sementes de chia em leite vegetal durante a noite.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho as uvas passas em aguardente para o bolo de natal.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
-{"sentence": "Molho o biscoito no chá e como-o antes que se desfaça.", "word": "molho", "sense": "bundle", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as leguminosas durante a noite para reduzirem o tempo de cozinha.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o pão torrado no café com leite ao pequeno-almoço.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as mãos antes de aplicar o creme para maior absorção.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as tâmaras em água quente antes de as triturar para o bolo.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o pincel antes de mergulhá-lo na tinta para suavizar.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as amêndoas em água fria para ficar mais fácil pelá-las.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho os pés quando chego a casa depois de um dia longo de caminhada.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as sementes de chia em leite vegetal durante a noite.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho as uvas passas em aguardente para o bolo de natal.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
+{"sentence": "Molho o biscoito no chá e como-o antes que se desfaça.", "word": "molho", "sense": "sauce", "pos": "VERB", "xfail": null}
 {"sentence": "O olho do tomate foi cortado antes de o fatiar para a salada.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}
 {"sentence": "O olho de peixe distorce a perspectiva mas capta muito ângulo.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}
 {"sentence": "O olho laser corrigiu-lhe a miopia em menos de quinze minutos.", "word": "olho", "sense": "eye", "pos": "NOUN", "xfail": null}

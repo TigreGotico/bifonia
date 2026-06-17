@@ -77,7 +77,8 @@ def is_ambiguous(word: str) -> bool:
     return _strip_edge(word).lower() in AMBIGUOUS_WORDS
 
 
-def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> str:
+def disambiguate(words: list, idx: int, pos: str = None, sense: str = None,
+                 postag: str = None) -> str:
     """Return the IPA transcription for the ambiguous word at position *idx*.
 
     The reading is selected by MEANING (`sense`), not POS: most words have one
@@ -112,7 +113,7 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> s
         raise ValueError(f"{raw!r} is not a known heterophonic homograph")
 
     if sense is None:
-        sense = guess_sense(words, idx, pos=pos)
+        sense = guess_sense(words, idx, pos=pos, postag=postag)
     return HOMOGRAPHS[word][sense]
 
 
@@ -396,7 +397,11 @@ def _rule_sense(base: str, words: list, idx: int, pos: str = None,
     return _resolve_sense(base, words, idx, resolved_pos)
 
 
-def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False) -> str:
+_UPOS_NORM = {"PROPN": "NOUN", "AUX": "VERB"}
+
+
+def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
+                postag: str = None) -> str:
     """Return the most likely MEANING slug for the ambiguous word at *idx*.
 
     If the token is already a diacritized form (pre-AO1990 orthography or output
@@ -407,6 +412,12 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False) ->
     win over the rules (``route == "model"`` with sufficient margin), the model
     predicts the sense; every other case falls back to the corpus-free rule engine.
     An explicit *pos* override always uses the rule resolver.
+
+    *postag* is the hybrid-ensemble hint: an external POS tag (e.g. from spaCy).
+    It resolves the reading only when that POS maps to exactly ONE sense
+    (a POS-separable word); for same-POS readings (sede/molho/corte/forma — where
+    a tagger misses by construction) it is ignored and the rules decide. This lets
+    a caller fuse a neural tagger with the rules without adding a dependency.
     """
     raw = words[idx]
     token = _strip_edge(raw)
@@ -417,6 +428,11 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False) ->
     if base != raw:                         # normalise a punctuated/diacritized slot
         normalised = list(words)
         normalised[idx] = base
+    if postag is not None:                  # hybrid-ensemble hint (see docstring)
+        cands = POS_SENSES.get(base, {}).get(_UPOS_NORM.get(postag, postag))
+        if cands and len(cands) == 1:
+            return cands[0]
+        # ambiguous / unmapped tag → fall through to model + rules below
     if pos is not None:
         return _rule_sense(base, normalised, idx, pos)
     # A mid-sentence proper noun is a name, not a finite verb — resolve by rules
