@@ -69,6 +69,9 @@ _EXCL_DET     = voc("exclamative_det")
 _LOCATIVE_CONTRACTIONS = voc("locative_contractions")
 _FUNC_EXTRA = voc("function_words")
 _PRENOMINAL_ADJ = voc("prenominal_adj")  # adjectives that precede a noun head
+_COMPLEMENT_PREPS = voc("complement_preps")  # prep + homograph = nominal complement
+_COORDINATION = voc("coordination")          # e/ou/nem/como before → noun
+_AROUND_PREP = voc("around_prep")            # "em torno" locution
 # meaning-level cues for words whose senses share a POS (only "sede" today)
 _SEDE_SEAT   = voc("sede_seat_cues")
 _SEDE_THIRST = voc("sede_thirst_cues")
@@ -245,7 +248,7 @@ def score_noun(words: list, idx: int) -> int:
     #   «em troco de»                              — in exchange for
     # The 1sg verbs «tornar»/«trocar» are never introduced by these prepositions,
     # so a preceding "em/ao/no/do" is decisive for the closed-o NOUN reading.
-    if word == "torno" and prev_word in {"em", "ao", "no", "do"}:
+    if word == "torno" and prev_word in _AROUND_PREP:
         score += 6
     if word == "troco" and prev_word == "em":
         score += 6
@@ -257,13 +260,13 @@ def score_noun(words: list, idx: int) -> int:
     # A complement/oblique preposition immediately before a homograph marks a
     # nominal use ("de gelo", "saco de emprego", "sem retorno", "com decoro",
     # "pelo golfo"). «colher» excluded: "de colher" can be the infinitive verb.
-    if prev_word in {"de", "sem", "com", "em", "por", "pelo", "pela", "pelos", "pelas"} and word != "colher":
+    if prev_word in _COMPLEMENT_PREPS and word != "colher":
         score += 3
     # Coordination / comparison before the word ("X e Y", "X ou Y", "como X") —
     # the homograph is almost always a NOUN in a list or a comparison, not a
     # finite verb. Real-world (encyclopedic) text is noun-dominant, so this
     # cuts the most common false-VERB error without needing a strong verb cue.
-    if prev_word in {"e", "ou", "nem", "como"}:
+    if prev_word in _COORDINATION:
         score += 3
     # Object of a transitive finite verb directly before ("encontrou consolo",
     # "procura emprego") → the homograph is the object NOUN, not a second verb.
