@@ -50,7 +50,7 @@ adjudication follow the procedure above and re-run on any corpus revision.
 ## Out-of-fold model signal (all words)
 
 spaCy only helps POS-separable words and is noun-biased. For an independent signal
-that **covers every word** — including same-POS pairs and words the shipped models
+that **covers every word** — including same-POS pairs and words the per-word models
 were not trained on — re-score the corpus **out-of-fold**: a 5-fold split per word,
 each line predicted by NB+perceptron trained on the *other* folds. Because no line
 is in its own training fold, the prediction is independent of that line's stored

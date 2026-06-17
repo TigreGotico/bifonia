@@ -10,8 +10,7 @@
 | most-common (corpus-derived majority sense) | 46.0% † |
 | Naive-Bayes (all roster words) | 85.0% |
 | perceptron (all roster words) | 86.5% |
-| **rules (corpus-free)** | **89.9%** |
-| shipped (rules + model only where it beats rules OOD-proxy) | **89.9%** |
+| **rules (zero-dependency)** | **89.9%** |
 | spaCy `pt_core_news_lg` (POS → sense) | 91.6% |
 | **hybrid ensemble (POS tag ⊕ rules)** | **95.3%** |
 
@@ -55,16 +54,13 @@ the caller supplies the tag.
   unlike a POS-tagger — it disambiguates **same-POS lexical pairs**
   (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho`
   sauce/bundle), where a POS-tagger can only fall back to the majority sense.
-- **The learned models cover all 124 words** (trained on a stratified 80/20
-  split) but trail the rules OOD (85–86% vs 89.8%). Because the corpus labels are
-  produced by the rule engine, a model trained on them cannot exceed the rules
-  out-of-distribution; it can at best mimic the rules in-distribution and
-  generalises worse on real sentences. The shipped route-gate therefore adopts a
-  word's model only when it **strictly beats the rules on the hand-curated
-  behavioral set** (the OOD proxy) — true for just 1 word — so **shipped ≡ rules
-  (89.8%)**. The models are retained as a full-roster baseline and as the corpus
-  QC engine (see [data_quality.md](data_quality.md)), not as the shipped
-  predictor.
+- **The learned per-word models (Naive-Bayes, perceptron) cover every roster
+  word** but trail the rules out-of-distribution (85–86% vs 89.8%). Because the
+  corpus labels are produced by the rule engine, a model trained on them can at
+  best mimic the rules in-distribution and generalises worse on real sentences.
+  The models serve as a full-roster baseline and as the corpus QC engine (see
+  [data_quality.md](data_quality.md)); the **rules are the zero-dependency
+  predictor**, and the **hybrid ensemble** layers a POS tag on top of them.
 - † `most-common` here is derived from the (balanced) bundled corpus, so it picks
   each word's corpus-majority sense — which often isn't the wild-dominant sense,
   hence 46%. The wild set's *own* dominant-sense baseline is ~75% (it is
@@ -84,8 +80,7 @@ reason bifonia is meaning-keyed.
 
 The wild OOD set is **sense-skewed** — Wikipedia is encyclopedic (noun-heavy), so
 for most words one reading dominates and minority senses barely occur. On the
-"POS-no-lift" subset (72 words) **most-common alone scores 98%**, so high spaCy /
-shipped numbers there mostly reflect *predicting the dominant sense*, not
+"POS-no-lift" subset (72 words) **most-common alone scores 98%**, so high spaCy / ensemble numbers there mostly reflect *predicting the dominant sense*, not
 disambiguation. spaCy's apparent edge on wild is largely this artifact.
 
 The fair test is **balanced** (equal senses per word), on words a POS-tagger

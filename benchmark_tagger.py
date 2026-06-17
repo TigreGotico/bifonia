@@ -136,18 +136,18 @@ def main():
             return None
         return model.predict(r["word"], toks, idx)
 
-    def shipped(r):  # production guess_sense: per-word model routing + rule fallback
+    def ensemble(r):  # production guess_sense: per-word model routing + rule fallback
         toks = tokenize(r["sentence"].lower())
         idx = _locate(toks, r["word"])
         return guess_sense(toks, idx) if idx is not None else None
 
-    # corpus-free first, then corpus-using (most-common / NB / perceptron), then shipped ensemble
+    # corpus-free first, then corpus-using (most-common / NB / perceptron), then ensemble ensemble
     approaches = {
         "rules(free)": rule_sense,
         "most-common": lambda r: most_common.get(r["word"]),
         "NB": lambda r: _model_sense(nb, r),
         "perceptron": lambda r: _model_sense(perc, r),
-        "shipped": shipped,
+        "ensemble": ensemble,
     }
     cache = {}
     if not args.no_taggers:

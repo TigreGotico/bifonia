@@ -9,7 +9,7 @@ lives in this repository. This is the honest generalisation number — synthetic
 benchmarks (``benchmark_tagger.py``) run several points higher because their train
 and test sentences share phrasing.
 
-Scores: most-common · rules (no corpus) · Naive-Bayes · perceptron · shipped ensemble.
+Scores: most-common · rules (no corpus) · Naive-Bayes · perceptron · ensemble ensemble.
 
 Usage::
 
@@ -126,7 +126,7 @@ def main():
         t, i, pr = toks(r)
         return m.predict(r["word"], t, i) if t and m.has(r["word"]) else None
 
-    def shipped(r):
+    def ensemble(r):
         t, i, pr = toks(r)
         return guess_sense(t, i, proper=pr) if t else None
 
@@ -137,7 +137,7 @@ def main():
         "rules(free)": rules,
         "NB": lambda r: model(nb, r),
         "perceptron": lambda r: model(perc, r),
-        "shipped": shipped,
+        "ensemble": ensemble,
     }
 
     print(f"OOD set: {len(recs)} real sentences, {len({r['word'] for r in recs})} words\n")
@@ -146,7 +146,7 @@ def main():
         ok = sum(1 for r in recs if fn(r) == r["sense"])
         print(f"{name:<14} {ok / len(recs) * 100:6.2f}%  ({ok}/{len(recs)})")
 
-    print("\nper-word (n | rules | NB | perceptron | shipped):")
+    print("\nper-word (n | rules | NB | perceptron | ensemble):")
     byw = defaultdict(list)
     for r in recs:
         byw[r["word"]].append(r)
@@ -157,7 +157,7 @@ def main():
         def acc(fn):
             return sum(1 for r in rs if fn(r) == r["sense"]) / n * 100
         print(f"  {w:<12} {n:>3} | {acc(rules):5.0f} | {acc(lambda r: model(nb, r)):5.0f} | "
-              f"{acc(lambda r: model(perc, r)):5.0f} | {acc(shipped):5.0f}")
+              f"{acc(lambda r: model(perc, r)):5.0f} | {acc(ensemble):5.0f}")
 
 
 if __name__ == "__main__":

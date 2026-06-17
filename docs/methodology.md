@@ -185,7 +185,7 @@ held-out split (the test partition of the generated corpus). `benchmark_ood.py` 
 | rules (no corpus) | 94.5 % | 84.6 % |
 | Naive-Bayes | 98.1 % | 86.7 % |
 | averaged perceptron | 99.0 % | 89.6 % |
-| **shipped ensemble** | **96.1 %** | **90.5 %** |
+| **ensemble** | **96.1 %** | **90.5 %** |
 
 Synthetic splits overstate accuracy: their train and test sentences share phrasing, so every
 approach runs several points high, and the OOD set is the reliable measure. Every method drops on

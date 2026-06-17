@@ -2,7 +2,7 @@
 
 ## The problem
 
-Portuguese has 27 heterophonic homographs — words whose spelling is identical but whose
+Portuguese has heterophonic homographs — words whose spelling is identical but whose
 pronunciation depends on their **meaning** (`sense`). A rule-based G2P engine that does not
 disambiguate the sense will systematically mispronounce them.
 
@@ -21,24 +21,22 @@ the meaning, not POS. A G2P that sees `para` or `sede` cannot know which IPA to 
 
 ### Diacritics are standard Portuguese phonology
 
-The acute and circumflex accents used here are **not** project-specific notation.
-They are the standard Portuguese orthographic markers for vowel quality and are already
-part of the language:
+The acute and circumflex accents used here are standard Portuguese orthographic markers
+for vowel quality and are part of the language:
 
 - **Acute (´)** marks an open vowel: *ó* = /ɔ/, *é* = /ɛ/
 - **Circumflex (^)** marks a closed vowel: *ô* = /o/, *ê* = /e/
 
-Every Portuguese G2P engine, phonemiser, and TTS system already handles these accents
-correctly — they appear in thousands of unambiguous words (*ótimo*, *ônibus*, *êxito*,
-*pé*, *pó*, …).  The disambiguation output is therefore **drop-in compatible** with any
-existing Portuguese TTS pipeline: insert the diacritised form before G2P and the correct
-vowel is produced without any changes to the downstream system.
+Every Portuguese G2P engine, phonemiser, and TTS system handles these accents correctly —
+they appear in thousands of unambiguous words (*ótimo*, *ônibus*, *êxito*, *pé*, *pó*, …).
+The disambiguation output is therefore **drop-in compatible** with any Portuguese TTS
+pipeline: insert the diacritised form before G2P and the correct vowel is produced without
+any changes to the downstream system.
 
-The issue is only that AO1990 (the 1990 Orthographic Agreement) removed these accents
-from a small set of words that were heterophonic — the very words this package covers.
-Post-reform, *pára* (stops) became *para*, making it orthographically identical to the
-preposition.  Restoring the diacritic on the verbal reading re-establishes the phonological
-signal that the reform erased.
+AO1990 (the 1990 Orthographic Agreement) writes a small set of formerly-heterophonic words
+without these accents — the words this package covers. Under AO1990, *pára* (stops) is
+written *para*, orthographically identical to the preposition. Placing the diacritic on the
+verbal reading supplies the phonological signal the plain spelling lacks.
 
 ### Mapping to a sequence-labelling problem
 
@@ -106,15 +104,15 @@ on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`benchm
 | rules (no corpus) | 94.5% | 84.6% |
 | Naive-Bayes | 98.1% | 86.7% |
 | averaged perceptron | 99.0% | 89.6% |
-| **shipped ensemble** | **96.1%** | **90.5%** |
+| **ensemble** | **96.1%** | **90.5%** |
 
-Synthetic splits overstate accuracy — their train and test sentences share phrasing — so the OOD
-column is the honest measure. Every method drops on real text, but the corpus-trained perceptron
-still beats the rules by about six points there (89.6 vs 83.2): it generalises rather than
-memorising. The POS taggers plateau because they cannot separate two senses that share a POS (e.g.
-`sede`): they nail the dominant noun sense and miss the minority one by construction.
+The OOD column is the more representative measure: synthetic train and test sentences share
+phrasing, so synthetic accuracy runs higher. On real text the corpus-trained perceptron beats the
+rules by about five points (89.6 vs 84.6): it generalises rather than memorising. The POS taggers
+plateau because they cannot separate two senses that share a POS (e.g. `sede`): they nail the
+dominant noun sense and miss the minority one by construction.
 
-Run the comparison yourself:
+Run the comparison:
 
 ```bash
 python benchmark_tagger.py            # synthetic held-out split
@@ -124,7 +122,7 @@ python benchmark_ood.py               # OOD real-text set
 
 ### When the scorer succeeds
 
-The scorer inspects a **±4-word window**.  Representative signals:
+The scorer inspects a **±4-word window**. Representative signals:
 
 - DET or QUANT immediately before → NOUN (+5)
 - PRON immediately before → VERB (+5)
@@ -161,16 +159,15 @@ defaults to open-o. `molho` is parallel: *sauce* (`ˈmoʎu`, `NOUN`) vs *bundle*
 `VERB`). Separating "baking mould" from "manner/way" — or "sauce" from "bundle of keys" —
 requires comprehension of the noun phrase that local context cannot always supply.
 
-These are precisely the cases the learned models address: trained over the corpus, the
-perceptron beats the rule engine on real text (see the accuracy table above), recovering some of
-the harder shared-POS and long-range cases the rules cannot reach.
+These are the cases the learned models address: trained over the corpus, the perceptron beats the
+rule engine on real text (see the accuracy table above), recovering some of the harder shared-POS
+and long-range cases the rules cannot reach.
 
 ## Learned statistical models
 
-A learned path is **implemented and benchmarked**, not hypothetical. `train.py` fits per-word
-classifiers from the corpus using the language-agnostic features in `features.py` — positional
-skipgrams, a bag-of-window overlap, structural `.voc` membership, and morphology/position cues —
-and serialises them to `bifonia/data/sense_model_{nb,perceptron}.json`:
+`train.py` fits per-word classifiers from the corpus using the language-agnostic features in
+`features.py` — positional skipgrams, a bag-of-window overlap, structural `.voc` membership, and
+morphology/position cues — and serialises them to `bifonia/data/sense_model_{nb,perceptron}.json`:
 
 - **Naive-Bayes** — per-sense log-odds of each feature; interpretable, the weights *are* the
   learned lexicons.
@@ -178,13 +175,12 @@ and serialises them to `bifonia/data/sense_model_{nb,perceptron}.json`:
   double-counts. This is the model the ensemble ships.
 
 Inference is a sparse dot product in pure stdlib (no numpy/sklearn), so the learned engine runs
-under the same zero-dependency install as the rules. The rule engine remains the corpus-free
-baseline and the fallback for any word the model is not routed to.
+under the same zero-dependency install as the rules. The rule engine is the corpus-free baseline
+and the fallback for any word the model is not routed to.
 
-The rule scorer is effectively a manual decision tree with soft (additive) edges: it degrades
-gracefully when signals conflict, and each of its signals corresponds to a learnable feature
-(DET before, PRON before, CONJ_SUBJ before) that the learned models pick up automatically from
-the corpus.
+The rule scorer is a manual decision tree with soft (additive) edges: it degrades gracefully when
+signals conflict, and each of its signals corresponds to a learnable feature (DET before, PRON
+before, CONJ_SUBJ before) that the learned models pick up automatically from the corpus.
 
 ## Corpus
 
@@ -221,11 +217,11 @@ table above.
 The IPA table `bifonia/data/heterophonic_homographs.csv` carries the same fields minus
 `sentence` (columns `word,sense,pos,ipa`), one row per `(word, sense)`.
 
-## Heavier model architectures (forward-looking)
+## Heavier model architectures
 
-The shipped learned engine is a lightweight per-word linear model. Larger neural models are
-options for pushing past it — particularly on the long-range and shared-POS cases — at the cost of
-the zero-dependency runtime. The corpus and `{word, sense, ipa}` labels support all of them:
+The learned engine is a lightweight per-word linear model. Larger neural models can push
+past it — particularly on the long-range and shared-POS cases — at the cost of the zero-dependency
+runtime. The corpus and `{word, sense, ipa}` labels support all of them:
 
 ### BiLSTM (sequence labeller)
 
@@ -239,9 +235,9 @@ Loss:   cross-entropy, ignore non-ambiguous positions
 ### BERTimbau fine-tune
 
 BERTimbau (neuralmind/bert-base-portuguese-cased) provides rich contextual embeddings.
-Fine-tune with a token classification head on the corpus records. The model has already
-seen the ambiguous words in diverse contexts, so it should generalise well even on the
-harder (long-range dependency) cases.
+Fine-tune with a token classification head on the corpus records. The model has seen the
+ambiguous words in diverse contexts, so it generalises well even on the harder
+(long-range dependency) cases.
 
 Input: the `sentence` field.  
 Label: the position of the ambiguous word is tagged with its `sense` class.
@@ -255,8 +251,8 @@ Input:  "O autocarro para em frente ao hospital."
 Target: "O autocarro pára em frente ao hospital."
 ```
 
-A small encoder-decoder (T5-small or NLLB variant) fine-tuned on the corpus can learn
-to insert diacritics end-to-end without an explicit sense intermediate step.
+A small encoder-decoder (T5-small or NLLB variant) fine-tuned on the corpus learns to insert
+diacritics end-to-end without an explicit sense intermediate step.
 
 ## Evaluation
 
@@ -266,7 +262,7 @@ Run the test suite as a sanity check:
 python -m pytest tests/test_disambiguate.py -v
 ```
 
-The shipped `hf/train.jsonl` / `hf/test.jsonl` split is shuffled and stratified per
+The `hf/train.jsonl` / `hf/test.jsonl` split is shuffled and stratified per
 `(word, sense)` with a fixed seed, so train and test are i.i.d. — use it directly, or build
 stratified k-folds over the corpus records by `(word, sense)` for cross-validation.
 
