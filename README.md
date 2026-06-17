@@ -115,7 +115,7 @@ Both on the Hugging Face Hub, schema `{word, sense, pos, ipa, sentence}`:
 `coro`, `corte`, `forma`, `gosto`, `gozo`, `jogo`, `molho`, `olho`, `para`, `pelo`,
 `peso`, `porto`, `posto`, `rego`, `seco`, `sede`, `sobre`, `tola`, `torre`, `transtorno`.
 
-Per-word IPA, senses, and diacritized forms are in [`docs/words.md`](docs/words.md).
+Per-word IPA, senses, and diacritized forms are in [`docs/word_references.md`](docs/word_references.md).
 
 ## Project layout
 
@@ -132,7 +132,7 @@ the algorithm carries no hardcoded Portuguese.
 
 - [`docs/methodology.md`](docs/methodology.md) — algorithm, features, and benchmarks
 - [`docs/usage.md`](docs/usage.md) — full API reference
-- [`docs/words.md`](docs/words.md) — per-word pronunciation notes
+- [`docs/word_references.md`](docs/word_references.md) — per-word pronunciation notes
 - [`docs/diacritics_restoration.md`](docs/diacritics_restoration.md) — the diacritics-restoration task
 - [`examples/basic_usage.py`](examples/basic_usage.py) — runnable demo
 - [`train.py`](train.py) · [`benchmark_tagger.py`](benchmark_tagger.py) · [`benchmark_ood.py`](benchmark_ood.py)
