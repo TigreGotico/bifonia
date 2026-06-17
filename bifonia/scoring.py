@@ -741,12 +741,16 @@ def _resolve_sede(words: list, idx: int) -> str:
     # preposition frame
     if next_word in {"da", "do", "das", "dos"}:
         seat += 3
-    if next_word == "de":                      # "sede de <abstract>" = figurative thirst
-        thirst += 2
-        if next2 in _SEDE_THIRST:
-            thirst += 3
-        if next2 in _SEDE_SEAT:                # "sede de futebol clube" etc.
+    if next_word == "de":                      # "sede de X"
+        _ABSTRACT = ("ção", "são", "mento", "dade", "ência", "ância", "ismo", "tude")
+        if next2 in DET:                       # "sede de uma organização/do clube" = HQ
             seat += 3
+        elif next2 in _SEDE_SEAT:              # "sede de futebol clube" = HQ
+            seat += 4
+        elif next2 in _SEDE_THIRST or next2.endswith(_ABSTRACT):  # "sede de poder/reconhecimento"
+            thirst += 4
+        else:                                  # "sede de Atenas/Lisboa" (place) → HQ
+            seat += 2
     if prev_word == "de":                       # "morto de sede", "queixou-se de sede"
         thirst += 3
     if prev_word in {"na", "à", "numa", "pela", "duma"}:   # locative: the HQ building
