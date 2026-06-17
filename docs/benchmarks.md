@@ -7,29 +7,36 @@
 
 | approach | OOD accuracy |
 |---|---|
-| most-common (majority sense per word) | 74.6% |
+| most-common (corpus-derived majority sense) | 46.0% † |
+| Naive-Bayes (all 124 words) | 85.0% |
+| perceptron (all 124 words) | 86.5% |
 | **rules (corpus-free)** | **89.8%** |
-| shipped ensemble (model ⊕ rules) | **89.9%** |
+| shipped (rules + model only where it beats rules OOD-proxy) | **89.8%** |
 | **spaCy `pt_core_news_lg` (POS → sense)** | **93.2%** |
-| Naive-Bayes / perceptron | ~38% \* |
 
 ### Reading these numbers honestly
 - **A strong neural POS-tagger (spaCy) wins here (93%)** because the expanded
   roster is largely **POS-separable** (deverbal noun vs 1sg verb): tagging the
-  homograph's POS correctly resolves the reading. After adding conservative VERB rules (coordination/comparison → noun), the
-  rule engine reaches 87.2% — the residual gap is mostly **proper nouns**
-  (place/team names like *Cerro Corá*) that need capitalization, a documented
-  next step.
+  homograph's POS correctly resolves the reading. The rule engine reaches 89.8%
+  — the residual gap is mostly **proper nouns** (place/team names like *Cerro
+  Corá*) and minority verb readings.
 - bifonia's rule engine is **offline, zero-dependency and deterministic**, and —
   unlike a POS-tagger — it disambiguates **same-POS lexical pairs**
   (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho`
   sauce/bundle), where a POS-tagger can only fall back to the majority sense.
-- \* The trained NB/perceptron are diluted: the corpus is rich for the original
-  27 words but thin for many rare new words, and statistical models generalise
-  poorly OOD. The ensemble leans on rules for the new words.
-- ⚠️ `benchmark_ood.py`'s `most-common` derives the baseline from the 27-word
-  train split, so it under-reports on the expanded roster (new words → no
-  baseline). Use the full-coverage figure above.
+- **The learned models now cover all 124 words** (trained on a regenerated
+  stratified 80/20 split) but still trail the rules OOD (85–86% vs 89.8%). This
+  is **circularity**: the corpus labels were assigned by the rule engine, so a
+  model can at best mimic the rules in-distribution and generalises *worse* on
+  real sentences. Consequently the shipped route-gate adopts a word's model only
+  when it **strictly beats the rules on the hand-curated behavioral set** (the
+  OOD proxy) — true for just 1 word — so **shipped ≡ rules (89.8%)**. The models
+  are retained as a full-roster baseline and as the corpus QC engine
+  (see [data_quality.md](data_quality.md)), not as the shipped predictor.
+- † `most-common` here is derived from the (balanced) bundled corpus, so it picks
+  each word's corpus-majority sense — which often isn't the wild-dominant sense,
+  hence 46%. The wild set's *own* dominant-sense baseline is ~75% (it is
+  noun-skewed; see the skew caveat below).
 
 ## Synthetic (in-distribution)
 Rule-engine accuracy on the labelled corpus: **96.5%** (124 words, 68k records);

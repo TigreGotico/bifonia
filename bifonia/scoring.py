@@ -192,6 +192,13 @@ def score_adp(words: list, idx: int) -> int:
         # Return strongly negative so score_verb wins.
         if next_word in _ARTICLES:
             score -= 8
+        elif idx > 0:
+            # por+o + a common noun is the overwhelmingly dominant reading
+            # ("pelo metro", "pelo diálogo", "pelo caminho"); default to ADP unless
+            # a fur/peel cue in score_noun (preceding article, "pelo do/da X"
+            # genitive, "tem pelo", "de pelo <adj>") outscores this baseline.
+            # Gated on idx>0: sentence-initial "Pelo …" is the 1sg peel verb.
+            score += 3
 
     if word == "sobre":
         # Explicit governing noun/verb before "sobre" (e.g. "caso sobre X",
@@ -276,6 +283,13 @@ def score_noun(words: list, idx: int) -> int:
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
     if word == "pelo" and prev_word in _TER:
         score += 6
+    # "o pelo" / "um pelo" — a determiner directly before "pelo" makes it the fur
+    # NOUN (por+o already contains its own article, so it never takes one), and
+    # "pelo do/da X" is the fur genitive ("o pelo do cão").
+    if word == "pelo" and prev_word in _ARTICLES:
+        score += 6
+    if word == "pelo" and next_word in ("do", "da"):
+        score += 5
     # "cão de pelo comprido" — genitive "de" directly before "pelo" followed by a
     # qualitative adjective is always the fur-type construction, not ADP (por+o).
     # "pelo menos" / "pelo visto" etc. are guarded by _PELO_FIXED in score_adp (+6),

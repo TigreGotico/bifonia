@@ -209,11 +209,22 @@ def build_model(kind, by_word, behav, min_count, epochs, val_frac, seed):
         # hand-curated out-of-distribution test sentences (guards against the
         # model memorising corpus templates while regressing real phrasings).
         beh = behav.get(word, [])
-        model_beh = sum(1 for feats, gold, _, _ in beh
-                        if predict(weights, bias, feats, senses) == gold)
-        rule_beh = sum(1 for _, gold, ws, idx in beh if rule_sense(word, ws, idx) == gold)
-        # adopt only if same-or-better on BOTH corpus val and behavioral set
-        route = "model" if (val >= rule_val and model_beh >= rule_beh) else "rules"
+        model_ok = [predict(weights, bias, feats, senses) == gold
+                    for feats, gold, _, _ in beh]
+        rule_ok = [rule_sense(word, ws, idx) == gold for _, gold, ws, idx in beh]
+        model_beh, rule_beh = sum(model_ok), sum(rule_ok)
+        # No per-case regression: never adopt a model that loses a curated
+        # behavioral case the rules get right (aggregate parity isn't enough —
+        # the disambiguate suite asserts every case, and function words like
+        # `pelo` can win on average while regressing the dominant reading).
+        regress = any(r and not m for r, m in zip(rule_ok, model_ok))
+        # Adopt the model only when it STRICTLY beats the rules on the hand-curated
+        # behavioral set (our out-of-distribution proxy) with no per-case regression.
+        # In-distribution corpus val is circular — the corpus labels were assigned by
+        # the rules, so a model that merely matches val often generalises worse OOD
+        # (see docs/benchmarks.md). Behavioral improvement is the only honest signal.
+        route = ("model" if (model_beh > rule_beh and not regress
+                             and len(beh) >= 3) else "rules")
         report.append((word, val, rule_val, route, len(train_ex),
                        model_beh, rule_beh, len(beh)))
 

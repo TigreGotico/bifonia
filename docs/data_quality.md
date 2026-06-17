@@ -52,3 +52,23 @@ bucket ≈ 98.4%; the model-flagged bucket is now cleaned. Overall label accurac
 Reproduce: `qc_phase1.py` (flagging) is in the repo scratch; the per-stratum
 sampling and agent adjudication are described above and re-runnable on any corpus
 revision.
+
+## Second pass: out-of-fold model signal (all words)
+
+The first pass leaned on spaCy, which only helps POS-separable words and is
+noun-biased. To get an independent signal that **covers all 124 words** (including
+same-POS pairs and rare new words the shipped 27-word models didn't cover), the
+corpus is re-scored **out-of-fold**: a 5-fold split per word, each line predicted
+by NB+perceptron trained on the *other* folds. Because no line is in its own
+training fold, the prediction is independent of that line's stored label.
+
+Over 87.9k lines, **both OOF models disagreed with the label on 0.44%** (98.7%
+both-agree). Agent adjudication of the flagged set (deduped against the first
+pass) confirmed the method: it caught a 24-item `sede` thirst→seat block, more
+`forma` shape↔mould confusions, and ~30 **generation-artifact lines** (agent
+chatter / file logs / English prompt echoes — e.g. ``Ficheiro `frases_x.txt` com
+40 frases``) that had leaked in as "sentences". Net: **37 relabels, 14 defective
+drops, 10 artifact lines swept** (matched on backticks, `.txt`/`.jsonl` refs,
+"N frases", "como verbo/substantivo" — markers absent from natural sentences).
+
+Reproduce: `oof_qc.py`.
