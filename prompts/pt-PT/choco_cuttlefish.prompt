@@ -1,0 +1,14 @@
+# sense: cuttlefish
+Gera {n} frases em Português Europeu natural onde "choco" é SUBSTANTIVO.
+
+Significado: ato ou efeito de chocar; período da incubação; designação comum, extensiva aos moluscos cefalópodes do género Sepia, que produzem sépia, um líquido escuro que expelem quando se sentem em perigo e que é utilizado na produção de tintas; molusco marinho cefalópode, comestível, de corpo largo, oval e achatado, com concha interna de natureza calcária, que apresenta oito tentáculos curtos e dois braços tentaculares longos
+IPA: /ˈʃoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "choco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

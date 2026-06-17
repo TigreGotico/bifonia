@@ -1,0 +1,14 @@
+# sense: redoubling
+Gera {n} frases em Português Europeu natural onde "redobro" é SUBSTANTIVO.
+
+Significado: ato ou efeito de redobrar; valor ou quantidade correspondente a duas vezes o dobro de; repetição de fonemas em certo tipo de flexão verbal; repetição de uma sílaba, de um vocábulo ou de uma sequência de vocábulos, geralmente com finalidade expressiva
+IPA: /ʁɨˈdobɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "redobro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

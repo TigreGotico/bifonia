@@ -17,7 +17,7 @@ from bifonia.vocab import voc
 
 # Wordlists are externalised to locale/<lang>/*.voc (see vocab.py) so they can
 # be extended without code changes. Derived/structural sets stay in code below.
-_POST_CLITICS    = voc("post_clitics")      # enclitic reflexive clitics (verb host)
+_ENCLITICS       = voc("enclitics")         # hyphen-attached enclitic clitics (verb host)
 _AFTER_PREP_WEAK = voc("after_prep_weak")   # time adv/pron: weak ADP credit
 _COPULA          = voc("copula")            # copular/semi-copular verbs
 _INTENSIFIERS    = voc("intensifiers")      # degree intensifiers (modify ADJ)
@@ -68,6 +68,7 @@ _CLITICS_ALL  = voc("clitics_all")
 _EXCL_DET     = voc("exclamative_det")
 _LOCATIVE_CONTRACTIONS = voc("locative_contractions")
 _FUNC_EXTRA = voc("function_words")
+_PRENOMINAL_ADJ = voc("prenominal_adj")  # adjectives that precede a noun head
 # meaning-level cues for words whose senses share a POS (only "sede" today)
 _SEDE_SEAT   = voc("sede_seat_cues")
 _SEDE_THIRST = voc("sede_thirst_cues")
@@ -238,6 +239,26 @@ def score_noun(words: list, idx: int) -> int:
     # Plain "de" excluded: ambiguous with "gosto de X" (VERB) constructions.
     if next_word in _DE_CONTRACTIONS:
         score += 3
+    # Fixed closed-o NOUN prepositional locutions that the deverbal-noun /
+    # de-contraction cues miss when a bare "de" or other complement follows:
+    #   «em torno de», «ao/no torno», «do torno»  — around / at the lathe
+    #   «em troco de»                              — in exchange for
+    # The 1sg verbs «tornar»/«trocar» are never introduced by these prepositions,
+    # so a preceding "em/ao/no/do" is decisive for the closed-o NOUN reading.
+    if word == "torno" and prev_word in {"em", "ao", "no", "do"}:
+        score += 6
+    if word == "troco" and prev_word == "em":
+        score += 6
+    # Prenominal adjective directly before → the word is the modified NOUN head
+    # ("o atual governo", "um pequeno erro", "o último sopro") — distinguishes
+    # DET ADJ NOUN from DET NOUN VERB (where prev is the noun subject).
+    if prev_word in _PRENOMINAL_ADJ:
+        score += 5
+    # Genitive / complement preposition immediately before a homograph marks a
+    # nominal use ("de gelo", "saco de emprego", "sem retorno"). «colher»
+    # excluded: "de colher" can be the infinitive verb.
+    if prev_word in {"de", "sem"} and word != "colher":
+        score += 3
     # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
     if word == "pelo" and prev_word in _TER:
@@ -358,10 +379,14 @@ def score_verb(words: list, idx: int) -> int:
         if word in _FIRST_PERSON_NOUNS:
             score += 2
 
-    # Enclitic clitic pronoun right after the word → strong verb host signal.
-    # "para" excluded: "para se", "para me", "para te" are always ADP + clitic
-    # infinitive, not "para" the finite verb with an enclitic.
-    if word != "para" and next_word in _POST_CLITICS:
+    # Enclitic clitic hyphenated onto the word ("torno-me", "vejo-o", "fá-lo",
+    # "deu-lhe", "tem-nos") → an unambiguous finite-VERB host. The tokenizer keeps
+    # the attaching hyphen as a leading marker, which rules out the homographic
+    # article/preposition readings of o/a/nos/vos, so the full enclitic inventory
+    # (incl. -lo/-la/-no/-na allomorphs and combined forms) applies here.
+    # "para" excluded: "para se", "para me", "para te" are ADP + proclitic
+    # infinitive, never "para" the finite verb with an enclitic.
+    if word != "para" and next_word.startswith("-") and next_word[1:] in _ENCLITICS:
         score += 4
 
     # DET directly after signals a direct-object NP — strong VERB evidence.
@@ -624,8 +649,9 @@ def score_adj(words: list, idx: int) -> int:
     # The "-ia" suffix is a verb imperfect ending only when preceded by a consonant
     # (e.g. "comia", "dormia"); words like "areia", "galeria" end in vowel+"ia" and
     # are nouns — do not suppress the postpositive signal for them.
-    # Also: verb+clitic forms like "chamaram-lhe", "disse-me" contain a hyphen followed
-    # by a clitic pronoun — clearly a verb, not a noun head.
+    # Also: an enclitic clitic token ("chamaram-lhe" → prev token "-lhe", "disse-me"
+    # → "-me") carries a leading hyphen, marking the preceding word as a verb host —
+    # so the clitic itself is not a noun head and must not feed the postpositive cue.
     _vowels = set("aeiouáéíóúâêîôûãõàèìòùäëïöü")
     _CLITICS = _CLITICS_ALL
     _prev_looks_verb = (

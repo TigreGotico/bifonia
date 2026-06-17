@@ -1,0 +1,14 @@
+# sense: backrest
+Gera {n} frases em Português Europeu natural onde "encosto" é SUBSTANTIVO.
+
+Significado: coisa a que alguém ou outra coisa se encosta; costas de um assento; proteção; tipo de enxerto; pressão ou empurrão mais ou menos ligeiro; faixa de terreno cercada por mato, com uma só entrada; zona em que se formam poças nas margens de um rio; espírito desencarnado, que acompanha alguém para o ajudar ou perturbar; amante
+IPA: /ẽˈkoʃtu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "encosto" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

@@ -42,13 +42,39 @@ __all__ = [
 
 
 def tokenize(text: str) -> list:
-    """Lowercase and split *text* into word tokens (strips punctuation)."""
-    return re.findall(r"\w+", text.lower(), re.UNICODE)
+    """Lowercase and split *text* into word tokens.
+
+    Two pieces of orthography are kept so the context scorer can use them, both
+    chosen so the token count and order are identical to a bare ``\\w+`` split
+    (keeping the position-indexed replacement walk in
+    :func:`add_extra_diacritics` aligned):
+
+    - Trailing sentence punctuation (``. , ; : ! ?``) stays attached to the token
+      it follows (``"querer,"``) → clause-boundary guards
+      (``_prev_raw[-1] in punct``).
+    - A hyphen that attaches an *enclitic* clitic is kept as a leading marker on
+      the clitic token (``"torno-me"`` → ``["torno", "-me"]``). The marker
+      distinguishes an enclitic from a homographic article/preposition
+      (``"torno-o"`` clitic vs ``"torno o carro"``), an unambiguous finite-verb
+      signal — see the enclitic rule in :mod:`bifonia.scoring`.
+
+    Lookup sites strip both with :func:`_strip_edge`, and the target slot is
+    normalised before scoring.
+    """
+    return re.findall(r"-?\w+[.,;:!?]*", text.lower(), re.UNICODE)
+
+
+_EDGE_PUNCT = ".,;:!?"
+
+
+def _strip_edge(token: str) -> str:
+    """Strip trailing punctuation / a leading clitic-hyphen a token may carry."""
+    return token.strip(_EDGE_PUNCT + "-")
 
 
 def is_ambiguous(word: str) -> bool:
     """Return True if *word* is a known heterophonic homograph."""
-    return word.lower() in AMBIGUOUS_WORDS
+    return _strip_edge(word).lower() in AMBIGUOUS_WORDS
 
 
 def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> str:
@@ -77,11 +103,13 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> s
     KeyError
         If *sense* is given but has no IPA entry for this word.
     """
-    token = words[idx]
-    # Accept pre-AO1990 / diacritized tokens by normalising to base form first.
+    raw = words[idx]
+    # Drop any trailing sentence punctuation, then accept pre-AO1990 /
+    # diacritized tokens by normalising to the base form.
+    token = _strip_edge(raw)
     word = _DIACRITIZED_TO_BASE.get(token, token)
     if word not in AMBIGUOUS_WORDS:
-        raise ValueError(f"{token!r} is not a known heterophonic homograph")
+        raise ValueError(f"{raw!r} is not a known heterophonic homograph")
 
     if sense is None:
         sense = guess_sense(words, idx, pos=pos)
@@ -147,6 +175,201 @@ _DIACRITIZED: dict = {
     ("torre",      "roast"):      "tórre",
     ("transtorno", "disorder"):   "transtôrno",
     ("transtorno", "upset"):      "transtórno",
+    ("torno",      "lathe"):      "tôrno",
+    ("torno",      "turn"):       "tórno",
+    ("troco",      "change"):     "trôco",
+    ("troco",      "exchange"):   "tróco",
+    ("toco",       "stump"):      "tôco",
+    ("toco",       "play"):       "tóco",
+    ("rogo",       "plea"):       "rôgo",
+    ("rogo",       "beg"):        "rógo",
+    ("choco",      "addled"):     "chôco",    # adj/noun = closed o
+    ("choco",      "cuttlefish"): "chôco",
+    ("choco",      "hatch"):      "chóco",    # verb     = open ɔ
+    ("contorno",   "contour"):    "contôrno",
+    ("contorno",   "circumvent"): "contórno",
+    ("entorno",    "surroundings"): "entôrno",
+    ("entorno",    "spill"):      "entórno",
+    ("almoço",     "lunch"):      "almôço",
+    ("almoço",     "dine"):       "almóço",
+    ("rolo",       "roll"):       "rôlo",
+    ("rolo",       "tumble"):     "rólo",
+    ("soco",       "punch"):      "sôco",
+    ("soco",       "strike"):     "sóco",
+    ("esforço",    "effort"):     "esfôrço",
+    ("esforço",    "strive"):     "esfórço",
+    ("conforto",   "comfort"):    "confôrto",
+    ("conforto",   "soothe"):     "confórto",
+    ("aborto",     "abortion"):   "abôrto",
+    ("aborto",     "abort"):      "abórto",
+    ("adorno",     "adornment"):  "adôrno",
+    ("adorno",     "adorn"):      "adórno",
+    ("reforço",    "reinforcement"): "refôrço",
+    ("reforço",    "reinforce"):  "refórço",
+    ("soldo",      "pay"):        "sôldo",
+    ("soldo",      "weld"):       "sóldo",
+    ("esboço",     "sketch"):     "esbôço",
+    ("esboço",     "outline"):    "esbóço",
+    ("governo",    "government"): "govêrno",
+    ("governo",    "govern"):     "govérno",
+    ("emprego",    "job"):        "emprêgo",
+    ("emprego",    "employ"):     "emprégo",
+    ("selo",       "stamp"):      "sêlo",
+    ("selo",       "seal"):       "sélo",
+    ("gelo",       "ice"):        "gêlo",
+    ("gelo",       "freeze"):     "gélo",
+    ("zelo",       "zeal"):       "zêlo",
+    ("zelo",       "tend"):       "zélo",
+    ("cerco",      "siege"):      "cêrco",
+    ("cerco",      "surround"):   "cérco",
+    ("erro",       "error"):      "êrro",
+    ("erro",       "err"):        "érro",
+    ("sopro", "breath"): "sôpro",
+    ("sopro", "blow"): "sópro",
+    ("forro", "lining"): "fôrro",
+    ("forro", "line"): "fórro",
+    ("dobro", "double"): "dôbro",
+    ("dobro", "fold"): "dóbro",
+    ("abono", "allowance"): "abôno",
+    ("abono", "vouch"): "abóno",
+    ("logro", "deceit"): "lôgro",
+    ("logro", "deceive"): "lógro",
+    ("topo", "summit"): "tôpo",
+    ("topo", "bump_into"): "tópo",
+    ("jorro", "jet"): "jôrro",
+    ("jorro", "gush"): "jórro",
+    ("golfo", "gulf"): "gôlfo",
+    ("golfo", "spew"): "gólfo",
+    ("colmo", "culm"): "côlmo",
+    ("colmo", "thatch"): "cólmo",
+    ("fosso", "ditch"): "fôsso",
+    ("fosso", "root_up"): "fósso",
+    ("toldo", "awning"): "tôldo",
+    ("toldo", "cloud_over"): "tóldo",
+    ("arrojo", "boldness"): "arrôjo",
+    ("arrojo", "hurl"): "arrójo",
+    ("despojo", "spoils"): "despôjo",
+    ("despojo", "strip"): "despójo",
+    ("cobro", "cessation"): "côbro",
+    ("cobro", "collect"): "cóbro",
+    ("domo", "dome"): "dômo",
+    ("domo", "tame"): "dómo",
+    ("sobro", "cork_oak"): "sôbro",
+    ("sobro", "be_left_over"): "sóbro",
+    ("retorno", "return"): "retôrno",
+    ("retorno", "go_back"): "retórno",
+    ("desgosto", "sorrow"): "desgôsto",
+    ("desgosto", "dislike"): "desgósto",
+    ("desconforto", "discomfort"): "desconfôrto",
+    ("desconforto", "discomfit"): "desconfórto",
+    ("desdobro", "unfolding"): "desdôbro",
+    ("desdobro", "unfold"): "desdóbro",
+    ("redobro", "redoubling"): "redôbro",
+    ("redobro", "redouble"): "redóbro",
+    ("reboco", "plaster"): "rebôco",
+    ("reboco", "tow"): "rebóco",
+    ("decoro", "decorum"): "decôro",
+    ("decoro", "memorize"): "decóro",
+    ("estofo", "stuffing"): "estôfo",
+    ("estofo", "upholster"): "estófo",
+    ("destroço", "wreckage"): "destrôço",
+    ("destroço", "wreck"): "destróço",
+    ("desafogo", "relief"): "desafôgo",
+    ("desafogo", "relieve"): "desafógo",
+    ("arroto", "belch"): "arrôto",
+    ("arroto", "burp"): "arróto",
+    ("consolo", "consolation"): "consôlo",
+    ("consolo", "console"): "consólo",
+    ("desconsolo", "disconsolation"): "desconsôlo",
+    ("desconsolo", "dishearten"): "desconsólo",
+    ("desacordo", "disagreement"): "desacôrdo",
+    ("desacordo", "disagree"): "desacórdo",
+    ("engodo", "bait"): "engôdo",
+    ("engodo", "lure"): "engódo",
+    ("escorço", "foreshortening"): "escôrço",
+    ("escorço", "foreshorten"): "escórço",
+    ("desaforo", "insolence"): "desafôro",
+    ("desaforo", "affront"): "desafóro",
+    ("abrolho", "caltrop"): "abrôlho",
+    ("abrolho", "sprout"): "abrólho",
+    ("rola", "turtledove"): "rôla",
+    ("rola", "rolls"): "róla",
+    ("solto", "loose"): "sôlto",
+    ("solto", "release"): "sólto",
+    ("encosto", "backrest"): "encôsto",
+    ("encosto", "lean"): "encósto",
+    ("apelo", "appeal"): "apêlo",
+    ("apelo", "call_out"): "apélo",
+    ("desprezo", "contempt"): "desprêzo",
+    ("desprezo", "despise"): "desprézo",
+    ("enredo", "plot"): "enrêdo",
+    ("enredo", "entangle"): "enrédo",
+    ("desenredo", "denouement"): "desenrêdo",
+    ("desenredo", "disentangle"): "desenrédo",
+    ("espeto", "skewer"): "espêto",
+    ("espeto", "stab"): "espéto",
+    ("aperto", "squeeze"): "apêrto",
+    ("aperto", "tighten"): "apérto",
+    ("desvelo", "devotion"): "desvêlo",
+    ("desvelo", "unveil"): "desvélo",
+    ("repelo", "hair_pull"): "repêlo",
+    ("repelo", "pluck"): "repélo",
+    ("arrepelo", "hair_pulling"): "arrepêlo",
+    ("arrepelo", "snatch"): "arrepélo",
+    ("congelo", "freezing"): "congêlo",
+    ("congelo", "freeze"): "congélo",
+    ("arremesso", "throw"): "arremêsso",
+    ("arremesso", "fling"): "arremésso",
+    ("arremedo", "imitation"): "arremêdo",
+    ("arremedo", "mimic"): "arremédo",
+    ("despego", "detachment"): "despêgo",
+    ("despego", "detach"): "despégo",
+    ("desapego", "indifference"): "desapêgo",
+    ("desapego", "let_go"): "desapégo",
+    ("apego", "attachment"): "apêgo",
+    ("apego", "cling"): "apégo",
+    ("desemprego", "noun"): "desemprêgo",
+    ("desemprego", "verb"): "desemprégo",
+    ("desmantelo", "dismantling"): "desmantêlo",
+    ("desmantelo", "dismantle"): "desmantélo",
+    ("atropelo", "trampling"): "atropêlo",
+    ("atropelo", "run_over"): "atropélo",
+    ("degelo", "thaw"): "degêlo",
+    ("degelo", "thaw_out"): "degélo",
+    ("desgelo", "defrosting"): "desgêlo",
+    ("desgelo", "defrost"): "desgélo",
+    ("desespero", "despair"): "desespêro",
+    ("desespero", "despair_at"): "desespéro",
+    ("escabelo", "stool"): "escabêlo",
+    ("escabelo", "dishevel"): "escabélo",
+    ("novelo", "yarn_ball"): "novêlo",
+    ("novelo", "narrate"): "novélo",
+    ("relevo", "relief_terrain"): "relêvo",
+    ("relevo", "emphasize"): "relévo",
+    ("aceno", "nod"): "acêno",
+    ("aceno", "beckon"): "acéno",
+    ("sopeso", "heft"): "sopêso",
+    ("sopeso", "weigh_up"): "sopéso",
+    ("empeno", "warping"): "empêno",
+    ("empeno", "warp"): "empéno",
+    ("desempeno", "straightening"): "desempêno",
+    ("desempeno", "straighten"): "desempéno",
+    ("sossego", "calm"): "sossêgo",
+    ("sossego", "soothe"): "sosségo",
+    ("desassossego", "disquiet"): "desassossêgo",
+    ("desassossego", "disturb"): "desassosségo",
+    ("esmero", "meticulousness"): "esmêro",
+    ("esmero", "perfect"): "esméro",
+    ("azedo", "sour"): "azêdo",
+    ("azedo", "turn_sour"): "azédo",
+    ("desempeço", "riddance"): "desempêço",
+    ("desempeço", "free_up"): "desempéço",
+    ("desemperro", "unjamming"): "desempêrro",
+    ("desemperro", "unjam"): "desempérro",
+    ("emperro", "jam"): "empêrro",
+    ("emperro", "stick"): "empérro",
+    ("tempero",    "seasoning"):  "tempêro",
+    ("tempero",    "season"):     "tempéro",
 }
 
 
@@ -184,12 +407,13 @@ def guess_sense(words: list, idx: int, pos: str = None) -> str:
     predicts the sense; every other case falls back to the corpus-free rule engine.
     An explicit *pos* override always uses the rule resolver.
     """
-    token = words[idx]
+    raw = words[idx]
+    token = _strip_edge(raw)
     if token in _DIACRITIZED_TO_SENSE:
         return _DIACRITIZED_TO_SENSE[token]
     base = _DIACRITIZED_TO_BASE.get(token, token)
     normalised = words
-    if base != token:                       # normalise a diacritized base form
+    if base != raw:                         # normalise a punctuated/diacritized slot
         normalised = list(words)
         normalised[idx] = base
     if pos is not None:
@@ -208,11 +432,12 @@ def guess_pos(words: list, idx: int) -> str:
     its descriptive POS, preserving the pre-existing POS-tagging interface.
     Diacritized input (e.g. *pára*, *acôrdo*) is resolved without context scoring.
     """
-    token = words[idx]
+    raw = words[idx]
+    token = _strip_edge(raw)
     base = _DIACRITIZED_TO_BASE.get(token, token)
     if token in _DIACRITIZED_TO_SENSE:
         return SENSE_POS[base][_DIACRITIZED_TO_SENSE[token]]
-    if base != token:
+    if base != raw:
         normalised = list(words)
         normalised[idx] = base
         return _scoring_guess_pos(normalised, idx)
@@ -235,8 +460,9 @@ def add_extra_diacritics(sentence: str) -> str:
     words = tokenize(sentence)
     replacements = {}
     for i, word in enumerate(words):
-        if is_ambiguous(word):
-            diacritized = _DIACRITIZED.get((word, guess_sense(words, i)))
+        base = _strip_edge(word)
+        if is_ambiguous(base):
+            diacritized = _DIACRITIZED.get((base, guess_sense(words, i)))
             if diacritized:
                 replacements[i] = diacritized
     if not replacements:

@@ -1,0 +1,14 @@
+# sense: change
+Gera {n} frases em Português Europeu natural onde "troco" é SUBSTANTIVO.
+
+Significado: ação de trocar; conjunto de moedas ou notas de baixo valor, equivalente a moeda ou nota que representa uma quantia superior; quantia que se recebe quando se paga algo com moeda ou nota superior ao preço devido; dinheiro em moedas; resposta a afronta, comentário ou ofensa; réplica
+IPA: /ˈtɾoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "troco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

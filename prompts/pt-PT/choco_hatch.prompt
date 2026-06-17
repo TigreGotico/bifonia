@@ -1,0 +1,14 @@
+# sense: hatch
+Gera {n} frases em Português Europeu natural onde "choco" é a 1.ª pessoa do singular do presente do indicativo de «chocar».
+
+Significado de «chocar»: manter o ovo a temperatura conveniente para permitir o desenvolvimento do embrião; planear; ser portador do germe de uma doença; estar no choco; apodrecer; fermentar; esbarrar-se (contra); entrar em conflito (com); ofender; perturbar; esbarrar reciprocamente; ofender-se
+IPA: /ˈʃɔku/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "choco" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

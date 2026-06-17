@@ -1,0 +1,14 @@
+# sense: lunch
+Gera {n} frases em Português Europeu natural onde "almoço" é SUBSTANTIVO.
+
+Significado: uma das principais refeições do dia, tomada geralmente ao início da tarde; os alimentos servidos nessa refeição; primeira refeição do dia, tomada ao levantar
+IPA: /ɐɫˈmosu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "almoço" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

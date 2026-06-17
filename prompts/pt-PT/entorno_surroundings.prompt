@@ -1,0 +1,14 @@
+# sense: surroundings
+Gera {n} frases em Português Europeu natural onde "entorno" é SUBSTANTIVO.
+
+Significado: aquilo que rodeia algo ou alguém; área que rodeia uma povoação ou uma cidade; todo o espaço que rodeia uma construção; em topologia, conjunto dos pontos que se encontram à volta de um dado ponto
+IPA: /ẽˈtoɾnu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "entorno" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

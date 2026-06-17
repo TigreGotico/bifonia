@@ -1,0 +1,14 @@
+# sense: unjamming
+Gera {n} frases em Português Europeu natural onde "desemperro" é SUBSTANTIVO.
+
+Significado: ato ou efeito de desemperrar, de desfazer o emperramento; estado do que não está perro, do que se move, desliza ou articula sem dificuldade; desembaraço
+IPA: /dɨzẽˈpeʁu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "desemperro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

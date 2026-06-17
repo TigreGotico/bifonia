@@ -159,3 +159,120 @@ Ambas as aceções são **substantivos**; distinguem-se pelo *sense*, não pelo 
 ---
 
 *This file is updated as the infopedia audit surfaces corrections.*
+
+
+---
+
+## Expanded roster (waves 2–3, infopedia-validated)
+
+Added programmatically and validated against infopedia (noun/adj closed vowel vs the matching verb's open vowel). Roster grew from 27 to 124 words.
+
+| Word | pos | IPA contrast | Infopedia |
+|------|-----|--------------|-----------|
+| abono | NOUN/VERB | ɐˈbonu (closed) vs ɐˈbɔnu (open) | [abono](https://www.infopedia.pt/dicionarios/lingua-portuguesa/abono) |
+| aborto | NOUN/VERB | ɐˈboɾtu (closed) vs ɐˈbɔɾtu (open) | [aborto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/aborto) |
+| abrolho | NOUN/VERB | ɐˈbɾoʎu (closed) vs ɐˈbɾɔʎu (open) | [abrolho](https://www.infopedia.pt/dicionarios/lingua-portuguesa/abrolho) |
+| aceno | NOUN/VERB | ɐˈsenu (closed) vs ɐˈsɛnu (open) | [aceno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/aceno) |
+| adorno | NOUN/VERB | ɐˈdoɾnu (closed) vs ɐˈdɔɾnu (open) | [adorno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/adorno) |
+| almoço | NOUN/VERB | ɐɫˈmosu (closed) vs ɐɫˈmɔsu (open) | [almoço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/almoço) |
+| apego | NOUN/VERB | ɐˈpeɡu (closed) vs ɐˈpɛɡu (open) | [apego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/apego) |
+| apelo | NOUN/VERB | ɐˈpelu (closed) vs ɐˈpɛlu (open) | [apelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/apelo) |
+| aperto | NOUN/VERB | ɐˈpeɾtu (closed) vs ɐˈpɛɾtu (open) | [aperto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/aperto) |
+| arremedo | NOUN/VERB | ɐʁɨˈmedu (closed) vs ɐʁɨˈmɛdu (open) | [arremedo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/arremedo) |
+| arremesso | NOUN/VERB | ɐʁɨˈmesu (closed) vs ɐʁɨˈmɛsu (open) | [arremesso](https://www.infopedia.pt/dicionarios/lingua-portuguesa/arremesso) |
+| arrepelo | NOUN/VERB | ɐʁɨˈpelu (closed) vs ɐʁɨˈpɛlu (open) | [arrepelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/arrepelo) |
+| arrojo | NOUN/VERB | ɐˈʁoʒu (closed) vs ɐˈʁɔʒu (open) | [arrojo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/arrojo) |
+| arroto | NOUN/VERB | ɐˈʁotu (closed) vs ɐˈʁɔtu (open) | [arroto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/arroto) |
+| atropelo | NOUN/VERB | ɐtɾuˈpelu (closed) vs ɐtɾuˈpɛlu (open) | [atropelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/atropelo) |
+| azedo | NOUN/VERB | ɐˈzedu (closed) vs ɐˈzɛdu (open) | [azedo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/azedo) |
+| cerco | NOUN/VERB | ˈseɾku (closed) vs ˈsɛɾku (open) | [cerco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/cerco) |
+| choco | ADJ/NOUN/VERB | ˈʃoku (closed) vs ˈʃɔku (open) | [choco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/choco) |
+| cobro | NOUN/VERB | ˈkobɾu (closed) vs ˈkɔbɾu (open) | [cobro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/cobro) |
+| colmo | NOUN/VERB | ˈkoɫmu (closed) vs ˈkɔɫmu (open) | [colmo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/colmo) |
+| conforto | NOUN/VERB | kõˈfoɾtu (closed) vs kõˈfɔɾtu (open) | [conforto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/conforto) |
+| congelo | NOUN/VERB | kõˈʒelu (closed) vs kõˈʒɛlu (open) | [congelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/congelo) |
+| consolo | NOUN/VERB | kõˈsolu (closed) vs kõˈsɔlu (open) | [consolo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/consolo) |
+| contorno | NOUN/VERB | kõˈtoɾnu (closed) vs kõˈtɔɾnu (open) | [contorno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/contorno) |
+| decoro | NOUN/VERB | dɨˈkoɾu (closed) vs dɨˈkɔɾu (open) | [decoro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/decoro) |
+| degelo | NOUN/VERB | dɨˈʒelu (closed) vs dɨˈʒɛlu (open) | [degelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/degelo) |
+| desacordo | NOUN/VERB | dɨzɐˈkoɾdu (closed) vs dɨzɐˈkɔɾdu (open) | [desacordo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desacordo) |
+| desafogo | NOUN/VERB | dɨzɐˈfoɡu (closed) vs dɨzɐˈfɔɡu (open) | [desafogo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desafogo) |
+| desaforo | NOUN/VERB | dɨzɐˈfoɾu (closed) vs dɨzɐˈfɔɾu (open) | [desaforo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desaforo) |
+| desapego | NOUN/VERB | dɨzɐˈpeɡu (closed) vs dɨzɐˈpɛɡu (open) | [desapego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desapego) |
+| desassossego | NOUN/VERB | dɨzɐsuˈseɡu (closed) vs dɨzɐsuˈsɛɡu (open) | [desassossego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desassossego) |
+| desconforto | NOUN/VERB | dɨʃkõˈfoɾtu (closed) vs dɨʃkõˈfɔɾtu (open) | [desconforto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desconforto) |
+| desconsolo | NOUN/VERB | dɨʃkõˈsolu (closed) vs dɨʃkõˈsɔlu (open) | [desconsolo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desconsolo) |
+| desdobro | NOUN/VERB | dɨʒˈdobɾu (closed) vs dɨʒˈdɔbɾu (open) | [desdobro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desdobro) |
+| desempeno | NOUN/VERB | dɨzẽˈpenu (closed) vs dɨzẽˈpɛnu (open) | [desempeno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desempeno) |
+| desemperro | NOUN/VERB | dɨzẽˈpeʁu (closed) vs dɨzẽˈpɛʁu (open) | [desemperro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desemperro) |
+| desempeço | NOUN/VERB | dɨzẽˈpesu (closed) vs dɨzẽˈpɛsu (open) | [desempeço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desempeço) |
+| desemprego | NOUN/VERB | dɨzẽˈpɾeɡu (closed) vs dɨzẽˈpɾɛɡu (open) | [desemprego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desemprego) |
+| desenredo | NOUN/VERB | dɨzẽˈʁedu (closed) vs dɨzẽˈʁɛdu (open) | [desenredo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desenredo) |
+| desespero | NOUN/VERB | dɨzɨʃˈpeɾu (closed) vs dɨzɨʃˈpɛɾu (open) | [desespero](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desespero) |
+| desgelo | NOUN/VERB | dɨˈʒelu (closed) vs dɨˈʒɛlu (open) | [desgelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desgelo) |
+| desgosto | NOUN/VERB | dɨʒˈɡoʃtu (closed) vs dɨʒˈɡɔʃtu (open) | [desgosto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desgosto) |
+| desmantelo | NOUN/VERB | dɨʒmɐ̃ˈtelu (closed) vs dɨʒmɐ̃ˈtɛlu (open) | [desmantelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desmantelo) |
+| despego | NOUN/VERB | dɨʃˈpeɡu (closed) vs dɨʃˈpɛɡu (open) | [despego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/despego) |
+| despojo | NOUN/VERB | dɨsˈpoʒu (closed) vs dɨsˈpɔʒu (open) | [despojo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/despojo) |
+| desprezo | NOUN/VERB | dɨʃˈpɾezu (closed) vs dɨʃˈpɾɛzu (open) | [desprezo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desprezo) |
+| destroço | NOUN/VERB | dɨʃˈtɾosu (closed) vs dɨʃˈtɾɔsu (open) | [destroço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/destroço) |
+| desvelo | NOUN/VERB | dɨʒˈvelu (closed) vs dɨʒˈvɛlu (open) | [desvelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/desvelo) |
+| dobro | NOUN/VERB | ˈdobɾu (closed) vs ˈdɔbɾu (open) | [dobro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/dobro) |
+| domo | NOUN/VERB | ˈdomu (closed) vs ˈdɔmu (open) | [domo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/domo) |
+| empeno | NOUN/VERB | ẽˈpenu (closed) vs ẽˈpɛnu (open) | [empeno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/empeno) |
+| emperro | NOUN/VERB | ẽˈpeʁu (closed) vs ẽˈpɛʁu (open) | [emperro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/emperro) |
+| emprego | NOUN/VERB | ẽˈpɾeɡu (closed) vs ẽˈpɾɛɡu (open) | [emprego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/emprego) |
+| encosto | NOUN/VERB | ẽˈkoʃtu (closed) vs ẽˈkɔʃtu (open) | [encosto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/encosto) |
+| engodo | NOUN/VERB | ẽˈɡodu (closed) vs ẽˈɡɔdu (open) | [engodo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/engodo) |
+| enredo | NOUN/VERB | ẽˈʁedu (closed) vs ẽˈʁɛdu (open) | [enredo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/enredo) |
+| entorno | NOUN/VERB | ẽˈtoɾnu (closed) vs ẽˈtɔɾnu (open) | [entorno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/entorno) |
+| erro | NOUN/VERB | ˈeʁu (closed) vs ˈɛʁu (open) | [erro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/erro) |
+| esboço | NOUN/VERB | ɨʒˈbosu (closed) vs ɨʒˈbɔsu (open) | [esboço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/esboço) |
+| escabelo | NOUN/VERB | ɨʃkɐˈbelu (closed) vs ɨʃkɐˈbɛlu (open) | [escabelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/escabelo) |
+| escorço | NOUN/VERB | ɨʃˈkoɾsu (closed) vs ɨʃˈkɔɾsu (open) | [escorço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/escorço) |
+| esforço | NOUN/VERB | ɨʃˈfoɾsu (closed) vs ɨʃˈfɔɾsu (open) | [esforço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/esforço) |
+| esmero | NOUN/VERB | ɨʒˈmeɾu (closed) vs ɨʒˈmɛɾu (open) | [esmero](https://www.infopedia.pt/dicionarios/lingua-portuguesa/esmero) |
+| espeto | NOUN/VERB | ɨʃˈpetu (closed) vs ɨʃˈpɛtu (open) | [espeto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/espeto) |
+| estofo | NOUN/VERB | ɨʃˈtofu (closed) vs ɨʃˈtɔfu (open) | [estofo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/estofo) |
+| forro | NOUN/VERB | ˈfoʁu (closed) vs ˈfɔʁu (open) | [forro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/forro) |
+| fosso | NOUN/VERB | ˈfosu (closed) vs ˈfɔsu (open) | [fosso](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fosso) |
+| gelo | NOUN/VERB | ˈʒelu (closed) vs ˈʒɛlu (open) | [gelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/gelo) |
+| golfo | NOUN/VERB | ˈɡoɫfu (closed) vs ˈɡɔɫfu (open) | [golfo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/golfo) |
+| governo | NOUN/VERB | ɡuˈveɾnu (closed) vs ɡuˈvɛɾnu (open) | [governo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/governo) |
+| jorro | NOUN/VERB | ˈʒoʁu (closed) vs ˈʒɔʁu (open) | [jorro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/jorro) |
+| logro | NOUN/VERB | ˈloɡɾu (closed) vs ˈlɔɡɾu (open) | [logro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/logro) |
+| novelo | NOUN/VERB | nuˈvelu (closed) vs nuˈvɛlu (open) | [novelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/novelo) |
+| reboco | NOUN/VERB | ʁɨˈboku (closed) vs ʁɨˈbɔku (open) | [reboco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/reboco) |
+| redobro | NOUN/VERB | ʁɨˈdobɾu (closed) vs ʁɨˈdɔbɾu (open) | [redobro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/redobro) |
+| reforço | NOUN/VERB | ʁɨˈfoɾsu (closed) vs ʁɨˈfɔɾsu (open) | [reforço](https://www.infopedia.pt/dicionarios/lingua-portuguesa/reforço) |
+| relevo | NOUN/VERB | ʁɨˈlevu (closed) vs ʁɨˈlɛvu (open) | [relevo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/relevo) |
+| repelo | NOUN/VERB | ʁɨˈpelu (closed) vs ʁɨˈpɛlu (open) | [repelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/repelo) |
+| retorno | NOUN/VERB | ʁɨˈtoɾnu (closed) vs ʁɨˈtɔɾnu (open) | [retorno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/retorno) |
+| rogo | NOUN/VERB | ˈʁoɡu (closed) vs ˈʁɔɡu (open) | [rogo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/rogo) |
+| rola | NOUN/VERB | ˈɾolɐ (closed) vs ˈɾɔlɐ (open) | [rola](https://www.infopedia.pt/dicionarios/lingua-portuguesa/rola) |
+| rolo | NOUN/VERB | ˈʁolu (closed) vs ˈʁɔlu (open) | [rolo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/rolo) |
+| selo | NOUN/VERB | ˈselu (closed) vs ˈsɛlu (open) | [selo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/selo) |
+| sobro | NOUN/VERB | ˈsobɾu (closed) vs ˈsɔbɾu (open) | [sobro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/sobro) |
+| soco | NOUN/VERB | ˈsoku (closed) vs ˈsɔku (open) | [soco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/soco) |
+| soldo | NOUN/VERB | ˈsoɫdu (closed) vs ˈsɔɫdu (open) | [soldo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/soldo) |
+| solto | NOUN/VERB | ˈsoɫtu (closed) vs ˈsɔɫtu (open) | [solto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/solto) |
+| sopeso | NOUN/VERB | suˈpezu (closed) vs suˈpɛzu (open) | [sopeso](https://www.infopedia.pt/dicionarios/lingua-portuguesa/sopeso) |
+| sopro | NOUN/VERB | ˈsopɾu (closed) vs ˈsɔpɾu (open) | [sopro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/sopro) |
+| sossego | NOUN/VERB | suˈseɡu (closed) vs suˈsɛɡu (open) | [sossego](https://www.infopedia.pt/dicionarios/lingua-portuguesa/sossego) |
+| tempero | NOUN/VERB | tẽˈpeɾu (closed) vs tẽˈpɛɾu (open) | [tempero](https://www.infopedia.pt/dicionarios/lingua-portuguesa/tempero) |
+| toco | NOUN/VERB | ˈtoku (closed) vs ˈtɔku (open) | [toco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/toco) |
+| toldo | NOUN/VERB | ˈtoɫdu (closed) vs ˈtɔɫdu (open) | [toldo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/toldo) |
+| topo | NOUN/VERB | ˈtopu (closed) vs ˈtɔpu (open) | [topo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/topo) |
+| torno | NOUN/VERB | ˈtoɾnu (closed) vs ˈtɔɾnu (open) | [torno](https://www.infopedia.pt/dicionarios/lingua-portuguesa/torno) |
+| troco | NOUN/VERB | ˈtɾoku (closed) vs ˈtɾɔku (open) | [troco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/troco) |
+| zelo | NOUN/VERB | ˈzelu (closed) vs ˈzɛlu (open) | [zelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/zelo) |
+
+## Validation rules (why some candidates are rejected)
+
+Two phonological rules decide whether a *noun (closed) / verb (open)* spelling pair is genuinely **heterophonic**. Both are checked against infopedia.
+
+1. **Only -AR verbs open in the 1st person singular.** In European Portuguese the rhizotonic (stressed-stem) present forms of **-ar** verbs open the stem vowel (jogar → *jogo* /ˈʒɔɡu/). **-er / -ir** verbs keep the 1sg **closed** (morrer → *morro* /ˈmoʁu/ = the noun; correr → *corro*; socorrer → *socorro*). So a deverbal noun paired with an **-er/-ir** verb is **NOT** heterophonic — the 1sg matches the noun. *Rejected: morro, socorro, escolho, corro, sorvo.* (The infinitive-vs-noun pair *colher* is a separate, valid case.)
+
+2. **/e/ before a palatal (ʃ ʒ ʎ ɲ) diphthongises to [ɐj] in BOTH readings → no contrast.** *fecho* (noun) and *eu fecho* (verb) are both [ˈfɐjʃu]/[ˈfeʃu] — never *“fécho”*. Infopedia marks these with the `(j)` glide. So the -echo / -ejo / -elho / -enho families are **NOT** heterophonic. *Rejected: fecho, desejo, espelho, despejo, festejo, manejo, gracejo, arpejo, ensejo, desfecho, empenho, desempenho, desdenho.* Note **/o/ before a palatal is fine** (olho /ˈoʎu/ vs /ˈɔʎu/ opens normally) — so *arrojo, jorro, despojo, abrolho* are kept.
+
+Also rejected: words whose noun is already **open** (colo ˈkɔlu, cego ˈsɛɡu, prego ˈpɾɛɡu — no contrast) or whose stressed vowel is **nasal** (conto, ponto, desconto — õ has no open/closed contrast).

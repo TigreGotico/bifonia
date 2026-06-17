@@ -1,0 +1,14 @@
+# sense: spoils
+Gera {n} frases em Português Europeu natural onde "despojo" é SUBSTANTIVO.
+
+Significado: ato ou efeito de despojar; espólio; presa; o que se desprende ou se arranca depois de ter servido de adorno; restos; restos mortais
+IPA: /dɨsˈpoʒu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "despojo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

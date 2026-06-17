@@ -1,0 +1,14 @@
+# sense: detachment
+Gera {n} frases em Português Europeu natural onde "despego" é SUBSTANTIVO.
+
+Significado: ato ou efeito de despegar; falta de apego, de afeição
+IPA: /dɨʃˈpeɡu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "despego" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

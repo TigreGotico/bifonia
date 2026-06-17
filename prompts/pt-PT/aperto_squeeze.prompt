@@ -1,0 +1,14 @@
+# sense: squeeze
+Gera {n} frases em Português Europeu natural onde "aperto" é SUBSTANTIVO.
+
+Significado: ato ou efeito de apertar, de segurar ou envolver fazendo pressão; aglomeração de pessoas em lugar pouco espaçoso; lugar apertado ou estreito; urgência; constrangimento (físico ou psicológico); situação difícil (sobretudo financeira); angústia; avareza; estreitamento de um canal ou de um orifício orgânico
+IPA: /ɐˈpeɾtu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "aperto" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

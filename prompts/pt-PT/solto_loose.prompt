@@ -1,0 +1,14 @@
+# sense: loose
+Gera {n} frases em Português Europeu natural onde "solto" é ADJETIVO.
+
+Significado: que anda à solta; que foi colocado em liberdade; que tem liberdade | livre; que não está atado | desatado | desprendido; não reprimido; que não está esticado ou apertado | largo | frouxo; espalhado | desagregado; que está isento de dívida | desobrigado; descontínuo | entrecortado; que não é rimado; que vibra livre em toda a sua extensão; que navega sem companhia; licencioso
+IPA: /ˈsoɫtu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "solto" em minúsculas, sem acento diacrítico
+- usa em posição predicativa («está solto») ou atributiva
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

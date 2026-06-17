@@ -1,0 +1,14 @@
+# sense: addled
+Gera {n} frases em Português Europeu natural onde "choco" é ADJETIVO.
+
+Significado: diz-se do ovo, especialmente das aves, com embrião em desenvolvimento, e do estado febril destes animais durante a incubação; que está a chocar ovos; podre; que perdeu a efervescência; sem vontade de fazer nada
+IPA: /ˈʃoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "choco" em minúsculas, sem acento diacrítico
+- usa em posição predicativa («está choco») ou atributiva
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

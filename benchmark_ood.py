@@ -102,7 +102,13 @@ def main():
 
     def toks(r):
         t = tokenize(r["sentence"].lower())
-        return (t, t.index(r["word"])) if r["word"] in t else (None, None)
+        # tokens may carry trailing punctuation or a leading clitic hyphen — match
+        # on the stripped form and normalise the target slot for the scorer.
+        i = next((j for j, w in enumerate(t) if w.strip(".,;:!?-") == r["word"]), None)
+        if i is None:
+            return (None, None)
+        t = list(t); t[i] = r["word"]
+        return (t, i)
 
     def rules(r):
         t, i = toks(r)

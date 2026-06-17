@@ -1,0 +1,14 @@
+# sense: siege
+Gera {n} frases em Português Europeu natural onde "cerco" é SUBSTANTIVO.
+
+Significado: ato ou efeito de cercar, de pôr cerca ou muro em redor de; aquilo que limita um espaço; disposição de diversos elementos em círculo, rodeando algo; disposição de tropas em redor de uma posição inimiga; ato de impedir ou barrar a passagem; aparelho de pesca em que as redes formam círculo para apanhar o peixe; navio que emprega esse aparelho; formação dos caçadores em roda para apanhar a caça; importunação insistente; sucessão de factos ou de acont
+IPA: /ˈseɾku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "cerco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

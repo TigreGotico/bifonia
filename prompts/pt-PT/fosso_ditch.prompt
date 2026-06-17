@@ -1,0 +1,14 @@
+# sense: ditch
+Gera {n} frases em Português Europeu natural onde "fosso" é SUBSTANTIVO.
+
+Significado: cova de profundidade variável; escavação profunda e regular feita à volta de fortificações para impedir o acesso ou o ataque do inimigo; sulco feito no solo para escoar as águas; em certos estádios, vala que separa o campo de jogo das bancadas, para impedir o acesso do público; reentrância que se estende a todo o comprimento de uma mesa de trabalho, para acomodar ferramentas e acessórios; distância grande entre pessoas ou coisas
+IPA: /ˈfosu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "fosso" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,14 @@
+# sense: turtledove
+Gera {n} frases em Português Europeu natural onde "rola" é SUBSTANTIVO.
+
+Significado: designação comum, extensiva a diferentes aves da família dos Columbídeos, de porte inferior ao dos pombos, asas pontiagudas, cauda comprida e plumagem geralmente acinzentada, branca ou acastanhada; ave migratória, presente em Portugal sobretudo nos meses quentes, atinge perto de 30 centímetros de comprimento e apresenta olhos alaranjados e plumagem acinzentada na cabeça e no peito, com listas pretas e brancas no pescoço, padrão malhado em tons ca
+IPA: /ˈɾolɐ/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "rola" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

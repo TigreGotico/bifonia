@@ -113,12 +113,17 @@ def main():
             return sorted(cands, key=lambda s: -sense_freq[word][s])[0]
         return most_common.get(word)
 
+    # locate the target token by its stripped form (tokens may carry trailing
+    # punctuation, e.g. a sentence-final "torno.").
+    def _locate(toks, word):
+        return next((i for i, t in enumerate(toks) if t.strip(".,;:!?") == word), None)
+
     # corpus-FREE rules: pure scoring path, independent of how guess_sense is wired
     def rule_sense(r):
         toks = tokenize(r["sentence"].lower())
-        if r["word"] not in toks:
+        idx = _locate(toks, r["word"])
+        if idx is None:
             return None
-        idx = toks.index(r["word"])
         return _rule_resolve(r["word"], toks, idx, _rule_pos(toks, idx))
 
     nb = SenseModel.load(str(NB_PATH)) if NB_PATH.exists() else None
@@ -126,13 +131,15 @@ def main():
 
     def _model_sense(model, r):
         toks = tokenize(r["sentence"].lower())
-        if not model or r["word"] not in toks or not model.has(r["word"]):
+        idx = _locate(toks, r["word"])
+        if not model or idx is None or not model.has(r["word"]):
             return None
-        return model.predict(r["word"], toks, toks.index(r["word"]))
+        return model.predict(r["word"], toks, idx)
 
     def shipped(r):  # production guess_sense: per-word model routing + rule fallback
         toks = tokenize(r["sentence"].lower())
-        return guess_sense(toks, toks.index(r["word"])) if r["word"] in toks else None
+        idx = _locate(toks, r["word"])
+        return guess_sense(toks, idx) if idx is not None else None
 
     # corpus-free first, then corpus-using (most-common / NB / perceptron), then shipped ensemble
     approaches = {

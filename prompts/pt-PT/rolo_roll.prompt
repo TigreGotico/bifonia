@@ -1,0 +1,14 @@
+# sense: roll
+Gera {n} frases em Português Europeu natural onde "rolo" é SUBSTANTIVO.
+
+Significado: peça cilíndrica mais ou menos comprida; pavio de cera enrolado; pequeno cilindro revestido de lã e munido de um cabo, utilizado para pintar superfícies planas; película fotográfica; tufo de cabelo enrolado; embrulho; remoinho; crivo do funil; prato doce ou salgado preparado com uma massa enrolada com recheio; peça de carne bovina correspondente ao músculo flexor superficial do quarto traseiro do animal, especialmente indicada para estufar e assar
+IPA: /ˈʁolu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "rolo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

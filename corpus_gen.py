@@ -58,6 +58,107 @@ TARGETS = [
     ("tola", "head", 1000),         ("tola", "foolish", 1000),
     ("torre", "tower", 1000),       ("torre", "roast", 1000),
     ("transtorno", "disorder", 1000), ("transtorno", "upset", 1000),
+    # noun/verb -o alternation words (closed-o noun vs open-ɔ 1sg verb)
+    ("torno", "lathe", 1000),       ("torno", "turn", 1000),
+    ("troco", "change", 1000),      ("troco", "exchange", 1000),
+    ("toco", "stump", 1000),        ("toco", "play", 1000),
+    ("rogo", "plea", 1000),         ("rogo", "beg", 1000),
+    ("contorno", "contour", 1000),  ("contorno", "circumvent", 1000),
+    ("entorno", "surroundings", 1000), ("entorno", "spill", 1000),
+    # 3-way: adjective (addled) + noun (cuttlefish) share closed-o; verb is open-ɔ
+    ("choco", "addled", 700),       ("choco", "cuttlefish", 700), ("choco", "hatch", 700),
+    # second wave of noun(closed)/verb(open) pairs — IPA from infopedia
+    ("almoço", "lunch", 1000),  ("almoço", "dine", 1000),
+    ("rolo", "roll", 1000),  ("rolo", "tumble", 1000),
+    ("soco", "punch", 1000),  ("soco", "strike", 1000),
+    ("esforço", "effort", 1000),  ("esforço", "strive", 1000),
+    ("conforto", "comfort", 1000),  ("conforto", "soothe", 1000),
+    ("aborto", "abortion", 1000),  ("aborto", "abort", 1000),
+    ("adorno", "adornment", 1000),  ("adorno", "adorn", 1000),
+    ("reforço", "reinforcement", 1000),  ("reforço", "reinforce", 1000),
+    ("soldo", "pay", 1000),  ("soldo", "weld", 1000),
+    ("esboço", "sketch", 1000),  ("esboço", "outline", 1000),
+    ("governo", "government", 1000),  ("governo", "govern", 1000),
+    ("emprego", "job", 1000),  ("emprego", "employ", 1000),
+    ("selo", "stamp", 1000),  ("selo", "seal", 1000),
+    ("gelo", "ice", 1000),  ("gelo", "freeze", 1000),
+    ("zelo", "zeal", 1000),  ("zelo", "tend", 1000),
+    ("cerco", "siege", 1000),  ("cerco", "surround", 1000),
+    ("erro", "error", 1000),  ("erro", "err", 1000),
+    # wave 3
+    ("sopro", "breath", 1000),  ("sopro", "blow", 1000),
+    ("forro", "lining", 1000),  ("forro", "line", 1000),
+    ("dobro", "double", 1000),  ("dobro", "fold", 1000),
+    ("abono", "allowance", 1000),  ("abono", "vouch", 1000),
+    ("logro", "deceit", 1000),  ("logro", "deceive", 1000),
+    ("topo", "summit", 1000),  ("topo", "bump_into", 1000),
+    ("jorro", "jet", 1000),  ("jorro", "gush", 1000),
+    ("golfo", "gulf", 1000),  ("golfo", "spew", 1000),
+    ("colmo", "culm", 1000),  ("colmo", "thatch", 1000),
+    ("fosso", "ditch", 1000),  ("fosso", "root_up", 1000),
+    ("toldo", "awning", 1000),  ("toldo", "cloud_over", 1000),
+    ("arrojo", "boldness", 1000),  ("arrojo", "hurl", 1000),
+    ("despojo", "spoils", 1000),  ("despojo", "strip", 1000),
+    ("cobro", "cessation", 1000),  ("cobro", "collect", 1000),
+    ("domo", "dome", 1000),  ("domo", "tame", 1000),
+    ("sobro", "cork_oak", 1000),  ("sobro", "be_left_over", 1000),
+    ("retorno", "return", 1000),  ("retorno", "go_back", 1000),
+    ("desgosto", "sorrow", 1000),  ("desgosto", "dislike", 1000),
+    ("desconforto", "discomfort", 1000),  ("desconforto", "discomfit", 1000),
+    ("desdobro", "unfolding", 1000),  ("desdobro", "unfold", 1000),
+    ("redobro", "redoubling", 1000),  ("redobro", "redouble", 1000),
+    ("reboco", "plaster", 1000),  ("reboco", "tow", 1000),
+    ("decoro", "decorum", 1000),  ("decoro", "memorize", 1000),
+    ("estofo", "stuffing", 1000),  ("estofo", "upholster", 1000),
+    ("destroço", "wreckage", 1000),  ("destroço", "wreck", 1000),
+    ("desafogo", "relief", 1000),  ("desafogo", "relieve", 1000),
+    ("arroto", "belch", 1000),  ("arroto", "burp", 1000),
+    ("consolo", "consolation", 1000),  ("consolo", "console", 1000),
+    ("desconsolo", "disconsolation", 1000),  ("desconsolo", "dishearten", 1000),
+    ("desacordo", "disagreement", 1000),  ("desacordo", "disagree", 1000),
+    ("engodo", "bait", 1000),  ("engodo", "lure", 1000),
+    ("escorço", "foreshortening", 1000),  ("escorço", "foreshorten", 1000),
+    ("desaforo", "insolence", 1000),  ("desaforo", "affront", 1000),
+    ("abrolho", "caltrop", 1000),  ("abrolho", "sprout", 1000),
+    ("rola", "turtledove", 1000),  ("rola", "rolls", 1000),
+    ("solto", "loose", 1000),  ("solto", "release", 1000),
+    ("encosto", "backrest", 1000),  ("encosto", "lean", 1000),
+    ("apelo", "appeal", 1000),  ("apelo", "call_out", 1000),
+    ("desprezo", "contempt", 1000),  ("desprezo", "despise", 1000),
+    ("enredo", "plot", 1000),  ("enredo", "entangle", 1000),
+    ("desenredo", "denouement", 1000),  ("desenredo", "disentangle", 1000),
+    ("espeto", "skewer", 1000),  ("espeto", "stab", 1000),
+    ("aperto", "squeeze", 1000),  ("aperto", "tighten", 1000),
+    ("desvelo", "devotion", 1000),  ("desvelo", "unveil", 1000),
+    ("repelo", "hair_pull", 1000),  ("repelo", "pluck", 1000),
+    ("arrepelo", "hair_pulling", 1000),  ("arrepelo", "snatch", 1000),
+    ("congelo", "freezing", 1000),  ("congelo", "freeze", 1000),
+    ("arremesso", "throw", 1000),  ("arremesso", "fling", 1000),
+    ("arremedo", "imitation", 1000),  ("arremedo", "mimic", 1000),
+    ("despego", "detachment", 1000),  ("despego", "detach", 1000),
+    ("desapego", "indifference", 1000),  ("desapego", "let_go", 1000),
+    ("apego", "attachment", 1000),  ("apego", "cling", 1000),
+    ("desemprego", "noun", 1000),  ("desemprego", "verb", 1000),
+    ("desmantelo", "dismantling", 1000),  ("desmantelo", "dismantle", 1000),
+    ("atropelo", "trampling", 1000),  ("atropelo", "run_over", 1000),
+    ("degelo", "thaw", 1000),  ("degelo", "thaw_out", 1000),
+    ("desgelo", "defrosting", 1000),  ("desgelo", "defrost", 1000),
+    ("desespero", "despair", 1000),  ("desespero", "despair_at", 1000),
+    ("escabelo", "stool", 1000),  ("escabelo", "dishevel", 1000),
+    ("novelo", "yarn_ball", 1000),  ("novelo", "narrate", 1000),
+    ("relevo", "relief_terrain", 1000),  ("relevo", "emphasize", 1000),
+    ("aceno", "nod", 1000),  ("aceno", "beckon", 1000),
+    ("sopeso", "heft", 1000),  ("sopeso", "weigh_up", 1000),
+    ("empeno", "warping", 1000),  ("empeno", "warp", 1000),
+    ("desempeno", "straightening", 1000),  ("desempeno", "straighten", 1000),
+    ("sossego", "calm", 1000),  ("sossego", "soothe", 1000),
+    ("desassossego", "disquiet", 1000),  ("desassossego", "disturb", 1000),
+    ("esmero", "meticulousness", 1000),  ("esmero", "perfect", 1000),
+    ("azedo", "sour", 1000),  ("azedo", "turn_sour", 1000),
+    ("desempeço", "riddance", 1000),  ("desempeço", "free_up", 1000),
+    ("desemperro", "unjamming", 1000),  ("desemperro", "unjam", 1000),
+    ("emperro", "jam", 1000),  ("emperro", "stick", 1000),
+    ("tempero", "seasoning", 1000),  ("tempero", "season", 1000),
 ]
 
 _PROMPTS_DIR = Path(__file__).parent / "prompts" / "pt-PT"
@@ -136,10 +237,15 @@ def _clean(raw: str, word: str) -> list[str]:
 # Local Gemma server (no API keys, not rate-limited) — see workspace policy.
 LLM_ENDPOINT = os.environ.get("LLM_ENDPOINT", "http://192.168.1.200:8000")
 LLM_MODEL = os.environ.get("LLM_MODEL", "ggml-org/gemma-4-26B-A4B-it-GGUF")
-# Provider: "haiku" (Claude Haiku via the claude CLI) or "gemma" (local server).
+# Provider: "haiku" (Claude Haiku via the claude CLI), "agentpipe" (fan out over
+# several free coding-agent CLIs), or "gemma" (local server).
 GEN_PROVIDER = os.environ.get("GEN_PROVIDER", "haiku")
-# Claude Haiku via the Claude Code CLI ONLY (never opencode / third-party agents).
 _HAIKU_FANOUT = int(os.environ.get("HAIKU_FANOUT", "3"))
+# agentpipe provider fan-out (GEN_PROVIDER=agentpipe). FREE coding-agent CLIs only —
+# diverse providers give more varied phrasing than one model. Override via
+# GEN_AGENTS=...; add a paid provider (e.g. claude-haiku) ONLY as a fallback when the
+# free ones are rate-limited.
+_AGENTS = os.environ.get("GEN_AGENTS", "opencode-free,kilo,mimo").split(",")
 
 
 async def _generate_one(provider: str, word: str, existing: set, n: int, cwd: str,
@@ -196,13 +302,22 @@ async def generate_batch(word: str, sense: str, target: int, cwd: str) -> list[s
         for template in prompts:
             for provider, model in agents:
                 tasks.append(_generate_one(provider, word, existing, n_each, cwd, template, model))
+    elif GEN_PROVIDER == "agentpipe":
+        # Fan out across several free coding-agent CLIs via agentpipe — diverse
+        # providers give more varied phrasing than a single model. Set GEN_AGENTS
+        # to override the comma-separated provider list.
+        agents = [(a.strip(), None) for a in _AGENTS if a.strip()]
+        n_each = min(40, max(20, needed // len(prompts) // len(agents) + 15))
+        for template in prompts:
+            for provider, model in agents:
+                tasks.append(_generate_one(provider, word, existing, n_each, cwd, template, model))
     elif GEN_PROVIDER == "gemma":
         per_call = min(40, max(20, needed // len(prompts) // 3 + 10))
         for template in prompts:
             for temp in (0.8, 0.95, 1.1, 1.2):
                 tasks.append(_generate_one_gemma(word, existing, per_call, template, temp))
     else:
-        raise SystemExit(f"unknown GEN_PROVIDER={GEN_PROVIDER!r} (use haiku or gemma)")
+        raise SystemExit(f"unknown GEN_PROVIDER={GEN_PROVIDER!r} (use haiku, agentpipe or gemma)")
 
     results = await asyncio.gather(*tasks)
     all_sents, seen = [], set(s.lower() for s in existing)

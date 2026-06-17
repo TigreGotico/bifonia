@@ -1,0 +1,14 @@
+# sense: consolation
+Gera {n} frases em Português Europeu natural onde "consolo" é SUBSTANTIVO.
+
+Significado: ato ou efeito de consolar; o que alivia ou conforta; elemento saliente numa parede, com forma variável, para suporte de vasos, esculturas, cornijas, vigas, etc.; pequena mesa comprida e estreita, que se encosta a uma parede e sobre a qual se colocam objetos de decoração
+IPA: /kõˈsolu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "consolo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

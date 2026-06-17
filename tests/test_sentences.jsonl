@@ -11,15 +11,15 @@
 {"sentence": "A encomenda foi despachada para o Porto.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Reservei uma mesa para duas pessoas.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Temos de caminhar para o norte durante meia hora.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
-{"sentence": "O professor explicou a matéria para os alunos.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "DET NOUN para DET: prev2-DET VERB signal ties ADP"}
-{"sentence": "Fizemos um bolo para o aniversário da avó.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "DET NOUN para DET: prev2-DET VERB signal ties ADP"}
+{"sentence": "O professor explicou a matéria para os alunos.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
+{"sentence": "Fizemos um bolo para o aniversário da avó.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Ela estudou muito para os exames finais.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "O autocarro vai para o centro da cidade.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Mandei uma mensagem para ela ontem à noite.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
-{"sentence": "Precisamos de encontrar uma solução para este problema.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "DET NOUN para DET: prev2-DET VERB signal ties ADP"}
+{"sentence": "Precisamos de encontrar uma solução para este problema.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Saímos juntos para o jantar de despedida.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "A proposta foi enviada para todos os membros.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
-{"sentence": "Ele treina todos os dias para a maratona.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "DET NOUN para DET: prev2-DET VERB signal ties ADP"}
+{"sentence": "Ele treina todos os dias para a maratona.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Ficámos à espera para entrar no espetáculo.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "A verba foi atribuída para a renovação do edifício.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Compramos tinta para as paredes do corredor.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
@@ -40,14 +40,14 @@
 {"sentence": "Preparei tudo para a chegada dos convidados.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Deixei o portão aberto para ela entrar.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "A viagem de comboio para o Porto dura três horas.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
-{"sentence": "Levou o cão para o veterinário na sexta-feira.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "DET NOUN para DET: prev2-DET VERB signal ties ADP"}
+{"sentence": "Levou o cão para o veterinário na sexta-feira.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "A análise foi solicitada para confirmar o diagnóstico.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Ele saiu cedo para apanhar o primeiro comboio.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "Pusemos a mesa para seis pessoas.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "A decisão ficou para a próxima semana.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "O jantar está pronto para quando chegares.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
-{"sentence": "Trouxe um presente para o teu filho.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "prev_prev DET + DET-after ambiguity"}
-{"sentence": "Escreveu um poema para a sua namorada.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": "prev_prev DET + DET-after ambiguity"}
+{"sentence": "Trouxe um presente para o teu filho.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
+{"sentence": "Escreveu um poema para a sua namorada.", "word": "para", "sense": "purpose", "pos": "ADP", "xfail": null}
 {"sentence": "O autocarro para mesmo em frente ao hospital.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O carro para automaticamente quando deteta um obstáculo.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "Ela para sempre neste café antes de ir para o escritório.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
@@ -73,7 +73,7 @@
 {"sentence": "O barco para no porto para reabastecer de combustível.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "A hemorragia para logo depois da cirurgia.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "Ele para para ajudar sempre que vê alguém com dificuldades.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
-{"sentence": "A linha de montagem para quando é detetado um defeito.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "'quando' after scores ADP+2; no clear VERB signal"}
+{"sentence": "A linha de montagem para quando é detetado um defeito.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O árbitro para o jogo para verificar uma situação suspeita.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "DET NOUN para DET: AFTER_PREP+5 beats prev2-DET+3"}
 {"sentence": "A descida para abruptamente numa clareira no meio do bosque.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O enfermeiro para a infusão quando o doente apresenta reação.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "DET NOUN para DET: AFTER_PREP+5 beats prev2-DET+3"}
@@ -86,7 +86,7 @@
 {"sentence": "Ela para de comer quando fica satisfeita, sem se exceder.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O alarme para quando introduzimos o código correto.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O vento para de soprar ao anoitecer nesta época do ano.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
-{"sentence": "O piloto para o motor antes de o abandonar.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "DET NOUN para DET: AFTER_PREP+5 beats prev2-DET+3"}
+{"sentence": "O piloto para o motor antes de o abandonar.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O debate para quando o moderador interrompe os participantes.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "A grua para no meio da operação por avaria mecânica.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O ciclista para na berma para reparar o pneu furado.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
@@ -97,7 +97,7 @@
 {"sentence": "O cronómetro para quando o corredor cruza a linha de chegada.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O porteiro para todos os visitantes na entrada.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "O polícia para o trânsito para os peões atravessarem.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "DET NOUN para DET: AFTER_PREP+5 beats prev2-DET+3"}
-{"sentence": "O gerente para a produção para fazer manutenção ao equipamento.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": "DET NOUN para DET: AFTER_PREP+5 beats prev2-DET+3"}
+{"sentence": "O gerente para a produção para fazer manutenção ao equipamento.", "word": "para", "sense": "stop", "pos": "VERB", "xfail": null}
 {"sentence": "Ela foi pelo corredor até ao seu quarto.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
 {"sentence": "Passámos pelo parque ao regressar para casa.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
 {"sentence": "O caminho mais curto passa pelo centro histórico da cidade.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
@@ -122,7 +122,7 @@
 {"sentence": "Passaram pelo controlo de segurança sem qualquer problema.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
 {"sentence": "A encomenda foi processada pelo sistema informático central.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
 {"sentence": "A notícia foi revelada pelo jornalista durante a conferência.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
-{"sentence": "Atravessámos a cidade pelo metro para chegar mais depressa.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": "'city' noun after DET creates weak VERB signal"}
+{"sentence": "Atravessámos a cidade pelo metro para chegar mais depressa.", "word": "pelo", "sense": "by_the", "pos": "ADP", "xfail": null}
 {"sentence": "O pelo do cão ficou espalhado por todo o sofá da sala.", "word": "pelo", "sense": "hair", "pos": "NOUN", "xfail": null}
 {"sentence": "A veterinária examinou o pelo do gato com atenção.", "word": "pelo", "sense": "hair", "pos": "NOUN", "xfail": null}
 {"sentence": "O pelo do urso polar é branco e muito espesso.", "word": "pelo", "sense": "hair", "pos": "NOUN", "xfail": null}
@@ -151,7 +151,7 @@
 {"sentence": "Pelo as batatas antes de as cozer com alho e azeite.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
 {"sentence": "Pelo os tomates para fazer o molho da massa ao jantar.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
 {"sentence": "Pelo sempre as cenouras antes de as cortar para a sopa.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
-{"sentence": "Quando pelo a cebola, os olhos começam logo a lacrimejar muito.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": "'a' after pelo scores as ADP AFTER_PREP; temporal conj not strong enough"}
+{"sentence": "Quando pelo a cebola, os olhos começam logo a lacrimejar muito.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
 {"sentence": "Pelo as maçãs antes de as adicionar ao bolo de canela.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
 {"sentence": "Pelo a fruta antes de a dar às crianças pequenas.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
 {"sentence": "Pelo os pêssegos quando estão bem maduros para fazer a compota.", "word": "pelo", "sense": "peel", "pos": "VERB", "xfail": null}
@@ -249,7 +249,7 @@
 {"sentence": "O acordo foi negociado durante meses por equipas especializadas.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
 {"sentence": "O acordo de divórcio foi homologado pelo tribunal competente.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
 {"sentence": "O acordo inclui cláusulas de revisão periódica dos termos.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
-{"sentence": "O novo acordo salarial foi bem recebido pelos trabalhadores.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": "DET ADJ NOUN ADJ: prev2-DET fires VERB; no ADJ scorer for 'acordo'"}
+{"sentence": "O novo acordo salarial foi bem recebido pelos trabalhadores.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
 {"sentence": "O acordo de parceria foi renovado por mais três anos.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
 {"sentence": "O acordo prevê a construção de nova infraestrutura rodoviária.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
 {"sentence": "O acordo foi celebrado num ambiente de grande cordialidade.", "word": "acordo", "sense": "agreement", "pos": "NOUN", "xfail": null}
@@ -380,7 +380,7 @@
 {"sentence": "O agricultor foi colher as azeitonas com toda a família reunida.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
 {"sentence": "Vou colher uns ramos de rosmaninho para pôr na entrada de casa.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
 {"sentence": "É altura de colher os pimentos que estão já bem maduros no canteiro.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
-{"sentence": "Ela aprendeu a colher cogumelos silvestres com o avô na serra.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": "'a' before infinitive ties NOUN(DET+5) with VERB(infinitive+5)"}
+{"sentence": "Ela aprendeu a colher cogumelos silvestres com o avô na serra.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
 {"sentence": "Foram colher laranjas da laranjeira que eles próprios plantaram.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
 {"sentence": "O apicultor foi colher o mel das colmeias ao fim do verão.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
 {"sentence": "Precisamos de colher a lavanda antes que perca o aroma intenso.", "word": "colher", "sense": "harvest", "pos": "VERB", "xfail": null}
@@ -747,7 +747,7 @@
 {"sentence": "O rego estava entupido com folhas e foi necessário limpar.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
 {"sentence": "O rego divide a propriedade entre os dois agricultores vizinhos.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
 {"sentence": "O rego de pedra seca atravessa o jardim histórico da quinta.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
-{"sentence": "O agricultor abriu um novo rego para levar água ao novo pomar.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": "DET ADJ NOUN: prev2-DET VERB signal beats NOUN=0"}
+{"sentence": "O agricultor abriu um novo rego para levar água ao novo pomar.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
 {"sentence": "O rego estava seco porque a nascente tinha cessado de fluir.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
 {"sentence": "O rego de irrigação garante água às plantas durante os meses secos.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
 {"sentence": "O rego antigo foi restaurado e voltou a funcionar perfeitamente.", "word": "rego", "sense": "furrow", "pos": "NOUN", "xfail": null}
@@ -853,7 +853,7 @@
 {"sentence": "Torre os amendoins sem sal numa frigideira antes de os temperar.", "word": "torre", "sense": "roast", "pos": "VERB", "xfail": null}
 {"sentence": "Torre o pão de véspera no forno para recuperar a sua textura crocante.", "word": "torre", "sense": "roast", "pos": "VERB", "xfail": null}
 {"sentence": "Torre as castanhas na frigideira com um pouco de sal grosso.", "word": "torre", "sense": "roast", "pos": "VERB", "xfail": null}
-{"sentence": "A greve causou um grande transtorno nos transportes públicos da cidade.", "word": "transtorno", "sense": "disorder", "pos": "NOUN", "xfail": "DET ADJ NOUN: prev2-DET VERB signal beats NOUN=0"}
+{"sentence": "A greve causou um grande transtorno nos transportes públicos da cidade.", "word": "transtorno", "sense": "disorder", "pos": "NOUN", "xfail": null}
 {"sentence": "O transtorno bipolar é tratável com medicação e acompanhamento adequado.", "word": "transtorno", "sense": "disorder", "pos": "NOUN", "xfail": null}
 {"sentence": "O transtorno obsessivo compulsivo afecta milhões de pessoas no mundo.", "word": "transtorno", "sense": "disorder", "pos": "NOUN", "xfail": null}
 {"sentence": "O acidente causou um transtorno enorme na circulação rodoviária.", "word": "transtorno", "sense": "disorder", "pos": "NOUN", "xfail": null}

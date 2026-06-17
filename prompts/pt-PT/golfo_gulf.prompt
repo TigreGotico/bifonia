@@ -1,0 +1,14 @@
+# sense: gulf
+Gera {n} frases em Português Europeu natural onde "golfo" é SUBSTANTIVO.
+
+Significado: reentrância da costa de um continente ou de uma ilha grande, de grandes dimensões, superiores às de uma baía; porção de líquido que jorra com ímpeto e de uma vez; designação comum, extensiva às plantas do género Nymphaea, da família das Ninfeáceas, aquáticas, de folhas largas, geralmente arredondadas e flutuantes e flores solitárias, de coloração variada conforme as espécies
+IPA: /ˈɡoɫfu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "golfo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

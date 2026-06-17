@@ -55,9 +55,11 @@ def load_examples(path, vocs, skip_xfail=False):
             continue
         words = tokenize(r["sentence"].lower())
         w = r["word"]
-        if w not in words:
+        # tokens may carry trailing punctuation ("torno." at a clause end) — match
+        # on the stripped form so a sentence-final target is still located.
+        idx = next((i for i, t in enumerate(words) if t.strip(".,;:!?") == w), None)
+        if idx is None:
             continue
-        idx = words.index(w)
         by_word[w].append((extract_features(words, idx, vocs), r["sense"], words, idx))
     return by_word
 

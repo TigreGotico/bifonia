@@ -1,0 +1,14 @@
+# sense: imitation
+Gera {n} frases em Português Europeu natural onde "arremedo" é SUBSTANTIVO.
+
+Significado: ato ou efeito de arremedar; imitação imperfeita; semelhança vaga ou difusa; aparência; vestígio
+IPA: /ɐʁɨˈmedu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "arremedo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

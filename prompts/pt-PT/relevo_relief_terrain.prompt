@@ -1,0 +1,14 @@
+# sense: relief_terrain
+Gera {n} frases em Português Europeu natural onde "relevo" é SUBSTANTIVO.
+
+Significado: ato ou efeito de relevar ou de fazer sobressair; saliência; forma escultural saliente sobre uma superfície que lhe serve de fundo; particularidade de gravura ou pintura em que determinadas figuras parecem ficar salientes, por causa das diferenças de profundidade que a perspetiva sugere; acidentes orográficos da superfície terrestre; evidência
+IPA: /ʁɨˈlevu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "relevo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

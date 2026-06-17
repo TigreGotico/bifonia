@@ -1,0 +1,14 @@
+# sense: thaw
+Gera {n} frases em Português Europeu natural onde "degelo" é SUBSTANTIVO.
+
+Significado: ato ou efeito de degelar; fenómeno de fusão paulatina das massas de gelo e de neve existentes à superfície da Terra, provocado pelo aumento da temperatura ambiente; superação gradual de uma situação ou de um estado de tensão
+IPA: /dɨˈʒelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "degelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

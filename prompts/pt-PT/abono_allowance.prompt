@@ -1,0 +1,14 @@
+# sense: allowance
+Gera {n} frases em Português Europeu natural onde "abono" é SUBSTANTIVO.
+
+Significado: ajuda financeira; fiança; adiantamento (de dinheiro); distribuição pelos sócios, feita por uma sociedade, de determinada quantia, como antecipação do dividendo e antes do seu apuramento no balanço anual, em que se farão acertos necessários; vencimento acessório que se destina a indemnizar o funcionário de riscos especiais a que a função o sujeita; elogio
+IPA: /ɐˈbonu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "abono" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

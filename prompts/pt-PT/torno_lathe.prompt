@@ -1,0 +1,14 @@
+# sense: lathe
+Gera {n} frases em Português Europeu natural onde "torno" é SUBSTANTIVO.
+
+Significado: aparelho onde se faz girar uma peça de madeira ou metal que se quer tornear; chave de torneira; prego de pau; utensílio de ferro onde se apertam com parafuso as peças que se querem limar; espécie de caixa giratória, instalada na portaria de conventos, asilos, etc., por onde se passam coisas do exterior para o interior
+IPA: /ˈtoɾnu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "torno" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

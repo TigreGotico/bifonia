@@ -1,0 +1,14 @@
+# sense: abortion
+Gera {n} frases em Português Europeu natural onde "aborto" é SUBSTANTIVO.
+
+Significado: expulsão de um feto, de forma espontânea ou provocada, antes de ele completar o seu desenvolvimento; feto nessas condições; estacionamento do desenvolvimento natural de um órgão, em fase bastante atrasada; órgão nessas condições; aberração | monstruosidade
+IPA: /ɐˈboɾtu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "aborto" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:
