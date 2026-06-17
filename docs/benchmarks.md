@@ -15,6 +15,8 @@
 | spaCy `pt_core_news_lg` (POS → sense) | 91.6% |
 | **hybrid ensemble (POS tag ⊕ rules)** | **95.3%** |
 
+![Out-of-distribution accuracy by approach](img/ood_accuracy.png)
+
 ### The hybrid ensemble — POS tag for POS-separable, rules for same-POS
 
 The dataset is keyed on **(sense, POS) combos**: each meaning slug carries the
@@ -22,7 +24,8 @@ set of parts of speech it can realise (a `corte` reading is `cut` = {NOUN, VERB}
 `court` = {NOUN}; `jogo` is `game` = {NOUN}, `play` = {VERB}). A word is
 **POS-separable** when every POS maps to exactly one sense — a tagger resolves it
 — and **POS-ambiguous** when some POS maps to ≥2 senses (`sede`, `molho`, `corte`,
-`forma`), where a tagger cannot separate the senses by construction.
+`forma`, `tola`, `bola`, `cor`, `lobo`, `polo`), where a tagger cannot separate
+the senses by construction.
 
 `disambiguate(words, idx, postag=<tag>)` fuses any external POS tagger with the
 rules: it trusts the tag only when it uniquely picks a sense, else the rules
@@ -30,13 +33,15 @@ decide. Result on the wild set:
 
 | subset | n | spaCy | rules | **ensemble** |
 |---|---|---|---|---|
-| POS-separable | 6602 | 94.8% | 89.9% | **95.8%** |
-| POS-ambiguous (sede/molho/corte/forma) | 517 | **51.1%** | 89.7% | **89.7%** |
+| POS-separable | 6583 | 94.8% | 89.9% | **95.8%** |
+| POS-ambiguous | 536 | **52.6%** | 89.7% | **89.9%** |
 | **all** | 7119 | 91.6% | 89.9% | **95.3%** |
 
+![Per-subset accuracy: spaCy vs rules vs ensemble](img/ensemble_breakdown.png)
+
 The ensemble beats both pure approaches: it takes the tagger's strength on
-POS-separable readings and the rules' strength where POS is uninformative (spaCy
-is at chance, 51%, on the same-POS words). The package stays zero-dependency —
+POS-separable readings and the rules' strength where POS is uninformative (a POS
+tagger is at chance on the same-POS words). The package stays zero-dependency —
 the caller supplies the tag.
 
 ### Reading these numbers
@@ -91,6 +96,8 @@ The fair test is **balanced** (equal senses per word), on words a POS-tagger
 | most-common | 50% |
 | spaCy `pt_core_news_lg` (POS→sense) | 59% |
 | **bifonia rules** | **94%** |
+
+![Balanced hard subset: rules vs spaCy per word](img/balanced_hard.png)
 
 Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100,
 `gozo` 98, `coro` 99, `posto` 94. On the same-POS pairs (`sede`, `molho`, `coro`,
