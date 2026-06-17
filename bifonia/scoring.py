@@ -265,6 +265,10 @@ def score_noun(words: list, idx: int) -> int:
     # cuts the most common false-VERB error without needing a strong verb cue.
     if prev_word in {"e", "ou", "nem", "como"}:
         score += 3
+    # Object of a transitive finite verb directly before ("encontrou consolo",
+    # "procura emprego") → the homograph is the object NOUN, not a second verb.
+    if prev_word in _TRANS_VERB:
+        score += 3
     # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
     if word == "pelo" and prev_word in _TER:
