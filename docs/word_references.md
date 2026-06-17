@@ -4,7 +4,7 @@ Per-word links to authoritative Portuguese dictionaries and notes on the
 disambiguation axis (what makes each homograph heterophonic).
 
 > Pronunciations follow European Portuguese (pt-PT).
-> Open vs. closed vowel = the axis of disambiguation for most pairs.
+> Open vs. closed vowel is the axis of disambiguation for most pairs.
 
 ---
 
@@ -158,14 +158,10 @@ Ambas as aceções são **substantivos**; distinguem-se pelo *sense*, não pelo 
 
 ---
 
-*This file is updated as the infopedia audit surfaces corrections.*
+## Extended roster
 
-
----
-
-## Expanded roster (waves 2–3, infopedia-validated)
-
-Added programmatically and validated against infopedia (noun/adj closed vowel vs the matching verb's open vowel). Roster grew from 27 to 124 words.
+Each entry is a noun/adjective with a closed stressed vowel paired with the
+matching verb's open vowel (infopedia-validated).
 
 | Word | pos | IPA contrast | Infopedia |
 |------|-----|--------------|-----------|
@@ -267,13 +263,13 @@ Added programmatically and validated against infopedia (noun/adj closed vowel vs
 | troco | NOUN/VERB | ˈtɾoku (closed) vs ˈtɾɔku (open) | [troco](https://www.infopedia.pt/dicionarios/lingua-portuguesa/troco) |
 | zelo | NOUN/VERB | ˈzelu (closed) vs ˈzɛlu (open) | [zelo](https://www.infopedia.pt/dicionarios/lingua-portuguesa/zelo) |
 
-## Diacritic-collapse & noun/noun additions
+## Diacritic-collapse & noun/noun pairs
 
-Written identically once the distinguishing accent is dropped in informal text
-(acute = open, circumflex = closed). The first four are **noun/noun pairs** a POS
-tagger cannot separate — resolved by meaning cues — joining the POS-ambiguous set
-`{sede, molho, corte, forma, tola, bola, cor, lobo, polo}`. The last three are
-deverbal noun/verb pairs.
+These are written identically once the distinguishing accent is dropped in
+informal text (acute = open, circumflex = closed). The first four are
+**noun/noun pairs** a POS tagger cannot separate — they are resolved by meaning
+cues, joining the POS-ambiguous set `{sede, molho, corte, forma, tola, bola,
+cor, lobo, polo}`. The last three are deverbal noun/verb pairs.
 
 | word | readings (open ɔ/ɛ · closed o/e) | resolver cue |
 |---|---|---|
@@ -285,16 +281,31 @@ deverbal noun/verb pairs.
 | soma | sums ˈsɔmɐ (verb) · sum/total ˈsomɐ (noun) | POS (deverbal) |
 | força | forces ˈfɔɾsɐ (verb) · strength ˈfoɾsɐ (noun) | POS (deverbal) |
 
-`bola`/`bôla` is the canonical example of the class. All seven are infopedia-
-validated; candidates that showed a single pronunciation on infopedia (coco, boa,
-sobra, dobra, poda, prego) were rejected.
+`bola`/`bôla` is the canonical example of the class.
 
-## Validation rules (why some candidates are rejected)
+## What makes a spelling pair heterophonic
 
-Two phonological rules decide whether a *noun (closed) / verb (open)* spelling pair is genuinely **heterophonic**. Both are checked against infopedia.
+A *noun (closed) / verb (open)* spelling pair is genuinely **heterophonic** when
+both of these phonological conditions hold.
 
-1. **Only -AR verbs open in the 1st person singular.** In European Portuguese the rhizotonic (stressed-stem) present forms of **-ar** verbs open the stem vowel (jogar → *jogo* /ˈʒɔɡu/). **-er / -ir** verbs keep the 1sg **closed** (morrer → *morro* /ˈmoʁu/ = the noun; correr → *corro*; socorrer → *socorro*). So a deverbal noun paired with an **-er/-ir** verb is **NOT** heterophonic — the 1sg matches the noun. *Rejected: morro, socorro, escolho, corro, sorvo.* (The infinitive-vs-noun pair *colher* is a separate, valid case.)
+1. **Only -AR verbs open the stem vowel in the 1st person singular.** In European
+   Portuguese the rhizotonic (stressed-stem) present forms of **-ar** verbs open
+   the stem vowel (jogar → *jogo* /ˈʒɔɡu/), so the verb contrasts with the
+   closed-vowel noun. **-er / -ir** verbs keep the 1sg **closed** (morrer →
+   *morro* /ˈmoʁu/, identical to the noun; correr → *corro*; socorrer →
+   *socorro*), so a deverbal noun paired with an **-er/-ir** verb has no contrast
+   (e.g. *morro, socorro, escolho, corro, sorvo*). The infinitive-vs-noun pair
+   *colher* is a separate, valid case.
 
-2. **/e/ before a palatal (ʃ ʒ ʎ ɲ) diphthongises to [ɐj] in BOTH readings → no contrast.** *fecho* (noun) and *eu fecho* (verb) are both [ˈfɐjʃu]/[ˈfeʃu] — never *“fécho”*. Infopedia marks these with the `(j)` glide. So the -echo / -ejo / -elho / -enho families are **NOT** heterophonic. *Rejected: fecho, desejo, espelho, despejo, festejo, manejo, gracejo, arpejo, ensejo, desfecho, empenho, desempenho, desdenho.* Note **/o/ before a palatal is fine** (olho /ˈoʎu/ vs /ˈɔʎu/ opens normally) — so *arrojo, jorro, despojo, abrolho* are kept.
+2. **/e/ before a palatal (ʃ ʒ ʎ ɲ) diphthongises to [ɐj] in both readings, so
+   there is no contrast.** *fecho* (noun) and *eu fecho* (verb) are both
+   [ˈfɐjʃu]/[ˈfeʃu] — never *“fécho”*; infopedia marks these with the `(j)`
+   glide. The -echo / -ejo / -elho / -enho families are therefore not
+   heterophonic (e.g. *fecho, desejo, espelho, despejo, festejo, manejo, gracejo,
+   arpejo, ensejo, desfecho, empenho, desempenho, desdenho*). **/o/ before a
+   palatal opens normally** (olho /ˈoʎu/ vs /ˈɔʎu/), so *arrojo, jorro, despojo,
+   abrolho* do contrast and are heterophonic.
 
-Also rejected: words whose noun is already **open** (colo ˈkɔlu, cego ˈsɛɡu, prego ˈpɾɛɡu — no contrast) or whose stressed vowel is **nasal** (conto, ponto, desconto — õ has no open/closed contrast).
+Two further patterns produce no contrast: a noun whose stressed vowel is already
+**open** (colo ˈkɔlu, cego ˈsɛɡu, prego ˈpɾɛɡu), and a stressed vowel that is
+**nasal** (conto, ponto, desconto — õ has no open/closed contrast).
