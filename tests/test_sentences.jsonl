@@ -1879,3 +1879,93 @@
 {"sentence": "Ela encosto os lábios à chávena antes de beber o chá.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}
 {"sentence": "Encosto o balde no chão da casa de banho.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}
 {"sentence": "Encosto a colher na tigela e sirvo a sopa.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}
+{"sentence": "O guarda-redes agarrou a bola antes do golo.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "A criança atirou a bola por cima do muro.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "Driblou dois adversários e rematou a bola à baliza.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "A bola saiu pela linha lateral do campo.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "Encheram a bola de ar antes do jogo começar.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "A bola de ténis quicou duas vezes na linha.", "word": "bola", "sense": "ball", "pos": "NOUN", "xfail": null}
+{"sentence": "A bola de Lamego leva presunto e chouriço na massa.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "Ao lanche comemos uma fatia de bola de carne.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "A avó amassou a bola recheada para a Páscoa.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "Levaram a bola de chouriço ao forno bem quente.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "Provei uma bola salgada acabada de cozer na padaria.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "Comprei um lápis de cor azul para o desenho.", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "A cor das paredes da sala é um verde suave.", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "Que cor preferes para o teu quarto novo?", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "A cor do vestido combinava com os sapatos.", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "O pintor misturou tintas para obter uma cor única.", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "A cor do céu ao entardecer ficou alaranjada.", "word": "cor", "sense": "colour", "pos": "NOUN", "xfail": null}
+{"sentence": "O aluno sabe o poema todo de cor.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Ela recita a tabuada de cor sem hesitar.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Decorei o discurso e disse-o de cor na cerimónia.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Sabe o número de telefone dos pais de cor.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "O ator sabia o texto de cor antes do ensaio.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "O lobo ibérico está em vias de extinção.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "À noite ouviu-se o uivo do lobo na serra.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "O lobo caça em alcateia para apanhar a presa.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "O pastor protege o rebanho do lobo.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "Na lenda, o lobo mau soprou a casa dos porquinhos.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "O lobo cinzento tem uma pelagem espessa.", "word": "lobo", "sense": "wolf", "pos": "NOUN", "xfail": null}
+{"sentence": "O médico examinou o lobo frontal do cérebro.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "Sentiu uma dor no lobo da orelha ao pôr o brinco.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "O tumor situava-se no lobo direito do pulmão.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "O lobo temporal processa parte da audição.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "A ecografia revelou um nódulo no lobo da tiroide.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "O cirurgião removeu o lobo afetado do fígado.", "word": "lobo", "sense": "lobe", "pos": "NOUN", "xfail": null}
+{"sentence": "O polo norte está coberto de gelo o ano inteiro.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "A bússola aponta sempre para o polo magnético.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "Os exploradores chegaram ao polo sul no inverno.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "Cada íman tem um polo positivo e um polo negativo.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "O polo industrial da cidade emprega milhares.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "Lisboa tornou-se um polo tecnológico na Europa.", "word": "polo", "sense": "pole", "pos": "NOUN", "xfail": null}
+{"sentence": "O polo do açor ainda não consegue voar sozinho.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}
+{"sentence": "Na falcoaria, o polo é treinado desde tenra idade.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}
+{"sentence": "O polo da ave de rapina piava à espera de comida.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}
+{"sentence": "O polo do gavião perdeu as primeiras penas.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}
+{"sentence": "A árvore deitou um renovo verde na primavera.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "Do tronco cortado nasceu um renovo vigoroso.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "O jardineiro protegeu o renovo da geada.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "Cada renovo da videira promete uvas no verão.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "O renovo da oliveira despontou após a chuva.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "Podou os ramos para estimular o renovo novo.", "word": "renovo", "sense": "shoot", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu renovo o contrato de arrendamento todos os anos.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "Sempre que posso, renovo a assinatura da revista.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "Renovo a carta de condução antes que caduque.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "Todas as manhãs renovo a promessa de fazer exercício.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "Renovo o passaporte com tempo para a viagem.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "Eu renovo a inscrição no ginásio em janeiro.", "word": "renovo", "sense": "renew", "pos": "VERB", "xfail": null}
+{"sentence": "A soma das parcelas dá cem euros certos.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "Conferiu a soma final da fatura ao cêntimo.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "A soma de todos os ângulos do triângulo é cento e oitenta graus.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "A soma dos gastos do mês foi maior do que esperava.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "Anotou a soma no canto da folha de cálculo.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "A soma dos votos confirmou o resultado.", "word": "soma", "sense": "sum", "pos": "NOUN", "xfail": null}
+{"sentence": "Ele soma os números de cabeça em poucos segundos.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "A máquina soma as quantias automaticamente.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "O contabilista soma as despesas no fim do dia.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "Ela soma os pontos de cada equipa no quadro.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "O programa soma os valores da coluna ao instante.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "Ele soma as horas trabalhadas para o recibo.", "word": "soma", "sense": "add", "pos": "VERB", "xfail": null}
+{"sentence": "Ele tem muita força nos braços do treino diário.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "Faltou-lhe força para levantar o caixote sozinho.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "A força do vento derrubou várias árvores.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "Com toda a força, empurrou o carro avariado.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "A força da corrente arrastou o barco.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "O atleta treina a força das pernas no ginásio.", "word": "força", "sense": "strength", "pos": "NOUN", "xfail": null}
+{"sentence": "Ele força a porta para conseguir entrar em casa.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "Não força a fechadura ou parte-se a chave.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "O ladrão força a janela durante a madrugada.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "Ela força um sorriso mesmo quando está triste.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "O treinador força o ritmo nos últimos minutos.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "Ele força a gaveta emperrada com uma chave de fendas.", "word": "força", "sense": "force", "pos": "VERB", "xfail": null}
+{"sentence": "A bola de berlim estava cheia de creme de ovos.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "No Norte é tradição comer bola de carne no piquenique.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "A bola de sardinha é típica das festas populares.", "word": "bola", "sense": "loaf", "pos": "NOUN", "xfail": null}
+{"sentence": "Aprendi a morada de cor para não me perder.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Ele canta a letra inteira de cor.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "O músico toca a peça de cor, sem partitura.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Memorizou a fórmula e repetiu-a de cor no exame.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "A professora pediu que soubéssemos o verso de cor.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "Ele conhece de cor as regras todas do jogo.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
+{"sentence": "O falcoeiro alimentou o polo ainda implume no ninho.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}

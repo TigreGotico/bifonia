@@ -1,0 +1,15 @@
+# sense: add
+Gera {n} frases em Português Europeu natural onde a palavra "soma" é usada como VERBO (3.ª pessoa do singular de «somar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "soma" (em minúsculas, sem acento diacrítico)
+- A palavra "soma" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: «ele/ela soma» — efetuar a adição de valores.
+Exemplos de uso: «ele soma os números», «a máquina soma as quantias», «ela soma os pontos».
+Pronúncia: /ˈsɔmɐ/ — vogal O ABERTA (agudo em "sóma").
+NÃO uses como substantivo (a soma/total, O fechado).
+Responde APENAS com as frases, uma por linha:

@@ -67,6 +67,7 @@ ADJ_IPA: dict = _ipa_by_pos("ADJ")
 # scoring.resolve_sense.
 DEFAULT_SENSE: dict = {
     "sede": "thirst",
+    "bola": "ball", "cor": "colour", "lobo": "wolf", "polo": "pole",
 }
 
 # sensible linguistic defaults when context scoring yields no winner
@@ -191,6 +192,9 @@ DEFAULT_POS: dict = {
     "desemperro": "NOUN",
     "emperro": "NOUN",
     "zelo": "NOUN", "cerco": "NOUN", "erro": "NOUN", "tempero": "NOUN",
+    # diacritic-collapse + deverbal additions
+    "bola": "NOUN", "cor": "NOUN", "lobo": "NOUN", "polo": "NOUN",
+    "renovo": "NOUN", "soma": "NOUN", "força": "NOUN",
 }
 assert set(DEFAULT_POS) == AMBIGUOUS_WORDS, (
     f"DEFAULT_POS missing: {AMBIGUOUS_WORDS - set(DEFAULT_POS)}"

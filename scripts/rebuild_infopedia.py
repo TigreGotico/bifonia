@@ -24,6 +24,8 @@ lemma={}
 for r in csv.DictReader(open(f"{ROOT}/bifonia/data/infopedia_pt.csv",encoding="utf-8")):
     if r.get("lemma"): lemma[(r["word"],r["sense"])]=r["lemma"]
 lemma[("molho","sauce")]="molhar"
+ADJ_LEMMA={("tola","foolish"):"tolo"}
+lemma[("renovo","renew")]="renovar"; lemma[("soma","add")]="somar"; lemma[("força","force")]="forçar"  # adjective def lives under masc lemma
 words=sorted({r["word"] for r in roster})
 lemmas=sorted({lemma[(r["word"],r["sense"])] for r in roster
                if "VERB" in r["pos"].split("|") and (r["word"],r["sense"]) in lemma})
@@ -67,6 +69,10 @@ for r in roster:
     w,s,pos,ipa=r["word"],r["sense"],r["pos"],r["ipa"]
     we=fetch(w); ipan=nrm(ipa)
     defs=defs_of(cats_by_pron(we, ipan))           # noun (and same-pron) readings on word page
+    if (w,s) in ADJ_LEMMA:                          # ADJ def under a differently-spelled lemma
+        le=fetch(ADJ_LEMMA[(w,s)])
+        acats=[c for c in le.get("categories",[]) if "adj" in (c.get("pos","")or"").lower()]
+        defs += defs_of(acats)
     if "VERB" in pos.split("|"):                    # add verb-lemma definitions
         lem=lemma.get((w,s))
         if lem:

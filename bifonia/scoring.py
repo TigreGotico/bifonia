@@ -80,6 +80,11 @@ _BUNDLE_THINGS = voc("bundle_things")       # unambiguous bundles: "molho de cha
 _BUNDLE_AMBIG  = voc("bundle_ambiguous")    # greens, bundle only with a gathering verb
 _BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the greens
 _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
+# noun/noun diacritic-collapse resolvers (open ɔ default vs closed-o marked reading)
+_BOLA_LOAF     = voc("bola_loaf_cues")      # bread/baking → "bôla" loaf (closed)
+_COR_MEMORY    = voc("cor_memory_cues")     # know/recite → "de cor" by heart (open)
+_LOBO_LOBE     = voc("lobo_lobe_cues")      # anatomy → lobe (open) vs wolf (closed)
+_POLO_BIRD     = voc("polo_fledgling_cues") # falconry → fledgling (closed) vs pole (open)
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
@@ -793,8 +798,41 @@ def _resolve_tola(words: list, idx: int) -> str:
     return "head"
 
 
+def _window(words: list, idx: int, left: int = 3, right: int = 3) -> list:
+    return [_strip(words[i]) for i in range(max(0, idx - left), min(len(words), idx + right + 1))
+            if i != idx]
+
+
+def _resolve_bola(words: list, idx: int) -> str:
+    """ball (open ɔ, ˈbɔlɐ) vs the *bôla* bread/cake (closed o, ˈbolɐ).  Loaf needs
+    a baking/charcuterie cue; the ball is the dominant default."""
+    return "loaf" if any(w in _BOLA_LOAF for w in _window(words, idx)) else "ball"
+
+
+def _resolve_cor(words: list, idx: int) -> str:
+    """colour (closed o, ˈkoɾ) vs "de cor" = by heart (open ɔ, ˈkɔɾ).  The open
+    reading is the fixed adverbial "de cor" with a knowing/reciting cue."""
+    if _prev(words, idx) == "de" and any(_strip(w) in _COR_MEMORY for w in words):
+        return "by_heart"          # "sei/recita … de cor"; "lápis de cor" stays colour
+    return "colour"
+
+
+def _resolve_lobo(words: list, idx: int) -> str:
+    """wolf (closed o, ˈlobu) vs anatomical lobe (open ɔ, ˈlɔbu).  Lobe needs a
+    body-part cue; the wolf is the dominant default."""
+    return "lobe" if any(w in _LOBO_LOBE for w in _window(words, idx)) else "wolf"
+
+
+def _resolve_polo(words: list, idx: int) -> str:
+    """pole / polo-sport (open ɔ, ˈpɔlu) vs the rare young bird of prey (closed o,
+    ˈpolu).  Fledgling needs a falconry cue; the pole is the dominant default."""
+    return "fledgling" if any(w in _POLO_BIRD for w in _window(words, idx)) else "pole"
+
+
 # words whose senses share a POS need a meaning-level resolver after guess_pos
-_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola}
+_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola,
+                    "bola": _resolve_bola, "cor": _resolve_cor,
+                    "lobo": _resolve_lobo, "polo": _resolve_polo}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:

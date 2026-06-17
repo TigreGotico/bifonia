@@ -371,6 +371,21 @@ _DIACRITIZED: dict = {
     ("emperro", "stick"): "empérro",
     ("tempero",    "seasoning"):  "tempêro",
     ("tempero",    "season"):     "tempéro",
+    # diacritic-collapse + deverbal additions (acute = open ɔ/ɛ, circumflex = closed o/e)
+    ("bola",       "ball"):       "bóla",     # ball       = open ɔ
+    ("bola",       "loaf"):       "bôla",     # bôla bread = closed o
+    ("cor",        "by_heart"):   "cór",      # "de cor"   = open ɔ
+    ("cor",        "colour"):     "côr",      # colour     = closed o
+    ("lobo",       "lobe"):       "lóbo",     # lobe       = open ɔ
+    ("lobo",       "wolf"):       "lôbo",     # wolf       = closed o
+    ("polo",       "pole"):       "pólo",     # pole/sport = open ɔ
+    ("polo",       "fledgling"):  "pôlo",     # young bird = closed o
+    ("renovo",     "renew"):      "renóvo",   # I renew    = open ɔ
+    ("renovo",     "shoot"):      "renôvo",   # shoot/noun = closed o
+    ("soma",       "add"):        "sóma",     # sums/verb  = open ɔ
+    ("soma",       "sum"):        "sôma",     # sum/noun   = closed o
+    ("força",      "force"):      "fórça",    # force/verb = open ɔ
+    ("força",      "strength"):   "fôrça",    # strength   = closed o
 }
 
 
