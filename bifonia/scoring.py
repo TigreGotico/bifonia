@@ -254,10 +254,10 @@ def score_noun(words: list, idx: int) -> int:
     # DET ADJ NOUN from DET NOUN VERB (where prev is the noun subject).
     if prev_word in _PRENOMINAL_ADJ:
         score += 5
-    # Genitive / complement preposition immediately before a homograph marks a
-    # nominal use ("de gelo", "saco de emprego", "sem retorno"). «colher»
-    # excluded: "de colher" can be the infinitive verb.
-    if prev_word in {"de", "sem"} and word != "colher":
+    # A complement/oblique preposition immediately before a homograph marks a
+    # nominal use ("de gelo", "saco de emprego", "sem retorno", "com decoro",
+    # "pelo golfo"). «colher» excluded: "de colher" can be the infinitive verb.
+    if prev_word in {"de", "sem", "com", "em", "por", "pelo", "pela", "pelos", "pelas"} and word != "colher":
         score += 3
     # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).

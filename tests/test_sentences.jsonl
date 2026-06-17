@@ -1420,3 +1420,462 @@
 {"sentence": "Transtorno o calendário quando há imprevistos de última hora.", "word": "transtorno", "sense": "upset", "pos": "VERB", "xfail": null}
 {"sentence": "Transtorno os planos do fim de semana quando há trabalho pendente.", "word": "transtorno", "sense": "upset", "pos": "VERB", "xfail": null}
 {"sentence": "Transtorno a rotina às vezes de propósito para sair da zona de conforto.", "word": "transtorno", "sense": "upset", "pos": "VERB", "xfail": null}
+{"sentence": "Aquela árvore tem um banco em torno do tronco.", "word": "torno", "sense": "lathe", "pos": "NOUN", "xfail": null}
+{"sentence": "As vendas aumentaram em torno da época festiva anual importante.", "word": "torno", "sense": "lathe", "pos": "NOUN", "xfail": null}
+{"sentence": "O livro gira em torno da identidade cultural europeia.", "word": "torno", "sense": "lathe", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu torno a visitar os locais que gostei.", "word": "torno", "sense": "turn", "pos": "VERB", "xfail": null}
+{"sentence": "Torno a explicar o conceito aos alunos que ficaram com dúvidas.", "word": "torno", "sense": "turn", "pos": "VERB", "xfail": null}
+{"sentence": "Eu torno a notar a beleza nas coisas simples.", "word": "torno", "sense": "turn", "pos": "VERB", "xfail": null}
+{"sentence": "O troco da nota de cinquenta ficou no balcão.", "word": "troco", "sense": "change", "pos": "NOUN", "xfail": null}
+{"sentence": "Não tinha troco para o parquímetro da rua principal.", "word": "troco", "sense": "change", "pos": "NOUN", "xfail": null}
+{"sentence": "Só quero o troco, não preciso de saco.", "word": "troco", "sense": "change", "pos": "NOUN", "xfail": null}
+{"sentence": "Troco a pilha do comando da televisão esta noite.", "word": "troco", "sense": "exchange", "pos": "VERB", "xfail": null}
+{"sentence": "troco de discurs o tom quando falo com crianças.", "word": "troco", "sense": "exchange", "pos": "VERB", "xfail": null}
+{"sentence": "Troco o tapete da entrada porque já está muito sujo.", "word": "troco", "sense": "exchange", "pos": "VERB", "xfail": null}
+{"sentence": "Os caracóis escondiam-se debaixo do toco húmido.", "word": "toco", "sense": "stump", "pos": "NOUN", "xfail": null}
+{"sentence": "O agricultor transformou o toco velho em suporte.", "word": "toco", "sense": "stump", "pos": "NOUN", "xfail": null}
+{"sentence": "O toco da oliveira ficou todo torcido pelo tempo.", "word": "toco", "sense": "stump", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu toco neste quadro e sinto a textura da tinta.", "word": "toco", "sense": "play", "pos": "VERB", "xfail": null}
+{"sentence": "Toco o solo de guitarra no concerto da semana.", "word": "toco", "sense": "play", "pos": "VERB", "xfail": null}
+{"sentence": "Toco xilofone nas aulas de música dos miúdos.", "word": "toco", "sense": "play", "pos": "VERB", "xfail": null}
+{"sentence": "Atendeu de imediato ao rogo dos pais aflitos.", "word": "rogo", "sense": "plea", "pos": "NOUN", "xfail": null}
+{"sentence": "A rogo dos colaboradores, a reunião foi reagendada.", "word": "rogo", "sense": "plea", "pos": "NOUN", "xfail": null}
+{"sentence": "Não ignores o rogo de quem mais precisa.", "word": "rogo", "sense": "plea", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu rogo por um momento de paz no meio deste caos.", "word": "rogo", "sense": "beg", "pos": "VERB", "xfail": null}
+{"sentence": "Rogo aos santos que protejam as crianças da minha terra.", "word": "rogo", "sense": "beg", "pos": "VERB", "xfail": null}
+{"sentence": "Rogo-te que não deixes que este belo jardim morra.", "word": "rogo", "sense": "beg", "pos": "VERB", "xfail": null}
+{"sentence": "O quarto choco da pensão não tinha cortinas nem ventilação.", "word": "choco", "sense": "addled", "pos": "ADJ", "xfail": null}
+{"sentence": "O leite está choco, não o bebas em condições nenhuma.", "word": "choco", "sense": "addled", "pos": "ADJ", "xfail": null}
+{"sentence": "Aquele ar choco da cave tornou a visita insuportável.", "word": "choco", "sense": "addled", "pos": "ADJ", "xfail": null}
+{"sentence": "Comprei um choco na lota para um jantar simples.", "word": "choco", "sense": "cuttlefish", "pos": "NOUN", "xfail": null}
+{"sentence": "Dei com um choco escondido na areia.", "word": "choco", "sense": "cuttlefish", "pos": "NOUN", "xfail": null}
+{"sentence": "O pescador trouxe um choco preso ao caniço.", "word": "choco", "sense": "cuttlefish", "pos": "NOUN", "xfail": null}
+{"sentence": "Choco a bicicleta no passeio apertado.", "word": "choco", "sense": "hatch", "pos": "VERB", "xfail": null}
+{"sentence": "Choco os meus pensamentos no papel antes de os partilhar.", "word": "choco", "sense": "hatch", "pos": "VERB", "xfail": null}
+{"sentence": "Choco ovos de galinha na incubadora.", "word": "choco", "sense": "hatch", "pos": "VERB", "xfail": null}
+{"sentence": "O arquiteto paisagista marcou o contorno do jardim com pedras brancas.", "word": "contorno", "sense": "contour", "pos": "NOUN", "xfail": null}
+{"sentence": "O contorno da ilha aparecia nevoeiro adentro, quase apagado.", "word": "contorno", "sense": "contour", "pos": "NOUN", "xfail": null}
+{"sentence": "O estudo analisou cada contorno da fotografia aérea.", "word": "contorno", "sense": "contour", "pos": "NOUN", "xfail": null}
+{"sentence": "Contorno o problema sem pedir ajuda.", "word": "contorno", "sense": "circumvent", "pos": "VERB", "xfail": null}
+{"sentence": "Para manter a tranquilidade, contorno os vizinhos barulhentos.", "word": "contorno", "sense": "circumvent", "pos": "VERB", "xfail": null}
+{"sentence": "Contorno as poças de água para não molhar os sapatos novos.", "word": "contorno", "sense": "circumvent", "pos": "VERB", "xfail": null}
+{"sentence": "A autarquia delineou novas regras para o entorno das praias.", "word": "entorno", "sense": "surroundings", "pos": "NOUN", "xfail": null}
+{"sentence": "Uma casa moderna num entorno tradicional gera conflito estético.", "word": "entorno", "sense": "surroundings", "pos": "NOUN", "xfail": null}
+{"sentence": "O entorno do rio foi despoluído com sucesso recentemente.", "word": "entorno", "sense": "surroundings", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu entorno o pote de mel na cozinha da minha avó materna.", "word": "entorno", "sense": "spill", "pos": "VERB", "xfail": null}
+{"sentence": "Entorno a jarra de suco na toalha bordada da mesa.", "word": "entorno", "sense": "spill", "pos": "VERB", "xfail": null}
+{"sentence": "Eu entorno o vinho ao tentar servir o jantar.", "word": "entorno", "sense": "spill", "pos": "VERB", "xfail": null}
+{"sentence": "O atual governo prometeu reduzir os impostos.", "word": "governo", "sense": "government", "pos": "NOUN", "xfail": null}
+{"sentence": "Este governo enfrenta uma forte oposição no parlamento.", "word": "governo", "sense": "government", "pos": "NOUN", "xfail": null}
+{"sentence": "O palácio do governo fica no centro da cidade.", "word": "governo", "sense": "government", "pos": "NOUN", "xfail": null}
+{"sentence": "Hoje governo eu, portanto sigam as minhas ordens.", "word": "governo", "sense": "govern", "pos": "VERB", "xfail": null}
+{"sentence": "Eu governo melhor sob pressão do que em calmaria.", "word": "governo", "sense": "govern", "pos": "VERB", "xfail": null}
+{"sentence": "Governo-me pelos princípios que aprendi em casa.", "word": "governo", "sense": "govern", "pos": "VERB", "xfail": null}
+{"sentence": "Um emprego de trabalhador social ajuda pessoas em vulnerabilidade.", "word": "emprego", "sense": "job", "pos": "NOUN", "xfail": null}
+{"sentence": "Um emprego de farmacêutico distribui medicamentos essenciais.", "word": "emprego", "sense": "job", "pos": "NOUN", "xfail": null}
+{"sentence": "O emprego de professores é crucial para educação.", "word": "emprego", "sense": "job", "pos": "NOUN", "xfail": null}
+{"sentence": "Emprego colaboração com os meus colegas de equipa.", "word": "emprego", "sense": "employ", "pos": "VERB", "xfail": null}
+{"sentence": "eu emprego a minha voz para denunciar injustiças", "word": "emprego", "sense": "employ", "pos": "VERB", "xfail": null}
+{"sentence": "ao cozinhar para convidados, emprego receitas novas", "word": "emprego", "sense": "employ", "pos": "VERB", "xfail": null}
+{"sentence": "Esse erro pode comprometer toda a investigação.", "word": "erro", "sense": "error", "pos": "NOUN", "xfail": null}
+{"sentence": "Um pequeno erro de digitação alterou todo o resultado.", "word": "erro", "sense": "error", "pos": "NOUN", "xfail": null}
+{"sentence": "O erro de tradução gerou uma grande confusão.", "word": "erro", "sense": "error", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu erro o caminho sempre que conduzo nesta zona.", "word": "erro", "sense": "err", "pos": "VERB", "xfail": null}
+{"sentence": "Reconheço que erro, mas aprendo com cada falha.", "word": "erro", "sense": "err", "pos": "VERB", "xfail": null}
+{"sentence": "Se erro, peço desculpa e tento outra vez.", "word": "erro", "sense": "err", "pos": "VERB", "xfail": null}
+{"sentence": "Escorregou no gelo à porta de casa.", "word": "gelo", "sense": "ice", "pos": "NOUN", "xfail": null}
+{"sentence": "O gelo polar está a derreter a um ritmo alarmante.", "word": "gelo", "sense": "ice", "pos": "NOUN", "xfail": null}
+{"sentence": "Um bloco de gelo arrefeceu a caixa térmica.", "word": "gelo", "sense": "ice", "pos": "NOUN", "xfail": null}
+{"sentence": "Gelo as bebidas com bastante antecedência.", "word": "gelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "Gelo de medo só de pensar nessa altura toda.", "word": "gelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "Gelo a sobremesa durante duas horas no congelador.", "word": "gelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "Colou o selo no canto do envelope.", "word": "selo", "sense": "stamp", "pos": "NOUN", "xfail": null}
+{"sentence": "O selo comemorativo esgotou no primeiro dia.", "word": "selo", "sense": "stamp", "pos": "NOUN", "xfail": null}
+{"sentence": "Comprei um selo para enviar a encomenda.", "word": "selo", "sense": "stamp", "pos": "NOUN", "xfail": null}
+{"sentence": "Selo o nosso pacto com a maior seriedade.", "word": "selo", "sense": "seal", "pos": "VERB", "xfail": null}
+{"sentence": "Eu selo o acordo com um aperto de mão.", "word": "selo", "sense": "seal", "pos": "VERB", "xfail": null}
+{"sentence": "Eu selo as garrafas uma a uma com rolha nova.", "word": "selo", "sense": "seal", "pos": "VERB", "xfail": null}
+{"sentence": "O dobro do investimento rendeu o quádruplo.", "word": "dobro", "sense": "double", "pos": "NOUN", "xfail": null}
+{"sentence": "Paguei o dobro do valor original.", "word": "dobro", "sense": "double", "pos": "NOUN", "xfail": null}
+{"sentence": "O dobro das cadeiras não chegou para todos.", "word": "dobro", "sense": "double", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu dobro a folha em quatro partes iguais.", "word": "dobro", "sense": "fold", "pos": "VERB", "xfail": null}
+{"sentence": "Dobro o fato de banho e meto-o na mala.", "word": "dobro", "sense": "fold", "pos": "VERB", "xfail": null}
+{"sentence": "Dobro o mapa para caber na mochila.", "word": "dobro", "sense": "fold", "pos": "VERB", "xfail": null}
+{"sentence": "O ponto de retorno fica a dez quilómetros daqui.", "word": "retorno", "sense": "return", "pos": "NOUN", "xfail": null}
+{"sentence": "O retorno do antigo treinador entusiasmou os adeptos.", "word": "retorno", "sense": "return", "pos": "NOUN", "xfail": null}
+{"sentence": "O retorno das chuvas encheu de novo as barragens.", "word": "retorno", "sense": "return", "pos": "NOUN", "xfail": null}
+{"sentence": "Retorno já a seguir, espera só um instante.", "word": "retorno", "sense": "go_back", "pos": "VERB", "xfail": null}
+{"sentence": "Retorno ao trabalho depois das férias na segunda.", "word": "retorno", "sense": "go_back", "pos": "VERB", "xfail": null}
+{"sentence": "Retorno ao tema porque ficou por esclarecer.", "word": "retorno", "sense": "go_back", "pos": "VERB", "xfail": null}
+{"sentence": "O último sopro de vida abandonou o velho marinheiro.", "word": "sopro", "sense": "breath", "pos": "NOUN", "xfail": null}
+{"sentence": "Um sopro de vento fresco entrou pela janela.", "word": "sopro", "sense": "breath", "pos": "NOUN", "xfail": null}
+{"sentence": "Apagou as velas com um sopro só.", "word": "sopro", "sense": "breath", "pos": "NOUN", "xfail": null}
+{"sentence": "Quando a sopa está quente, sopro antes de provar.", "word": "sopro", "sense": "blow", "pos": "VERB", "xfail": null}
+{"sentence": "Eu sopro o assobio para dar o sinal de partida.", "word": "sopro", "sense": "blow", "pos": "VERB", "xfail": null}
+{"sentence": "Sopro o pó do teclado todas as semanas.", "word": "sopro", "sense": "blow", "pos": "VERB", "xfail": null}
+{"sentence": "O aborto sob consentimento informado é um direito assegurado por lei.", "word": "aborto", "sense": "abortion", "pos": "NOUN", "xfail": null}
+{"sentence": "Ela sofreu um aborto espontâneo no terceiro mês.", "word": "aborto", "sense": "abortion", "pos": "NOUN", "xfail": null}
+{"sentence": "Este aborto foi decidido depois de muita reflexão.", "word": "aborto", "sense": "abortion", "pos": "NOUN", "xfail": null}
+{"sentence": "eu aborto qualquer operação suspeita na hora", "word": "aborto", "sense": "abort", "pos": "VERB", "xfail": null}
+{"sentence": "aborto a instalação do programa agora mesmo", "word": "aborto", "sense": "abort", "pos": "VERB", "xfail": null}
+{"sentence": "aborto o negócio antes de assinar o contrato", "word": "aborto", "sense": "abort", "pos": "VERB", "xfail": null}
+{"sentence": "Buscam o conforto acima de tudo nesta vida.", "word": "conforto", "sense": "comfort", "pos": "NOUN", "xfail": null}
+{"sentence": "O conforto da rotina diária ajuda-me a manter a calma.", "word": "conforto", "sense": "comfort", "pos": "NOUN", "xfail": null}
+{"sentence": "O conforto que sinto aqui não encontro em mais lado nenhum.", "word": "conforto", "sense": "comfort", "pos": "NOUN", "xfail": null}
+{"sentence": "conforto os desesperados com paciência.", "word": "conforto", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "conforto-a com a promessa de amanhã.", "word": "conforto", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "conforto-os na certeza de que tudo melhora", "word": "conforto", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "O almoço tinha o sabor das tascas antigas.", "word": "almoço", "sense": "lunch", "pos": "NOUN", "xfail": null}
+{"sentence": "Prefiro um almoço ligeiro a uma refeição pesada.", "word": "almoço", "sense": "lunch", "pos": "NOUN", "xfail": null}
+{"sentence": "Aquele almoço no terraço tinha uma vista deslumbrante.", "word": "almoço", "sense": "lunch", "pos": "NOUN", "xfail": null}
+{"sentence": "almoço no escritório com os colegas", "word": "almoço", "sense": "dine", "pos": "VERB", "xfail": null}
+{"sentence": "almoço enquanto vejo as notícias", "word": "almoço", "sense": "dine", "pos": "VERB", "xfail": null}
+{"sentence": "eu almoço pouco, mas almoço sem pressa.", "word": "almoço", "sense": "dine", "pos": "VERB", "xfail": null}
+{"sentence": "Comprámos um toldo novo para o quintal.", "word": "toldo", "sense": "awning", "pos": "NOUN", "xfail": null}
+{"sentence": "O vento forte rasgou o toldo da loja.", "word": "toldo", "sense": "awning", "pos": "NOUN", "xfail": null}
+{"sentence": "O toldo da esplanada protege os clientes do sol.", "word": "toldo", "sense": "awning", "pos": "NOUN", "xfail": null}
+{"sentence": "Toldo a janela com um pano escuro à tarde.", "word": "toldo", "sense": "cloud_over", "pos": "VERB", "xfail": null}
+{"sentence": "Toldo a varanda quando o sol aperta a sério.", "word": "toldo", "sense": "cloud_over", "pos": "VERB", "xfail": null}
+{"sentence": "Quando me zango, toldo-me e perco a razão.", "word": "toldo", "sense": "cloud_over", "pos": "VERB", "xfail": null}
+{"sentence": "As águas do golfo estavam calmas ao amanhecer.", "word": "golfo", "sense": "gulf", "pos": "NOUN", "xfail": null}
+{"sentence": "O golfo Pérsico concentra grandes reservas de petróleo.", "word": "golfo", "sense": "gulf", "pos": "NOUN", "xfail": null}
+{"sentence": "O golfo do México sofre furacões todos os anos.", "word": "golfo", "sense": "gulf", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu golfo as palavras todas de uma vez, atrapalhado.", "word": "golfo", "sense": "spew", "pos": "VERB", "xfail": null}
+{"sentence": "Eu golfo um pouco de fumo ao acender o cachimbo.", "word": "golfo", "sense": "spew", "pos": "VERB", "xfail": null}
+{"sentence": "Golfo de mal-estar quando o mar agita.", "word": "golfo", "sense": "spew", "pos": "VERB", "xfail": null}
+{"sentence": "O fosso da orquestra fica em frente ao palco.", "word": "fosso", "sense": "ditch", "pos": "NOUN", "xfail": null}
+{"sentence": "Caíram no fosso escavado à volta da muralha.", "word": "fosso", "sense": "ditch", "pos": "NOUN", "xfail": null}
+{"sentence": "O fosso protegia a fortaleza dos invasores.", "word": "fosso", "sense": "ditch", "pos": "NOUN", "xfail": null}
+{"sentence": "Fosso a terra à procura de raízes comestíveis.", "word": "fosso", "sense": "root_up", "pos": "VERB", "xfail": null}
+{"sentence": "Eu fosso a horta antes das primeiras chuvas.", "word": "fosso", "sense": "root_up", "pos": "VERB", "xfail": null}
+{"sentence": "Quando reviro o jardim, fosso tudo à mão.", "word": "fosso", "sense": "root_up", "pos": "VERB", "xfail": null}
+{"sentence": "Um jorro de água rebentou do cano partido.", "word": "jorro", "sense": "jet", "pos": "NOUN", "xfail": null}
+{"sentence": "Um jorro de vapor escapou da panela.", "word": "jorro", "sense": "jet", "pos": "NOUN", "xfail": null}
+{"sentence": "O petróleo brotou num jorro espetacular.", "word": "jorro", "sense": "jet", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu jorro alegria nos dias de sol.", "word": "jorro", "sense": "gush", "pos": "VERB", "xfail": null}
+{"sentence": "Jorro água da mangueira sobre os canteiros secos.", "word": "jorro", "sense": "gush", "pos": "VERB", "xfail": null}
+{"sentence": "Quando me entusiasmo, jorro palavras sem parar.", "word": "jorro", "sense": "gush", "pos": "VERB", "xfail": null}
+{"sentence": "O topo da página leva o título em maiúsculas.", "word": "topo", "sense": "summit", "pos": "NOUN", "xfail": null}
+{"sentence": "Colocaram a estrela no topo da árvore de Natal.", "word": "topo", "sense": "summit", "pos": "NOUN", "xfail": null}
+{"sentence": "Do topo do edifício avista-se toda a cidade.", "word": "topo", "sense": "summit", "pos": "NOUN", "xfail": null}
+{"sentence": "Topo a ideia e alinho no plano convosco.", "word": "topo", "sense": "bump_into", "pos": "VERB", "xfail": null}
+{"sentence": "Eu topo com ele todos os dias no café.", "word": "topo", "sense": "bump_into", "pos": "VERB", "xfail": null}
+{"sentence": "Topo logo quando alguém me tenta enganar.", "word": "topo", "sense": "bump_into", "pos": "VERB", "xfail": null}
+{"sentence": "O forro do teto precisa de ser substituído.", "word": "forro", "sense": "lining", "pos": "NOUN", "xfail": null}
+{"sentence": "O forro do casaco está rasgado por dentro.", "word": "forro", "sense": "lining", "pos": "NOUN", "xfail": null}
+{"sentence": "O forro de seda dava um toque elegante ao vestido.", "word": "forro", "sense": "lining", "pos": "NOUN", "xfail": null}
+{"sentence": "Forro a caixa com veludo para guardar as joias.", "word": "forro", "sense": "line", "pos": "VERB", "xfail": null}
+{"sentence": "Forro o tabuleiro antes de levar o bolo ao forno.", "word": "forro", "sense": "line", "pos": "VERB", "xfail": null}
+{"sentence": "Quando arrumo, forro as prateleiras de novo.", "word": "forro", "sense": "line", "pos": "VERB", "xfail": null}
+{"sentence": "O suposto negócio não passava de um logro.", "word": "logro", "sense": "deceit", "pos": "NOUN", "xfail": null}
+{"sentence": "Foi tudo um logro para lhe roubar a casa.", "word": "logro", "sense": "deceit", "pos": "NOUN", "xfail": null}
+{"sentence": "O vigarista preparou o logro com cuidado.", "word": "logro", "sense": "deceit", "pos": "NOUN", "xfail": null}
+{"sentence": "Raramente logro dormir antes da meia-noite.", "word": "logro", "sense": "deceive", "pos": "VERB", "xfail": null}
+{"sentence": "Eu logro convencê-lo com bons argumentos.", "word": "logro", "sense": "deceive", "pos": "VERB", "xfail": null}
+{"sentence": "Eu logro o meu intento com muita paciência.", "word": "logro", "sense": "deceive", "pos": "VERB", "xfail": null}
+{"sentence": "O decoro requer autocontrole e consideração pelos demais.", "word": "decoro", "sense": "decorum", "pos": "NOUN", "xfail": null}
+{"sentence": "O decoro académico obriga a citar as fontes corretamente.", "word": "decoro", "sense": "decorum", "pos": "NOUN", "xfail": null}
+{"sentence": "O decoro que tanto apregoa é apenas uma fachada vazia.", "word": "decoro", "sense": "decorum", "pos": "NOUN", "xfail": null}
+{"sentence": "Decoro o quarto de hóspedes com lençóis bordados à mão.", "word": "decoro", "sense": "memorize", "pos": "VERB", "xfail": null}
+{"sentence": "Decoro a cozinha com ervas aromáticas em vasinhos.", "word": "decoro", "sense": "memorize", "pos": "VERB", "xfail": null}
+{"sentence": "Decoro os números de telefone mais importantes.", "word": "decoro", "sense": "memorize", "pos": "VERB", "xfail": null}
+{"sentence": "o consolo nasceu do abraço apertado da avó.", "word": "consolo", "sense": "consolation", "pos": "NOUN", "xfail": null}
+{"sentence": "um consolo inesperado veio do desconhecido.", "word": "consolo", "sense": "consolation", "pos": "NOUN", "xfail": null}
+{"sentence": "um consolo genuíno não se compra nem se vende.", "word": "consolo", "sense": "consolation", "pos": "NOUN", "xfail": null}
+{"sentence": "Consolo a minha cunhada quando ela tem dúvidas sobre a maternidade.", "word": "consolo", "sense": "console", "pos": "VERB", "xfail": null}
+{"sentence": "eu consolo o meu filho assustado com a trovoada.", "word": "consolo", "sense": "console", "pos": "VERB", "xfail": null}
+{"sentence": "Eu consolo um colega que se sente isolado no trabalho.", "word": "consolo", "sense": "console", "pos": "VERB", "xfail": null}
+{"sentence": "Desconfiou logo que tudo era um engodo.", "word": "engodo", "sense": "bait", "pos": "NOUN", "xfail": null}
+{"sentence": "O pescador preparou o engodo antes de lançar a linha.", "word": "engodo", "sense": "bait", "pos": "NOUN", "xfail": null}
+{"sentence": "O engodo funcionou e a multidão acorreu.", "word": "engodo", "sense": "bait", "pos": "NOUN", "xfail": null}
+{"sentence": "Engodo os peixes com pão antes de pescar.", "word": "engodo", "sense": "lure", "pos": "VERB", "xfail": null}
+{"sentence": "Eu engodo as gaivotas atirando migalhas ao mar.", "word": "engodo", "sense": "lure", "pos": "VERB", "xfail": null}
+{"sentence": "Com promessas, engodo os indecisos a participar.", "word": "engodo", "sense": "lure", "pos": "VERB", "xfail": null}
+{"sentence": "O arroto do bebé alivia-lhe a barriga.", "word": "arroto", "sense": "belch", "pos": "NOUN", "xfail": null}
+{"sentence": "Pediu desculpa pelo arroto à mesa.", "word": "arroto", "sense": "belch", "pos": "NOUN", "xfail": null}
+{"sentence": "A Maria ouviu o arroto do avô vindo da cozinha.", "word": "arroto", "sense": "belch", "pos": "NOUN", "xfail": null}
+{"sentence": "Arroto quando tomo água gaseificada com refeição.", "word": "arroto", "sense": "burp", "pos": "VERB", "xfail": null}
+{"sentence": "Arroto depois de beber água mineral com gás.", "word": "arroto", "sense": "burp", "pos": "VERB", "xfail": null}
+{"sentence": "Arroto sem querer quando bebo refrigerante depressa.", "word": "arroto", "sense": "burp", "pos": "VERB", "xfail": null}
+{"sentence": "Este abono ajuda os alunos com transportes longos.", "word": "abono", "sense": "allowance", "pos": "NOUN", "xfail": null}
+{"sentence": "O abono de transporte foi pedido no início do mês.", "word": "abono", "sense": "allowance", "pos": "NOUN", "xfail": null}
+{"sentence": "Recebi o abono de compensação depois de sair da empresa.", "word": "abono", "sense": "allowance", "pos": "NOUN", "xfail": null}
+{"sentence": "abono a despesa apresentada pelo departamento", "word": "abono", "sense": "vouch", "pos": "VERB", "xfail": null}
+{"sentence": "abono o adiantamento solicitado pelo gerente", "word": "abono", "sense": "vouch", "pos": "VERB", "xfail": null}
+{"sentence": "abono a fatura do fornecedor", "word": "abono", "sense": "vouch", "pos": "VERB", "xfail": null}
+{"sentence": "o adorno de madeira foi pintado à mão", "word": "adorno", "sense": "adornment", "pos": "NOUN", "xfail": null}
+{"sentence": "este adorno está fora de moda", "word": "adorno", "sense": "adornment", "pos": "NOUN", "xfail": null}
+{"sentence": "Um adorno discreto pendia junto da janela.", "word": "adorno", "sense": "adornment", "pos": "NOUN", "xfail": null}
+{"sentence": "eu adorno o meu casaco com um broche que herdei da avó", "word": "adorno", "sense": "adorn", "pos": "VERB", "xfail": null}
+{"sentence": "adorno o quarto com luzes suaves", "word": "adorno", "sense": "adorn", "pos": "VERB", "xfail": null}
+{"sentence": "adorno a entrada com um tapete novo e um espelho grande", "word": "adorno", "sense": "adorn", "pos": "VERB", "xfail": null}
+{"sentence": "Um reforço de última hora salvou o projeto.", "word": "reforço", "sense": "reinforcement", "pos": "NOUN", "xfail": null}
+{"sentence": "O muro recebeu um reforço de betão armado.", "word": "reforço", "sense": "reinforcement", "pos": "NOUN", "xfail": null}
+{"sentence": "Chegou um reforço policial para conter os distúrbios.", "word": "reforço", "sense": "reinforcement", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu reforço a estrutura com vigas adicionais.", "word": "reforço", "sense": "reinforce", "pos": "VERB", "xfail": null}
+{"sentence": "Reforço o argumento citando o estudo recente.", "word": "reforço", "sense": "reinforce", "pos": "VERB", "xfail": null}
+{"sentence": "Reforço a ideia com dados concretos e exemplos.", "word": "reforço", "sense": "reinforce", "pos": "VERB", "xfail": null}
+{"sentence": "O soldo militar foi atualizado este ano.", "word": "soldo", "sense": "pay", "pos": "NOUN", "xfail": null}
+{"sentence": "Poupou parte do soldo para comprar uma casa.", "word": "soldo", "sense": "pay", "pos": "NOUN", "xfail": null}
+{"sentence": "O soldo do soldado mal chegava para a família.", "word": "soldo", "sense": "pay", "pos": "NOUN", "xfail": null}
+{"sentence": "Soldo os fios partidos com cuidado e estanho.", "word": "soldo", "sense": "weld", "pos": "VERB", "xfail": null}
+{"sentence": "Soldo as duas chapas com o maçarico.", "word": "soldo", "sense": "weld", "pos": "VERB", "xfail": null}
+{"sentence": "Eu soldo a peça de cobre antes de a montar.", "word": "soldo", "sense": "weld", "pos": "VERB", "xfail": null}
+{"sentence": "Mostrou-me o esboço antes de pintar a tela.", "word": "esboço", "sense": "sketch", "pos": "NOUN", "xfail": null}
+{"sentence": "Guardou o primeiro esboço do romance numa gaveta.", "word": "esboço", "sense": "sketch", "pos": "NOUN", "xfail": null}
+{"sentence": "Fez um esboço rápido a lápis num guardanapo.", "word": "esboço", "sense": "sketch", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu esboço ideias no caderno todas as noites.", "word": "esboço", "sense": "outline", "pos": "VERB", "xfail": null}
+{"sentence": "Esboço um sorriso tímido ao ouvir o elogio.", "word": "esboço", "sense": "outline", "pos": "VERB", "xfail": null}
+{"sentence": "Eu esboço o plano antes de o discutir convosco.", "word": "esboço", "sense": "outline", "pos": "VERB", "xfail": null}
+{"sentence": "este apelo generoso partiu de um desconhecido na multidão.", "word": "apelo", "sense": "appeal", "pos": "NOUN", "xfail": null}
+{"sentence": "o apelo dos manifestantes chegou aos ouvidos do primeiro-ministro.", "word": "apelo", "sense": "appeal", "pos": "NOUN", "xfail": null}
+{"sentence": "Um apelo legal foi apresentado ontem.", "word": "apelo", "sense": "appeal", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu apelo à vossa boa vontade nesta causa nobre.", "word": "apelo", "sense": "call_out", "pos": "VERB", "xfail": null}
+{"sentence": "Apelo à vossa criatividade para resolvermos este desafio.", "word": "apelo", "sense": "call_out", "pos": "VERB", "xfail": null}
+{"sentence": "Apelo aos vizinhos para guardarem silêncio durante a sesta.", "word": "apelo", "sense": "call_out", "pos": "VERB", "xfail": null}
+{"sentence": "O aperto da mola estava forte demais.", "word": "aperto", "sense": "squeeze", "pos": "NOUN", "xfail": null}
+{"sentence": "o aperto deste sapato está a magoar-me o pé", "word": "aperto", "sense": "squeeze", "pos": "NOUN", "xfail": null}
+{"sentence": "O aperto da multidão era impossível de ignorar.", "word": "aperto", "sense": "squeeze", "pos": "NOUN", "xfail": null}
+{"sentence": "Aperto a fechadura da mala antes de entregar aos estivadores.", "word": "aperto", "sense": "tighten", "pos": "VERB", "xfail": null}
+{"sentence": "Eu aperto o nó para a corda não escorregar.", "word": "aperto", "sense": "tighten", "pos": "VERB", "xfail": null}
+{"sentence": "Aperto o nariz da criança com o lenço de papel macio.", "word": "aperto", "sense": "tighten", "pos": "VERB", "xfail": null}
+{"sentence": "O desprezo que sinto por mentiras é imediato.", "word": "desprezo", "sense": "contempt", "pos": "NOUN", "xfail": null}
+{"sentence": "O desprezo pela qual foi demitida foi exagerado.", "word": "desprezo", "sense": "contempt", "pos": "NOUN", "xfail": null}
+{"sentence": "O desprezo dos críticos não o demoveu.", "word": "desprezo", "sense": "contempt", "pos": "NOUN", "xfail": null}
+{"sentence": "Desprezo o mau serviço público que pagamos.", "word": "desprezo", "sense": "despise", "pos": "VERB", "xfail": null}
+{"sentence": "Desprezo a falta de palavra em compromissos assumidos.", "word": "desprezo", "sense": "despise", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desprezo a hipocrisia em todos os seus formatos.", "word": "desprezo", "sense": "despise", "pos": "VERB", "xfail": null}
+{"sentence": "O relevo montanhoso dificulta a construção da estrada.", "word": "relevo", "sense": "relief_terrain", "pos": "NOUN", "xfail": null}
+{"sentence": "O mapa mostra o relevo da região em cores.", "word": "relevo", "sense": "relief_terrain", "pos": "NOUN", "xfail": null}
+{"sentence": "A obra é um relevo delicado em pedra.", "word": "relevo", "sense": "relief_terrain", "pos": "NOUN", "xfail": null}
+{"sentence": "Sempre que posso, relevo as ofensas e sigo em frente.", "word": "relevo", "sense": "emphasize", "pos": "VERB", "xfail": null}
+{"sentence": "Eu relevo o assunto para não criar conflito.", "word": "relevo", "sense": "emphasize", "pos": "VERB", "xfail": null}
+{"sentence": "Relevo a tua falta porque estavas doente.", "word": "relevo", "sense": "emphasize", "pos": "VERB", "xfail": null}
+{"sentence": "O aceno do meu amigo salvou-me de entrar no sítio errado.", "word": "aceno", "sense": "nod", "pos": "NOUN", "xfail": null}
+{"sentence": "Dei um aceno de despedida enquanto o comboio se afastava lentamente na estação.", "word": "aceno", "sense": "nod", "pos": "NOUN", "xfail": null}
+{"sentence": "Um aceno urgente do chefe exigiu uma explicação clara sobre os factos ocorridos ontem.", "word": "aceno", "sense": "nod", "pos": "NOUN", "xfail": null}
+{"sentence": "aceno para a criança que me imita do outro lado do vidro", "word": "aceno", "sense": "beckon", "pos": "VERB", "xfail": null}
+{"sentence": "aceno-te da janela todas as manhãs.", "word": "aceno", "sense": "beckon", "pos": "VERB", "xfail": null}
+{"sentence": "aceno para a empregada que me atendeu ontem no restaurante", "word": "aceno", "sense": "beckon", "pos": "VERB", "xfail": null}
+{"sentence": "O sossego daquele jardim convidava à leitura.", "word": "sossego", "sense": "calm", "pos": "NOUN", "xfail": null}
+{"sentence": "Procura o sossego do campo aos fins de semana.", "word": "sossego", "sense": "calm", "pos": "NOUN", "xfail": null}
+{"sentence": "O sossego da noite foi quebrado por um grito.", "word": "sossego", "sense": "calm", "pos": "NOUN", "xfail": null}
+{"sentence": "Sossego o bebé embalando-o ao colo.", "word": "sossego", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "Quando me preocupo, não sossego enquanto não resolvo.", "word": "sossego", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "Só sossego depois de saber que chegaste bem.", "word": "sossego", "sense": "soothe", "pos": "VERB", "xfail": null}
+{"sentence": "O abrolho da corticeira surpreendeu todos os visitantes da horta.", "word": "abrolho", "sense": "caltrop", "pos": "NOUN", "xfail": null}
+{"sentence": "Este abrolho tímido promete flores quando a primavera aquecer.", "word": "abrolho", "sense": "caltrop", "pos": "NOUN", "xfail": null}
+{"sentence": "O abrolho rompeu a casca do ramo durante a chuva miúda.", "word": "abrolho", "sense": "caltrop", "pos": "NOUN", "xfail": null}
+{"sentence": "Abrolho na sombra das árvores mais velhas do pomar.", "word": "abrolho", "sense": "sprout", "pos": "VERB", "xfail": null}
+{"sentence": "abrolho no jardim da minha avó todas as primaveras sem falta.", "word": "abrolho", "sense": "sprout", "pos": "VERB", "xfail": null}
+{"sentence": "Eu abrolho e depois floresço para alegria das abelhas.", "word": "abrolho", "sense": "sprout", "pos": "VERB", "xfail": null}
+{"sentence": "O apego aos animais de estimação melhora a saúde mental de muitas pessoas.", "word": "apego", "sense": "attachment", "pos": "NOUN", "xfail": null}
+{"sentence": "um apego silencioso à natureza renovava-lhe as energias todos os dias.", "word": "apego", "sense": "attachment", "pos": "NOUN", "xfail": null}
+{"sentence": "O apego à figura paterna moldou profundamente a sua personalidade.", "word": "apego", "sense": "attachment", "pos": "NOUN", "xfail": null}
+{"sentence": "Apego a porta do armário com um elástico", "word": "apego", "sense": "cling", "pos": "VERB", "xfail": null}
+{"sentence": "Quando chove, eu apego os panos de cozinha no estendal.", "word": "apego", "sense": "cling", "pos": "VERB", "xfail": null}
+{"sentence": "Apego-me ao silêncio quando as palavras me faltam.", "word": "apego", "sense": "cling", "pos": "VERB", "xfail": null}
+{"sentence": "O arremedo festivo contagiou os presentes.", "word": "arremedo", "sense": "imitation", "pos": "NOUN", "xfail": null}
+{"sentence": "Este arremedo teatral revela talento inesperado.", "word": "arremedo", "sense": "imitation", "pos": "NOUN", "xfail": null}
+{"sentence": "O arremedo poético atravessou gerações.", "word": "arremedo", "sense": "imitation", "pos": "NOUN", "xfail": null}
+{"sentence": "Arremedo a maneira de contar histórias do meu avô.", "word": "arremedo", "sense": "mimic", "pos": "VERB", "xfail": null}
+{"sentence": "Eu arremedo o arrastar das palavras do velho pescador.", "word": "arremedo", "sense": "mimic", "pos": "VERB", "xfail": null}
+{"sentence": "arremedo e rimo-nos todos ao mesmo tempo", "word": "arremedo", "sense": "mimic", "pos": "VERB", "xfail": null}
+{"sentence": "O arremesso de água da fonte funcionou perfeitamente após reparos.", "word": "arremesso", "sense": "throw", "pos": "NOUN", "xfail": null}
+{"sentence": "O arremesso de martelo exige força e técnica apurada dos atletas.", "word": "arremesso", "sense": "throw", "pos": "NOUN", "xfail": null}
+{"sentence": "O treinador analisou cada arremesso durante a sessão", "word": "arremesso", "sense": "throw", "pos": "NOUN", "xfail": null}
+{"sentence": "eu arremesso o sapato velho ao caixote sem hesitar", "word": "arremesso", "sense": "fling", "pos": "VERB", "xfail": null}
+{"sentence": "arremesso a folha seca ao caminho molhado.", "word": "arremesso", "sense": "fling", "pos": "VERB", "xfail": null}
+{"sentence": "arremesso a bola com efeito e ela curva no ar", "word": "arremesso", "sense": "fling", "pos": "VERB", "xfail": null}
+{"sentence": "Um arrepelo intenso me dominou ouvindo aquela voz a sussurrar.", "word": "arrepelo", "sense": "hair_pulling", "pos": "NOUN", "xfail": null}
+{"sentence": "O arrepelo do cheiro familiar acalmou a febre.", "word": "arrepelo", "sense": "hair_pulling", "pos": "NOUN", "xfail": null}
+{"sentence": "O arrepelo tomou-me conta toda e não me deixou respirar.", "word": "arrepelo", "sense": "hair_pulling", "pos": "NOUN", "xfail": null}
+{"sentence": "Arrepelo os mosquitos que sempre me incomodam no verão.", "word": "arrepelo", "sense": "snatch", "pos": "VERB", "xfail": null}
+{"sentence": "Eu arrepelo-os usando armadilhas de luz suave.", "word": "arrepelo", "sense": "snatch", "pos": "VERB", "xfail": null}
+{"sentence": "Eu arrepelo as sacolas porque não aguentam o peso.", "word": "arrepelo", "sense": "snatch", "pos": "VERB", "xfail": null}
+{"sentence": "O arrojo do cirurgião salvou o paciente na última hora.", "word": "arrojo", "sense": "boldness", "pos": "NOUN", "xfail": null}
+{"sentence": "O arrojo sensível que ele demonstra nas suas obras é eloquente.", "word": "arrojo", "sense": "boldness", "pos": "NOUN", "xfail": null}
+{"sentence": "O arrojo da protagonista foi decisivo para o desfecho.", "word": "arrojo", "sense": "boldness", "pos": "NOUN", "xfail": null}
+{"sentence": "Arrojo os brindes promocionais contra a plateia entusiasmada do congresso internacional anual.", "word": "arrojo", "sense": "hurl", "pos": "VERB", "xfail": null}
+{"sentence": "Arrojo areia entre os dedos e observo-a cair lentamente.", "word": "arrojo", "sense": "hurl", "pos": "VERB", "xfail": null}
+{"sentence": "Arrojo-me à carreira artística com toda a paixão que guardo dentro do peito sempre.", "word": "arrojo", "sense": "hurl", "pos": "VERB", "xfail": null}
+{"sentence": "Este atropelo na madrugada deixou ciclista com fratura exposta.", "word": "atropelo", "sense": "trampling", "pos": "NOUN", "xfail": null}
+{"sentence": "um atropelo na autoestrada provocou filas de vários quilómetros", "word": "atropelo", "sense": "trampling", "pos": "NOUN", "xfail": null}
+{"sentence": "este atropelo causou um enorme congestionamento matinal", "word": "atropelo", "sense": "trampling", "pos": "NOUN", "xfail": null}
+{"sentence": "sempre que vou de bicicleta atropelo folhas secas no chão.", "word": "atropelo", "sense": "run_over", "pos": "VERB", "xfail": null}
+{"sentence": "não atropelo as tuas ideias, só as questiono.", "word": "atropelo", "sense": "run_over", "pos": "VERB", "xfail": null}
+{"sentence": "atropelo as minhas promessas quando fico com preguiça.", "word": "atropelo", "sense": "run_over", "pos": "VERB", "xfail": null}
+{"sentence": "O azedo do groselha faz parte do gin tónico.", "word": "azedo", "sense": "sour", "pos": "ADJ", "xfail": null}
+{"sentence": "O azedo do chucrute alemão é fermentado.", "word": "azedo", "sense": "sour", "pos": "ADJ", "xfail": null}
+{"sentence": "O azedo do iogurte natural faz-me bem.", "word": "azedo", "sense": "sour", "pos": "ADJ", "xfail": null}
+{"sentence": "azedo o sumo de laranja para o bolo", "word": "azedo", "sense": "turn_sour", "pos": "VERB", "xfail": null}
+{"sentence": "azedo o peixe em escabeche com vinagre e louro.", "word": "azedo", "sense": "turn_sour", "pos": "VERB", "xfail": null}
+{"sentence": "azedo o molho bechamel com natas azedas", "word": "azedo", "sense": "turn_sour", "pos": "VERB", "xfail": null}
+{"sentence": "O cerco às instalações durou mais de doze horas.", "word": "cerco", "sense": "siege", "pos": "NOUN", "xfail": null}
+{"sentence": "O cerco militar fez colapsar as defesas inimigas.", "word": "cerco", "sense": "siege", "pos": "NOUN", "xfail": null}
+{"sentence": "Aquele cerco famoso ficou registado nos anais da história.", "word": "cerco", "sense": "siege", "pos": "NOUN", "xfail": null}
+{"sentence": "Cerco o calor com sombra verde.", "word": "cerco", "sense": "surround", "pos": "VERB", "xfail": null}
+{"sentence": "Cerco a esperança com passos seguidos.", "word": "cerco", "sense": "surround", "pos": "VERB", "xfail": null}
+{"sentence": "Cerco a mentira com suspeitas firmes.", "word": "cerco", "sense": "surround", "pos": "VERB", "xfail": null}
+{"sentence": "O cobro da serra está cortado por atalhos.", "word": "cobro", "sense": "cessation", "pos": "NOUN", "xfail": null}
+{"sentence": "O cobro atrás da igreja está cheio de silvas.", "word": "cobro", "sense": "cessation", "pos": "NOUN", "xfail": null}
+{"sentence": "Sem cobro não se toma uma decisão acertada.", "word": "cobro", "sense": "cessation", "pos": "NOUN", "xfail": null}
+{"sentence": "Cobro a taxa de conveniência pelo uso do serviço expresso.", "word": "cobro", "sense": "collect", "pos": "VERB", "xfail": null}
+{"sentence": "Cobro ao mês e não à hora para ter mais estabilidade.", "word": "cobro", "sense": "collect", "pos": "VERB", "xfail": null}
+{"sentence": "Cobro o aluguer dos equipamentos desportivos por dia de utilização.", "word": "cobro", "sense": "collect", "pos": "VERB", "xfail": null}
+{"sentence": "Um colmo fino era tudo o que restava do campo.", "word": "colmo", "sense": "culm", "pos": "NOUN", "xfail": null}
+{"sentence": "O moleiro guardou o colmo do trigo para a palha das camas.", "word": "colmo", "sense": "culm", "pos": "NOUN", "xfail": null}
+{"sentence": "Este colmo tem uma textura áspera ao toque.", "word": "colmo", "sense": "culm", "pos": "NOUN", "xfail": null}
+{"sentence": "eu colmo a prateleira com livros que comprei em moda.", "word": "colmo", "sense": "thatch", "pos": "VERB", "xfail": null}
+{"sentence": "Eu colmo o cálice até transbordar de alegria.", "word": "colmo", "sense": "thatch", "pos": "VERB", "xfail": null}
+{"sentence": "Colmo o saco com todos os legumes da horta.", "word": "colmo", "sense": "thatch", "pos": "VERB", "xfail": null}
+{"sentence": "o congelo da avó ainda funciona depois de vinte anos.", "word": "congelo", "sense": "freezing", "pos": "NOUN", "xfail": null}
+{"sentence": "Este congelo forte lascou a pedra do fontanário.", "word": "congelo", "sense": "freezing", "pos": "NOUN", "xfail": null}
+{"sentence": "Um congelo vertical ocupa menos espaço na cozinha.", "word": "congelo", "sense": "freezing", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu congelo bananas maduras em pedaços para smoothies matinais nutritivos diários.", "word": "congelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "Congelo pequenos petiscos preparados para eventos sociais importantes na comunidade local.", "word": "congelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "Congelo a carne antes de a cozinhar.", "word": "congelo", "sense": "freeze", "pos": "VERB", "xfail": null}
+{"sentence": "O degelo gradual permitiu que as tribos nórdicas regressassem às suas terras ancestrais.", "word": "degelo", "sense": "thaw", "pos": "NOUN", "xfail": null}
+{"sentence": "Este degelo anterior trouxe uma cheia que destruiu as pontes da região inteira.", "word": "degelo", "sense": "thaw", "pos": "NOUN", "xfail": null}
+{"sentence": "O degelo nos polos preocupa os cientistas pelo ritmo acelerado a que ocorre.", "word": "degelo", "sense": "thaw", "pos": "NOUN", "xfail": null}
+{"sentence": "Degelo os legumes para a refeição do dia seguinte.", "word": "degelo", "sense": "thaw_out", "pos": "VERB", "xfail": null}
+{"sentence": "Degelo o pão de centeio para o almoço de segunda.", "word": "degelo", "sense": "thaw_out", "pos": "VERB", "xfail": null}
+{"sentence": "degelo um pacote de espinafres para adicionar ao arroz.", "word": "degelo", "sense": "thaw_out", "pos": "VERB", "xfail": null}
+{"sentence": "identificou-se um desacordo fundamental nos pressupostos do estudo científico", "word": "desacordo", "sense": "disagreement", "pos": "NOUN", "xfail": null}
+{"sentence": "Um desacordo técnico complica a implementação do software.", "word": "desacordo", "sense": "disagreement", "pos": "NOUN", "xfail": null}
+{"sentence": "Um desacordo formal pode ser registado em acta.", "word": "desacordo", "sense": "disagreement", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desacordo da tua proposta de alteração ao regulamento.", "word": "desacordo", "sense": "disagree", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desacordo da tua opinião sobre o filme.", "word": "desacordo", "sense": "disagree", "pos": "VERB", "xfail": null}
+{"sentence": "Desacordo da tua leitura do relatório financeiro.", "word": "desacordo", "sense": "disagree", "pos": "VERB", "xfail": null}
+{"sentence": "O desafogo emocional é essencial para a saúde.", "word": "desafogo", "sense": "relief", "pos": "NOUN", "xfail": null}
+{"sentence": "este desafogo tardio soube ainda melhor que o esperado.", "word": "desafogo", "sense": "relief", "pos": "NOUN", "xfail": null}
+{"sentence": "este desafogo súbito deixou-me sem palavras.", "word": "desafogo", "sense": "relief", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desafogo as inquietações do coração a escrever neste diário.", "word": "desafogo", "sense": "relieve", "pos": "VERB", "xfail": null}
+{"sentence": "Desafogo a exaustão emocional com uma noite de sono bem comprida.", "word": "desafogo", "sense": "relieve", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desafogo o desespero que me aperta a ligar a um amigo de sempre.", "word": "desafogo", "sense": "relieve", "pos": "VERB", "xfail": null}
+{"sentence": "Este desaforo para com a cultura popular revela um elitismo desmedido.", "word": "desaforo", "sense": "insolence", "pos": "NOUN", "xfail": null}
+{"sentence": "Este desaforo dos rapazes não se justifica de maneira nenhuma.", "word": "desaforo", "sense": "insolence", "pos": "NOUN", "xfail": null}
+{"sentence": "O desaforo da atuação do árbitro revoltou os adeptos.", "word": "desaforo", "sense": "insolence", "pos": "NOUN", "xfail": null}
+{"sentence": "Desaforo a custa por situação de gravidade.", "word": "desaforo", "sense": "affront", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desaforo o casal agrícola para que os filhos o herdem.", "word": "desaforo", "sense": "affront", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desaforo todos os imóveis da herança indivisa.", "word": "desaforo", "sense": "affront", "pos": "VERB", "xfail": null}
+{"sentence": "um desapego profundo em relação à política marca toda a sua obra literária.", "word": "desapego", "sense": "indifference", "pos": "NOUN", "xfail": null}
+{"sentence": "Um profundo desapego pelas coisas mundanas definia a sua filosofia.", "word": "desapego", "sense": "indifference", "pos": "NOUN", "xfail": null}
+{"sentence": "O desapego com que recebeu a notícia deixou todos calados.", "word": "desapego", "sense": "indifference", "pos": "NOUN", "xfail": null}
+{"sentence": "Desapego destas roupas que já não uso há muito", "word": "desapego", "sense": "let_go", "pos": "VERB", "xfail": null}
+{"sentence": "desapego a criança da barra da mãe.", "word": "desapego", "sense": "let_go", "pos": "VERB", "xfail": null}
+{"sentence": "desapego-me de recordações que já não me fazem bem.", "word": "desapego", "sense": "let_go", "pos": "VERB", "xfail": null}
+{"sentence": "este desassossego não me deixa pensar com clareza", "word": "desassossego", "sense": "disquiet", "pos": "NOUN", "xfail": null}
+{"sentence": "Levo o desassossego comigo para todo o lado como uma sombra.", "word": "desassossego", "sense": "disquiet", "pos": "NOUN", "xfail": null}
+{"sentence": "um desassossego silencioso pairava sobre a sala de espera", "word": "desassossego", "sense": "disquiet", "pos": "NOUN", "xfail": null}
+{"sentence": "desassossego os vizinhos a toda a hora com o meu piano às duas da manhã", "word": "desassossego", "sense": "disturb", "pos": "VERB", "xfail": null}
+{"sentence": "O medo do futuro desassossego-me todas as noites antes de adormecer.", "word": "desassossego", "sense": "disturb", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desassossego os meus alunos com perguntas difíceis.", "word": "desassossego", "sense": "disturb", "pos": "VERB", "xfail": null}
+{"sentence": "Um desconforto antigo regressou quando ouviu aquela música.", "word": "desconforto", "sense": "discomfort", "pos": "NOUN", "xfail": null}
+{"sentence": "O desconforto do silêncio entre eles tornou-se constrangedor.", "word": "desconforto", "sense": "discomfort", "pos": "NOUN", "xfail": null}
+{"sentence": "O desconforto do quarto despertou-o antes da madrugada.", "word": "desconforto", "sense": "discomfort", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desconforto o grupo quando revelo o problema.", "word": "desconforto", "sense": "discomfit", "pos": "VERB", "xfail": null}
+{"sentence": "Desconforto-os quando digo o que penso.", "word": "desconforto", "sense": "discomfit", "pos": "VERB", "xfail": null}
+{"sentence": "Desconforto-te com estas perguntas, não é verdade?", "word": "desconforto", "sense": "discomfit", "pos": "VERB", "xfail": null}
+{"sentence": "O desconsolo dela era tão grande que não conseguia falar.", "word": "desconsolo", "sense": "disconsolation", "pos": "NOUN", "xfail": null}
+{"sentence": "O desconsolo dohomem era mais silencioso que qualquer lamento.", "word": "desconsolo", "sense": "disconsolation", "pos": "NOUN", "xfail": null}
+{"sentence": "O desconsolo chegou devagar e ficou.", "word": "desconsolo", "sense": "disconsolation", "pos": "NOUN", "xfail": null}
+{"sentence": "Nunca desconsolo os meus pais com falta de cuidado.", "word": "desconsolo", "sense": "dishearten", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desconsolo o meu pai com notas tão baixas.", "word": "desconsolo", "sense": "dishearten", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desconsolo a Carolina sempre que falo em mudança.", "word": "desconsolo", "sense": "dishearten", "pos": "VERB", "xfail": null}
+{"sentence": "O desdobro da asa do pássaro impressionou o observador.", "word": "desdobro", "sense": "unfolding", "pos": "NOUN", "xfail": null}
+{"sentence": "Um desdobro cuidadoso do mapa evitou erros de orientação.", "word": "desdobro", "sense": "unfolding", "pos": "NOUN", "xfail": null}
+{"sentence": "O desdobro do processo burocrático atrasou a obra.", "word": "desdobro", "sense": "unfolding", "pos": "NOUN", "xfail": null}
+{"sentence": "Desdobro a fala em explicações claras.", "word": "desdobro", "sense": "unfold", "pos": "VERB", "xfail": null}
+{"sentence": "Desdobro o pano dobrado no aquecedor.", "word": "desdobro", "sense": "unfold", "pos": "VERB", "xfail": null}
+{"sentence": "Desdobro o lenço e limpo as lágrimas da criança.", "word": "desdobro", "sense": "unfold", "pos": "VERB", "xfail": null}
+{"sentence": "A máquina de desempeno precisa de calibração regular.", "word": "desempeno", "sense": "straightening", "pos": "NOUN", "xfail": null}
+{"sentence": "O processo de desempeno das vigas de aço é demorado.", "word": "desempeno", "sense": "straightening", "pos": "NOUN", "xfail": null}
+{"sentence": "O engenheiro projetou o sistema de desempeno contínuo.", "word": "desempeno", "sense": "straightening", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desempeno a minha tarefa com disciplina.", "word": "desempeno", "sense": "straighten", "pos": "VERB", "xfail": null}
+{"sentence": "Nós desempeno o nosso trabalho com qualidade.", "word": "desempeno", "sense": "straighten", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desempeno o meu dever com cuidado.", "word": "desempeno", "sense": "straighten", "pos": "VERB", "xfail": null}
+{"sentence": "O desemperro do regulador de pressão foi necessário.", "word": "desemperro", "sense": "unjamming", "pos": "NOUN", "xfail": null}
+{"sentence": "O desemperro da fechadura levou-me meia hora.", "word": "desemperro", "sense": "unjamming", "pos": "NOUN", "xfail": null}
+{"sentence": "O desemperro manual da fechadura partiu a chave.", "word": "desemperro", "sense": "unjamming", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desemperro as relações entre os dois departamentos.", "word": "desemperro", "sense": "unjam", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desemperro a ventoinha com uma gota de óleo.", "word": "desemperro", "sense": "unjam", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desemperro a situação financeira com um empréstimo.", "word": "desemperro", "sense": "unjam", "pos": "VERB", "xfail": null}
+{"sentence": "O desempeço da economia nacional surpreendeu os analistas positivamente.", "word": "desempeço", "sense": "riddance", "pos": "NOUN", "xfail": null}
+{"sentence": "O juiz ordenou o desempeço de todos os processos pendentes.", "word": "desempeço", "sense": "riddance", "pos": "NOUN", "xfail": null}
+{"sentence": "O seu discurso foi um verdadeiro desempeço para os que se sentiam oprimidos.", "word": "desempeço", "sense": "riddance", "pos": "NOUN", "xfail": null}
+{"sentence": "Para começar bem o dia, desempeço a minha mente de preocupações.", "word": "desempeço", "sense": "free_up", "pos": "VERB", "xfail": null}
+{"sentence": "Desempeço o meu horário de compromissos irrelevantes.", "word": "desempeço", "sense": "free_up", "pos": "VERB", "xfail": null}
+{"sentence": "Desempeço o computador de ficheiros temporários.", "word": "desempeço", "sense": "free_up", "pos": "VERB", "xfail": null}
+{"sentence": "Este desemprego exige respostas públicas, não apenas promessas.", "word": "desemprego", "sense": "noun", "pos": "NOUN", "xfail": null}
+{"sentence": "o desemprego atinge milhares de jovens em Portugal", "word": "desemprego", "sense": "noun", "pos": "NOUN", "xfail": null}
+{"sentence": "O desemprego rural empurra jovens para Lisboa e Porto.", "word": "desemprego", "sense": "noun", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desemprego menos gente este ano que o anterior.", "word": "desemprego", "sense": "verb", "pos": "VERB", "xfail": null}
+{"sentence": "Desemprego o fecho da corrente do cão e saímos ao jardim.", "word": "desemprego", "sense": "verb", "pos": "VERB", "xfail": null}
+{"sentence": "Desemprego a velcro que prende o capacete sem provocar dor.", "word": "desemprego", "sense": "verb", "pos": "VERB", "xfail": null}
+{"sentence": "O desenredo do conto infantil é simples e didático.", "word": "desenredo", "sense": "denouement", "pos": "NOUN", "xfail": null}
+{"sentence": "O desenredo do romance policial tem reviravoltas constantes.", "word": "desenredo", "sense": "denouement", "pos": "NOUN", "xfail": null}
+{"sentence": "O desenredo da alegoria é de interpretação aberta.", "word": "desenredo", "sense": "denouement", "pos": "NOUN", "xfail": null}
+{"sentence": "Desenredo as histórias que a vida me vai contando.", "word": "desenredo", "sense": "disentangle", "pos": "VERB", "xfail": null}
+{"sentence": "Desenredo os cabos do computador todo o fim de semana.", "word": "desenredo", "sense": "disentangle", "pos": "VERB", "xfail": null}
+{"sentence": "Desenredo a corrente da âncora quando chego ao porto.", "word": "desenredo", "sense": "disentangle", "pos": "VERB", "xfail": null}
+{"sentence": "Ele mergulhou no desespero após a perda da empresa.", "word": "desespero", "sense": "despair", "pos": "NOUN", "xfail": null}
+{"sentence": "O desespero da separação deixou-lhe marcas profundas.", "word": "desespero", "sense": "despair", "pos": "NOUN", "xfail": null}
+{"sentence": "Ela alimentou o desespero com pensamentos negativos.", "word": "desespero", "sense": "despair", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desespero ao ver a chuva na janela.", "word": "desespero", "sense": "despair_at", "pos": "VERB", "xfail": null}
+{"sentence": "Desespero sempre que tenho de ir ao banco.", "word": "desespero", "sense": "despair_at", "pos": "VERB", "xfail": null}
+{"sentence": "Desespero sempre que vejo as contas por pagar.", "word": "desespero", "sense": "despair_at", "pos": "VERB", "xfail": null}
+{"sentence": "O desgelo do glaciar recuou vários metros num só ano.", "word": "desgelo", "sense": "defrosting", "pos": "NOUN", "xfail": null}
+{"sentence": "O desgelo não chegou a tempo de salvar a colheita.", "word": "desgelo", "sense": "defrosting", "pos": "NOUN", "xfail": null}
+{"sentence": "O desgelo das travessas do comboio causou descarrilamento.", "word": "desgelo", "sense": "defrosting", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu desgelo o solo da horta com cobertura de folhas secas para proteger as raízes.", "word": "desgelo", "sense": "defrost", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desgelo o gelado um pouco antes de servir.", "word": "desgelo", "sense": "defrost", "pos": "VERB", "xfail": null}
+{"sentence": "Eu desgelo o pão no forno durante alguns minutos para ficar fresco.", "word": "desgelo", "sense": "defrost", "pos": "VERB", "xfail": null}
+{"sentence": "O desgosto de ver a escola sem recursos é uma realidade triste.", "word": "desgosto", "sense": "sorrow", "pos": "NOUN", "xfail": null}
+{"sentence": "O desgosto de perder o emprego fê-lo recolher-se em casa.", "word": "desgosto", "sense": "sorrow", "pos": "NOUN", "xfail": null}
+{"sentence": "Tive um desgosto muito grande com a atitude do colega.", "word": "desgosto", "sense": "sorrow", "pos": "NOUN", "xfail": null}
+{"sentence": "Desgosto de receber críticas sem explicação.", "word": "desgosto", "sense": "dislike", "pos": "VERB", "xfail": null}
+{"sentence": "Desgosto de ter de repetir tudo outra vez.", "word": "desgosto", "sense": "dislike", "pos": "VERB", "xfail": null}
+{"sentence": "Desgosto de ouvir promessas vazias.", "word": "desgosto", "sense": "dislike", "pos": "VERB", "xfail": null}
+{"sentence": "O desmantelo do sistema educativo preocupa os pais.", "word": "desmantelo", "sense": "dismantling", "pos": "NOUN", "xfail": null}
+{"sentence": "O desmantelo no trânsito da cidade já é crónico.", "word": "desmantelo", "sense": "dismantling", "pos": "NOUN", "xfail": null}
+{"sentence": "Com tanta gente a falar ao mesmo tempo, era o desmantelo.", "word": "desmantelo", "sense": "dismantling", "pos": "NOUN", "xfail": null}
+{"sentence": "desmantelo as barreiras que ergui à volta do meu coração.", "word": "desmantelo", "sense": "dismantle", "pos": "VERB", "xfail": null}
+{"sentence": "desmantelo a cadeira de baloiço que partiu a perna.", "word": "desmantelo", "sense": "dismantle", "pos": "VERB", "xfail": null}
+{"sentence": "desmantelo a burocracia sempre que encontro um atalho legal.", "word": "desmantelo", "sense": "dismantle", "pos": "VERB", "xfail": null}
+{"sentence": "O despego das velas permitiu que o barco navegasse mais depressa.", "word": "despego", "sense": "detachment", "pos": "NOUN", "xfail": null}
+{"sentence": "O despego do equipamento de mergulho foi verificado pelo instrutor.", "word": "despego", "sense": "detachment", "pos": "NOUN", "xfail": null}
+{"sentence": "O despego da carga fragil exigiu extremo cuidado e atencao.", "word": "despego", "sense": "detachment", "pos": "NOUN", "xfail": null}
+{"sentence": "Despego-me da ideia de perfeição e aceito o erro.", "word": "despego", "sense": "detach", "pos": "VERB", "xfail": null}
+{"sentence": "Despego o autocolante do para-choques do carro.", "word": "despego", "sense": "detach", "pos": "VERB", "xfail": null}
+{"sentence": "Despego-me de promessas vazias.", "word": "despego", "sense": "detach", "pos": "VERB", "xfail": null}
+{"sentence": "O **destroço** do castelo medieval era agora apenas ruínas.", "word": "destroço", "sense": "wreckage", "pos": "NOUN", "xfail": null}
+{"sentence": "Do acidente só restou o **destroço** de metal retorcido.", "word": "destroço", "sense": "wreckage", "pos": "NOUN", "xfail": null}
+{"sentence": "O **destroço** financeiro da empresa era irreversível.", "word": "destroço", "sense": "wreckage", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu destroço o papel em mil pedaços depois de ler a carta.", "word": "destroço", "sense": "wreck", "pos": "VERB", "xfail": null}
+{"sentence": "Com esta crítica, destroço a reputação do filme inteiro.", "word": "destroço", "sense": "wreck", "pos": "VERB", "xfail": null}
+{"sentence": "Quando leio um livro mau, destroço-o na minha crítica literária.", "word": "destroço", "sense": "wreck", "pos": "VERB", "xfail": null}
+{"sentence": "Ela doou o livro com desvelo à biblioteca municipal.", "word": "desvelo", "sense": "devotion", "pos": "NOUN", "xfail": null}
+{"sentence": "A comunidade reconhece o seu desvelo pelos mais velhos.", "word": "desvelo", "sense": "devotion", "pos": "NOUN", "xfail": null}
+{"sentence": "O desvelo da equipa garantiu que o projeto fosse entregue a tempo.", "word": "desvelo", "sense": "devotion", "pos": "NOUN", "xfail": null}
+{"sentence": "Desvelo a verdade sem nunca a embelezar.", "word": "desvelo", "sense": "unveil", "pos": "VERB", "xfail": null}
+{"sentence": "Desvelo o propósito escondido por detrás das aparências.", "word": "desvelo", "sense": "unveil", "pos": "VERB", "xfail": null}
+{"sentence": "Desvelo o sentido profundo das tuas palavras.", "word": "desvelo", "sense": "unveil", "pos": "VERB", "xfail": null}
+{"sentence": "O domo da mesquita é adornado com mosaicos dourados.", "word": "domo", "sense": "dome", "pos": "NOUN", "xfail": null}
+{"sentence": "O domo da sinagoga tem um design octogonal.", "word": "domo", "sense": "dome", "pos": "NOUN", "xfail": null}
+{"sentence": "O radar instalado no domo da serra monitoriza o tráfego aéreo.", "word": "domo", "sense": "dome", "pos": "NOUN", "xfail": null}
+{"sentence": "Eu domo a natureza indomável da serra.", "word": "domo", "sense": "tame", "pos": "VERB", "xfail": null}
+{"sentence": "Domo o touro campeão que venceu todas as corridas.", "word": "domo", "sense": "tame", "pos": "VERB", "xfail": null}
+{"sentence": "Domo o boi bravo para lavrar a terra do meu avô.", "word": "domo", "sense": "tame", "pos": "VERB", "xfail": null}
+{"sentence": "O empeno com que se dedicou ao estudo da língua portuguesa rendeu-lhe a fluência.", "word": "empeno", "sense": "warping", "pos": "NOUN", "xfail": null}
+{"sentence": "O empeno com que se dedicou ao voluntariado é inspirador.", "word": "empeno", "sense": "warping", "pos": "NOUN", "xfail": null}
+{"sentence": "Aquele projecto nasceu do empeno de uma comunidade inteira.", "word": "empeno", "sense": "warping", "pos": "NOUN", "xfail": null}
+{"sentence": "Empeno o cano do esquentador com a pressão excessiva.", "word": "empeno", "sense": "warp", "pos": "VERB", "xfail": null}
+{"sentence": "Empeno o suporte de metal com o calor do forno.", "word": "empeno", "sense": "warp", "pos": "VERB", "xfail": null}
+{"sentence": "Empeno a tampa do frasco com a humidade.", "word": "empeno", "sense": "warp", "pos": "VERB", "xfail": null}
+{"sentence": "O encosto da cadeira de voo estava desativado.", "word": "encosto", "sense": "backrest", "pos": "NOUN", "xfail": null}
+{"sentence": "O encosto da bicicleta novo é mais confortável que o anterior.", "word": "encosto", "sense": "backrest", "pos": "NOUN", "xfail": null}
+{"sentence": "O encosto da cadeira de beiral estava ao sol e já ardia.", "word": "encosto", "sense": "backrest", "pos": "NOUN", "xfail": null}
+{"sentence": "Ela encosto os lábios à chávena antes de beber o chá.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}
+{"sentence": "Encosto o balde no chão da casa de banho.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}
+{"sentence": "Encosto a colher na tigela e sirvo a sopa.", "word": "encosto", "sense": "lean", "pos": "VERB", "xfail": null}

@@ -42,6 +42,10 @@ PRUNE_EPS = 0.02       # drop |weight| below this → sparse, 0 = neutral at inf
 
 def rule_sense(word, words, idx):
     """Corpus-free rule prediction (the baseline a word must match to be adopted)."""
+    # normalise the target slot (tokens may carry trailing punctuation / a clitic
+    # hyphen under the current tokenizer) so the scorer sees the clean headword.
+    if words[idx] != word:
+        words = list(words); words[idx] = word
     return _rule_resolve(word, words, idx, _rule_pos(words, idx))
 
 
