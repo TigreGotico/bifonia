@@ -1,7 +1,7 @@
 # sense: error
 Gera {n} frases em Português Europeu natural onde "erro" é SUBSTANTIVO.
 
-Significado: decisão, ato ou resposta incorreta; qualidade daquilo que não corresponde à verdade; apreciação ou julgamento que está em desacordo com a realidade observada; falta; valor absoluto da diferença (desvio) entre o valor exato e o valor calculado ou registado por observação; diferença no valor medido de uma grandeza ou quantidade devido a imperfeições do instrumento de medida e/ou incorreção de leitura do observador
+Significado: decisao, ato ou resposta incorreta; aquilo que esta em desacordo com a verdade ou com o correto
 IPA: /ˈeʁu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «cometeu um erro grave no relatorio»; «ha um erro de calculo nas contas»; «pedi desculpa pelo erro que fiz»; «o sistema acusou um erro de ligacao»; «foi um erro ter confiado nele»; «corrigi todos os erros do texto»
 Responde APENAS com as frases, uma por linha:

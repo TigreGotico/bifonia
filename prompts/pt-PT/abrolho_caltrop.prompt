@@ -1,7 +1,7 @@
 # sense: caltrop
 Gera {n} frases em Português Europeu natural onde "abrolho" é SUBSTANTIVO.
 
-Significado: planta da família das Zigofiláceas, de flores amarelas e frutos espinhosos, espontânea em Portugal; fruto espinhoso dessa planta; espinho de qualquer planta; rebento; ponta aguçada; rochedo sob a água, a pouca profundidade; contrariedade | dificuldade | obstáculo
+Significado: planta da familia das zigofilaceas, de flores amarelas e frutos espinhosos; tambem o proprio fruto espinhoso ou qualquer espinho
 IPA: /ɐˈbɾoʎu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o abrolho cresce nos terrenos secos e pedregosos»; «espetou o pe num abrolho no caminho»; «os frutos do abrolho ferem quem neles toca»; «arrancaram os abrolhos que invadiam a horta»; «o gado evita pisar onde ha abrolhos»
 Responde APENAS com as frases, uma por linha:

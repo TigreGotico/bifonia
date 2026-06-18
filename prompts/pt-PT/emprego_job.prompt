@@ -1,7 +1,7 @@
 # sense: job
 Gera {n} frases em Português Europeu natural onde "emprego" é SUBSTANTIVO.
 
-Significado: ato ou efeito de empregar ou empregar-se; ocupação remunerada; funções de empregado; aplicação ou exercício de faculdades; colocação; uso; função
+Significado: ocupacao remunerada; trabalho ou posto de trabalho que se exerce regularmente
 IPA: /ẽˈpɾeɡu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «arranjou emprego numa fabrica perto de casa»; «perdeu o emprego durante a crise»; «anda a procura de emprego ha meses»; «o novo emprego paga melhor»; «tem um emprego estavel no banco»; «comecou o emprego na segunda-feira»
 Responde APENAS com as frases, uma por linha:

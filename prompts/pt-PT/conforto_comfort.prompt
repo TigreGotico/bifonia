@@ -1,7 +1,7 @@
 # sense: comfort
 Gera {n} frases em Português Europeu natural onde "conforto" é SUBSTANTIVO.
 
-Significado: ato ou efeito de confortar; comodidade; bem-estar; auxílio, consolo nas aflições
+Significado: estado de comodidade e bem-estar fisico; tambem o consolo ou alivio nas aflicoes
 IPA: /kõˈfoɾtu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o sofa novo da muito conforto»; «o hotel oferece todo o conforto aos hospedes»; «encontrou conforto nas palavras da amiga»; «viajamos com conforto no comboio»; «a manta trazia conforto nas noites frias»
 Responde APENAS com as frases, uma por linha:

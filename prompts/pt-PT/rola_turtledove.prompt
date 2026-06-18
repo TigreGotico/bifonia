@@ -1,7 +1,7 @@
 # sense: turtledove
 Gera {n} frases em Português Europeu natural onde "rola" é SUBSTANTIVO.
 
-Significado: designação comum, extensiva a diferentes aves da família dos Columbídeos, de porte inferior ao dos pombos, asas pontiagudas, cauda comprida e plumagem geralmente acinzentada, branca ou acastanhada; ave migratória, presente em Portugal sobretudo nos meses quentes, atinge perto de 30 centímetros de comprimento e apresenta olhos alaranjados e plumagem acinzentada na cabeça e no peito, com listas pretas e brancas no pescoço, padrão malhado em tons ca
+Significado: ave migratoria da familia dos columbideos, mais pequena que o pombo, de asas pontiagudas, cauda comprida e plumagem acinzentada
 IPA: /ˈɾolɐ/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «uma rola pousou no ramo da oliveira»; «ouvia-se o arrulho da rola ao amanhecer»; «a rola chega a portugal nos meses quentes»; «viram um par de rolas no campo»; «a rola fez o ninho na arvore do quintal»
 Responde APENAS com as frases, uma por linha:

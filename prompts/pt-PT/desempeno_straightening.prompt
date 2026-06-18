@@ -1,7 +1,7 @@
 # sense: straightening
 Gera {n} frases em Português Europeu natural onde "desempeno" é SUBSTANTIVO.
 
-Significado: ato ou efeito de desempenar (-se), de endireitar (-se); aplanação; régua usada para verificar a lisura de uma peça ou superfície; garbo; agilidade; à-vontade
+Significado: ato de endireitar ou aplanar algo que estava torto ou empenado
 IPA: /dɨzẽˈpenu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o desempeno da chapa exigiu muita forca»; «fez o desempeno da tabua antes de a pintar»; «o desempeno do eixo torto custou caro»; «o serralheiro tratou do desempeno da grade»; «o desempeno da porta deixou-a a fechar bem»
 Responde APENAS com as frases, uma por linha:

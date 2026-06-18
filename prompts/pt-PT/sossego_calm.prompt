@@ -1,7 +1,7 @@
 # sense: calm
 Gera {n} frases em Português Europeu natural onde "sossego" é SUBSTANTIVO.
 
-Significado: ato ou efeito de sossegar; aquilo que permite sossegar; ausência de agitação | tranquilidade | paz | quietude; repouso
+Significado: ausencia de agitacao ou de barulho; estado de tranquilidade e paz
 IPA: /suˈseɡu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «procurava sossego longe da cidade»; «depois do jantar reinava um grande sossego»; «so tenho sossego quando estou a ler»; «o campo oferece o sossego que ela queria»; «finalmente um pouco de sossego em casa»
 Responde APENAS com as frases, uma por linha:

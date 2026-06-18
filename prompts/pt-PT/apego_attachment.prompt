@@ -1,7 +1,7 @@
 # sense: attachment
 Gera {n} frases em Português Europeu natural onde "apego" é SUBSTANTIVO.
 
-Significado: ato ou efeito de apegar; sentimento que une uma pessoa às pessoas ou coisas de que gosta; tenacidade; timão da charrua
+Significado: afeto ou ligacao forte que une uma pessoa a alguem ou a algo de que gosta
 IPA: /ɐˈpeɡu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «ela tem um grande apego a casa onde cresceu»; «o apego ao filho deixava-a sempre preocupada»; «sentia um apego profundo pelos velhos amigos»; «custa-lhe largar os livros por puro apego»; «o apego ao dinheiro tornou-o avarento»
 Responde APENAS com as frases, uma por linha:

@@ -1,7 +1,7 @@
 # sense: cork_oak
 Gera {n} frases em Português Europeu natural onde "sobro" é SUBSTANTIVO.
 
-Significado: choça (carvão); árvore perenifólia, da família das Fagáceas, espontânea e cultivada (sobretudo para extração da cortiça) em Portugal, pode atingir cerca de 20 metros de altura e tem copa ampla, com folhas oblongas e coriáceas, pequenas flores amareladas reunidas em amentilhos e bolotas usadas na alimentação do gado
+Significado: arvore perenifolia da familia das fagaceas, cultivada em portugal para a extracao da cortica, de copa ampla e folhas coriaceas
 IPA: /ˈsobɾu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o sobro fornece a cortica das rolhas»; «plantaram um sobro junto a estrada»; «a sombra do sobro abrigava o rebanho»; «descortica-se o sobro de poucos em poucos anos»; «um sobro antigo erguia-se no meio do campo»
 Responde APENAS com as frases, uma por linha:

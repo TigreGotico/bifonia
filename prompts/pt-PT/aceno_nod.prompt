@@ -1,7 +1,7 @@
 # sense: nod
 Gera {n} frases em Português Europeu natural onde "aceno" é SUBSTANTIVO.
 
-Significado: ato ou efeito de acenar; sinal com a cabeça, olhos ou mãos, para dar a entender o que se pretende; indício
+Significado: sinal feito com a cabeca, os olhos ou as maos para chamar ou dar a entender algo
 IPA: /ɐˈsenu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «fez-me um aceno de longe para eu me aproximar»; «respondeu com um aceno de cabeca»; «um aceno discreto bastou para o garcom vir»; «ela despediu-se com um aceno de mao»; «percebi pelo seu aceno que devia ficar calado»
 Responde APENAS com as frases, uma por linha:

@@ -1,7 +1,7 @@
 # sense: freezing
 Gera {n} frases em Português Europeu natural onde "congelo" é SUBSTANTIVO.
 
-Significado: ato ou efeito de congelar(-se); embargo
+Significado: estado ou resultado de algo que fica congelado ou bloqueado; suspensao ou embargo de bens ou valores
 IPA: /kõˈʒelu/ — vogal tónica FECHADA.
 
 Regras:
@@ -11,4 +11,5 @@ Regras:
 - cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o tribunal ordenou o congelo das contas»; «o congelo dos precos durou todo o ano»; «decretaram o congelo dos bens do acusado»; «o congelo dos salarios revoltou os trabalhadores»; «houve um congelo das negociacoes durante meses»
 Responde APENAS com as frases, uma por linha:
