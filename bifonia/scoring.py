@@ -5,9 +5,13 @@ Each scorer returns an integer; higher = more confident.
 Negative scores signal anti-evidence for that POS.
 """
 
-import functools
-import unicodedata
-
+from bifonia.cues import SENSE_CUES
+from bifonia.text import (
+    cue_score as _cue_score,   # proximity-weighted, accent-folded cue counter
+    fold as _fold,
+    folded as _folded,
+    strip_punct as _strip,     # token punctuation strip (shared with features)
+)
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
     DEFAULT_POS, DEFAULT_SENSE, BASE_SCORE,
@@ -83,22 +87,12 @@ _BUNDLE_THINGS = voc("bundle_things")       # unambiguous bundles: "molho de cha
 _BUNDLE_AMBIG  = voc("bundle_ambiguous")    # greens, bundle only with a gathering verb
 _BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the greens
 _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
-# noun/noun diacritic-collapse resolvers (open ɔ default vs closed-o marked reading)
-_BOLA_LOAF     = voc("bola_loaf_cues")      # bread/baking → "bôla" loaf (closed)
-_BOLA_BALL     = voc("bola_ball_cues")      # sport/play → ball (open), beats loaf
-_COR_MEMORY    = voc("cor_memory_cues")     # know/recite → "de cor" by heart (open)
-_LOBO_LOBE     = voc("lobo_lobe_cues")      # anatomy → lobe (open) vs wolf (closed)
-_POLO_BIRD     = voc("polo_fledgling_cues") # falconry → fledgling (closed) vs pole (open)
+# The diacritic-collapse / cue-competition words (bola, lobo, polo, cor) are
+# resolved declaratively from bifonia.cues.SENSE_CUES — their cue vocs are loaded
+# on demand inside _resolve_by_cues, not bound here.
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
-
-
-_PUNCT = str.maketrans("", "", ".,;:!?\"'()[]{}«»–—")
-
-
-def _strip(w: str) -> str:
-    return w.translate(_PUNCT)
 
 
 def _prev(words: list, idx: int) -> str:
@@ -816,70 +810,36 @@ def _resolve_tola(words: list, idx: int) -> str:
     return "head"
 
 
-def _window(words: list, idx: int, left: int = 3, right: int = 3) -> list:
-    return [_strip(words[i]) for i in range(max(0, idx - left), min(len(words), idx + right + 1))
-            if i != idx]
+def _resolve_by_cues(word: str, words: list, idx: int) -> str:
+    """Resolve a same-spelling reading by weighing its declared cue lists.
+
+    Reads :data:`bifonia.cues.SENSE_CUES`: every applicable :class:`~bifonia.cues.Cue`
+    is scored with the proximity-weighted, accent-folded :func:`cue_score`, and
+    the highest-scoring sense wins; the rule's ``default`` (the dominant reading)
+    is returned when nothing scores.  A cue gated by ``requires_prev`` only counts
+    when the token before the homograph matches (e.g. the "de" in "de cor").
+
+    This single function replaces the per-word bola/lobo/polo/cor resolvers —
+    adding a new cue-competition word is now a data edit in ``bifonia.cues``.
+    (Explicit diacritic spellings like «bôla»/«séde» are resolved upstream in
+    :func:`bifonia.guess_sense`, straight off the diacritic, before reaching here.)
+    """
+    rule = SENSE_CUES[word]
+    best, best_score = rule.default, 0
+    for cue in rule.cues:
+        if cue.requires_prev is not None and _prev(words, idx) != cue.requires_prev:
+            continue
+        score = _cue_score(words, idx, _folded(voc(cue.voc)))
+        if score > best_score:
+            best, best_score = cue.sense, score
+    return best
 
 
-def _fold(s: str) -> str:
-    """Strip combining accents for accent-insensitive cue matching ("Pascoa" →
-    matches the voc entry "páscoa"; real text routinely drops diacritics)."""
-    return "".join(c for c in unicodedata.normalize("NFD", s)
-                   if unicodedata.category(c) != "Mn")
-
-
-def _cue_score(words: list, idx: int, cues: frozenset, near: int = 4) -> int:
-    """Proximity-weighted count of cue hits across the whole sentence: a hit within
-    `near` tokens of the target counts double, a farther hit counts once.  Lets a
-    nearby decisive cue outweigh an incidental distant one while still seeing
-    sentence-wide context (recipe prose puts cues far from the word).  *cues* must
-    be an accent-folded set (see :func:`_folded`)."""
-    score = 0
-    for j, w in enumerate(words):
-        if j != idx and _fold(_strip(w)) in cues:
-            score += 2 if abs(j - idx) <= near else 1
-    return score
-
-
-@functools.lru_cache(maxsize=None)
-def _folded(cues: frozenset) -> frozenset:
-    return frozenset(_fold(c) for c in cues)
-
-
-def _resolve_bola(words: list, idx: int) -> str:
-    """ball (open ɔ, ˈbɔlɐ) vs the *bôla* bread/cake (closed o, ˈbolɐ).  Weigh the
-    baking/charcuterie cues against the sport/play cues; loaf wins only when its
-    cue total is strictly higher (so a football sentence with one stray food word
-    stays ball).  Ball is the default.  (Explicit «bôla»/«bóla» spellings are
-    resolved upstream straight off the diacritic.)"""
-    return ("loaf" if _cue_score(words, idx, _folded(_BOLA_LOAF))
-            > _cue_score(words, idx, _folded(_BOLA_BALL)) else "ball")
-
-
-def _resolve_cor(words: list, idx: int) -> str:
-    """colour (closed o, ˈkoɾ) vs "de cor" = by heart (open ɔ, ˈkɔɾ).  The open
-    reading is the fixed adverbial "de cor" with a knowing/reciting cue."""
-    if _prev(words, idx) == "de" and any(_strip(w) in _COR_MEMORY for w in words):
-        return "by_heart"          # "sei/recita … de cor"; "lápis de cor" stays colour
-    return "colour"
-
-
-def _resolve_lobo(words: list, idx: int) -> str:
-    """wolf (closed o, ˈlobu) vs anatomical lobe (open ɔ, ˈlɔbu).  Lobe needs a
-    body-part cue; the wolf is the dominant default."""
-    return "lobe" if any(w in _LOBO_LOBE for w in _window(words, idx)) else "wolf"
-
-
-def _resolve_polo(words: list, idx: int) -> str:
-    """pole / polo-sport (open ɔ, ˈpɔlu) vs the rare young bird of prey (closed o,
-    ˈpolu).  Fledgling needs a falconry cue; the pole is the dominant default."""
-    return "fledgling" if any(w in _POLO_BIRD for w in _window(words, idx)) else "pole"
-
-
-# words whose senses share a POS need a meaning-level resolver after guess_pos
-_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola,
-                    "bola": _resolve_bola, "cor": _resolve_cor,
-                    "lobo": _resolve_lobo, "polo": _resolve_polo}
+# words whose senses share a POS need a meaning-level resolver after guess_pos.
+# sede/molho/tola carry structural logic beyond a cue competition, so they stay
+# hand-written; bola/lobo/polo/cor are data-driven via SENSE_CUES (see
+# resolve_sense, which dispatches to _resolve_by_cues for those).
+_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
@@ -897,5 +857,7 @@ def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
         senses = next(iter(POS_SENSES.get(word, {}).values()), [None])
     if len(senses) == 1:
         return senses[0]
-    resolver = _SENSE_RESOLVERS.get(word)
+    if word in SENSE_CUES:                       # data-driven cue competition
+        return _resolve_by_cues(word, words, idx)
+    resolver = _SENSE_RESOLVERS.get(word)        # structurally richer hand-written cases
     return resolver(words, idx) if resolver else senses[0]
