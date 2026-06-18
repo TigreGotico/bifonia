@@ -33,7 +33,6 @@ zero-dependency inference path.
 """
 import functools
 import pathlib
-import re
 
 from bifonia.cues import FEATURE_CUES
 from bifonia.text import cue_score as _cue_score, folded as _folded, strip_punct as _strip

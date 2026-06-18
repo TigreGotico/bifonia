@@ -8,7 +8,6 @@ Negative scores signal anti-evidence for that POS.
 from bifonia.cues import SENSE_CUES
 from bifonia.text import (
     cue_score as _cue_score,   # proximity-weighted, accent-folded cue counter
-    fold as _fold,
     folded as _folded,
     strip_punct as _strip,     # token punctuation strip (shared with features)
 )
@@ -355,8 +354,6 @@ def score_noun(words: list, idx: int) -> int:
     if word == "forma":
         _next2_f = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
         _toks_f = [_strip(w) for w in words]
-        # Shape/manner idioms force the open-o VERB reading even if a cooking word
-        # happens to appear ("a forma de preparar a massa" = manner, not a tin).
         # Shape/manner idioms force the open-o VERB reading even if a cooking word
         # happens to appear ("a forma de preparar a massa" = manner, not a tin).
         _shape = (prev_word in _FORMA_SHAPE_PREV

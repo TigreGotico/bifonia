@@ -20,7 +20,7 @@ import re
 from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
-    AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS, POS_SENSES, SENSE_POS,
+    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS,
 )
 from bifonia.scoring import (
     guess_pos as _scoring_guess_pos,
