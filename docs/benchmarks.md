@@ -110,11 +110,11 @@ verb senses), so it is a fair test of disambiguation, not dominant-sense predict
 
 | approach | balanced real gold (2,233 sentences, 40 words) | POS-ambiguous subset (n=1,512) |
 |---|:---:|:---:|
-| most-common | 52.6% | 59% |
-| cue-only (wordlists, no POS, no learning) | 53.7% | 64% |
-| Yarowsky decision list (trained) | 87.0% | 87% |
+| most-common | 57.1% | 59% |
+| cue-only (wordlists, no POS, no learning) | 60.2% | 64% |
+| Yarowsky decision list (trained) | 87.3% | 86% |
 | spaCy `pt_core_news_lg` (POS→sense) | 90.6% | 89% |
-| logistic regression (numpy, +cues) | 92.1% | 94% |
+| logistic regression (numpy, +cues) | 92.2% | 94% |
 | **rules (zero-dependency)** | **95.2%** | **96%** |
 | **hybrid ensemble (POS tag ⊕ rules)** | **96.0%** | **97%** |
 
