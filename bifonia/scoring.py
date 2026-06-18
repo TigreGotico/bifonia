@@ -407,9 +407,19 @@ def score_verb(words: list, idx: int) -> int:
     if (idx > 0
             and prev_word not in DET | QUANT
             and prev2_word not in DET | QUANT
-            and prev_word not in _TRANS_VERB):
+            and prev_word not in _TRANS_VERB
+            and prev_word not in _COMPLEMENT_PREPS):   # "de/em/com … peso/jogo" = noun object
         if word in _FIRST_PERSON_NOUNS:
             score += 2
+
+    # "gosto de ti", "olho para ti", "rio de mim" — a 1sg verb form + complement
+    # preposition + pronoun is a finite verb, not the noun reading.
+    _next2_v = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    if (word in _FIRST_PERSON_NOUNS
+            and next_word in _COMPLEMENT_PREPS | {"para", "a", "ao", "à"}
+            and _next2_v in PRON
+            and prev_word not in DET | QUANT | _COMPLEMENT_PREPS | _TRANS_VERB):
+        score += 5
 
     # Enclitic clitic hyphenated onto the word ("torno-me", "vejo-o", "fá-lo",
     # "deu-lhe", "tem-nos") → an unambiguous finite-VERB host. The tokenizer keeps
@@ -435,7 +445,9 @@ def score_verb(words: list, idx: int) -> int:
     # "posto" (other words like "começo a [inf]" are genuine VERB+DO phrases).
     _next_next = words[idx + 2] if idx + 2 < len(words) else ""
     _posto_inf = word == "posto" and next_word == "a" and _is_infinitive(_next_next)
-    if word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL and not _posto_inf:
+    _POSTPOSED_QUANT = {"todo", "toda", "todos", "todas", "mesmo", "mesma", "inteiro", "inteira"}
+    if (word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL
+            and next_word not in _POSTPOSED_QUANT and not _posto_inf):  # "o peso todo" = noun+modifier
         score += 3
     elif idx == 0 and next_word in _DE_CONTRACTIONS:
         score += 1
@@ -805,8 +817,9 @@ def _window(words: list, idx: int, left: int = 3, right: int = 3) -> list:
 
 def _resolve_bola(words: list, idx: int) -> str:
     """ball (open ɔ, ˈbɔlɐ) vs the *bôla* bread/cake (closed o, ˈbolɐ).  Loaf needs
-    a baking/charcuterie cue; the ball is the dominant default."""
-    return "loaf" if any(w in _BOLA_LOAF for w in _window(words, idx)) else "ball"
+    a baking/charcuterie cue anywhere in the sentence (recipe prose puts the cue
+    far from the word); the ball is the dominant default."""
+    return "loaf" if any(_strip(w) in _BOLA_LOAF for w in words) else "ball"
 
 
 def _resolve_cor(words: list, idx: int) -> str:
