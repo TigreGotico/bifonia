@@ -99,3 +99,33 @@ Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100,
 `gozo`) spaCy is pinned at ~50% (chance) — it has no POS signal to use — while the
 meaning-keyed rules resolve them. **This is bifonia's core value:
 meaning-based disambiguation where part-of-speech is uninformative.**
+
+## Balanced real-gold evaluation
+
+A second real-text set is mined from open sources (OpenSubtitles, news/food/health
+sites, Wikipedia) and labelled independently of the rules. Unlike the encyclopedic
+wild set it is **sense-balanced** — about **half its sentences are POS-ambiguous**
+readings (the same-POS pairs and minority verb senses), so it is a fair test of
+disambiguation rather than dominant-sense prediction.
+
+| approach | balanced real gold (1,576 sentences, 27 words) |
+|---|---|
+| most-common | 49.1% |
+| spaCy `pt_core_news_lg` (POS→sense) | 83.1% |
+| hybrid ensemble (POS tag ⊕ rules) | 96.1% |
+| **rules (zero-dependency)** | **96.8%** |
+
+![Balanced real gold — accuracy by approach](img/realgold_approaches.png)
+
+On this balanced set the **rules lead outright**, and adding a POS tag (the
+ensemble) slightly *lowers* accuracy: the tagger mis-tags some POS-separable
+readings the rules already get right. The split makes the reason explicit —
+
+![Real gold by subset](img/realgold_subset.png)
+
+on the **POS-ambiguous** half (n=722) a POS tagger sits at **72%** while the rules
+hold **97%**. The ensemble's lead on the encyclopedic wild set reflects that set's
+noun-skew (mostly POS-separable, dominant-sense sentences); on balanced data the
+meaning-keyed rules are the strongest single approach.
+
+![Rules per-word accuracy on real gold](img/realgold_perword.png)
