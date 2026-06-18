@@ -63,6 +63,9 @@ SENSE_CUES: dict[str, CueRule] = {
     "polo": CueRule("pole", (Cue("fledgling", "polo_fledgling_cues"),)),
     # colour (closed o, ˈkoɾ) vs the fixed adverbial "de cor" = by heart (open ɔ, ˈkɔɾ).
     "cor":  CueRule("colour", (Cue("by_heart", "cor_memory_cues", requires_prev="de"),)),
+    # shape (open ɔ, ˈfɔɾmɐ) vs the «fôrma» baking-tin/mould (closed o, ˈformɐ):
+    # baking/casting cues, else the abstract shape reading.
+    "forma": CueRule("shape", (Cue("mould", "mould_cues"),)),
 }
 
 
@@ -77,6 +80,7 @@ FEATURE_CUES: dict[str, tuple[str, str]] = {
     "lobo_lobe_cues":      ("lobo", "lobe"),
     "polo_fledgling_cues": ("polo", "fledgling"),
     "cor_memory_cues":     ("cor", "by_heart"),
+    "mould_cues":          ("forma", "mould"),
     "sede_seat_cues":      ("sede", "seat"),
     "sede_thirst_cues":    ("sede", "thirst"),
     "bundle_things":       ("molho", "bundle"),
