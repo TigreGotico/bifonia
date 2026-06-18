@@ -765,6 +765,8 @@ def _resolve_sede(words: list, idx: int) -> str:
         thirst += 3
     if prev_word in {"na", "à", "numa", "pela", "duma"}:   # locative: the HQ building
         seat += 2
+    if next_word in {"no", "na", "nos", "nas", "em"}:      # "sede no Porto" = HQ at a place
+        seat += 3
     # content cues in the window
     window = [_strip(words[i]) for i in range(max(0, idx - 3), min(len(words), idx + 4))
               if i != idx]
