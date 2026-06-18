@@ -35,7 +35,7 @@ from bifonia.data import POS_SENSES
 from bifonia.scoring import guess_pos as _rule_pos, resolve_sense as _rule_resolve
 from bifonia.model import SenseModel, NB_PATH, PERCEPTRON_PATH
 
-ROOT = pathlib.Path(__file__).parent
+ROOT = pathlib.Path(__file__).parent.parent
 DATA = ROOT / "bifonia" / "data" / "corpus.jsonl"
 TRAIN = ROOT / "hf" / "train.jsonl"
 TEST = ROOT / "hf" / "test.jsonl"

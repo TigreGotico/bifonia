@@ -168,8 +168,8 @@ TARGETS = [
     ("força", "strength", 1000),    ("força", "force", 1000),
 ]
 
-_PROMPTS_DIR = Path(__file__).parent / "prompts" / "pt-PT"
-_CORPUS_JSONL = Path(__file__).parent / "bifonia" / "data" / "corpus.jsonl"
+_PROMPTS_DIR = Path(__file__).parent.parent / "prompts" / "pt-PT"
+_CORPUS_JSONL = Path(__file__).parent.parent / "bifonia" / "data" / "corpus.jsonl"
 
 # European-Portuguese word characters, for standalone-token matching.
 _PT_WORD = "a-zA-ZáéíóúàâêôãõçÁÉÍÓÚÀÂÊÔÃÕÇ"
@@ -415,7 +415,7 @@ def merge_staged(staged_file: Path):
 
 
 async def main_async(word_filter, sense_filter, cwd):
-    staged_dir = Path(__file__).parent / "staged"
+    staged_dir = Path(__file__).parent.parent / "staged"
     targets = [t for t in TARGETS
                if (word_filter is None or t[0] == word_filter)
                and (sense_filter is None or t[1] == sense_filter)]
@@ -434,7 +434,7 @@ def main():
     parser.add_argument("--word", default=None)
     parser.add_argument("--sense", default=None)
     parser.add_argument("--merge", default=None, help="Staged file to merge into corpus")
-    parser.add_argument("--cwd", default=str(Path(__file__).parent))
+    parser.add_argument("--cwd", default=str(Path(__file__).parent.parent))
     args = parser.parse_args()
 
     if args.merge:

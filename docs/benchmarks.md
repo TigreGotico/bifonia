@@ -131,7 +131,7 @@ ensemble edges the bare rules by fusing a POS tag on the POS-separable readings.
 
 All disambiguation baselines here are **pure stdlib** (no numpy), fit on the
 synthetic train split and scored on the real wild gold, so they sit on the same
-honest footing as the rules. See `baselines.py` for the shared protocol.
+honest footing as the rules. See `scripts/baselines.py` for the shared protocol.
 
 | baseline | all words | POS-ambiguous (same-POS) |
 |---|---|---|

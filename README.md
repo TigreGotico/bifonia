@@ -140,7 +140,7 @@ bifonia/cues.py      SENSE_CUES + FEATURE_CUES — the cue registry            (
 bifonia/scoring.py   context rules + one generic cue resolver
 bifonia/features.py  language-agnostic features, incl. CUE:<sense> from the registry
 bifonia/locale/<lang>/*.voc   editable context + meaning wordlists
-baselines.py         a Baseline protocol + zero-dep baselines for benchmarking
+scripts/baselines.py         a Baseline protocol + zero-dep baselines for benchmarking
 ```
 
 The meaning cues that disambiguate same-spelling readings live in **one declarative
@@ -162,5 +162,5 @@ IPA, senses, and diacritized forms are in [`docs/word_references.md`](docs/word_
 - [`docs/benchmarks.md`](docs/benchmarks.md) — full benchmarks, subsets, and plots
 - [`docs/methodology.md`](docs/methodology.md) — algorithm and features
 - [`docs/usage.md`](docs/usage.md) — full API reference
-- [`baselines.py`](baselines.py) · [`benchmark_ood.py`](benchmark_ood.py) — reproduce the numbers
+- [`scripts/baselines.py`](scripts/baselines.py) · [`scripts/benchmark_ood.py`](scripts/benchmark_ood.py) — reproduce the numbers
 - [`examples/basic_usage.py`](examples/basic_usage.py) — runnable demo

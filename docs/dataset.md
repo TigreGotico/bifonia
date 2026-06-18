@@ -101,7 +101,7 @@ This dataset is suitable for:
 
 ## Splits
 
-`python dataset.py --hf` generates stratified 80/20 train/test splits under `hf/`:
+`python scripts/dataset.py --hf` generates stratified 80/20 train/test splits under `hf/`:
 
 ```
 hf/
@@ -150,12 +150,12 @@ Two datasets on the Hub, both with schema `{word, sense, pos, ipa, sentence}`:
   evaluation.
 - [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild)
   — real Wikipedia and web sentences forming an out-of-distribution (OOD) test set, labels
-  annotated by an LLM, licensed CC-BY-SA-4.0. `benchmark_ood.py` evaluates against it.
+  annotated by an LLM, licensed CC-BY-SA-4.0. `scripts/benchmark_ood.py` evaluates against it.
 
 After generating splits, push the synthetic dataset:
 
 ```bash
-python dataset.py --hf --out .
+python scripts/dataset.py --hf --out .
 
 # Then push to HF Hub (requires huggingface-cli login):
 huggingface-cli upload TigreGotico/bifonia-pt-homographs hf/ --repo-type dataset
