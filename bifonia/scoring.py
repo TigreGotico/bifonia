@@ -5,6 +5,9 @@ Each scorer returns an integer; higher = more confident.
 Negative scores signal anti-evidence for that POS.
 """
 
+import functools
+import unicodedata
+
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
     DEFAULT_POS, DEFAULT_SENSE, BASE_SCORE,
@@ -82,6 +85,7 @@ _BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the
 _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
 # noun/noun diacritic-collapse resolvers (open ɔ default vs closed-o marked reading)
 _BOLA_LOAF     = voc("bola_loaf_cues")      # bread/baking → "bôla" loaf (closed)
+_BOLA_BALL     = voc("bola_ball_cues")      # sport/play → ball (open), beats loaf
 _COR_MEMORY    = voc("cor_memory_cues")     # know/recite → "de cor" by heart (open)
 _LOBO_LOBE     = voc("lobo_lobe_cues")      # anatomy → lobe (open) vs wolf (closed)
 _POLO_BIRD     = voc("polo_fledgling_cues") # falconry → fledgling (closed) vs pole (open)
@@ -817,11 +821,39 @@ def _window(words: list, idx: int, left: int = 3, right: int = 3) -> list:
             if i != idx]
 
 
+def _fold(s: str) -> str:
+    """Strip combining accents for accent-insensitive cue matching ("Pascoa" →
+    matches the voc entry "páscoa"; real text routinely drops diacritics)."""
+    return "".join(c for c in unicodedata.normalize("NFD", s)
+                   if unicodedata.category(c) != "Mn")
+
+
+def _cue_score(words: list, idx: int, cues: frozenset, near: int = 4) -> int:
+    """Proximity-weighted count of cue hits across the whole sentence: a hit within
+    `near` tokens of the target counts double, a farther hit counts once.  Lets a
+    nearby decisive cue outweigh an incidental distant one while still seeing
+    sentence-wide context (recipe prose puts cues far from the word).  *cues* must
+    be an accent-folded set (see :func:`_folded`)."""
+    score = 0
+    for j, w in enumerate(words):
+        if j != idx and _fold(_strip(w)) in cues:
+            score += 2 if abs(j - idx) <= near else 1
+    return score
+
+
+@functools.lru_cache(maxsize=None)
+def _folded(cues: frozenset) -> frozenset:
+    return frozenset(_fold(c) for c in cues)
+
+
 def _resolve_bola(words: list, idx: int) -> str:
-    """ball (open ɔ, ˈbɔlɐ) vs the *bôla* bread/cake (closed o, ˈbolɐ).  Loaf needs
-    a baking/charcuterie cue anywhere in the sentence (recipe prose puts the cue
-    far from the word); the ball is the dominant default."""
-    return "loaf" if any(_strip(w) in _BOLA_LOAF for w in words) else "ball"
+    """ball (open ɔ, ˈbɔlɐ) vs the *bôla* bread/cake (closed o, ˈbolɐ).  Weigh the
+    baking/charcuterie cues against the sport/play cues; loaf wins only when its
+    cue total is strictly higher (so a football sentence with one stray food word
+    stays ball).  Ball is the default.  (Explicit «bôla»/«bóla» spellings are
+    resolved upstream straight off the diacritic.)"""
+    return ("loaf" if _cue_score(words, idx, _folded(_BOLA_LOAF))
+            > _cue_score(words, idx, _folded(_BOLA_BALL)) else "ball")
 
 
 def _resolve_cor(words: list, idx: int) -> str:
