@@ -129,3 +129,28 @@ noun-skew (mostly POS-separable, dominant-sense sentences); on balanced data the
 meaning-keyed rules are the strongest single approach.
 
 ![Rules per-word accuracy on real gold](img/realgold_perword.png)
+
+## Zero-dependency baselines
+
+All disambiguation baselines here are **pure stdlib** (no numpy), fit on the
+synthetic train split and scored on the real wild gold, so they sit on the same
+honest footing as the rules. See `baselines.py` for the shared protocol.
+
+| baseline | all words | POS-ambiguous (same-POS) |
+|---|---|---|
+| most-common (training majority) | 46.5% | 72.0% |
+| cue-only (sense-cue registry, no POS, no learning) | 52.6% | 87.5% |
+| decision-list (Yarowsky, one-sense-per-collocation) | 89.0% | 86.4% |
+| **rules (zero-dependency)** | **96.2%** | **98.3%** |
+
+![Zero-dependency baselines on real wild gold](img/baselines.png)
+
+Two things stand out. **The sense-cue registry alone reaches 87.5%** on the
+same-POS words a POS-tagger cannot separate — the curated cues carry most of the
+signal before any POS reasoning or learning is added. And the **trained Yarowsky
+decision list trails the rules out-of-distribution** (89.0% vs 96.2%), the same
+corpus-circularity effect seen with the Naive-Bayes and perceptron models: a
+model fit on rule-labelled synthetic text can at best mimic the rules and
+generalises worse on real sentences. The rules remain the strongest predictor; a
+numpy-only tier (logistic regression on the same features, TF-IDF
+nearest-neighbour) would slot into the same protocol for future comparison.
