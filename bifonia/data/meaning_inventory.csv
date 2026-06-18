@@ -1,17 +1,19 @@
 word,sense,pos,ipa,gloss
 abono,advance_payment,NOUN,ɐˈbonu,advance (of money)
+abono,allowance,NOUN,ɐˈbonu,(protected: operational roster)
 abono,financial_aid,NOUN,ɐˈbonu,financial aid; allowance/subsidy
 abono,hazard_supplement,NOUN,ɐˈbonu,supplementary pay compensating for job risks
 abono,interim_dividend,NOUN,ɐˈbonu,advance distribution to members anticipating a dividend
 abono,praise,NOUN,ɐˈbonu,praise; commendation (elogio)
 abono,surety_guarantee,NOUN,ɐˈbonu,"surety, guarantee (fiança)"
-abono,vouch,VERB,ɐˈbɔnu,to vouch for; to guarantee; to advance (money)
+abono,vouch,VERB,ɐˈbɔnu,to vouch for; to guarantee; to advance (money) (1sg of abonar)
 aborto,aborted_fetus,NOUN,ɐˈboɾtu,a fetus in that aborted condition
 aborto,abortion,NOUN,ɐˈboɾtu,miscarriage or induced abortion of a fetus
 aborto,abortive_organ,NOUN,ɐˈboɾtu,an organ in that arrested condition
 aborto,arrested_organ_development,NOUN,ɐˈboɾtu,arrest of an organ's natural development
 aborto,monstrosity,NOUN,ɐˈboɾtu,aberration; monstrosity
 aborto,abort,VERB,ɐˈbɔɾtu,to abort; to cancel; to cause to fail (1sg of abortar)
+abrolho,caltrop,NOUN,ɐˈbɾoʎu,(protected: operational roster)
 abrolho,caltrop_plant,NOUN,ɐˈbɾoʎu,"caltrop plant (Zygophyllaceae), yellow flowers, spiny fruit"
 abrolho,obstacle_difficulty,NOUN,ɐˈbɾoʎu,setback; difficulty; obstacle
 abrolho,sharp_point,NOUN,ɐˈbɾoʎu,sharp point
@@ -19,7 +21,7 @@ abrolho,shoot_sprout_noun,NOUN,ɐˈbɾoʎu,shoot; sprout (rebento)
 abrolho,spiny_fruit,NOUN,ɐˈbɾoʎu,the spiny fruit of that plant
 abrolho,submerged_reef,NOUN,ɐˈbɾoʎu,rock just below the water surface; shoal
 abrolho,thorn,NOUN,ɐˈbɾoʎu,thorn of any plant
-abrolho,sprout,VERB,ɐˈbɾɔʎu,to sprout; to make put forth shoots (1sg of abrolhar)
+abrolho,sprout,VERB,ɐˈbɾɔʎu,to sprout; to put forth shoots (1sg of abrolhar)
 aceno,hint,NOUN,ɐˈsenu,indication; hint (indício)
 aceno,nod,NOUN,ɐˈsenu,"act of gesturing; a gesture/sign with head, eyes or hands"
 aceno,beckon,VERB,ɐˈsɛnu,to beckon; to signal; to allude (1sg of acenar)
@@ -34,11 +36,11 @@ acordo,consonance,NOUN,ɐˈkoɾdu,consonance; harmony (consonância)
 acordo,judicial_settlement,NOUN,ɐˈkoɾdu,settlement ending a lawsuit by mutual acceptance of a solution
 acordo,wake,VERB,ɐˈkɔɾdu,to wake; to arouse (emotion); to tune (voices) (1sg of acordar)
 adorno,adornment,NOUN,ɐˈdoɾnu,that which embellishes or makes more attractive; ornament
-adorno,adorn,VERB,ɐˈdɔɾnu,to adorn; to deck out; to lean over; to submerge (1sg of adornar)
-almoço,breakfast,NOUN,ɐɫˈmosu,"first meal of the day, taken on rising (regional/older usage)"
-almoço,lunch,NOUN,ɐɫˈmosu,"lunch; one of the main meals, usually early afternoon"
-almoço,lunch_food,NOUN,ɐɫˈmosu,the food served at that meal
-almoço,dine,VERB,ɐɫˈmɔsu,to have lunch; to eat at lunch (1sg of almoçar)
+adorno,adorn,VERB,ɐˈdɔɾnu,to adorn; to deck out (1sg of adornar)
+almoço,breakfast,NOUN,aɫˈmosu,"first meal of the day, taken on rising (regional/older usage)"
+almoço,lunch,NOUN,aɫˈmosu,"lunch; one of the main meals, usually early afternoon"
+almoço,lunch_food,NOUN,aɫˈmosu,the food served at that meal
+almoço,dine,VERB,aɫˈmɔsu,to have lunch (1sg of almoçar)
 apego,attachment,NOUN,ɐˈpeɡu,attachment; affection binding one to people or things one likes
 apego,plough_beam,NOUN,ɐˈpeɡu,beam/pole of the plough (timão da charrua)
 apego,tenacity,NOUN,ɐˈpeɡu,tenacity; persistence
@@ -63,15 +65,15 @@ arremedo,imitation,NOUN,ɐʁɨˈmedu,act or effect of imitating; imperfect imita
 arremedo,semblance,NOUN,ɐʁɨˈmedu,"appearance, semblance"
 arremedo,trace,NOUN,ɐʁɨˈmedu,a trace or vestige
 arremedo,vague_resemblance,NOUN,ɐʁɨˈmedu,a vague or blurred resemblance
-arremedo,mimic,VERB,ɐʁɨˈmɛdu,I crudely/provocatively imitate (1sg pres of arremedar)
+arremedo,mimic,VERB,ɐʁɨˈmɛdu,I mimic / imitate (1sg pres of arremedar)
 arremesso,great_courage,NOUN,ɐʁɨˈmesu,great courage
 arremesso,impetus,NOUN,ɐʁɨˈmesu,"a sudden gesture, impulse, impetus"
 arremesso,offensive_action,NOUN,ɐʁɨˈmesu,an offensive/aggressive action
 arremesso,telltale_gesture,NOUN,ɐʁɨˈmesu,a gesture or movement that signals an act
 arremesso,throw,NOUN,ɐʁɨˈmesu,act of throwing/hurling; the thing thrown
-arremesso,fling,VERB,ɐʁɨˈmɛsu,I hurl/fling far from myself (1sg pres of arremessar)
+arremesso,fling,VERB,ɐʁɨˈmɛsu,I hurl/fling (1sg pres of arremessar)
 arrepelo,hair_pulling,NOUN,ɐʁɨˈpelu,a hard pull of the hair (= arrepelao)
-arrepelo,snatch,VERB,ɐʁɨˈpɛlu,"I pull/yank (hair, fur, feathers) hard (1sg pres of arrepelar)"
+arrepelo,snatch,VERB,ɐʁɨˈpɛlu,I yank/pull hard (1sg pres of arrepelar)
 arrojo,act_of_hurling,NOUN,ɐˈʁoʒu,act of hurling; a throw
 arrojo,animosity,NOUN,ɐˈʁoʒu,animosity
 arrojo,boldness,NOUN,ɐˈʁoʒu,"daring, boldness, courage"
@@ -83,7 +85,7 @@ arroto,burp,VERB,ɐˈʁɔtu,I belch / expel stomach gas through the mouth (1sg p
 atropelo,muddle,NOUN,ɐtɾuˈpelu,"fluster, embarrassment, confusion"
 atropelo,running_over,NOUN,ɐtɾuˈpelu,act or effect of running someone over; a traffic knock-down
 atropelo,trampling,NOUN,ɐtɾuˈpelu,"disregard/violation of a rule, principle or right"
-atropelo,run_over,VERB,ɐtɾuˈpɛlu,I run over / knock down (vehicle hitting person/animal) (1sg pres of atropelar)
+atropelo,run_over,VERB,ɐtɾuˈpɛlu,I run over / knock down (1sg pres of atropelar)
 azedo,azedo_sausage,NOUN,ɐˈzedu,Tras-os-Montes smoked sausage with a sour tang ('alheira dos pobres')
 azedo,ill_tempered,ADJ,ɐˈzedu,"harsh, bad-tempered; (of a person) embittered and hard to deal with"
 azedo,sour,ADJ,ɐˈzedu,"tasting like lemon or vinegar; acidic, bitter"
@@ -95,12 +97,12 @@ bola,fresh_cheese,NOUN,ˈbolɐ,large fresh sheep's-milk cheese
 bola,loaf,NOUN,ˈbolɐ,savoury bread-dough dish baked with meats/sausages
 bola,round_flatbread,NOUN,ˈbolɐ,round flat loaf of rye or maize bread (broa)
 bola,ball,NOUN,ˈbɔlɐ,any spherical body; sports/game ball
-bola,bribe,NOUN,ˈbɔlɐ,money given to someone to do something illegal/reprehensible; bribe
+bola,bribe,NOUN,ˈbɔlɐ,money given to do something illegal/reprehensible; bribe
 bola,circle_figure,NOUN,ˈbɔlɐ,a circle or circular figure
 bola,coal_ball,NOUN,ˈbɔlɐ,ball of compressed coal dust used to keep stoves warm
 bola,football,NOUN,ˈbɔlɐ,football (the sport)
 bola,goal,NOUN,ˈbɔlɐ,a goal (score)
-bola,head,NOUN,ˈbɔlɐ,(slang) the head
+bola,head,NOUN,ˈbɔlɐ,(colloquial) the head
 bola,palmatoria_strike,NOUN,ˈbɔlɐ,a blow on the palm with a ferule (palmatoria)
 bola,play,NOUN,ˈbɔlɐ,a play or move in a game/sport
 bola,testicles,NOUN,ˈbɔlɐ,(slang) testicles
@@ -123,7 +125,7 @@ choco,cuttlefish,NOUN,ˈʃoku,"cuttlefish (cephalopod mollusc, genus Sepia)"
 choco,flat,ADJ,ˈʃoku,(of a drink) that has lost its fizz
 choco,listless,ADJ,ˈʃoku,lacking any will to do anything; listless
 choco,rotten,ADJ,ˈʃoku,"rotten, gone bad"
-choco,hatch,VERB,ˈʃɔku,I brood/incubate (keep egg at temperature) (1sg pres of chocar)
+choco,hatch,VERB,ˈʃɔku,I brood/incubate (1sg pres of chocar)
 choro,animal_wail,NOUN,ˈʃoɾu,"moan, howl or plaintive sound made by some animals"
 choro,choro_music,NOUN,ˈʃoɾu,"choro, a melodious sentimental genre of Brazilian popular music"
 choro,funeral_wake,NOUN,ˈʃoɾu,"funeral ceremony honouring the dead, with music and chants"
@@ -132,6 +134,7 @@ choro,plaintive_sound,NOUN,ˈʃoɾu,plaintive or melancholic sound of certain mu
 choro,sap_weeping,NOUN,ˈʃoɾu,exudation of raw sap from cut surfaces of plants
 choro,weeping,NOUN,ˈʃoɾu,"act of weeping, shedding tears in reaction to pain or strong emotion"
 choro,weep,VERB,ˈʃɔɾu,"1sg present of chorar: to weep, shed tears"
+cobro,cessation,NOUN,ˈkobɾu,(protected: operational roster)
 cobro,collection,NOUN,ˈkobɾu,act or effect of charging/collecting what is owed
 cobro,crown_levy,NOUN,ˈkobɾu,feudal due levied by the crown on tenants of certain royal lands
 cobro,end,NOUN,ˈkobɾu,"end, term, stop (as in 'pôr cobro a' = to put a stop to)"
@@ -155,12 +158,14 @@ colher,spoon_shaped_tool,NOUN,kuˈʎɛɾ,extensive name for various spoon-shaped
 colher,spoonful,NOUN,kuˈʎɛɾ,"spoonful, the contents of a spoon"
 colmo,culm,NOUN,ˈkoɫmu,"culm, jointed stem with sheathing leaves as in grasses"
 colmo,thatch_straw,NOUN,ˈkoɫmu,straw used to roof some huts (thatch)
-colmo,thatch_verb,VERB,ˈkɔɫmu,to thatch / fill a gap (1sg of colmar)
+colmo,thatch,VERB,ˈkɔɫmu,(protected: operational roster)
+colmo,thatch_verb,VERB,ˈkɔɫmu,1sg present of colmar: to thatch (roof with straw)
 começo,beginning,NOUN,kuˈmesu,fact of beginning; first instant of existence or execution of something
 começo,cause,NOUN,kuˈmesu,cause
 começo,first_attempts,NOUN,kuˈmesu,first attempts or experiences; trial run (ensaio)
 começo,origin,NOUN,kuˈmesu,"origin, source"
 começo,begin,VERB,kuˈmɛsu,"1sg present of começar: to begin, start"
+conforto,comfort,NOUN,kõˈfoɾtu,(protected: operational roster)
 conforto,comfort_act,NOUN,kõˈfoɾtu,act or effect of comforting
 conforto,convenience,NOUN,kõˈfoɾtu,"comfort, convenience, amenity (comodidade)"
 conforto,solace,NOUN,kõˈfoɾtu,"aid, solace in distress"
@@ -174,6 +179,7 @@ conserto,makeshift_remedy,NOUN,kõˈseɾtu,"makeshift remedy, stopgap (remedeio)
 conserto,patch,NOUN,kõˈseɾtu,"patch, mend (remendo)"
 conserto,repair,NOUN,kõˈseɾtu,act or effect of repairing; repair
 conserto,mend,VERB,kõˈsɛɾtu,"1sg present of consertar: to mend, repair, fix"
+consolo,consolation,NOUN,kõˈsolu,(protected: operational roster)
 consolo,consolation_act,NOUN,kõˈsolu,act or effect of consoling
 consolo,console_table,NOUN,kõˈsolu,console table: long narrow table set against a wall for decorative objects
 consolo,solace,NOUN,kõˈsolu,that which relieves or comforts
@@ -212,11 +218,14 @@ coro,refrain,NOUN,ˈkoɾu,passage repeated at the end of each stanza (music or l
 coro,blush,VERB,ˈkɔɾu,"to redden, make colours rise (1sg pres. of corar)"
 corte,cattle_pen,NOUN,ˈkoɾtɨ,enclosure where livestock is kept (fem.)
 corte,circle_of_flatterers,NOUN,ˈkoɾtɨ,circle of sycophants (fem.)
+corte,court,NOUN,ˈkoɾtɨ,(protected: operational roster)
+corte,court_martial,NOUN,ˈkoɾtɨ,(protected: operational roster)
+corte,court_of_law,NOUN,ˈkoɾtɨ,(protected: operational roster)
 corte,courtiers,NOUN,ˈkoɾtɨ,the people who reside at and surround a king (fem.)
-corte,courtship,NOUN,ˈkoɾtɨ,"wooing, galanteio (fem.)"
+corte,courtship,NOUN,ˈkoɾtɨ,wooing (fem.)
 corte,parliament,NOUN,ˈkoɾtɨ,assembly of a nation's representatives; parliament (fem.)
 corte,pigsty_stall,NOUN,ˈkoɾtɨ,division of a pigsty (fem.)
-corte,retinue,NOUN,ˈkoɾtɨ,"entourage, séquito (fem.)"
+corte,retinue,NOUN,ˈkoɾtɨ,entourage (fem.)
 corte,royal_court,NOUN,ˈkoɾtɨ,residence of a monarch and those who reside with them (fem.)
 corte,blade_edge,NOUN,ˈkɔɾtɨ,the cutting edge of a sharp instrument
 corte,book_edge,NOUN,ˈkɔɾtɨ,each of the three surfaces formed by the edges of a closed book's leaves
@@ -250,42 +259,45 @@ desacordo,discord_musical,NOUN,dɨzɐˈkoɾdu,"musical discord, being out of tun
 desacordo,faint,NOUN,dɨzɐˈkoɾdu,"a faint, swoon"
 desacordo,disagree,VERB,dɨzɐˈkɔɾdu,to put out of accord/harmony (1sg pres. of desacordar)
 desafogo,affluence,NOUN,dɨzɐˈfoɡu,"ampleness of means, financial comfort"
-desafogo,ease,NOUN,dɨzɐˈfoɡu,"freedom from constraint, unburdening (desembaraço)"
+desafogo,ease,NOUN,dɨzɐˈfoɡu,"freedom from constraint, unburdening"
 desafogo,relief,NOUN,dɨzɐˈfoɡu,freeing from what suffocates or oppresses; alleviation
 desafogo,relieve,VERB,dɨzɐˈfɔɡu,to free from what suffocates or oppresses (1sg pres. of desafogar)
 desaforo,insolence,NOUN,dɨzɐˈfoɾu,"scandal; insolence, affront"
 desaforo,affront,VERB,dɨzɐˈfɔɾu,to exempt from paying ground-rent; to judge in a different jurisdiction (1sg pres. of desaforar)
 desapego,abandonment,NOUN,dɨzɐˈpeɡu,"abandonment, neglect"
 desapego,indifference,NOUN,dɨzɐˈpeɡu,"indifference, detachment"
-desapego,lack_of_affection,NOUN,dɨzɐˈpeɡu,lack of love/affection (desamor)
+desapego,lack_of_affection,NOUN,dɨzɐˈpeɡu,lack of love/affection
 desapego,let_go,VERB,dɨzɐˈpɛɡu,"to detach, unstick; become less attached (1sg pres. of desapegar)"
 desassossego,agitation,NOUN,dɨzɐsuˈseɡu,"agitation, turmoil"
 desassossego,disquiet,NOUN,dɨzɐsuˈseɡu,lack of calm; restlessness
 desassossego,unease,NOUN,dɨzɐsuˈseɡu,"inquietude, anxiety"
 desassossego,disturb,VERB,dɨzɐsuˈsɛɡu,to deprive of calm; to make restless (1sg pres. of desassossegar)
 desconforto,discomfort,NOUN,dɨʃkõˈfoɾtu,lack of comfort or convenience
-desconforto,dismay,NOUN,dɨʃkõˈfoɾtu,"disconsolation, dejection (desconsolo)"
+desconforto,dismay,NOUN,dɨʃkõˈfoɾtu,"disconsolation, dejection"
 desconforto,discomfit,VERB,dɨʃkõˈfɔɾtu,to take comfort from; to unsettle (1sg pres. of desconfortar)
 desconsolo,disconsolation,NOUN,dɨʃkõˈsolu,"sadness, grief, sorrow"
 desconsolo,dissatisfaction,NOUN,dɨʃkõˈsolu,"dissatisfaction, discontent"
 desconsolo,dishearten,VERB,dɨʃkõˈsɔlu,to cause disconsolation (1sg pres. of desconsolar)
+desdobro,unfolding,NOUN,dɨʒˈdobɾu,(protected: operational roster)
 desdobro,unfolding_machine,NOUN,dɨʒˈdobɾu,machine for unfolding/spreading out
 desdobro,unfold,VERB,dɨʒˈdɔbɾu,"1sg present of desdobrar: to unfold, spread open, separate"
 desempeno,agility,NOUN,dɨzẽˈpenu,"agility, nimbleness; ease, self-assurance (à-vontade)"
 desempeno,gracefulness,NOUN,dɨzẽˈpenu,"grace, poise (garbo)"
 desempeno,straightening,NOUN,dɨzẽˈpenu,"act/effect of straightening; flattening, levelling"
-desempeno,surface_plate,NOUN,dɨzẽˈpenu,rule/plate used to check the flatness of a piece or surface
+desempeno,surface_plate,NOUN,dɨzẽˈpenu,straightedge/plate used to check the flatness of a piece or surface
 desempeno,straighten,VERB,dɨzẽˈpɛnu,"1sg present of desempenar: to straighten, take the warp out of"
 desemperro,ease,NOUN,dɨzẽˈpeʁu,"unimpeded ease, freedom of movement (desembaraço)"
 desemperro,free_moving_state,NOUN,dɨzẽˈpeʁu,state of moving/sliding/articulating without difficulty
 desemperro,unjamming,NOUN,dɨzẽˈpeʁu,"act/effect of unjamming, of freeing what was stuck"
 desemperro,unjam,VERB,dɨzẽˈpɛʁu,"1sg present of desemperrar: to unjam, loosen, free up"
+desempeço,free_up,VERB,dɨzẽˈpesu,"1sg present of desempecer: to free up, clear of obstacles"
 desempeço,relief,NOUN,dɨzẽˈpesu,relief (alívio)
 desempeço,riddance,NOUN,dɨzẽˈpesu,act/effect of removing an obstacle; removal of what hinders
-desempeço,free_up,VERB,dɨzẽˈpɛsu,"1sg present of desempecer: to free up, clear of obstacles"
 desemprego,unemployment,NOUN,dɨzẽˈpɾeɡu,lack of employment; condition of being out of work
 desemprego,unemployment_rate,NOUN,dɨzẽˈpɾeɡu,number of people without a job in an area or sector
+desemprego,noun,NOUN,dɨzẽˈpɾeɡu,(protected: operational roster)
 desemprego,lay_off,VERB,dɨzẽˈpɾɛɡu,1sg present of desempregar: to lay off / leave one's job
+desemprego,verb,VERB,dɨzẽˈpɾɛɡu,(protected: operational roster)
 desenredo,denouement,NOUN,dɨzẽˈʁedu,"denouement, resolution of a plot (desenlace)"
 desenredo,disentanglement,NOUN,dɨzẽˈʁedu,separation of what is entangled or tangled up
 desenredo,intrigue_exposure,NOUN,dɨzẽˈʁedu,discovery or neutralization of an intrigue/conspiracy
@@ -303,7 +315,7 @@ desgosto,sorrow,NOUN,dɨʒˈɡoʃtu,"sorrow, grief (mágoa)"
 desgosto,dislike,VERB,dɨʒˈɡɔʃtu,1sg present of desgostar: to displease / not like / lose taste for
 desmantelo,dismantling,NOUN,dɨʒmɐ̃ˈtelu,act/effect of dismantling
 desmantelo,genital_disorder,NOUN,dɨʒmɐ̃ˈtelu,any female genital disturbance
-desmantelo,menstruation,NOUN,dɨʒmɐ̃ˈtelu,menstruation (colloquial)
+desmantelo,menstruation,NOUN,dɨʒmɐ̃ˈtelu,menstruation
 desmantelo,dismantle,VERB,dɨʒmɐ̃ˈtɛlu,"1sg present of desmantelar: to dismantle, demolish, take apart"
 despego,detachment,NOUN,dɨʃˈpeɡu,"lack of attachment/affection, indifference"
 despego,detachment_act,NOUN,dɨʃˈpeɡu,"act/effect of detaching, unsticking"
@@ -314,7 +326,7 @@ despojo,estate_inheritance,NOUN,dɨsˈpoʒu,estate left by a deceased person; in
 despojo,mortal_remains,NOUN,dɨsˈpoʒu,"mortal remains, dead body"
 despojo,spoils,NOUN,dɨsˈpoʒu,"spoils, booty, prey taken"
 despojo,strip,VERB,dɨsˈpɔʒu,"I strip, deprive, rob (1sg present of despojar)"
-desprezo,contempt,NOUN,dɨʃˈpɾezu,lack of esteem or appreciation
+desprezo,contempt,NOUN,dɨʃˈpɾezu,lack of esteem or appreciation; contempt
 desprezo,contempt_act,NOUN,dɨʃˈpɾezu,act or effect of despising
 desprezo,disregard,NOUN,dɨʃˈpɾezu,disregard for someone or something
 desprezo,despise,VERB,dɨʃˈpɾɛzu,"I despise, scorn, disregard (1sg present of desprezar)"
@@ -328,7 +340,8 @@ desvelo,great_affection,NOUN,dɨʒˈvelu,"extreme fondness, great affection"
 desvelo,loving_care,NOUN,dɨʒˈvelu,"loving care, solicitude"
 desvelo,object_of_devotion,NOUN,dɨʒˈvelu,object or person toward whom such feelings are held
 desvelo,vigilance,NOUN,dɨʒˈvelu,"vigilance, watchfulness"
-desvelo,unveil,VERB,dɨʒˈvɛlu,"I unveil, watch over, take great care (1sg present of desvelar)"
+desvelo,unveil,VERB,dɨʒˈvɛlu,"I watch over, take great care; lose sleep (1sg present of desvelar)"
+dobro,double,NOUN,ˈdobɾu,(protected: operational roster)
 dobro,double_amount,NOUN,ˈdobɾu,the double; a value or quantity twice as large
 dobro,fold,VERB,ˈdɔbɾu,"I fold, bend, double (1sg present of dobrar)"
 domo,dome,NOUN,ˈdomu,outer upper part of a cupola; dome
@@ -366,46 +379,46 @@ enredo,complication,NOUN,ẽˈʁedu,complicated situation; confusion
 enredo,entanglement,NOUN,ẽˈʁedu,act of entangling; embarrassment; tangle
 enredo,intrigue,NOUN,ẽˈʁedu,"intrigue, scheming"
 enredo,plot,NOUN,ẽˈʁedu,set of events making up the action of a narrative
-enredo,entangle,VERB,ẽˈʁɛdu,"to entangle, ensnare, confuse"
+enredo,entangle,VERB,ẽˈʁɛdu,"(1sg) I entangle, ensnare, confuse"
 entorno,neighborhood_topology,NOUN,ẽˈtoɾnu,"in topology, set of points around a given point"
 entorno,outskirts,NOUN,ẽˈtoɾnu,area surrounding a town or city
 entorno,surroundings,NOUN,ẽˈtoɾnu,that which surrounds something or someone
-entorno,spill,VERB,ẽˈtɔɾnu,"to tip/overturn a vessel, spilling its contents"
+entorno,spill,VERB,ẽˈtɔɾnu,"(1sg) I tip/overturn, spilling the contents"
 erro,error,NOUN,ˈeʁu,"incorrect decision, act or answer"
 erro,error_value,NOUN,ˈeʁu,deviation between exact value and measured/computed value
 erro,falsehood,NOUN,ˈeʁu,quality of what does not correspond to truth
 erro,fault,NOUN,ˈeʁu,"fault, lapse"
 erro,misjudgement,NOUN,ˈeʁu,appraisal at odds with observed reality
-erro,err,VERB,ˈɛʁu,"to make a mistake, be wrong, miss"
+erro,err,VERB,ˈɛʁu,"(1sg) I make a mistake, am wrong, miss"
 esboço,beginning,NOUN,ɨʒˈbosu,beginning; action started but not completed; early perfectible stage
 esboço,general_notions,NOUN,ɨʒˈbosu,"general notions, rough idea"
 esboço,sketch,NOUN,ɨʒˈbosu,initial outline of a drawing or painting
 esboço,summary,NOUN,ɨʒˈbosu,summary; brief plan; synopsis of a literary work
-esboço,outline,VERB,ɨʒˈbɔsu,"to sketch, outline, give a faint idea of"
+esboço,outline,VERB,ɨʒˈbɔsu,"(1sg) I sketch, outline, give a faint idea of"
 escabelo,chest_bench,NOUN,ɨʃkɐˈbelu,long wide bench whose movable seat is the lid of a chest
 escabelo,stool,NOUN,ɨʃkɐˈbelu,low seat; footstool
-escabelo,dishevel,VERB,ɨʃkɐˈbɛlu,to tear out hair/fur; to dishevel
+escabelo,dishevel,VERB,ɨʃkɐˈbɛlu,(protected: operational roster)
 escorço,cork_vessel,NOUN,ɨʃˈkoɾsu,"cork vessel, also called corticeira"
 escorço,foreshortening,NOUN,ɨʃˈkoɾsu,reduction of a drawing's dimensions; figure smaller than the object
 escorço,small_work,NOUN,ɨʃˈkoɾsu,small-scale work
 escorço,synthesis,NOUN,ɨʃˈkoɾsu,"synthesis; sketch, brief outline"
-escorço,foreshorten,VERB,ɨʃˈkɔɾsu,to make a foreshortening of
+escorço,foreshorten,VERB,ɨʃˈkɔɾsu,(protected: operational roster)
 esforço,attempt,NOUN,ɨʃˈfoɾsu,attempt; diligence
 esforço,courage,NOUN,ɨʃˈfoɾsu,courage
 esforço,effort,NOUN,ɨʃˈfoɾsu,act/effect of striving; use of force or energy
-esforço,strive,VERB,ɨʃˈfɔɾsu,to encourage; to make an effort; to take courage
+esforço,strive,VERB,ɨʃˈfɔɾsu,"(1sg) I make an effort, take courage"
 esmero,meticulousness,NOUN,ɨʒˈmeɾu,act/effect of taking great care; extreme care
 esmero,perfection,NOUN,ɨʒˈmeɾu,perfection; correctness
-esmero,perfect,VERB,ɨʒˈmɛɾu,to do with care; to perfect (oneself)
+esmero,perfect,VERB,ɨʒˈmɛɾu,(1sg) I do with care; I perfect (myself)
 espeto,beanpole,NOUN,ɨʃˈpetu,"tall, very thin person"
 espeto,nuisance,NOUN,ɨʃˈpetu,"nuisance, bother"
 espeto,skewer,NOUN,ɨʃˈpetu,iron/wood rod for roasting meat or fish; pointed stick
-espeto,stab,VERB,ɨʃˈpɛtu,to pierce with a skewer or pointed object
+espeto,stab,VERB,ɨʃˈpɛtu,(1sg) I pierce with a skewer or pointed object
 estofo,mettle,NOUN,ɨʃˈtofu,condition; physical or psychological resilience; quality
 estofo,stuffing,NOUN,ɨʃˈtofu,cotton/wool padding used to cushion chairs and sofas
 estofo,upholstered_furniture,NOUN,ɨʃˈtofu,furniture covered with upholstery fabric
 estofo,upholstery_fabric,NOUN,ɨʃˈtofu,"thick fabric used to cover sofas, chairs, curtains"
-estofo,upholster,VERB,ɨʃˈtɔfu,to upholster; to stuff with soft material
+estofo,upholster,VERB,ɨʃˈtɔfu,(1sg) I upholster; I stuff with soft material
 forma,cheese_mould,NOUN,ˈfoɾmɐ,hoop/mould in which cheese is pressed
 forma,hat_block,NOUN,ˈfoɾmɐ,piece used in millinery to mould a hat crown; the crown itself; hat frame
 forma,mould,NOUN,ˈfoɾmɐ,mould over/in which something is made taking its shape and dimensions
@@ -423,7 +436,7 @@ forma,manner,NOUN,ˈfɔɾmɐ,"way, manner"
 forma,pharma_form,NOUN,ˈfɔɾmɐ,presentation form of a pharmaceutical product
 forma,ritual_words,NOUN,ˈfɔɾmɐ,words accompanying a rite
 forma,shape,NOUN,ˈfɔɾmɐ,outer limits/contours of an object giving it a configuration
-forma,shape_verb,VERB,ˈfɔɾmɐ,"to shape, form (de forma a / de forma que)"
+forma,shape_verb,VERB,ˈfɔɾmɐ,"(1sg) I shape, form"
 forma,troop_formation,NOUN,ˈfɔɾmɐ,ordered arrangement of troops
 forma,vague_form,NOUN,ˈfɔɾmɐ,"object perceived confusedly, indistinct figure"
 forro,attic_space,NOUN,ˈfoʁu,space between ceiling and roof
@@ -443,12 +456,12 @@ forro,saved_up,ADJ,ˈfoʁu,"saved, economized"
 forro,upholstery,NOUN,ˈfoʁu,"covering/lining of chairs, sofas, etc."
 forro,wallpaper,NOUN,ˈfoʁu,paper that lines the walls
 forro,well_off,ADJ,ˈfoʁu,"well-off, in funds (abonado)"
-forro,line,VERB,ˈfɔʁu,to line with fabric/paper/material; to pad; to reinforce
+forro,line,VERB,ˈfɔʁu,to line with fabric/paper/material; to pad; to reinforce (1sg of forrar)
 força,by_force,NOUN,ˈfoɾsɐ,by coercion / forcibly (a forca)
 força,cause,NOUN,ˈfoɾsɐ,cause
 força,coercion,NOUN,ˈfoɾsɐ,"set of means used to compel someone (force, coercion)"
-força,encouragement,NOUN,ˈfoɾsɐ,"support, encouragement (dar uma forca)"
-força,go_ahead,NOUN,ˈfoɾsɐ,interjection of encouragement (forca!)
+força,encouragement,NOUN,ˈfoɾsɐ,(protected: operational roster)
+força,go_ahead,NOUN,ˈfoɾsɐ,(protected: operational roster)
 força,hernia,NOUN,ˈfoɾsɐ,hernia
 força,impulse,NOUN,ˈfoɾsɐ,"impulse, momentum"
 força,influence,NOUN,ˈfoɾsɐ,capacity to exert influence over others
@@ -457,6 +470,7 @@ força,physical_force,NOUN,ˈfoɾsɐ,any cause able to deform or change a body's
 força,power_of_action,NOUN,ˈfoɾsɐ,strong capacity for action of something
 força,strength,NOUN,ˈfoɾsɐ,faculty to operate/act/move; muscular or mental energy
 força,force,VERB,ˈfɔɾsɐ,to compel by force; to obtain by force (1sg of forcar)
+fosso,ditch,NOUN,ˈfosu,(protected: operational roster)
 fosso,drainage_ditch,NOUN,ˈfosu,furrow in the ground to drain water
 fosso,gulf_between,NOUN,ˈfosu,great distance/gulf between people or things
 fosso,moat,NOUN,ˈfosu,deep regular excavation around fortifications to block the enemy
@@ -474,16 +488,17 @@ golfo,gulf,NOUN,ˈɡoɫfu,"large coastal indentation, bigger than a bay"
 golfo,spurt,NOUN,ˈɡoɫfu,portion of liquid gushing out forcefully at once (golfada)
 golfo,water_lily,NOUN,ˈɡoɫfu,water lily plant of genus Nymphaea
 golfo,spew,VERB,ˈɡɔɫfu,to spew out in gushes; to utter impetuously (1sg of golfar)
-gosto,aesthetic_taste,NOUN,ˈgoʃtu,capacity to appreciate aesthetic value
-gosto,artistic_style,NOUN,ˈgoʃtu,particular stamp an artist gives to their work
-gosto,criterion,NOUN,ˈgoʃtu,"criterion, judgement"
-gosto,elegance,NOUN,ˈgoʃtu,elegance
-gosto,fashion,NOUN,ˈgoʃtu,"fashion, taste of the time"
-gosto,flavour,NOUN,ˈgoʃtu,flavour of food
-gosto,liking,NOUN,ˈgoʃtu,"liking, agreeableness (agrado)"
-gosto,pleasure,NOUN,ˈgoʃtu,impression or pleasure given by something
-gosto,taste_sense,NOUN,ˈgoʃtu,the sense by which flavour is perceived
-gosto,like,VERB,ˈgɔʃtu,to find pleasant/tasty; to enjoy; to be fond of (1sg of gostar)
+gosto,aesthetic_taste,NOUN,ˈɡoʃtu,capacity to appreciate aesthetic value
+gosto,artistic_style,NOUN,ˈɡoʃtu,particular stamp an artist gives to their work
+gosto,criterion,NOUN,ˈɡoʃtu,"criterion, judgement"
+gosto,elegance,NOUN,ˈɡoʃtu,elegance
+gosto,fashion,NOUN,ˈɡoʃtu,"fashion, taste of the time"
+gosto,flavour,NOUN,ˈɡoʃtu,flavour of food
+gosto,liking,NOUN,ˈɡoʃtu,"liking, agreeableness (agrado)"
+gosto,pleasure,NOUN,ˈɡoʃtu,impression or pleasure given by something
+gosto,taste,NOUN,ˈɡoʃtu,(protected: operational roster)
+gosto,taste_sense,NOUN,ˈɡoʃtu,the sense by which flavour is perceived
+gosto,like,VERB,ˈɡɔʃtu,to find pleasant/tasty; to enjoy; to be fond of (1sg of gostar)
 governo,arrangement,NOUN,ɡuˈveɾnu,"arrangement, ordering (arranjo)"
 governo,cabinet,NOUN,ɡuˈveɾnu,set of individuals elected/appointed to exercise those powers
 governo,control,NOUN,ɡuˈveɾnu,capacity of control over
@@ -500,10 +515,10 @@ governo,system_of_government,NOUN,ɡuˈveɾnu,political system by which a State 
 governo,term_of_office,NOUN,ɡuˈveɾnu,duration of a governmental term
 governo,way_of_managing,NOUN,ɡuˈveɾnu,way in which something is administered or directed; orientation
 governo,govern,VERB,ɡuˈvɛɾnu,"to govern, administer, steer (1sg of governar)"
-gozo,amusement,NOUN,ˈgozu,source of amusement
-gozo,enjoyment,NOUN,ˈgozu,act of enjoying; material or spiritual satisfaction
-gozo,mockery,NOUN,ˈgozu,"mockery, teasing (troca)"
-gozo,enjoy,VERB,ˈgɔzu,to take pleasure in; to make fun of someone (1sg of gozar)
+gozo,amusement,NOUN,ˈɡozu,source of amusement
+gozo,enjoyment,NOUN,ˈɡozu,act of enjoying; material or spiritual satisfaction
+gozo,mockery,NOUN,ˈɡozu,"mockery, teasing (troca)"
+gozo,enjoy,VERB,ˈɡɔzu,to take pleasure in; to make fun of someone (1sg of gozar)
 jogo,artistic_interplay,NOUN,ˈʒoɡu,articulation of parts of a whole for artistic effect
 jogo,at_stake,NOUN,ˈʒoɡu,what is at risk (em jogo / estar em jogo)
 jogo,behaviour,NOUN,ˈʒoɡu,"behaviour, conduct"
@@ -536,6 +551,7 @@ jogo,throwing_stone,NOUN,ˈʒoɡu,stone that boys throw
 jogo,video_game,NOUN,ˈʒoɡu,video game
 jogo,weapon_handling,NOUN,ˈʒoɡu,the handling of a weapon
 jogo,wheel_assembly,NOUN,ˈʒoɡu,zone of a vehicle where the wheels are
+jogo,game,NOUN,ˈʒoɡu,(protected: operational roster)
 jogo,play,VERB,ˈʒɔɡu,to take part in a game following rules (1sg of jogar)
 jorro,jet,NOUN,ˈʒoʁu,impetuous abundant outflow of a liquid
 jorro,light_burst,NOUN,ˈʒoʁu,sudden emission of a beam of light
@@ -543,13 +559,13 @@ jorro,masonry_batter,NOUN,ˈʒoʁu,thickening at the base of masonry constructio
 jorro,outpouring,NOUN,ˈʒoʁu,what appears suddenly and in great quantity
 jorro,gush,VERB,ˈʒɔʁu,to gush out forcefully; to spring up; to flow abundantly (1sg of jorrar)
 lobo,cruel_person,NOUN,ˈlobu,a cruel individual
-lobo,fur_seal,NOUN,ˈlobu,marine mammal (lobo-marinho)
+lobo,fur_seal,NOUN,ˈlobu,(protected: operational roster)
 lobo,grey_wolf,NOUN,ˈlobu,"northern-hemisphere wolf, grey-backed, pack-hunting"
 lobo,loner,NOUN,ˈlobu,a solitary individual
 lobo,lupus_constellation,NOUN,ˈlobu,southern constellation (Lupus)
 lobo,maned_wolf,NOUN,ˈlobu,South American canid (guara) with long legs and reddish coat
 lobo,rugby_team,NOUN,ˈlobu,nickname of the Portuguese men's national rugby team (plural)
-lobo,sea_dog,NOUN,ˈlobu,experienced sailor (lobo do mar)
+lobo,sea_dog,NOUN,ˈlobu,(protected: operational roster)
 lobo,wolf,NOUN,ˈlobu,carnivorous mammal of the canid family
 lobo,earlobe,NOUN,ˈlɔbu,lower soft hanging part of the ear
 lobo,leaf_lobe,NOUN,ˈlɔbu,each rounded notched part of a leaf
@@ -578,6 +594,7 @@ olho,tool_eye,NOUN,ˈoʎu,hole in a tool through which the handle is fixed
 olho,water_spring,NOUN,ˈoʎu,spring/source of water
 olho,look,VERB,ˈɔʎu,1sg present of olhar: to look/observe attentively
 para,stop,VERB,ˈpaɾɐ,3sg present / 2sg imperative of parar: stops/stop
+para,purpose,ADP,ˈpɐɾɐ,(protected: operational roster)
 para,purpose_direction,ADP,ˈpɐɾɐ,"preposition: towards/for, indicating direction or purpose"
 para,ratio_relation,ADP,ˈpɐɾɐ,preposition establishing a relation between quantities (e.g. odds/ratio)
 pelo,fruit_down,NOUN,ˈpelu,down/fuzz on fruit; fine fuzz (lanugem/penugem)
@@ -601,6 +618,7 @@ polo,pole,NOUN,ˈpɔlu,geographic/celestial pole; either end of the Earth's axis
 polo,polo_shirt,NOUN,ˈpɔlu,polo shirt; cotton top with buttoned collar
 polo,section,NOUN,ˈpɔlu,section/branch (secção)
 polo,sport_polo,NOUN,ˈpɔlu,"polo, team sport played on horseback with long-handled mallets"
+porto,good_end,NOUN,ˈpoɾtu,(protected: operational roster)
 porto,harbour,NOUN,ˈpoɾtu,port/harbour; place where ships anchor or (un)load
 porto,port_wine,NOUN,ˈpoɾtu,"Port, the fortified wine (vinho do Porto)"
 porto,refuge,NOUN,ˈpoɾtu,place of rest; refuge/haven
@@ -621,7 +639,7 @@ redobro,double_of_double,NOUN,ʁɨˈdobɾu,value/quantity equal to twice the dou
 redobro,redoubling,NOUN,ʁɨˈdobɾu,act or effect of redoubling
 redobro,reduplication_expressive,NOUN,ʁɨˈdobɾu,repetition of a syllable/word/sequence for expressive effect
 redobro,reduplication_phonetic,NOUN,ʁɨˈdobɾu,repetition of phonemes in certain verbal inflection
-redobro,redouble,VERB,ʁɨˈdɔbɾu,to double again; intensify greatly
+redobro,redouble,VERB,ʁɨˈdɔbɾu,to redouble; double again; intensify greatly
 reforço,aid,NOUN,ʁɨˈfoɾsu,"help, assistance; auxiliary troops"
 reforço,extra_helper,NOUN,ʁɨˈfoɾsu,person joining a group/team to make it stronger or more efficient
 reforço,guard_detachment,NOUN,ʁɨˈfoɾsu,group of soldiers manning night sentry posts
@@ -629,7 +647,7 @@ reforço,reinforcement,NOUN,ʁɨˈfoɾsu,act or effect of reinforcing
 reforço,reinforcement_material,NOUN,ʁɨˈfoɾsu,material added to objects/garments to make them more resistant
 reforço,reinforcement_unit,NOUN,ʁɨˈfoɾsu,military unit/means placed at a command's disposal for an operation
 reforço,reinforcing_thing,NOUN,ʁɨˈfoɾsu,that which gives more strength/solidity/intensity/resistance
-reforço,reinforce,VERB,ʁɨˈfɔɾsu,to give more strength to; make stronger
+reforço,reinforce,VERB,ʁɨˈfɔɾsu,to reinforce; make stronger
 rego,crack,NOUN,ˈʁeɡu,cleft between the buttocks or breasts
 rego,furrow,NOUN,ˈʁeɡu,groove cut in the soil by a plough
 rego,hair_parting,NOUN,ˈʁeɡu,parting line of the hair
@@ -637,13 +655,13 @@ rego,irrigation_channel,NOUN,ˈʁeɡu,ditch/channel through which water flows
 rego,skin_wrinkle,NOUN,ˈʁeɡu,wrinkle in the skin
 rego,wheel_rut,NOUN,ˈʁeɡu,rut left by cart wheels
 rego,water,VERB,ˈʁɛɡu,"to water/irrigate (land, plants)"
-relevo,prominence,NOUN,ʁɨˈlevu,"prominence, conspicuousness (dar relevo a / de relevo)"
+relevo,prominence,NOUN,ʁɨˈlevu,"prominence, conspicuousness"
 relevo,protrusion,NOUN,ʁɨˈlevu,"salience, raised part"
 relevo,relief_act,NOUN,ʁɨˈlevu,act or effect of making something stand out
 relevo,relief_pictorial,NOUN,ʁɨˈlevu,figures appearing raised in engraving/painting via perspective
 relevo,relief_sculpture,NOUN,ʁɨˈlevu,sculptural form raised against a background surface
 relevo,relief_terrain,NOUN,ʁɨˈlevu,orographic features of the earth's surface
-relevo,emphasize,VERB,ʁɨˈlɛvu,to make stand out; emphasize; to pardon/excuse
+relevo,emphasize,VERB,ʁɨˈlɛvu,to make stand out; emphasize
 renovo,farm_produce,NOUN,ʁɨˈnovu,agricultural produce
 renovo,offspring,NOUN,ʁɨˈnovu,"descendants, offspring"
 renovo,shoot,NOUN,ʁɨˈnovu,"sprout, new growth of a plant"
@@ -651,7 +669,7 @@ renovo,vegetable_garden,NOUN,ʁɨˈnovu,vegetable garden
 renovo,renew,VERB,ʁɨˈnɔvu,to renew; give new appearance to; recommence
 repelo,against_grain,NOUN,ʁɨˈpelu,against the grain/direction (a repelo)
 repelo,hair_pull,NOUN,ʁɨˈpelu,abrupt jerk/tug
-repelo,pluck,VERB,ʁɨˈpɛlu,to pull out hair; tug at; see arrepelar
+repelo,pluck,VERB,ʁɨˈpɛlu,to pull out hair; tug at
 retorno,exchange_balance,NOUN,ʁɨˈtoɾnu,amount given to equalize the value of exchanged objects; change
 retorno,investment_return,NOUN,ʁɨˈtoɾnu,result or consequence of an investment
 retorno,return,NOUN,ʁɨˈtoɾnu,act or effect of returning
@@ -662,11 +680,11 @@ rogo,farm_hiring,NOUN,ˈʁoɡu,hiring of people for agricultural work
 rogo,intercession,NOUN,ˈʁoɡu,intercession
 rogo,plea,NOUN,ˈʁoɡu,act or effect of pleading; entreaty
 rogo,prayer,NOUN,ˈʁoɡu,prayer
-rogo,beg,VERB,ˈʁɔɡu,to beg humbly and insistently
-rola,turtledove,NOUN,ˈɾolɐ,"turtledove, small columbid bird"
-rola,drunkenness,NOUN,ˈɾɔlɐ,drunkenness (slang)
-rola,penis,NOUN,ˈɾɔlɐ,penis (slang)
-rola,rolls,VERB,ˈɾɔlɐ,rolls; makes spin/advance by turning
+rogo,beg,VERB,ˈʁɔɡu,"to beg, plead earnestly"
+rola,drunkenness,NOUN,ˈʁɔlɐ,drunkenness
+rola,penis,NOUN,ˈʁɔlɐ,penis
+rola,rolls,VERB,ˈʁɔlɐ,rolls; turns/spins (3sg of rolar)
+rola,turtledove,NOUN,ˈʁɔlɐ,"turtledove, small columbid bird"
 rolo,beef_cut,NOUN,ˈʁolu,cut of beef from the hindquarter flexor muscle
 rolo,bundle,NOUN,ˈʁolu,wrapped bundle/parcel
 rolo,crowd,NOUN,ˈʁolu,"crowd, throng of people"
@@ -674,12 +692,13 @@ rolo,cylinder,NOUN,ˈʁolu,more or less long cylindrical piece; roll
 rolo,film_roll,NOUN,ˈʁolu,photographic film roll
 rolo,funnel_sieve,NOUN,ˈʁolu,sieve of a funnel
 rolo,hair_curler,NOUN,ˈʁolu,tuft of curled hair; hair roller
-rolo,mess,NOUN,ˈʁolu,"trouble, brawl, mess (sarilho)"
+rolo,mess,NOUN,ˈʁolu,"trouble, brawl, mess"
 rolo,paint_roller,NOUN,ˈʁolu,wool-covered roller with handle for painting flat surfaces
+rolo,roll,NOUN,ˈʁolu,(protected: operational roster)
 rolo,roll_food,NOUN,ˈʁolu,sweet or savory dish of rolled dough with filling
 rolo,wax_taper,NOUN,ˈʁolu,coiled wax wick/taper
 rolo,whirlpool,NOUN,ˈʁolu,"eddy, whirlpool"
-rolo,tumble,VERB,ˈʁɔlu,to make spin/roll; tumble
+rolo,tumble,VERB,ˈʁɔlu,"to roll, make spin; tumble"
 seco,curt,ADJ,ˈseku,"harsh, curt; insensitive"
 seco,dry,ADJ,ˈseku,deprived of water or moisture; arid
 seco,dry_fruit,ADJ,ˈseku,(of fruit) having a non-fleshy pericarp
@@ -691,7 +710,7 @@ seco,plain_bread,ADJ,ˈseku,(of bread) stale or eaten without accompaniment
 seco,preservable_food,ADJ,ˈseku,(of food) that can be preserved; dried
 seco,sandbar,NOUN,ˈseku,sandbank exposed at low tide
 seco,withered,ADJ,ˈseku,no longer green; withered
-seco,dry_vb,VERB,ˈsɛku,to (make) lose moisture; dry up; wither
+seco,dry_vb,VERB,ˈsɛku,"to dry, dry up; lose moisture; wither"
 sede,craving,NOUN,ˈsedɨ,"avidity, longing"
 sede,thirst,NOUN,ˈsedɨ,sensation from the need to drink
 sede,headquarters,NOUN,ˈsɛdɨ,"seat of a court, administration, government or institution"
@@ -700,8 +719,9 @@ sede,locus,NOUN,ˈsɛdɨ,point/centre where facts or phenomena concentrate
 sede,seat,NOUN,ˈsɛdɨ,place to sit or settle
 sede,venue,NOUN,ˈsɛdɨ,place where an event is held
 sede,window_seat,NOUN,ˈsɛdɨ,fixed stone seat by a window in old buildings
+selo,hallmark,NOUN,ˈselu,(protected: operational roster)
 selo,punch,NOUN,ˈselu,"a punch, blow (murro)"
-selo,record_label,NOUN,ˈselu,record company / imprint
+selo,record_label,NOUN,ˈselu,(protected: operational roster)
 selo,seal_mark,NOUN,ˈselu,sign or mark left stamped; mark of guarantee
 selo,sealant,NOUN,ˈselu,anything that serves to seal
 selo,sign,NOUN,ˈselu,"sign, token"
@@ -717,10 +737,11 @@ sobre,along,ADP,ˈsobɾɨ,along
 sobre,approximately,ADP,ˈsobɾɨ,"around, about (quantity)"
 sobre,charged_on,ADP,ˈsobɾɨ,charged/levied on
 sobre,on_top_of,ADP,ˈsobɾɨ,"on, on top of, over"
+sobre,sail,NOUN,ˈsobɾɨ,(protected: operational roster)
 sobre,somewhat,ADP,ˈsobɾɨ,"a bit, somewhat (um tanto)"
 sobre,totaling,ADP,ˈsobɾɨ,out of a total of
 sobre,toward,ADP,ˈsobɾɨ,in the direction of
-sobre,be_left_over,VERB,ˈsɔbɾɨ,"to be in excess, remain (sobrar 1sg)"
+sobre,leftover,VERB,ˈsɔbɾɨ,(protected: operational roster)
 sobro,charcoal_kiln,NOUN,ˈsobɾu,choça/charcoal pile (choça de carvão)
 sobro,cork_oak,NOUN,ˈsobɾu,cork oak tree (Quercus suber)
 sobro,be_left_over,VERB,ˈsɔbɾu,"to be in excess, remain (sobrar 1sg)"
@@ -737,6 +758,7 @@ soco,strike,VERB,ˈsɔku,to punch/strike (socar 1sg)
 soldo,military_pay,NOUN,ˈsoɫdu,soldiers' pay/stipend
 soldo,old_french_coin,NOUN,ˈsoɫdu,old French coin (sol/sou)
 soldo,old_portuguese_coin,NOUN,ˈsoɫdu,old Portuguese coin
+soldo,pay,NOUN,ˈsoɫdu,(protected: operational roster)
 soldo,wage,NOUN,ˈsoɫdu,"wage, salary"
 soldo,weld,VERB,ˈsɔɫdu,to weld/solder (soldar 1sg)
 solto,debt_free,ADJ,ˈsoɫtu,"free of debt, discharged"
@@ -754,7 +776,7 @@ soma,soba_kind,NOUN,ˈsomɐ,a kind of soba (African chief)
 soma,soma_body,NOUN,ˈsomɐ,the whole organism excluding germ cells (biology)
 soma,soma_drink,NOUN,ˈsomɐ,sacred Aryan drink granting bodily immortality
 soma,sum,NOUN,ˈsomɐ,act/result of adding; total
-soma,add,VERB,ˈsɔmɐ,"to add up, sum (somar 1sg)"
+soma,add,VERB,ˈsɔmɐ,(protected: operational roster)
 sopeso,heft,NOUN,suˈpezu,act/effect of hefting (deverbal)
 sopeso,weigh_up,VERB,suˈpɛzu,"to heft, gauge by weight; weigh up (sopesar 1sg)"
 sopro,blast,NOUN,ˈsopɾu,blast wave from an atomic detonation
@@ -792,7 +814,7 @@ tola,tola_tree,NOUN,ˈtɔlɐ,large West African leguminous tree yielding quality
 tola,tola_wood,NOUN,ˈtɔlɐ,the wood from the tola tree
 toldo,awning,NOUN,ˈtoɫdu,canvas or other covering to shelter from sun or rain
 toldo,ship_deck_cover,NOUN,ˈtoɫdu,deck covering of a ship
-toldo,cloud_over,VERB,ˈtɔɫdu,"to cover with an awning; to cloud over, darken, cloud (1sg present of toldar)"
+toldo,cloud_over,VERB,ˈtɔɫdu,"to cover with an awning; to cloud over, darken (1sg present of toldar)"
 topo,act_of_bumping,NOUN,ˈtopu,act of bumping/colliding (deverbal of topar)
 topo,collision,NOUN,ˈtopu,"collision, shock"
 topo,extremity,NOUN,ˈtopu,"extremity, end"
@@ -818,6 +840,7 @@ torre,tower,NOUN,ˈtoʁɨ,tall narrow fortified structure
 torre,roast,VERB,ˈtɔʁɨ,to make dry and crisp by heat; to toast (1sg present of torrar)
 transtorno,alteration,NOUN,tɾɐ̃ʃˈtoɾnu,"alteration, disruption"
 transtorno,disappointment,NOUN,tɾɐ̃ʃˈtoɾnu,"disappointment, letdown"
+transtorno,disorder,NOUN,tɾɐ̃ʃˈtoɾnu,(protected: operational roster)
 transtorno,disorder_act,NOUN,tɾɐ̃ʃˈtoɾnu,act or effect of upsetting/disrupting
 transtorno,inconvenience,NOUN,tɾɐ̃ʃˈtoɾnu,unforeseen incident or circumstance that bothers or disturbs
 transtorno,loss,NOUN,tɾɐ̃ʃˈtoɾnu,"loss, damage, prejudice"
