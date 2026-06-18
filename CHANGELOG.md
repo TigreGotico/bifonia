@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0a2](https://github.com/TigreGotico/bifonia/tree/0.2.0a2) (2026-06-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a1...0.2.0a2)
+
+**Merged pull requests:**
+
+- chore: move tooling scripts into scripts/ \(clean repo root\) [\#9](https://github.com/TigreGotico/bifonia/pull/9) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.0a1](https://github.com/TigreGotico/bifonia/tree/0.2.0a1) (2026-06-18)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.1.1...0.2.0a1)
