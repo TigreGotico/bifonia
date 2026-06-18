@@ -103,32 +103,29 @@ meaning-based disambiguation where part-of-speech is uninformative.**
 ## Balanced real-gold evaluation
 
 A second real-text set is mined from open sources (OpenSubtitles, news/food/health
-sites, Wikipedia) and labelled independently of the rules. Unlike the encyclopedic
-wild set it is **sense-balanced** — about **half its sentences are POS-ambiguous**
-readings (the same-POS pairs and minority verb senses), so it is a fair test of
-disambiguation rather than dominant-sense prediction.
+sites, Wikipedia) and labelled independently of the rules — every label
+individually verified. Unlike the encyclopedic wild set it is **sense-balanced**:
+**~68% of its sentences are POS-ambiguous** readings (same-POS pairs and minority
+verb senses), so it is a fair test of disambiguation, not dominant-sense prediction.
 
-| approach | balanced real gold (1,576 sentences, 27 words) |
-|---|---|
-| most-common | 49.1% |
-| spaCy `pt_core_news_lg` (POS→sense) | 83.1% |
-| hybrid ensemble (POS tag ⊕ rules) | 96.1% |
-| **rules (zero-dependency)** | **96.8%** |
+| approach | balanced real gold (2,233 sentences, 40 words) | POS-ambiguous subset (n=1,512) |
+|---|:---:|:---:|
+| most-common | 52.6% | 59% |
+| cue-only (wordlists, no POS, no learning) | 53.7% | 64% |
+| Yarowsky decision list (trained) | 87.0% | 87% |
+| spaCy `pt_core_news_lg` (POS→sense) | 90.6% | 89% |
+| logistic regression (numpy, +cues) | 92.1% | 94% |
+| **rules (zero-dependency)** | **95.2%** | **96%** |
+| **hybrid ensemble (POS tag ⊕ rules)** | **96.0%** | **97%** |
 
 ![Balanced real gold — accuracy by approach](img/realgold_approaches.png)
 
-On this balanced set the **rules lead outright**, and adding a POS tag (the
-ensemble) slightly *lowers* accuracy: the tagger mis-tags some POS-separable
-readings the rules already get right. The split makes the reason explicit —
-
-![Real gold by subset](img/realgold_subset.png)
-
-on the **POS-ambiguous** half (n=722) a POS tagger sits at **72%** while the rules
-hold **97%**. The ensemble's lead on the encyclopedic wild set reflects that set's
-noun-skew (mostly POS-separable, dominant-sense sentences); on balanced data the
-meaning-keyed rules are the strongest single approach.
-
-![Rules per-word accuracy on real gold](img/realgold_perword.png)
+Scoring is by **reading** (open/closed IPA), the G2P-relevant target. On the
+POS-ambiguous core — the readings a part-of-speech tagger cannot resolve by
+construction — the meaning rules hold **96%** and the ensemble **97%**, against
+spaCy's **89%**; every learned model (decision list, logistic regression) trails
+the rules out-of-distribution, the same corpus-circularity seen elsewhere. The
+ensemble edges the bare rules by fusing a POS tag on the POS-separable readings.
 
 ## Zero-dependency baselines
 
