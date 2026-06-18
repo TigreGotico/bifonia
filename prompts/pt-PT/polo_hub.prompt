@@ -1,5 +1,5 @@
-# sense: pole
-Gera {n} frases em Português Europeu natural onde a palavra "polo" é usada como SUBSTANTIVO no sentido de «extremo (polo da retina)».
+# sense: hub
+Gera {n} frases em Português Europeu natural onde a palavra "polo" é usada como SUBSTANTIVO no sentido de «centro, núcleo (polo industrial/tecnológico)».
 
 Regras obrigatórias:
 - Exatamente uma frase por linha, sem numeração, marcadores ou explicações
@@ -8,7 +8,7 @@ Regras obrigatórias:
 - Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
 - NÃO repitas frases já existentes: {existing_sample}
 
-Significado: extremo (polo da retina).
+Significado: centro, núcleo (polo industrial/tecnológico).
 IPA: /ˈpɔlu/ — vogal aberta (ɔ/ɛ).
 Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
 Responde APENAS com as frases, uma por linha:

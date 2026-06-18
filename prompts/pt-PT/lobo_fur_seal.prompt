@@ -1,0 +1,14 @@
+# sense: fur_seal
+Gera {n} frases em Português Europeu natural onde a palavra "lobo" é usada como SUBSTANTIVO no sentido de «mamífero marinho (lobo-marinho)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "lobo" (em minúsculas, sem acento diacrítico)
+- A palavra "lobo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: mamífero marinho (lobo-marinho).
+IPA: /ˈlobu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Responde APENAS com as frases, uma por linha:

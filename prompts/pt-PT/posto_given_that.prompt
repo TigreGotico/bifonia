@@ -1,0 +1,14 @@
+# sense: given_that
+Gera {n} frases em Português Europeu natural onde a palavra "posto" é usada como SUBSTANTIVO no sentido de «conjunção concessiva (posto que)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "posto" (em minúsculas, sem acento diacrítico)
+- A palavra "posto" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: conjunção concessiva (posto que).
+IPA: /ˈpoʃtu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Responde APENAS com as frases, uma por linha:

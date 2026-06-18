@@ -1,0 +1,14 @@
+# sense: legal_context
+Gera {n} frases em Português Europeu natural onde a palavra "sede" é usada como SUBSTANTIVO no sentido de «âmbito, contexto (em sede de)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "sede" (em minúsculas, sem acento diacrítico)
+- A palavra "sede" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: âmbito, contexto (em sede de).
+IPA: /ˈsɛdɨ/ — vogal aberta (ɔ/ɛ).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Responde APENAS com as frases, uma por linha:
