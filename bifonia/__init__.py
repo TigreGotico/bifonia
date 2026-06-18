@@ -462,12 +462,27 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
 
 
 def guess_pos(words: list, idx: int, proper: bool = False) -> str:
-    """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
+    """Return the lexical class that selects this word's pronunciation — NOT a
+    syntactic POS tag.
+
+    .. warning::
+       This is **not a part-of-speech tagger** and must not be used as one. It is
+       an internal pronunciation-disambiguation device: it reports the lexical
+       class whose reading the homograph takes, which can deliberately disagree
+       with the word's syntactic function in the sentence.
+
+       The clearest case is an **adjective used substantively** (a noun-functioning
+       adjective). In *"aquela tola comprou um carro"*, ``tola`` is syntactically a
+       NOUN (subject), but it keeps the *adjective* reading (``foolish``, closed
+       ˈtolɐ) — so ``guess_pos`` returns ``"ADJ"``. The tag is chosen to land on the
+       correct IPA, not to describe the slot. Treat the output purely as an input
+       to :func:`guess_sense`/:func:`disambiguate`; for genuine POS tagging use a
+       real tagger (spaCy, Stanza).
 
     Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
-    its descriptive POS, preserving the pre-existing POS-tagging interface.
-    Diacritized input (e.g. *pára*, *acôrdo*) is resolved without context scoring.
-    *proper* biases the NOUN reading for a mid-sentence capitalised token.
+    its lexical class. Diacritized input (e.g. *pára*, *acôrdo*) is resolved
+    without context scoring. *proper* biases the NOUN reading for a mid-sentence
+    capitalised token.
     """
     raw = words[idx]
     token = _strip_edge(raw)

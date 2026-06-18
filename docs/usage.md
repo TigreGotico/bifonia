@@ -45,8 +45,18 @@ POS. Pass `postag=` to supply an external POS tag (e.g. from spaCy or Stanza) as
 hybrid-ensemble hint that restricts the candidate senses.
 
 ### `guess_pos(words, idx) → str`
-Return the descriptive UDEP POS tag (`"ADP"`, `"NOUN"`, `"VERB"`, `"ADJ"`) of the resolved
-sense. Thin wrapper over `guess_sense` that maps the meaning back to its dominant POS.
+Return the **lexical class that selects the word's pronunciation** — `"ADP"`, `"NOUN"`,
+`"VERB"`, `"ADJ"`. A thin wrapper over `guess_sense` that maps the resolved meaning back to
+its lexical class, used only to feed `guess_sense`/`disambiguate`.
+
+> **This is not a part-of-speech tagger and must not be used as one.** The tag is chosen to
+> land on the correct IPA, and can deliberately disagree with the word's syntactic function.
+> The clearest case is an **adjective used as a noun**: in *"aquela tola comprou um carro"*,
+> `tola` is syntactically a NOUN (the subject), but keeps the *adjective* reading (`foolish`,
+> closed ˈtolɐ) — so `guess_pos` returns `"ADJ"`. The roster even tags that sense `ADJ|NOUN`
+> so an external NOUN tag defers to the rules rather than forcing the concrete `head` noun
+> (open ˈtɔlɐ). For genuine POS tagging use a real tagger (spaCy, Stanza); for pronunciation
+> use `guess_sense`/`disambiguate`.
 
 ### `disambiguate(words, idx, pos=None, sense=None, postag=None) → str`
 Return the IPA transcription for the word at *idx*, selected by **meaning**. Pass `sense=` to

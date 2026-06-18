@@ -65,9 +65,17 @@ widens vocabulary and phrasing variety.
 `guess_sense` is a **per-word ensemble** over two engines. For each ambiguous token it consults
 the learned model where that word is routed to the model and clears its margin, and falls back to
 the rule engine otherwise; an explicit `pos` override always uses the rule resolver. `guess_pos`
-maps the resolved sense back to its descriptive POS; `disambiguate` selects the IPA for the
+maps the resolved sense back to its lexical class; `disambiguate` selects the IPA for the
 resolved `(word, sense)`. Because adoption is gated on held-out accuracy (below), the ensemble
 never does worse than the rules alone.
+
+**`guess_pos` is not a syntactic POS tagger.** It reports the lexical class that *selects the
+pronunciation*, which can deliberately disagree with the word's function in the sentence. An
+adjective used as a noun is the clearest case: in *"aquela tola comprou…"* `tola` is the
+syntactic subject (NOUN) yet takes the adjective reading (`foolish`, closed ˈtolɐ), so
+`guess_pos` returns `"ADJ"` to reach the right IPA — and the roster tags that sense `ADJ|NOUN`
+so an external NOUN tag defers to the rules instead of forcing the concrete `head` noun. The
+output is an internal signal for sense/IPA resolution only; use a dedicated tagger for real POS.
 
 ### Rule engine
 
