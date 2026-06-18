@@ -27,7 +27,7 @@ import re
 from collections import Counter, defaultdict
 
 from bifonia import HOMOGRAPHS
-from bifonia.data import SENSE_POS
+from bifonia.data import SENSE_POS, SENSE_POSES
 from bifonia.__init__ import _DIACRITIZED
 from bifonia.corpus import iter_records
 
@@ -50,7 +50,7 @@ def build_records() -> list[dict]:
         records.append({
             "word": word,
             "sense": sense,
-            "pos": SENSE_POS.get(word, {}).get(sense, ""),
+            "pos": "|".join(SENSE_POSES.get(word, {}).get(sense, ())) or SENSE_POS.get(word, {}).get(sense, ""),
             "ipa": HOMOGRAPHS.get(word, {}).get(sense, ""),
             "diacritized": _DIACRITIZED.get((word, sense), word),
             "sentence": sentence,
