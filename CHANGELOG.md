@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0a3](https://github.com/TigreGotico/bifonia/tree/0.2.0a3) (2026-06-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a2...0.2.0a3)
+
+**Merged pull requests:**
+
+- data: expand synthetic corpus +53,866 verified rows \(101k → 155k\) [\#11](https://github.com/TigreGotico/bifonia/pull/11) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.0a2](https://github.com/TigreGotico/bifonia/tree/0.2.0a2) (2026-06-18)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a1...0.2.0a2)
