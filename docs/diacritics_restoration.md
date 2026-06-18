@@ -85,15 +85,15 @@ correct open/closed vowel. The full `(word, sense) → diacritized` table is in
   using integer signals for determiners, pronouns, passive auxiliaries, copular verbs, infinitive
   markers, degree adverbs, and governing verbs, then narrows the winning POS to a `sense`. It needs
   no corpus.
-- **learned per-word models** (`model.py`, trained by `train.py`) — a Naive-Bayes log-odds
+- **learned per-word models** (`model.py`, trained by `scripts/train.py`) — a Naive-Bayes log-odds
   classifier and an averaged perceptron, fit from the labelled corpus over the language-agnostic
   features in `features.py`.
 
 `guess_sense` is a per-word ensemble that routes each word to whichever engine is at least as
 accurate on held-out data, with the rule engine as the fallback.
 
-Sense-prediction accuracy, measured on a **synthetic** held-out split (`benchmark_tagger.py`) and
-on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`benchmark_ood.py`,
+Sense-prediction accuracy, measured on a **synthetic** held-out split (`scripts/benchmark_tagger.py`) and
+on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`scripts/benchmark_ood.py`,
 `TigreGotico/bifonia-pt-homographs-wild`):
 
 | Approach | Synthetic test | OOD (real text) |
@@ -115,9 +115,9 @@ dominant noun sense and miss the minority one by construction.
 Run the comparison:
 
 ```bash
-python benchmark_tagger.py            # synthetic held-out split
-python benchmark_tagger.py --word sede --errors
-python benchmark_ood.py               # OOD real-text set
+python scripts/benchmark_tagger.py            # synthetic held-out split
+python scripts/benchmark_tagger.py --word sede --errors
+python scripts/benchmark_ood.py               # OOD real-text set
 ```
 
 ### When the scorer succeeds
@@ -165,7 +165,7 @@ and long-range cases the rules cannot reach.
 
 ## Learned statistical models
 
-`train.py` fits per-word classifiers from the corpus using the language-agnostic features in
+`scripts/train.py` fits per-word classifiers from the corpus using the language-agnostic features in
 `features.py` — positional skipgrams, a bag-of-window overlap, structural `.voc` membership, and
 morphology/position cues — and serialises them to `bifonia/data/sense_model_{nb,perceptron}.json`:
 
@@ -185,10 +185,10 @@ before, CONJ_SUBJ before) that the learned models pick up automatically from the
 ## Corpus
 
 The labeled corpus is `bifonia/data/corpus.jsonl`, loaded by `bifonia/corpus.py` and exported
-by `dataset.py`:
+by `scripts/dataset.py`:
 
 ```
-python dataset.py --out data/
+python scripts/dataset.py --out data/
 ```
 
 ### Statistics

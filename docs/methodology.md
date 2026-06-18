@@ -9,7 +9,7 @@ is served by **two interchangeable engines**, both pure Python with no heavy run
 1. **A rule engine** (`bifonia/scoring.py`) that predicts the `sense` from the local ±4-word
    context using hand-written rules and `.voc` wordlists.  It needs no corpus — the zero-resource
    baseline.
-2. **Learned per-word models** (`bifonia/model.py`, trained by `train.py`) — a Naive-Bayes
+2. **Learned per-word models** (`bifonia/model.py`, trained by `scripts/train.py`) — a Naive-Bayes
    log-odds classifier and an averaged perceptron — fit from the labelled corpus over the
    features in `bifonia/features.py`.
 
@@ -40,7 +40,7 @@ The canonical corpus is `bifonia/data/corpus.jsonl` — one JSON record per line
 
 ### LLM-assisted generation, native review, scorer filtering
 
-`corpus_gen.py` fans sentence generation out to multiple coding-agent providers in parallel
+`scripts/corpus_gen.py` fans sentence generation out to multiple coding-agent providers in parallel
 (free bulk providers plus a stronger provider reserved for hard patterns and quality review).
 For each `(word, sense)`, a prompt specifies the target meaning and the hard patterns to cover
 (e.g. passive-voice frames for `posto` *station*, control-verb phrases for `colher` *harvest*,
@@ -103,7 +103,7 @@ the learned models cover most of them.
 
 ### Learned models
 
-`bifonia/model.py` loads per-word classifiers trained by `train.py` from the labelled corpus:
+`bifonia/model.py` loads per-word classifiers trained by `scripts/train.py` from the labelled corpus:
 
 - **Naive-Bayes** — per-sense log-odds of each feature (the bias is the log-prior). The weights
   are interpretable: they *are* the learned lexicons.
@@ -135,7 +135,7 @@ language-agnostic.
 
 ### Per-word ensemble routing
 
-`train.py` trains only on `hf/train.jsonl`, never on test. A seeded per-word validation fold
+`scripts/train.py` trains only on `hf/train.jsonl`, never on test. A seeded per-word validation fold
 drives perceptron early-stopping and a **`route` gate**: a word is flagged `route="model"` only
 where the model's validation accuracy is at least the rule engine's on the same fold *and* the
 model does not regress against a hand-curated out-of-distribution behavioural set; otherwise it
@@ -179,8 +179,8 @@ prepositions cannot introduce verbal direct objects").
 
 ## Benchmark Comparison
 
-Sense-prediction accuracy is measured two ways. `benchmark_tagger.py` evaluates on a **synthetic**
-held-out split (the test partition of the generated corpus). `benchmark_ood.py` evaluates on an
+Sense-prediction accuracy is measured two ways. `scripts/benchmark_tagger.py` evaluates on a **synthetic**
+held-out split (the test partition of the generated corpus). `scripts/benchmark_ood.py` evaluates on an
 **out-of-distribution (OOD)** set of real Wikipedia and web sentences
 (`TigreGotico/bifonia-pt-homographs-wild`, downloaded on demand). Each approach sees the plain
 (un-diacritised) form; the POS taggers map their POS output back to a sense.
@@ -230,9 +230,9 @@ twin; bifonia, by reading meaning cues, recovers the minority sense.
 Run the benchmarks yourself (both report per-word breakdowns):
 
 ```bash
-python benchmark_tagger.py             # synthetic held-out split
-python benchmark_tagger.py --word sede --errors
-python benchmark_ood.py                # OOD real-text set (downloads from Hugging Face)
+python scripts/benchmark_tagger.py             # synthetic held-out split
+python scripts/benchmark_tagger.py --word sede --errors
+python scripts/benchmark_ood.py                # OOD real-text set (downloads from Hugging Face)
 ```
 
 ---

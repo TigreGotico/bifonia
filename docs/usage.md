@@ -169,13 +169,13 @@ model artefacts are `bifonia/data/sense_model_{nb,perceptron}.json`.
 Retrain the learned models from the labelled corpus:
 
 ```bash
-python train.py --model both          # rebuilds both JSON artefacts
-python train.py --model perceptron --min-count 3 --seed 1337
+python scripts/train.py --model both          # rebuilds both JSON artefacts
+python scripts/train.py --model perceptron --min-count 3 --seed 1337
 ```
 
 Measure sense-prediction accuracy two ways:
 
 ```bash
-python benchmark_tagger.py            # synthetic held-out split (per-word breakdown)
-python benchmark_ood.py               # out-of-distribution real-text set (downloads from Hugging Face)
+python scripts/benchmark_tagger.py            # synthetic held-out split (per-word breakdown)
+python scripts/benchmark_ood.py               # out-of-distribution real-text set (downloads from Hugging Face)
 ```

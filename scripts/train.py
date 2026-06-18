@@ -31,7 +31,7 @@ from bifonia import tokenize
 from bifonia.features import extract_features, load_structural_vocs, STRUCTURAL_VOCS
 from bifonia.scoring import guess_pos as _rule_pos, resolve_sense as _rule_resolve
 
-ROOT = pathlib.Path(__file__).parent
+ROOT = pathlib.Path(__file__).parent.parent
 TRAIN = ROOT / "hf" / "train.jsonl"
 BEHAV = ROOT / "tests" / "test_sentences.jsonl"   # hand-curated OOD behavioral set
 OUT = {"nb": ROOT / "bifonia" / "data" / "sense_model_nb.json",
