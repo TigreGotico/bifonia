@@ -5,6 +5,12 @@ Each scorer returns an integer; higher = more confident.
 Negative scores signal anti-evidence for that POS.
 """
 
+from bifonia.cues import SENSE_CUES
+from bifonia.text import (
+    cue_score as _cue_score,   # proximity-weighted, accent-folded cue counter
+    folded as _folded,
+    strip_punct as _strip,     # token punctuation strip (shared with features)
+)
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
     DEFAULT_POS, DEFAULT_SENSE, BASE_SCORE,
@@ -17,7 +23,7 @@ from bifonia.vocab import voc
 
 # Wordlists are externalised to locale/<lang>/*.voc (see vocab.py) so they can
 # be extended without code changes. Derived/structural sets stay in code below.
-_POST_CLITICS    = voc("post_clitics")      # enclitic reflexive clitics (verb host)
+_ENCLITICS       = voc("enclitics")         # hyphen-attached enclitic clitics (verb host)
 _AFTER_PREP_WEAK = voc("after_prep_weak")   # time adv/pron: weak ADP credit
 _COPULA          = voc("copula")            # copular/semi-copular verbs
 _INTENSIFIERS    = voc("intensifiers")      # degree intensifiers (modify ADJ)
@@ -68,6 +74,10 @@ _CLITICS_ALL  = voc("clitics_all")
 _EXCL_DET     = voc("exclamative_det")
 _LOCATIVE_CONTRACTIONS = voc("locative_contractions")
 _FUNC_EXTRA = voc("function_words")
+_PRENOMINAL_ADJ = voc("prenominal_adj")  # adjectives that precede a noun head
+_COMPLEMENT_PREPS = voc("complement_preps")  # prep + homograph = nominal complement
+_COORDINATION = voc("coordination")          # e/ou/nem/como before → noun
+_AROUND_PREP = voc("around_prep")            # "em torno" locution
 # meaning-level cues for words whose senses share a POS (only "sede" today)
 _SEDE_SEAT   = voc("sede_seat_cues")
 _SEDE_THIRST = voc("sede_thirst_cues")
@@ -76,16 +86,12 @@ _BUNDLE_THINGS = voc("bundle_things")       # unambiguous bundles: "molho de cha
 _BUNDLE_AMBIG  = voc("bundle_ambiguous")    # greens, bundle only with a gathering verb
 _BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the greens
 _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
+# The diacritic-collapse / cue-competition words (bola, lobo, polo, cor) are
+# resolved declaratively from bifonia.cues.SENSE_CUES — their cue vocs are loaded
+# on demand inside _resolve_by_cues, not bound here.
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
-
-
-_PUNCT = str.maketrans("", "", ".,;:!?\"'()[]{}«»–—")
-
-
-def _strip(w: str) -> str:
-    return w.translate(_PUNCT)
 
 
 def _prev(words: list, idx: int) -> str:
@@ -144,7 +150,7 @@ def score_adp(words: list, idx: int) -> int:
         # bare infinitive-like forms ending in -ar/-er/-ir (already handled by
         # _is_infinitive).  Detect by common suffix.
         _DEVERBAL_SFXS = ("ção", "são", "gem", "ura", "ência", "ância",
-                          "mento", "ismo", "ise", "ise", "ção")
+                          "mento", "ismo", "ise")
         if next_word.endswith(_DEVERBAL_SFXS):
             score += 4
         # "para depois/amanhã" — deferred-purpose ADP.
@@ -188,6 +194,13 @@ def score_adp(words: list, idx: int) -> int:
         # Return strongly negative so score_verb wins.
         if next_word in _ARTICLES:
             score -= 8
+        elif idx > 0:
+            # por+o + a common noun is the overwhelmingly dominant reading
+            # ("pelo metro", "pelo diálogo", "pelo caminho"); default to ADP unless
+            # a fur/peel cue in score_noun (preceding article, "pelo do/da X"
+            # genitive, "tem pelo", "de pelo <adj>") outscores this baseline.
+            # Gated on idx>0: sentence-initial "Pelo …" is the 1sg peel verb.
+            score += 3
 
     if word == "sobre":
         # Explicit governing noun/verb before "sobre" (e.g. "caso sobre X",
@@ -238,10 +251,47 @@ def score_noun(words: list, idx: int) -> int:
     # Plain "de" excluded: ambiguous with "gosto de X" (VERB) constructions.
     if next_word in _DE_CONTRACTIONS:
         score += 3
+    # Fixed closed-o NOUN prepositional locutions that the deverbal-noun /
+    # de-contraction cues miss when a bare "de" or other complement follows:
+    #   «em torno de», «ao/no torno», «do torno»  — around / at the lathe
+    #   «em troco de»                              — in exchange for
+    # The 1sg verbs «tornar»/«trocar» are never introduced by these prepositions,
+    # so a preceding "em/ao/no/do" is decisive for the closed-o NOUN reading.
+    if word == "torno" and prev_word in _AROUND_PREP:
+        score += 6
+    if word == "troco" and prev_word == "em":
+        score += 6
+    # Prenominal adjective directly before → the word is the modified NOUN head
+    # ("o atual governo", "um pequeno erro", "o último sopro") — distinguishes
+    # DET ADJ NOUN from DET NOUN VERB (where prev is the noun subject).
+    if prev_word in _PRENOMINAL_ADJ:
+        score += 5
+    # A complement/oblique preposition immediately before a homograph marks a
+    # nominal use ("de gelo", "saco de emprego", "sem retorno", "com decoro",
+    # "pelo golfo"). «colher» excluded: "de colher" can be the infinitive verb.
+    if prev_word in _COMPLEMENT_PREPS and word != "colher":
+        score += 3
+    # Coordination / comparison before the word ("X e Y", "X ou Y", "como X") —
+    # the homograph is almost always a NOUN in a list or a comparison, not a
+    # finite verb. Real-world (encyclopedic) text is noun-dominant, so this
+    # cuts the most common false-VERB error without needing a strong verb cue.
+    if prev_word in _COORDINATION:
+        score += 3
+    # Object of a transitive finite verb directly before ("encontrou consolo",
+    # "procura emprego") → the homograph is the object NOUN, not a second verb.
+    if prev_word in _TRANS_VERB:
+        score += 3
     # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
     # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
     if word == "pelo" and prev_word in _TER:
         score += 6
+    # "o pelo" / "um pelo" — a determiner directly before "pelo" makes it the fur
+    # NOUN (por+o already contains its own article, so it never takes one), and
+    # "pelo do/da X" is the fur genitive ("o pelo do cão").
+    if word == "pelo" and prev_word in _ARTICLES:
+        score += 6
+    if word == "pelo" and next_word in ("do", "da"):
+        score += 5
     # "cão de pelo comprido" — genitive "de" directly before "pelo" followed by a
     # qualitative adjective is always the fur-type construction, not ADP (por+o).
     # "pelo menos" / "pelo visto" etc. are guarded by _PELO_FIXED in score_adp (+6),
@@ -306,8 +356,6 @@ def score_noun(words: list, idx: int) -> int:
         _toks_f = [_strip(w) for w in words]
         # Shape/manner idioms force the open-o VERB reading even if a cooking word
         # happens to appear ("a forma de preparar a massa" = manner, not a tin).
-        # Shape/manner idioms force the open-o VERB reading even if a cooking word
-        # happens to appear ("a forma de preparar a massa" = manner, not a tin).
         _shape = (prev_word in _FORMA_SHAPE_PREV
                   or next_word == "como"
                   or (next_word == "de" and _is_infinitive(_next2_f))
@@ -354,14 +402,28 @@ def score_verb(words: list, idx: int) -> int:
     if (idx > 0
             and prev_word not in DET | QUANT
             and prev2_word not in DET | QUANT
-            and prev_word not in _TRANS_VERB):
+            and prev_word not in _TRANS_VERB
+            and prev_word not in _COMPLEMENT_PREPS):   # "de/em/com … peso/jogo" = noun object
         if word in _FIRST_PERSON_NOUNS:
             score += 2
 
-    # Enclitic clitic pronoun right after the word → strong verb host signal.
-    # "para" excluded: "para se", "para me", "para te" are always ADP + clitic
-    # infinitive, not "para" the finite verb with an enclitic.
-    if word != "para" and next_word in _POST_CLITICS:
+    # "gosto de ti", "olho para ti", "rio de mim" — a 1sg verb form + complement
+    # preposition + pronoun is a finite verb, not the noun reading.
+    _next2_v = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    if (word in _FIRST_PERSON_NOUNS
+            and next_word in _COMPLEMENT_PREPS | {"para", "a", "ao", "à"}
+            and _next2_v in PRON
+            and prev_word not in DET | QUANT | _COMPLEMENT_PREPS | _TRANS_VERB):
+        score += 5
+
+    # Enclitic clitic hyphenated onto the word ("torno-me", "vejo-o", "fá-lo",
+    # "deu-lhe", "tem-nos") → an unambiguous finite-VERB host. The tokenizer keeps
+    # the attaching hyphen as a leading marker, which rules out the homographic
+    # article/preposition readings of o/a/nos/vos, so the full enclitic inventory
+    # (incl. -lo/-la/-no/-na allomorphs and combined forms) applies here.
+    # "para" excluded: "para se", "para me", "para te" are ADP + proclitic
+    # infinitive, never "para" the finite verb with an enclitic.
+    if word != "para" and next_word.startswith("-") and next_word[1:] in _ENCLITICS:
         score += 4
 
     # DET directly after signals a direct-object NP — strong VERB evidence.
@@ -378,7 +440,9 @@ def score_verb(words: list, idx: int) -> int:
     # "posto" (other words like "começo a [inf]" are genuine VERB+DO phrases).
     _next_next = words[idx + 2] if idx + 2 < len(words) else ""
     _posto_inf = word == "posto" and next_word == "a" and _is_infinitive(_next_next)
-    if word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL and not _posto_inf:
+    _POSTPOSED_QUANT = {"todo", "toda", "todos", "todas", "mesmo", "mesma", "inteiro", "inteira"}
+    if (word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL
+            and next_word not in _POSTPOSED_QUANT and not _posto_inf):  # "o peso todo" = noun+modifier
         score += 3
     elif idx == 0 and next_word in _DE_CONTRACTIONS:
         score += 1
@@ -519,27 +583,6 @@ def score_verb(words: list, idx: int) -> int:
     if word == "gozo" and next_word == "de" and prev_word not in _GOZO_EXCL_PREV:
         score += 5
 
-    # "molho" — open-ɔ bundle/soak reading vs the default closed-o sauce. These are
-    # the genuinely ambiguous cases where a nearby word, not the local pattern, decides:
-    #   • "molho de chaves/lenha/…"      — unambiguous bundle (bundle_things.voc)
-    #   • "colhi um molho de salsa"      — green (bundle_ambiguous) + gathering verb
-    #   • "deixar/pôr/estar de molho"    — soaking idiom (soak_verbs in left window)
-    # Sauce stays the default: "molho de tomate", "gosto de molho", "o bife tinha molho".
-    if word == "molho":
-        _m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-        _left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
-        if next_word == "de" and _m2 in _BUNDLE_THINGS:
-            score += 8
-        elif (next_word == "de" and _m2 in _BUNDLE_AMBIG
-              and any(v in _BUNDLE_VERBS for v in _left4)):
-            score += 8
-        elif prev_word == "de" and any(v in _SOAK_VERBS for v in _left4):
-            score += 8
-        elif prev_word == "de":
-            # "gosto de molho", "fio de molho" — genitive "of sauce", not soaking;
-            # cancel the generic 1st-person ("eu molho") prior so sauce wins.
-            score -= 2
-
     # "sempre sobre [uma/um/…]" — frequency adverb + "sobrar" (left over); not ADP.
     # "sempre sobre" where a DET/QUANT follows and there is no governing verb is a
     # finite VERB (sobrar) not a preposition.
@@ -624,8 +667,9 @@ def score_adj(words: list, idx: int) -> int:
     # The "-ia" suffix is a verb imperfect ending only when preceded by a consonant
     # (e.g. "comia", "dormia"); words like "areia", "galeria" end in vowel+"ia" and
     # are nouns — do not suppress the postpositive signal for them.
-    # Also: verb+clitic forms like "chamaram-lhe", "disse-me" contain a hyphen followed
-    # by a clitic pronoun — clearly a verb, not a noun head.
+    # Also: an enclitic clitic token ("chamaram-lhe" → prev token "-lhe", "disse-me"
+    # → "-me") carries a leading hyphen, marking the preceding word as a verb host —
+    # so the clitic itself is not a noun head and must not feed the postpositive cue.
     _vowels = set("aeiouáéíóúâêîôûãõàèìòùäëïöü")
     _CLITICS = _CLITICS_ALL
     _prev_looks_verb = (
@@ -644,8 +688,14 @@ def score_adj(words: list, idx: int) -> int:
     return score
 
 
-def guess_pos(words: list, idx: int) -> str:
-    """Return the most likely UDEP POS tag for the ambiguous word at *idx*."""
+def guess_pos(words: list, idx: int, proper: bool = False) -> str:
+    """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
+
+    *proper*: the token is a mid-sentence capitalised word (a likely proper noun
+    — place/person/title, e.g. "Cerro Corá"). Real text is noun-dominant and a
+    proper noun is a NOUN, so this strongly biases the NOUN reading unless an
+    enclitic clitic right after marks a genuine verb host.
+    """
     word = words[idx]
 
     # Seed each candidate POS with its corpus-frequency prior (BASE_SCORE).
@@ -661,6 +711,13 @@ def guess_pos(words: list, idx: int) -> str:
         scores["VERB"] = score_verb(words, idx) + _bias.get("VERB", 0)
     if word in ADJ_IPA:
         scores["ADJ"] = score_adj(words, idx) + _bias.get("ADJ", 0)
+
+    # Proper-noun override: a capitalised mid-sentence token is a name, not a
+    # finite verb — unless it hosts an enclitic clitic ("Torno-me…").
+    if proper and "NOUN" in scores:
+        nxt = _next(words, idx)
+        if not (nxt.startswith("-") and nxt[1:] in _ENCLITICS):
+            scores["NOUN"] += 12
 
     best_score = max(scores.values())
     if best_score <= 0:
@@ -689,16 +746,22 @@ def _resolve_sede(words: list, idx: int) -> str:
     # preposition frame
     if next_word in {"da", "do", "das", "dos"}:
         seat += 3
-    if next_word == "de":                      # "sede de <abstract>" = figurative thirst
-        thirst += 2
-        if next2 in _SEDE_THIRST:
-            thirst += 3
-        if next2 in _SEDE_SEAT:                # "sede de futebol clube" etc.
+    if next_word == "de":                      # "sede de X"
+        _ABSTRACT = ("ção", "são", "mento", "dade", "ência", "ância", "ismo", "tude")
+        if next2 in DET:                       # "sede de uma organização/do clube" = HQ
             seat += 3
+        elif next2 in _SEDE_SEAT:              # "sede de futebol clube" = HQ
+            seat += 4
+        elif next2 in _SEDE_THIRST or next2.endswith(_ABSTRACT):  # "sede de poder/reconhecimento"
+            thirst += 4
+        else:                                  # "sede de Atenas/Lisboa" (place) → HQ
+            seat += 2
     if prev_word == "de":                       # "morto de sede", "queixou-se de sede"
         thirst += 3
     if prev_word in {"na", "à", "numa", "pela", "duma"}:   # locative: the HQ building
         seat += 2
+    if next_word in {"no", "na", "nos", "nas", "em"}:      # "sede no Porto" = HQ at a place
+        seat += 3
     # content cues in the window
     window = [_strip(words[i]) for i in range(max(0, idx - 3), min(len(words), idx + 4))
               if i != idx]
@@ -712,8 +775,68 @@ def _resolve_sede(words: list, idx: int) -> str:
     return DEFAULT_SENSE.get("sede", "thirst")
 
 
-# words whose senses share a POS need a meaning-level resolver after guess_pos
-_SENSE_RESOLVERS = {"sede": _resolve_sede}
+def _resolve_molho(words: list, idx: int) -> str:
+    """Disambiguate the NOUN reading of "molho": BUNDLE (open ɔ, "um molho de
+    chaves") vs SAUCE (closed o).  The closed reading also covers the verb molhar
+    ("eu molho", ˈmoʎu) — that is handled upstream as pos=VERB → sauce — so here
+    only the noun pair remains.  Bundle requires an explicit bundled thing; the
+    culinary sauce is the default.
+    """
+    next_word = _next(words, idx)
+    m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
+    if next_word == "de" and m2 in _BUNDLE_THINGS:                 # "molho de chaves/lenha"
+        return "bundle"
+    if (next_word == "de" and m2 in _BUNDLE_AMBIG                   # "colhi um molho de salsa"
+            and any(v in _BUNDLE_VERBS for v in left4)):
+        return "bundle"
+    return "sauce"
+
+
+def _resolve_tola(words: list, idx: int) -> str:
+    """Resolve "tola" once the POS guess is NOUN.
+
+    The concrete noun readings — colloquial head/skull and the *tola* hardwood,
+    both open ˈtɔlɐ — share the "head" slug. The foolish adjective (closed ˈtolɐ),
+    even used substantively ("aquela tola comprou…"), is a subject/predicate that
+    the POS scorer routes to ADJ, not NOUN; so reaching this resolver means the
+    open concrete reading. (`foolish` carries pos ``ADJ|NOUN`` only so an external
+    NOUN tag from the hybrid ensemble defers to these rules instead of forcing
+    head.)
+    """
+    return "head"
+
+
+def _resolve_by_cues(word: str, words: list, idx: int) -> str:
+    """Resolve a same-spelling reading by weighing its declared cue lists.
+
+    Reads :data:`bifonia.cues.SENSE_CUES`: every applicable :class:`~bifonia.cues.Cue`
+    is scored with the proximity-weighted, accent-folded :func:`cue_score`, and
+    the highest-scoring sense wins; the rule's ``default`` (the dominant reading)
+    is returned when nothing scores.  A cue gated by ``requires_prev`` only counts
+    when the token before the homograph matches (e.g. the "de" in "de cor").
+
+    This single function replaces the per-word bola/lobo/polo/cor resolvers —
+    adding a new cue-competition word is now a data edit in ``bifonia.cues``.
+    (Explicit diacritic spellings like «bôla»/«séde» are resolved upstream in
+    :func:`bifonia.guess_sense`, straight off the diacritic, before reaching here.)
+    """
+    rule = SENSE_CUES[word]
+    best, best_score = rule.default, 0
+    for cue in rule.cues:
+        if cue.requires_prev is not None and _prev(words, idx) != cue.requires_prev:
+            continue
+        score = _cue_score(words, idx, _folded(voc(cue.voc)))
+        if score > best_score:
+            best, best_score = cue.sense, score
+    return best
+
+
+# words whose senses share a POS need a meaning-level resolver after guess_pos.
+# sede/molho/tola carry structural logic beyond a cue competition, so they stay
+# hand-written; bola/lobo/polo/cor are data-driven via SENSE_CUES (see
+# resolve_sense, which dispatches to _resolve_by_cues for those).
+_SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
@@ -731,5 +854,7 @@ def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
         senses = next(iter(POS_SENSES.get(word, {}).values()), [None])
     if len(senses) == 1:
         return senses[0]
-    resolver = _SENSE_RESOLVERS.get(word)
+    if word in SENSE_CUES:                       # data-driven cue competition
+        return _resolve_by_cues(word, words, idx)
+    resolver = _SENSE_RESOLVERS.get(word)        # structurally richer hand-written cases
     return resolver(words, idx) if resolver else senses[0]

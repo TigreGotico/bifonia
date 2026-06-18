@@ -1,0 +1,15 @@
+# sense: shoot
+Gera {n} frases em Português Europeu natural onde a palavra "renovo" é usada como SUBSTANTIVO (rebento de planta).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "renovo" (em minúsculas, sem acento diacrítico)
+- A palavra "renovo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: o renovo — rebento/broto novo de uma planta.
+Exemplos de uso: «a árvore deitou um renovo», «o renovo da videira», «um renovo verde na primavera».
+Pronúncia: /ʁɨˈnovu/ — vogal O FECHADA (circunflexo em "renôvo").
+NÃO uses como verbo «eu renovo» (O aberto).
+Responde APENAS com as frases, uma por linha:

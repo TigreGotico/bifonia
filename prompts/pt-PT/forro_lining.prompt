@@ -1,0 +1,15 @@
+# sense: lining
+Gera {n} frases em Português Europeu natural onde "forro" é SUBSTANTIVO.
+
+Significado: material que reveste o interior de uma peca de vestuario, calcado ou movel, para o encher ou reforcar por dentro
+IPA: /ˈfoʁu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "forro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o casaco tem um forro de seda»; «rasgou-se o forro do bolso»; «puseram um forro quente nas botas»; «o forro do sofa estava puido»; «comprei tecido para o forro do vestido»
+Responde APENAS com as frases, uma por linha:

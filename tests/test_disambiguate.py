@@ -18,7 +18,9 @@ from bifonia import tokenize, disambiguate, HOMOGRAPHS, add_extra_diacritics
 
 def _dis(sentence: str, word: str) -> str:
     words = tokenize(sentence.lower())
-    idx = words.index(word)
+    # tokens may carry trailing punctuation ("tola," at a clause end) — locate
+    # the target by its stripped form.
+    idx = next(i for i, t in enumerate(words) if t.strip(".,;:!?") == word)
     return disambiguate(words, idx)
 
 

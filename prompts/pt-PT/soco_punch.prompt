@@ -1,0 +1,15 @@
+# sense: punch
+Gera {n} frases em Português Europeu natural onde "soco" é SUBSTANTIVO.
+
+Significado: golpe dado com a mao fechada; murro
+IPA: /ˈsoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "soco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «levou um soco no boxe e caiu ao chao»; «deu um soco na mesa de raiva»; «o pugilista treinou o soco direto»; «defendeu-se do soco com o braco»; «um soco bem dado bastou para o derrubar»
+Responde APENAS com as frases, uma por linha:

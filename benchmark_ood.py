@@ -9,7 +9,7 @@ lives in this repository. This is the honest generalisation number — synthetic
 benchmarks (``benchmark_tagger.py``) run several points higher because their train
 and test sentences share phrasing.
 
-Scores: most-common · rules (no corpus) · Naive-Bayes · perceptron · shipped ensemble.
+Scores: most-common · rules (no corpus) · Naive-Bayes · perceptron · ensemble ensemble.
 
 Usage::
 
@@ -20,7 +20,7 @@ import json
 import pathlib
 from collections import Counter, defaultdict
 
-from bifonia import tokenize, guess_sense
+from bifonia import tokenize, guess_sense, proper_flags
 from bifonia.data import POS_SENSES
 from bifonia.scoring import guess_pos as _rule_pos, resolve_sense as _rule_resolve
 from bifonia.model import SenseModel, NB_PATH, PERCEPTRON_PATH
@@ -44,7 +44,10 @@ def _tag(recs):
     words = {r["sentence"]: r["word"] for r in recs}
     if TAG_CACHE.exists():
         cache = json.loads(TAG_CACHE.read_text(encoding="utf-8"))
-        if all(s in cache for s in words):
+        # Require a real tag, not just a present key — an all-None cache must not
+        # short-circuit tagging (it would collapse spaCy/Stanza onto most-common).
+        if all(cache.get(s, {}).get("spacy") is not None
+               or cache.get(s, {}).get("stanza") is not None for s in words):
             return cache
     cache = {s: {} for s in words}
     sents = list(words)
@@ -83,12 +86,20 @@ def main():
     recs = _load_ood()
     train = [json.loads(l) for l in TRAIN.read_text(encoding="utf-8").splitlines() if l.strip()]
 
+    # majority/frequency baseline from the full bundled corpus (covers every
+    # roster word, not just the 27-word train split — otherwise new words have
+    # no most-common baseline and the column under-reports).
+    from bifonia.corpus import iter_records
     freq = defaultdict(Counter)
+    for w, s, _ in iter_records():
+        freq[w][s] += 1
     for r in train:
         freq[r["word"]][r["sense"]] += 1
     most_common = {w: c.most_common(1)[0][0] for w, c in freq.items()}
 
     def pos_to_sense(word, upos):
+        if upos is None:        # tagger produced no tag → abstain (scored as wrong),
+            return None         # never borrow the most-common answer
         cands = POS_SENSES.get(word, {}).get(upos)
         if cands:
             return sorted(cands, key=lambda s: -freq[word][s])[0]
@@ -102,19 +113,27 @@ def main():
 
     def toks(r):
         t = tokenize(r["sentence"].lower())
-        return (t, t.index(r["word"])) if r["word"] in t else (None, None)
+        # tokens may carry trailing punctuation or a leading clitic hyphen — match
+        # on the stripped form and normalise the target slot for the scorer.
+        i = next((j for j, w in enumerate(t) if w.strip(".,;:!?-") == r["word"]), None)
+        if i is None:
+            return (None, None, False)
+        pf = proper_flags(r["sentence"])
+        pr = pf[i] if i < len(pf) else False
+        t = list(t); t[i] = r["word"]
+        return (t, i, pr)
 
     def rules(r):
-        t, i = toks(r)
-        return _rule_resolve(r["word"], t, i, _rule_pos(t, i)) if t else None
+        t, i, pr = toks(r)
+        return _rule_resolve(r["word"], t, i, _rule_pos(t, i, proper=pr)) if t else None
 
     def model(m, r):
-        t, i = toks(r)
+        t, i, pr = toks(r)
         return m.predict(r["word"], t, i) if t and m.has(r["word"]) else None
 
-    def shipped(r):
-        t, i = toks(r)
-        return guess_sense(t, i) if t else None
+    def ensemble(r):
+        t, i, pr = toks(r)
+        return guess_sense(t, i, proper=pr) if t else None
 
     appr = {
         "most-common": lambda r: most_common.get(r["word"]),
@@ -123,7 +142,7 @@ def main():
         "rules(free)": rules,
         "NB": lambda r: model(nb, r),
         "perceptron": lambda r: model(perc, r),
-        "shipped": shipped,
+        "ensemble": ensemble,
     }
 
     print(f"OOD set: {len(recs)} real sentences, {len({r['word'] for r in recs})} words\n")
@@ -132,7 +151,7 @@ def main():
         ok = sum(1 for r in recs if fn(r) == r["sense"])
         print(f"{name:<14} {ok / len(recs) * 100:6.2f}%  ({ok}/{len(recs)})")
 
-    print("\nper-word (n | rules | NB | perceptron | shipped):")
+    print("\nper-word (n | rules | NB | perceptron | ensemble):")
     byw = defaultdict(list)
     for r in recs:
         byw[r["word"]].append(r)
@@ -143,7 +162,7 @@ def main():
         def acc(fn):
             return sum(1 for r in rs if fn(r) == r["sense"]) / n * 100
         print(f"  {w:<12} {n:>3} | {acc(rules):5.0f} | {acc(lambda r: model(nb, r)):5.0f} | "
-              f"{acc(lambda r: model(perc, r)):5.0f} | {acc(shipped):5.0f}")
+              f"{acc(lambda r: model(perc, r)):5.0f} | {acc(ensemble):5.0f}")
 
 
 if __name__ == "__main__":

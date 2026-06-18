@@ -1,0 +1,15 @@
+# sense: court_of_law
+Gera {n} frases em Português Europeu natural onde a palavra "corte" é usada como SUBSTANTIVO no sentido de «tribunal».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "corte" (em minúsculas, sem acento diacrítico)
+- A palavra "corte" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: tribunal; orgao que administra a justica
+IPA: /ˈkoɾtɨ/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «o caso foi levado a corte suprema»; «a corte decidiu a favor do reu»; «os juizes da corte ouviram as testemunhas»; «a sentenca da corte foi divulgada hoje»; «advogados de ambos os lados foram a corte»
+Responde APENAS com as frases, uma por linha:

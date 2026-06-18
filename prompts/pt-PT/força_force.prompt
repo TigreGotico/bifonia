@@ -1,0 +1,15 @@
+# sense: force
+Gera {n} frases em Português Europeu natural onde a palavra "força" é usada como VERBO (3.ª pessoa do singular de «forçar»).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "força" (em minúsculas, sem acento diacrítico)
+- A palavra "força" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: «ele/ela força» — exercer força sobre algo, arrombar, obrigar.
+Exemplos de uso: «ele força a porta», «não força a fechadura», «o ladrão força a janela».
+Pronúncia: /ˈfɔɾsɐ/ — vogal O ABERTA (agudo em "fórça").
+NÃO uses como substantivo (vigor/poder, O fechado).
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+# sense: appeal
+Gera {n} frases em Português Europeu natural onde "apelo" é SUBSTANTIVO.
+
+Significado: pedido urgente de auxilio, atencao ou apoio dirigido a alguem; chamada ou solicitacao
+IPA: /ɐˈpelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "apelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «lancaram um apelo a solidariedade dos vizinhos»; «o apelo do governo pedia calma a populacao»; «fez um apelo emocionado por ajuda»; «o apelo da campanha juntou muitos voluntarios»; «respondeu ao apelo dos amigos sem hesitar»
+Responde APENAS com as frases, uma por linha:

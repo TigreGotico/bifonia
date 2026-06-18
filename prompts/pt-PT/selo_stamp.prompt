@@ -1,0 +1,15 @@
+# sense: stamp
+Gera {n} frases em Português Europeu natural onde "selo" é SUBSTANTIVO.
+
+Significado: pequeno papel impresso e adesivo que se cola na correspondencia para pagar o seu envio pelo correio
+IPA: /ˈselu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "selo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «colei o selo no canto do envelope»; «comprei selos nos correios para as cartas»; «este selo antigo vale muito dinheiro»; «faltava um selo na encomenda»; «ele coleciona selos de varios paises»
+Responde APENAS com as frases, uma por linha:

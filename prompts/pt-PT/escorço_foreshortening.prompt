@@ -1,0 +1,14 @@
+# sense: foreshortening
+Gera {n} frases em Português Europeu natural onde "escorço" é SUBSTANTIVO.
+
+Significado: redução das dimensões de um desenho; figura mais pequena que o objeto representado; obra de pequenas dimensões; síntese; esboço; vasilha de cortiça, também designada corticeira
+IPA: /ɨʃˈkoɾsu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "escorço" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

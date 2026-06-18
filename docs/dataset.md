@@ -20,7 +20,7 @@ and may repeat across senses of the same word (both senses of `sede` are `NOUN`)
 
 ---
 
-## Statistics (current corpus)
+## Statistics
 
 | Metric | Value |
 |--------|-------|

@@ -1,0 +1,14 @@
+# sense: stick
+Gera {n} frases em Português Europeu natural onde "emperro" é a 1.ª pessoa do singular do presente do indicativo de «emperrar».
+
+Significado de «emperrar»: tornar perro; dificultar ou impossibilitar o movimento ou a articulação de; obstar a; ficar parado, não podendo ou não querendo mover-se; não saber o que fazer ou dizer
+IPA: /ẽˈpɛʁu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "emperro" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

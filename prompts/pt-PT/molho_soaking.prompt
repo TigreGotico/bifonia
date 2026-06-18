@@ -1,0 +1,15 @@
+# sense: soaking
+Gera {n} frases em Português Europeu natural onde a palavra "molho" é usada como SUBSTANTIVO no sentido de «imersão em líquido (de molho)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "molho" (em minúsculas, sem acento diacrítico)
+- A palavra "molho" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: estado de um alimento ou objeto deixado imerso num liquido durante algum tempo (de molho).
+IPA: /ˈmoʎu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «deixei o bacalhau de molho desde ontem.»; «poe o grao de molho na noite anterior.»; «a roupa esta de molho na bacia.»; «os feijoes ficam de molho durante a noite.»; «deixa as lentilhas de molho uma hora.»; «pus o tacho queimado de molho com agua quente.»
+Responde APENAS com as frases, uma por linha:

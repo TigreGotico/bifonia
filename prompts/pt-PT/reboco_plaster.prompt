@@ -1,0 +1,14 @@
+# sense: plaster
+Gera {n} frases em Português Europeu natural onde "reboco" é SUBSTANTIVO.
+
+Significado: camada de argamassa que na construção se aplica sobre o emboço das superfícies de forma a torná-las lisas e regulares; substância com que se reveste o interior de um vaso para o tornar impermeável
+IPA: /ʁɨˈboku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "reboco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+# sense: strength
+Gera {n} frases em Português Europeu natural onde a palavra "força" é usada como SUBSTANTIVO (vigor/poder).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "força" (em minúsculas, sem acento diacrítico)
+- A palavra "força" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: a força — vigor físico, poder, intensidade.
+Exemplos de uso: «tem muita força», «a força do vento», «com toda a força».
+Pronúncia: /ˈfoɾsɐ/ — vogal O FECHADA (circunflexo em "fôrça").
+NÃO uses como verbo «ele força» (O aberto).
+Responde APENAS com as frases, uma por linha:

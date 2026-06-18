@@ -42,10 +42,14 @@ PRUNE_EPS = 0.02       # drop |weight| below this → sparse, 0 = neutral at inf
 
 def rule_sense(word, words, idx):
     """Corpus-free rule prediction (the baseline a word must match to be adopted)."""
+    # normalise the target slot (tokens may carry trailing punctuation / a clitic
+    # hyphen under the current tokenizer) so the scorer sees the clean headword.
+    if words[idx] != word:
+        words = list(words); words[idx] = word
     return _rule_resolve(word, words, idx, _rule_pos(words, idx))
 
 
-def load_examples(path, vocs, skip_xfail=False):
+def load_examples(path, vocs, skip_xfail=False, exclude=None):
     by_word = defaultdict(list)
     for line in path.read_text(encoding="utf-8").splitlines():
         if not line.strip():
@@ -53,11 +57,15 @@ def load_examples(path, vocs, skip_xfail=False):
         r = json.loads(line)
         if skip_xfail and r.get("xfail"):
             continue
+        if exclude is not None and r["sentence"].strip().lower() in exclude:
+            continue                       # keep the behavioral set disjoint from train
         words = tokenize(r["sentence"].lower())
         w = r["word"]
-        if w not in words:
+        # tokens may carry trailing punctuation ("torno." at a clause end) — match
+        # on the stripped form so a sentence-final target is still located.
+        idx = next((i for i, t in enumerate(words) if t.strip(".,;:!?") == w), None)
+        if idx is None:
             continue
-        idx = words.index(w)
         by_word[w].append((extract_features(words, idx, vocs), r["sense"], words, idx))
     return by_word
 
@@ -203,11 +211,22 @@ def build_model(kind, by_word, behav, min_count, epochs, val_frac, seed):
         # hand-curated out-of-distribution test sentences (guards against the
         # model memorising corpus templates while regressing real phrasings).
         beh = behav.get(word, [])
-        model_beh = sum(1 for feats, gold, _, _ in beh
-                        if predict(weights, bias, feats, senses) == gold)
-        rule_beh = sum(1 for _, gold, ws, idx in beh if rule_sense(word, ws, idx) == gold)
-        # adopt only if same-or-better on BOTH corpus val and behavioral set
-        route = "model" if (val >= rule_val and model_beh >= rule_beh) else "rules"
+        model_ok = [predict(weights, bias, feats, senses) == gold
+                    for feats, gold, _, _ in beh]
+        rule_ok = [rule_sense(word, ws, idx) == gold for _, gold, ws, idx in beh]
+        model_beh, rule_beh = sum(model_ok), sum(rule_ok)
+        # No per-case regression: never adopt a model that loses a curated
+        # behavioral case the rules get right (aggregate parity isn't enough —
+        # the disambiguate suite asserts every case, and function words like
+        # `pelo` can win on average while regressing the dominant reading).
+        regress = any(r and not m for r, m in zip(rule_ok, model_ok))
+        # Adopt the model only when it STRICTLY beats the rules on the hand-curated
+        # behavioral set (our out-of-distribution proxy) with no per-case regression.
+        # In-distribution corpus val is circular — the corpus labels were assigned by
+        # the rules, so a model that merely matches val often generalises worse OOD
+        # (see docs/benchmarks.md). Behavioral improvement is the only honest signal.
+        route = ("model" if (model_beh > rule_beh and not regress
+                             and len(beh) >= 3) else "rules")
         report.append((word, val, rule_val, route, len(train_ex),
                        model_beh, rule_beh, len(beh)))
 
@@ -233,7 +252,12 @@ def main():
     vocs = load_structural_vocs("pt-pt")
     print("loading examples…")
     by_word = load_examples(TRAIN, vocs)
-    behav = load_examples(BEHAV, vocs, skip_xfail=True) if BEHAV.exists() else {}
+    # The behavioral set gates model adoption as an out-of-distribution proxy, so
+    # it must not contain any sentence the model trained on.
+    train_sents = {json.loads(l)["sentence"].strip().lower()
+                   for l in TRAIN.read_text(encoding="utf-8").splitlines() if l.strip()}
+    behav = (load_examples(BEHAV, vocs, skip_xfail=True, exclude=train_sents)
+             if BEHAV.exists() else {})
     print(f"{sum(len(v) for v in by_word.values())} train examples, "
           f"{sum(len(v) for v in behav.values())} behavioral, across {len(by_word)} words")
 

@@ -65,9 +65,17 @@ widens vocabulary and phrasing variety.
 `guess_sense` is a **per-word ensemble** over two engines. For each ambiguous token it consults
 the learned model where that word is routed to the model and clears its margin, and falls back to
 the rule engine otherwise; an explicit `pos` override always uses the rule resolver. `guess_pos`
-maps the resolved sense back to its descriptive POS; `disambiguate` selects the IPA for the
+maps the resolved sense back to its lexical class; `disambiguate` selects the IPA for the
 resolved `(word, sense)`. Because adoption is gated on held-out accuracy (below), the ensemble
 never does worse than the rules alone.
+
+**`guess_pos` is not a syntactic POS tagger.** It reports the lexical class that *selects the
+pronunciation*, which can deliberately disagree with the word's function in the sentence. An
+adjective used as a noun is the clearest case: in *"aquela tola comprou…"* `tola` is the
+syntactic subject (NOUN) yet takes the adjective reading (`foolish`, closed ˈtolɐ), so
+`guess_pos` returns `"ADJ"` to reach the right IPA — and the roster tags that sense `ADJ|NOUN`
+so an external NOUN tag defers to the rules instead of forcing the concrete `head` noun. The
+output is an internal signal for sense/IPA resolution only; use a dedicated tagger for real POS.
 
 ### Rule engine
 
@@ -122,8 +130,8 @@ Feature families:
 
 The structural `.voc` sets encode grammar (generic across Romance languages), not per-word
 lexical semantics; the model learns lexical cues from the `W=` and positional tokens. Porting to
-a related language means swapping the corpus and `.voc` files and retraining — this file is
-untouched.
+a related language means swapping the corpus and `.voc` files and retraining; this file is
+language-agnostic.
 
 ### Per-word ensemble routing
 
@@ -185,11 +193,11 @@ held-out split (the test partition of the generated corpus). `benchmark_ood.py` 
 | rules (no corpus) | 94.5 % | 84.6 % |
 | Naive-Bayes | 98.1 % | 86.7 % |
 | averaged perceptron | 99.0 % | 89.6 % |
-| **shipped ensemble** | **96.1 %** | **90.5 %** |
+| **ensemble** | **96.1 %** | **90.5 %** |
 
-**Synthetic splits overstate accuracy.** Their train and test sentences share phrasing, so every
-approach runs several points high; the OOD set is the honest measure. Every method drops on real
-text — but the corpus-trained perceptron still beats the rules by roughly five points there
+Synthetic splits overstate accuracy: their train and test sentences share phrasing, so every
+approach runs several points high, and the OOD set is the reliable measure. Every method drops on
+real text, but the corpus-trained perceptron still beats the rules by roughly five points there
 (89.6 vs 84.6): it generalises rather than memorising. On the balanced synthetic split the pure
 perceptron is highest, since the ensemble's per-word route gate keeps a word on the rules wherever
 the model does not clearly win. On real text that same routing pays off — the ensemble edges past
@@ -199,7 +207,7 @@ rules on any word.
 
 The POS taggers (spaCy/Stanza) hit a **structural ceiling**: POS cannot separate two senses that
 share a part of speech, so the tagger gets the majority noun sense right but the minority sense
-wrong *by construction* — both spaCy and Stanza score 0 % on `sede`/thirst. Their aggregate score
+wrong by construction — both spaCy and Stanza score 0 % on `sede`/thirst. Their aggregate score
 swings with the sense distribution: on the balanced synthetic set the minority readings are common
 enough to pull them down to 66–76 %, while real text is skewed toward the majority readings they do
 get right, lifting them to ~82 %. The meaning-aware models lead on both distributions.
@@ -289,6 +297,6 @@ The acute/circumflex marks the vowel quality directly, so:
   error source for a local rule-based system.
 - **Sentence-level ambiguity:** a small number of sentences are genuinely ambiguous without
   full semantic interpretation (e.g. `para sempre` = *stop* "stops always" vs *purpose*
-  "forever").  These remain known limitations rather than being over-fitted with fragile rules.
+  "forever").  These are handled as known limitations rather than with fragile rules.
 - **Dataset licence:** sentence content is original; no copyrighted text is used.  The corpus
   is published under a permissive licence.

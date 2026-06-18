@@ -1,0 +1,15 @@
+# sense: by_heart
+Gera {n} frases em Português Europeu natural onde a palavra "cor" é usada como LOCUÇÃO ADVERBIAL «de cor» (de memória).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "cor" (em minúsculas, sem acento diacrítico)
+- A palavra "cor" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: saber/recitar algo «de cor», ou seja, de memória.
+Exemplos de uso: «sabe o poema de cor», «recita a tabuada de cor», «aprendeu o discurso de cor».
+Pronúncia: /ˈkɔɾ/ — vogal O ABERTA (agudo); usa SEMPRE «de cor».
+NÃO uses no sentido de tonalidade/matiz (O fechado).
+Responde APENAS com as frases, uma por linha:
