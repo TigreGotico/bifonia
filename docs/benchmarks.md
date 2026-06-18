@@ -141,9 +141,18 @@ honest footing as the rules. See `baselines.py` for the shared protocol.
 | most-common (training majority) | 46.5% | 72.0% |
 | cue-only (sense-cue registry, no POS, no learning) | 52.6% | 87.5% |
 | decision-list (Yarowsky, one-sense-per-collocation) | 89.0% | 86.4% |
+| logistic regression (numpy, same features incl. CUE:) | 92.2% | 93.3% |
 | **rules (zero-dependency)** | **96.2%** | **98.3%** |
 
 ![Zero-dependency baselines on real wild gold](img/baselines.png)
+
+The numpy logistic regression (the one non-stdlib baseline) is the strongest
+*learned* model — the CUE: features lift it well past the decision list, the
+Naive-Bayes/perceptron models, and a neural POS-tagger — yet it **still trails the
+rules** by ~3-4 points out-of-distribution. So the open question has a clean
+answer: with the same cues the rules use, a learned linear model gets close but
+does not beat them on real text, because the corpus it learns from is itself
+rule-labelled.
 
 Two things stand out. **The sense-cue registry alone reaches 87.5%** on the
 same-POS words a POS-tagger cannot separate — the curated cues carry most of the

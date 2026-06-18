@@ -147,8 +147,69 @@ class DecisionList:
         return self._majority.get(ex.word, ex.sense)
 
 
-#: Instantiated in benchmark order (cheap → strong).
+class LogisticRegression:
+    """Per-word multinomial logistic regression over :func:`extract_features`.
+
+    The one **numpy** baseline (imported lazily) — every other baseline here is
+    pure stdlib. It answers the project's open question directly: given the same
+    features the rules use (including the CUE: features), can a learned linear
+    model beat the rules out-of-distribution? Trained with full-batch gradient
+    descent and L2; falls back to the training majority for unseen words.
+    """
+    name = "logreg"
+
+    def __init__(self, epochs: int = 400, lr: float = 0.5, l2: float = 1e-4) -> None:
+        self._vocs = load_structural_vocs("pt-pt")
+        self.epochs, self.lr, self.l2 = epochs, lr, l2
+        self._models: dict[str, tuple] = {}   # word → (W, feat_index, senses)
+
+    def fit(self, by_word: dict[str, list[Example]]) -> None:
+        import numpy as np
+        self._majority = _majority(by_word)
+        for word, exs in by_word.items():
+            senses = sorted({e.sense for e in exs})
+            if len(senses) < 2:
+                continue
+            feat_index: dict[str, int] = {}
+            rows = []
+            for e in exs:
+                feats = extract_features(e.words, e.idx, self._vocs)
+                for f in feats:
+                    feat_index.setdefault(f, len(feat_index))
+                rows.append((feats, senses.index(e.sense)))
+            d, k = len(feat_index) + 1, len(senses)   # +1 bias column
+            X = np.zeros((len(rows), d)); Y = np.zeros((len(rows), k))
+            for r, (feats, y) in enumerate(rows):
+                X[r, -1] = 1.0                          # bias
+                for f, v in feats.items():
+                    X[r, feat_index[f]] = v
+                Y[r, y] = 1.0
+            W = np.zeros((d, k))
+            for _ in range(self.epochs):
+                Z = X @ W; Z -= Z.max(1, keepdims=True)
+                P = np.exp(Z); P /= P.sum(1, keepdims=True)
+                grad = X.T @ (P - Y) / len(rows) + self.l2 * W
+                W -= self.lr * grad
+            self._models[word] = (W, feat_index, senses)
+
+    def predict(self, ex: Example) -> str:
+        import numpy as np
+        model = self._models.get(ex.word)
+        if model is None:
+            return self._majority.get(ex.word, ex.sense)
+        W, feat_index, senses = model
+        x = np.zeros(W.shape[0]); x[-1] = 1.0
+        for f, v in extract_features(ex.words, ex.idx, self._vocs).items():
+            j = feat_index.get(f)
+            if j is not None:
+                x[j] = v
+        return senses[int((x @ W).argmax())]
+
+
+#: Pure-stdlib baselines, instantiated in benchmark order (cheap → strong).
 BASELINES: list[Baseline] = [MostCommon(), CueOnly(), DecisionList()]
+#: numpy-only tier (kept separate so the stdlib suite stays dependency-free).
+NUMPY_BASELINES: list[Baseline] = [LogisticRegression()]
 
 
 def load_examples(path: str) -> dict[str, list[Example]]:
