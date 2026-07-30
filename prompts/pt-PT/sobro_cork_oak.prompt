@@ -1,0 +1,15 @@
+# sense: cork_oak
+Gera {n} frases em Português Europeu natural onde "sobro" é SUBSTANTIVO.
+
+Significado: arvore perenifolia da familia das fagaceas, cultivada em portugal para a extracao da cortica, de copa ampla e folhas coriaceas
+IPA: /ˈsobɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "sobro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o sobro fornece a cortica das rolhas»; «plantaram um sobro junto a estrada»; «a sombra do sobro abrigava o rebanho»; «descortica-se o sobro de poucos em poucos anos»; «um sobro antigo erguia-se no meio do campo»
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+# sense: relief_terrain
+Gera {n} frases em Português Europeu natural onde "relevo" é SUBSTANTIVO.
+
+Significado: conjunto das saliencias e depressoes da superficie terrestre
+IPA: /ʁɨˈlevu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "relevo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o relevo desta regiao e muito acidentado»; «o mapa mostra o relevo com cores diferentes»; «estudamos o relevo montanhoso do norte do pais»; «o relevo plano facilita a agricultura»; «as serras dao um relevo marcante a paisagem»
+Responde APENAS com as frases, uma por linha:

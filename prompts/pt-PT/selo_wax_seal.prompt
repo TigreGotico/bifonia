@@ -1,0 +1,15 @@
+# sense: wax_seal
+Gera {n} frases em Português Europeu natural onde a palavra "selo" é usada como SUBSTANTIVO no sentido de «sinete».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "selo" (em minúsculas, sem acento diacrítico)
+- A palavra "selo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: sinete ou carimbo, e a marca de cera que ele deixa, usado para fechar e autenticar documentos ou cartas.
+IPA: /ˈselu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «a carta vinha fechada com um selo de cera vermelha.»; «o rei autenticava as ordens com o seu selo.»; «o notario pos o selo no fundo do documento.»; «guardo um selo antigo gravado com o brasao da familia.»; «quebrou o selo de cera para abrir o envelope.»; «o selo deixou a sua marca em relevo no lacre.»
+Responde APENAS com as frases, uma por linha:

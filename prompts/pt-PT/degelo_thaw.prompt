@@ -1,0 +1,15 @@
+# sense: thaw
+Gera {n} frases em Português Europeu natural onde "degelo" é SUBSTANTIVO.
+
+Significado: fusao gradual das massas de gelo e neve, provocada pela subida da temperatura
+IPA: /dɨˈʒelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "degelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o degelo da primavera enche os rios da montanha»; «o degelo dos polos preocupa os cientistas»; «com o degelo, os caminhos ficaram lamacentos»; «o degelo do glaciar tem sido cada vez mais rapido»; «a aldeia fica isolada ate ao degelo do inverno»
+Responde APENAS com as frases, uma por linha:

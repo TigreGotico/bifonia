@@ -1,0 +1,15 @@
+# sense: ditch
+Gera {n} frases em Português Europeu natural onde "fosso" é SUBSTANTIVO.
+
+Significado: escavacao profunda feita no solo, em especial a vala cavada a volta de fortificacoes para impedir o acesso do inimigo
+IPA: /ˈfosu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "fosso" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «um fosso largo rodeava as muralhas do castelo»; «encheram o fosso com agua para deter o ataque»; «os soldados nao conseguiam atravessar o fosso»; «caiu dentro do fosso ao tentar saltar»; «abriram um fosso para escoar a chuva do campo»
+Responde APENAS com as frases, uma por linha:

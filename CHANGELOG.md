@@ -1,14 +1,36 @@
 # Changelog
 
-## [0.1.1a1](https://github.com/TigreGotico/bifonia/tree/0.1.1a1) (2026-06-12)
+## [0.2.0a4](https://github.com/TigreGotico/bifonia/tree/0.2.0a4) (2026-07-30)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/d88b868d0e8d91208c431b9c498e5d1377820ce8...0.1.1a1)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a3...0.2.0a4)
 
 **Merged pull requests:**
 
-- chore: wire gh-automations shared CI and release workflows [\#4](https://github.com/TigreGotico/bifonia/pull/4) ([JarbasAl](https://github.com/JarbasAl))
-- fix: add\_extra\_diacritics preserves case and replaces by token position [\#3](https://github.com/TigreGotico/bifonia/pull/3) ([JarbasAl](https://github.com/JarbasAl))
-- Configure Renovate [\#1](https://github.com/TigreGotico/bifonia/pull/1) ([renovate[bot]](https://github.com/apps/renovate))
+- docs: rewrite README in Simplified Technical English [\#13](https://github.com/TigreGotico/bifonia/pull/13) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.0a3](https://github.com/TigreGotico/bifonia/tree/0.2.0a3) (2026-06-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a2...0.2.0a3)
+
+**Merged pull requests:**
+
+- data: expand synthetic corpus +53,866 verified rows \(101k → 155k\) [\#11](https://github.com/TigreGotico/bifonia/pull/11) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.0a2](https://github.com/TigreGotico/bifonia/tree/0.2.0a2) (2026-06-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a1...0.2.0a2)
+
+**Merged pull requests:**
+
+- chore: move tooling scripts into scripts/ \(clean repo root\) [\#9](https://github.com/TigreGotico/bifonia/pull/9) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.0a1](https://github.com/TigreGotico/bifonia/tree/0.2.0a1) (2026-06-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.1.1...0.2.0a1)
+
+**Merged pull requests:**
+
+- feat: European-Portuguese heterophone disambiguator — 131 words, meaning-keyed + fully-verified datasets, cue-registry engine [\#7](https://github.com/TigreGotico/bifonia/pull/7) ([JarbasAl](https://github.com/JarbasAl))
 
 
 

@@ -1,0 +1,15 @@
+# sense: dome
+Gera {n} frases em Português Europeu natural onde "domo" é SUBSTANTIVO.
+
+Significado: estrutura de forma hemisferica, em especial a parte superior e exterior da cupula de um edificio
+IPA: /ˈdomu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "domo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o domo da catedral brilhava ao sol»; «subiram ate ao topo do domo de vidro»; «o domo cobria toda a sala central»; «pintaram o interior do domo com frescos»; «a luz entrava pela abertura do domo»
+Responde APENAS com as frases, uma por linha:

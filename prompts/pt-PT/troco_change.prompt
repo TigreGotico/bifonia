@@ -1,0 +1,15 @@
+# sense: change
+Gera {n} frases em Português Europeu natural onde "troco" é SUBSTANTIVO.
+
+Significado: conjunto de moedas e notas de menor valor que se recebe de volta quando se paga com uma nota superior ao preco
+IPA: /ˈtɾoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "troco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «a caixa devolveu-me o troco em moedas»; «fica com o troco, nao e preciso»; «nao tenho troco para uma nota de cinquenta euros»; «esqueci-me de pedir o troco no cafe»; «ele contou o troco antes de sair da loja»; «preciso de troco para o parquimetro»
+Responde APENAS com as frases, uma por linha:

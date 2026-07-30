@@ -19,20 +19,30 @@ Feature families (all sparse, value 1.0 unless noted):
   self_sfx=INF / self_sfx3= / self_pfx3=   morphology of the target word
   R1_mente / L1_inf / R1_deverbal          neighbour morphology
   pos0 / prev_looks_verb                   position / shape heuristics
+  CUE:<sense>                              proximity-weighted score of a semantic
+                                           cue voc for one of the target's senses
+
+The CUE: features are the one place per-word semantic knowledge enters — but it
+enters as *data*, from the :data:`bifonia.cues.FEATURE_CUES` registry and its
+``.voc`` wordlists, the same lexicons the rule engine uses. There is still no
+per-word branching in this file: a fork swaps the ``.voc`` files + registry and
+retrains.
 
 Pure stdlib — must stay import-light (no numpy) so it is safe on the
 zero-dependency inference path.
 """
 import functools
 import pathlib
-import re
 
-_PUNCT = str.maketrans("", "", ".,;:!?\"'()[]{}«»–—")
+from bifonia.cues import FEATURE_CUES
+from bifonia.text import cue_score as _cue_score, folded as _folded, strip_punct as _strip
+from bifonia.vocab import voc as _voc
 
 # Structural .voc sets used as membership-feature templates. These encode grammar
 # (determiners, pronouns, clitics, copula, …) — generic across Romance languages —
-# NOT per-word lexical semantics. Lexical cue lists (court_terms, mould_cues, …)
-# are intentionally excluded: the model learns those from the W=/positional tokens.
+# NOT per-word lexical semantics. The per-sense lexical cue lists (bola_loaf_cues,
+# sede_seat_cues, …) enter separately as the CUE: features at the end of
+# extract_features, driven by the bifonia.cues registry.
 STRUCTURAL_VOCS = (
     "determiners", "pronouns", "quantifiers", "articles", "sing_articles",
     "contracted_det", "de_contractions", "locative_contractions", "contracted_a",
@@ -72,10 +82,6 @@ def load_structural_vocs(lang: str = "pt-pt") -> dict:
         if path.exists():
             vocs[name] = _read_voc(path)
     return vocs
-
-
-def _strip(w: str) -> str:
-    return w.translate(_PUNCT)
 
 
 def _tok(words: list, i: int) -> str:
@@ -151,5 +157,18 @@ def extract_features(words: list, idx: int, vocs: dict) -> dict:
         feats["pos0"] = 1.0
     if l1 and _looks_verb(l1):
         feats["L1_looks_verb"] = 1.0
+
+    # ── semantic sense cues (shared with the rule engine via bifonia.cues) ─────
+    # For the homograph at idx, emit the proximity-weighted score of each cue voc
+    # that discriminates one of ITS senses (e.g. for "bola": CUE:loaf, CUE:ball).
+    # These are the highest-signal features available — the very lexicons the
+    # rules use — so the model learns the cue→sense mapping directly instead of
+    # having to rediscover it from the W=/positional bag-of-words. Data-driven:
+    # the (word → cue voc → sense) mapping lives entirely in bifonia.cues.
+    for voc_name, (cue_word, cue_sense) in FEATURE_CUES.items():
+        if cue_word == self_tok:
+            score = _cue_score(words, idx, _folded(_voc(voc_name)))
+            if score:
+                feats[f"CUE:{cue_sense}"] = float(score)
 
     return feats
