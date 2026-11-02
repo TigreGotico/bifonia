@@ -66,6 +66,7 @@ _PERSON_POSS  = voc("person_possessive")
 _MATERIAL_PREP = voc("material_prep")
 _HEAD_LOCATIVE = voc("head_locative")
 _TOLA_DET_PREV = voc("tola_det_prev")
+_MOLHO_NOUN_PREV = voc("molho_noun_prev")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
@@ -372,6 +373,16 @@ def score_noun(words: list, idx: int) -> int:
             score += 6
         else:
             score = 0
+
+    # "molho" as the verb molhar takes a direct object or a clitic ("molho os
+    # pés", "molho-as"). An interrogative or a verb of lack before it ("qual
+    # molho", "falta molho"), or "de" after it ("molho de tomate"), marks the noun.
+    if word == "molho":
+        if (prev_word in _MOLHO_NOUN_PREV and next_word not in _ARTICLES | QUANT
+                and not next_word.startswith("-")):
+            score += 8
+        if next_word == "de":
+            score += 4
     return score
 
 
