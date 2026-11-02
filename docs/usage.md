@@ -54,6 +54,8 @@ Returns the sentence with non-canonical diacritics inserted on ambiguous words, 
 | `ó` / `é` | /ɔ/ / /ɛ/ | open vowel |
 | `ô` / `ê` | /o/ / /e/ | closed vowel |
 
+The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO have no rows and keep the European marks. See the README section on African and Asian lects.
+
 ## Word coverage
 
 IPA data is sourced from `bifonia/data/heterophonic_homographs.csv`, keyed on `(word, sense)`.
