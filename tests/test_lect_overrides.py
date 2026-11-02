@@ -8,6 +8,9 @@ applies to empeno and desempeno. soma is written closed (sôma), because an
 unmarked soma takes the open vowel of the tugalex rjx and spx lexicons. tola keeps
 the European marks: bifonia's head sense also covers the timber, which no
 Brazilian source covers.
+
+pt-UY takes the Brazilian marks. No source states the rule for Uruguayan
+Portuguese; it is inferred from its rural Rio Grande do Sul vowel system.
 """
 
 import csv
@@ -20,7 +23,9 @@ import pytest
 from bifonia import add_extra_diacritics, AMBIGUOUS_WORDS
 
 BR_LANGS = ["pt-BR", "pt-BR-x-rj", "pt-BR-x-sp", "pt_br", " pt-BR ", "pt-Latn-BR"]
-EUROPEAN_LANGS = [None, "", "pt-PT", "pt-PT-x-lbx", "pt-AO", "pt-brx", "pt-Latn", "en"]
+UY_LANGS = ["pt-UY", "pt-UY-x-rivera", "pt_uy", " pt-UY ", "pt-Latn-UY"]
+EUROPEAN_LANGS = [None, "", "pt-PT", "pt-PT-x-lbx", "pt-AO", "pt-brx", "pt-uyx",
+                  "pt-Latn", "en"]
 
 # (sentence, European output, Brazilian output)
 CASES = [
@@ -99,6 +104,21 @@ def test_pt_br_marking(sentence, _european, brazilian, lang):
     assert add_extra_diacritics(sentence, lang=lang) == brazilian
 
 
+@pytest.mark.parametrize("lang", UY_LANGS)
+@pytest.mark.parametrize("sentence,_european,brazilian", CASES, ids=_IDS)
+def test_pt_uy_takes_brazilian_marking(sentence, _european, brazilian, lang):
+    assert add_extra_diacritics(sentence, lang=lang) == brazilian
+
+
+@pytest.mark.parametrize("sentence,european,uruguayan", [
+    ("Ele soma os números.", "Ele sóma os números.", "Ele sôma os números."),
+    ("Eu aceno da janela.", "Eu acéno da janela.", "Eu aceno da janela."),
+])
+def test_pt_uy_closes_the_vowel_pt_pt_keeps_it_open(sentence, european, uruguayan):
+    assert add_extra_diacritics(sentence, lang="pt-UY") == uruguayan
+    assert add_extra_diacritics(sentence, lang="pt-PT") == european
+
+
 @pytest.mark.parametrize("lang", EUROPEAN_LANGS)
 @pytest.mark.parametrize("sentence,european,_brazilian", CASES, ids=_IDS)
 def test_other_lects_keep_european_marking(sentence, european, _brazilian, lang):
@@ -132,6 +152,7 @@ def test_override_rows_are_known_homographs_with_a_source():
     with path.open(encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
     assert {r["word"] for r in rows if r["lang"] == "pt-BR"} == BR_WORDS
+    assert LECT_OVERRIDES["pt-UY"] == LECT_OVERRIDES["pt-BR"]
     for row in rows:
         assert row["word"] in AMBIGUOUS_WORDS
         assert row["source"].strip()

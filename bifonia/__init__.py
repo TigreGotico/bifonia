@@ -553,7 +553,9 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     ``pt-BR`` and its sub-lects (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows,
     because Brazilian Portuguese has a closed nasal stressed vowel in every sense
     of these words: *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay
-    unmarked, and *soma* is always *sôma*.
+    unmarked, and *soma* is always *sôma*. ``pt-UY`` and its sub-lects have the
+    same rows. This is an inference, not a sourced rule; the README gives the
+    evidence.
     """
     overrides = lect_overrides(lang)
     words = tokenize(sentence)
