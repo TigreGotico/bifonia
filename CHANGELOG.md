@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.6a1](https://github.com/TigreGotico/bifonia/tree/0.3.6a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.5a2...0.3.6a1)
+
+**Merged pull requests:**
+
+- fix: give pt-UY the pt-BR lect overrides [\#36](https://github.com/TigreGotico/bifonia/pull/36) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.3.5a2](https://github.com/TigreGotico/bifonia/tree/0.3.5a2) (2026-11-02)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.5a1...0.3.5a2)
