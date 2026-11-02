@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.3a2](https://github.com/TigreGotico/bifonia/tree/0.3.3a2) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.3a1...0.3.3a2)
+
+**Merged pull requests:**
+
+- chore: require Python 3.11, the oldest version not past end of life [\#20](https://github.com/TigreGotico/bifonia/pull/20) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.3.3a1](https://github.com/TigreGotico/bifonia/tree/0.3.3a1) (2026-11-02)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.2a1...0.3.3a1)
