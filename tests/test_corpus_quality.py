@@ -16,10 +16,28 @@ _META = re.compile("|".join([
     r"\bEscrevi as \d+", r"\b\d+ frases (geradas|novas)\b", r"Nenhuma das frases",
     r"O diretório já", r"O usuário pede", r"Peço desculpa — o output",
     r"Preciso de corrigir", r"Deixa-me corrigir", r"Tarefa concluída", r"⚠",
-    r"\bfrases (proibidas|excluídas)\b",
+    r"\bfrases (proibidas|excluídas)\b", r"perdoe, esta frase", r"\bRepito:",
     # tool-call and tokenizer artefacts
     r"</?arg_value>", r"<\|[^|]*\|>", r"`", r"/home/",
 ]))
+
+
+# Removed rows, one per kind of meta-text, so the guard keeps catching each kind.
+_KNOWN_META = [
+    "Aqui tem 40 frases com «choco» adjetivo, em Português Europeu natural, "
+    "abrangendo os vários sentidos e registos:",
+    "Here are 40 sentences in European Portuguese using \"destroço\" as a verb:",
+    "O esmero do我们的... — perdoe, esta frase não está em português. Repito: "
+    "O esmero do sapateiro português era incomparável.",
+    "Domo o leão que domina com força e coragem.</arg_value>",
+    "Eu sossego o agoni<|reserved_token_16361|><|tool_call_begin|>ar com yoga.",
+    "A sopa está muito quente para comer com esta coleres. (Wait, \"colher\" singular) "
+    "-> A sopa está muito quente para comer com esta colher.",
+]
+
+
+def test_meta_pattern_matches_known_meta_rows():
+    assert [s for s in _KNOWN_META if not _META.search(s)] == []
 
 
 def test_corpus_has_no_generator_meta_text():
