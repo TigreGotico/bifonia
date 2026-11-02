@@ -1,7 +1,9 @@
 """
-IPA mappings and context wordlists for Portuguese heterophonic bifoniaaph disambiguation.
+IPA mappings and context wordlists for Portuguese heterophonic homograph disambiguation.
 
-IPA data is loaded from tugalex's heterophonic_homographs.csv (sibling package).
+IPA data is loaded from bifonia's own data/heterophonic_homographs.csv and is
+European Portuguese. Per-lect marking overrides are loaded from
+data/lect_overrides.csv.
 """
 
 import csv
@@ -10,6 +12,7 @@ import pathlib
 from bifonia.vocab import voc
 
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
+_LECT_CSV = pathlib.Path(__file__).parent / "data" / "lect_overrides.csv"
 
 # The dataset is keyed on (MEANING, POS) combos: a word's distinct readings are
 # identified by a meaning slug, and each slug carries the set of parts of speech
@@ -47,6 +50,30 @@ AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
 # corte, forma, tola, bola, cor, lobo, polo).
 POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
                       if any(len(senses) > 1 for senses in pm.values())}
+
+# Per-lect marking overrides: lect tag → {word: form}. The form replaces the
+# diacritized form of every sense of the word; an empty form leaves the word
+# unmarked. Brazilian Portuguese needs only these rows, because downstream
+# engines read the vowel quality from the mark and build the other segments.
+LECT_OVERRIDES: dict = {}
+with _LECT_CSV.open(encoding="utf-8") as fh:
+    for row in csv.DictReader(fh):
+        LECT_OVERRIDES.setdefault(row["lang"], {})[row["word"]] = row["form"]
+
+
+def lect_overrides(lang: str) -> dict:
+    """Return the {word: form} overrides for the lect tag *lang*.
+
+    A tag matches an override lect when it is that lect or one of its sub-lects,
+    case-insensitively and with ``_`` read as ``-``: ``pt-BR``, ``pt_br`` and
+    ``pt-BR-x-rj`` all match ``pt-BR``. A tag that matches no lect returns an
+    empty dict, so it keeps the default European Portuguese marking.
+    """
+    tag = lang.replace("_", "-").lower()
+    for lect, overrides in LECT_OVERRIDES.items():
+        if tag == lect.lower() or tag.startswith(lect.lower() + "-"):
+            return overrides
+    return {}
 
 
 # Membership helpers for the POS scorer (word → representative IPA for that POS).

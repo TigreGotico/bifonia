@@ -115,6 +115,28 @@ The meaning cues that disambiguate same-spelling readings live in **one declarat
 
 **131 homographs, 265 sense readings.** The disambiguation axis is **vowel quality** (open ɔ/ɛ vs closed o/e). The hard core is the same-POS pairs a tagger cannot touch: `sede`, `corte`, `forma`, `molho`, `bola`, `cor`, `lobo`, `polo`, `tola`. Per-word IPA, senses, and diacritized forms are in [`docs/word_references.md`](docs/word_references.md).
 
+## Brazilian Portuguese
+
+bifonia's pronunciations are European Portuguese, taken from Infopédia. A separate Brazilian table is not needed. For 122 of the 131 words, Brazilian Portuguese has the same contrast, with the same sense on the same stressed vowel. Nouns have a closed vowel and the homographic verb forms have an open one: *o gosto* [o], *eu gosto* [ɔ].
+
+Downstream engines use only the stressed-vowel quality, which `add_extra_diacritics` marks with é/ê/ó/ô. The pt-BR lect of the phonemizer builds the other segments: final [i], palatalised *t* and *d*, coda *s* and *r*, vocalised *l*.
+
+Nine words differ in Brazil:
+
+- *para* has [a] in both senses. bifonia marks the verb *pára* and leaves the preposition unmarked. This is also correct for Brazil.
+- *pelo* has [e] as both contraction and noun. bifonia marks the noun *pêlo* and the verb *pélo* and leaves the contraction unmarked. This is also correct for Brazil.
+- *soma*, *abono*, *aceno*, *domo*, *empeno* and *desempeno* have a closed nasal stressed vowel in both senses. Brazilian Portuguese has no open mid vowel before *m* or *n*.
+- *tola* has a closed vowel in both senses.
+
+Pass `lang="pt-BR"`, or a sub-lect such as `pt-BR-x-rj`, to `add_extra_diacritics` to apply these differences. The six nasal-context words then stay unmarked, and *tola* is always *tôla*. Every other lect tag keeps the European marks. The rows are in `bifonia/data/lect_overrides.csv`, each with its source. For *empeno* and *desempeno* the source is the nasal rule, not a dictionary.
+
+```python
+add_extra_diacritics("Ele soma os números.")                # 'Ele sóma os números.'
+add_extra_diacritics("Ele soma os números.", lang="pt-BR")  # 'Ele soma os números.'
+```
+
+Do not use the IPA column of `heterophonic_homographs.csv` as a transcription for Brazilian, African or Timorese lects.
+
 ## Related projects
 
 - [`TigreGotico/tugaphone`](https://github.com/TigreGotico/tugaphone): European Portuguese G2P, a consumer of bifonia's disambiguated output.

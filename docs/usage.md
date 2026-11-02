@@ -46,8 +46,8 @@ Returns the **lexical class that selects the word's pronunciation**: `"ADP"`, `"
 ### `disambiguate(words, idx, pos=None, sense=None, postag=None) → str`
 Returns the IPA transcription for the word at *idx*, selected by **meaning**. Pass `sense=` to choose the reading directly (`disambiguate(words, i, sense="seat")`), `pos=` to fix the POS before the sense is resolved within it, or `postag=` to pass an external POS-tag hint through to the ensemble.
 
-### `add_extra_diacritics(sentence) → str`
-Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output.
+### `add_extra_diacritics(sentence, lang="pt-PT") → str`
+Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect. `pt-BR` and its sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See the README section on Brazilian Portuguese.
 
 | Diacritic | IPA | Vowel quality |
 |-----------|-----|---------------|

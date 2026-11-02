@@ -20,7 +20,7 @@ import re
 from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
-    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS,
+    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS, lect_overrides,
 )
 from bifonia.scoring import (
     guess_pos as _scoring_guess_pos,
@@ -517,7 +517,7 @@ def proper_flags(text: str) -> list:
     return flags
 
 
-def add_extra_diacritics(sentence: str) -> str:
+def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     """Return *sentence* with non-canonical diacritics on heterophonic homographs.
 
     The inserted diacritics are not AO1990-compliant but force a downstream
@@ -529,14 +529,24 @@ def add_extra_diacritics(sentence: str) -> str:
     Words that are not ambiguous, or whose POS reading needs no extra diacritic
     (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
     is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
+
+    *lang* is the lect tag. The marks follow European Portuguese for every lect
+    that has no rows in ``data/lect_overrides.csv``. ``pt-BR`` and its sub-lects
+    (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows: *soma*, *abono*, *aceno*, *domo*,
+    *empeno* and *desempeno* stay unmarked, because Brazilian Portuguese has a
+    closed nasal vowel there in every sense, and *tola* is always *tôla*.
     """
+    overrides = lect_overrides(lang)
     words = tokenize(sentence)
     caps = proper_flags(sentence)
     replacements = {}
     for i, word in enumerate(words):
         base = _strip_edge(word)
         if is_ambiguous(base):
-            diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
+            if base in overrides:
+                diacritized = overrides[base]
+            else:
+                diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
             if diacritized:
                 replacements[i] = diacritized
     if not replacements:
