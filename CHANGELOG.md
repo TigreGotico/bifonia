@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.5a2](https://github.com/TigreGotico/bifonia/tree/0.3.5a2) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.5a1...0.3.5a2)
+
+**Merged pull requests:**
+
+- docs: explain why African and Asian lects keep the European marks [\#38](https://github.com/TigreGotico/bifonia/pull/38) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.3.5a1](https://github.com/TigreGotico/bifonia/tree/0.3.5a1) (2026-11-02)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.4a1...0.3.5a1)
