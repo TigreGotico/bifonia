@@ -23,7 +23,7 @@ roster=list(csv.DictReader(open(f"{ROOT}/bifonia/data/heterophonic_homographs.cs
 lemma={}
 for r in csv.DictReader(open(f"{ROOT}/bifonia/data/infopedia_pt.csv",encoding="utf-8")):
     if r.get("lemma"): lemma[(r["word"],r["sense"])]=r["lemma"]
-lemma[("molho","sauce")]="molhar"
+lemma[("molho","bundle")]="molhar"
 ADJ_LEMMA={("tola","foolish"):"tolo"}
 lemma[("renovo","renew")]="renovar"; lemma[("soma","add")]="somar"; lemma[("força","force")]="forçar"  # adjective def lives under masc lemma
 words=sorted({r["word"] for r in roster})

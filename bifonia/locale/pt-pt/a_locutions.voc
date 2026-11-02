@@ -1,0 +1,16 @@
+# a_locutions.voc — Words after 'a' that make it a preposition in a fixed locution
+# ('a mais', 'a gosto', 'a vapor'), not the article that opens a direct object.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+frio
+fundo
+gosto
+granel
+mais
+menos
+olho
+quente
+rigor
+seguir
+vapor
