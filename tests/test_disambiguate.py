@@ -11,7 +11,7 @@ import json
 import pytest
 from pathlib import Path
 
-from bifonia import tokenize, disambiguate, HOMOGRAPHS, add_extra_diacritics
+from bifonia import tokenize, disambiguate, HOMOGRAPHS, add_extra_diacritics, proper_flags
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -84,3 +84,22 @@ def test_diacritics_noun_acordo():
 
 def test_diacritics_verb_acordo():
     assert "acórdo" in add_extra_diacritics("Eu acordo cedo todos os dias.")
+
+
+# ── tokenisation stays aligned with the original text ────────────────────────
+
+def test_dotted_capital_i_keeps_tokens_aligned():
+    # "İ".lower() is "i" + U+0307 (not a word character), so lowercasing the
+    # whole sentence first splits "İpara" into two tokens.
+    sentence = "İpara para"
+    assert len(tokenize(sentence)) == len(proper_flags(sentence)) == 2
+    assert add_extra_diacritics(sentence) == sentence
+
+
+def test_dotted_capital_i_does_not_shift_replacement():
+    # The non-homograph "İzmir" must not change where the diacritic lands: the
+    # result equals the plain-"I" sentence with the original word restored.
+    plain = add_extra_diacritics("O autocarro de Izmir para em frente ao hospital.")
+    dotted = add_extra_diacritics("O autocarro de İzmir para em frente ao hospital.")
+    assert "pára" in plain
+    assert dotted == plain.replace("Izmir", "İzmir")

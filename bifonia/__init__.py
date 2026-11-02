@@ -60,8 +60,12 @@ def tokenize(text: str) -> list:
 
     Lookup sites strip both with :func:`_strip_edge`, and the target slot is
     normalised before scoring.
+
+    Each token is lowercased after the split, not before. Lowercasing can split
+    a word (``"İ".lower()`` is ``"i"`` plus a combining dot, which is not a word
+    character), and then the tokens no longer align with :func:`proper_flags`.
     """
-    return re.findall(r"-?\w+[.,;:!?]*", text.lower(), re.UNICODE)
+    return [t.lower() for t in re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)]
 
 
 _EDGE_PUNCT = ".,;:!?"
