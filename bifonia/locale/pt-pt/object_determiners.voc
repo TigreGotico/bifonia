@@ -1,6 +1,7 @@
 # object_determiners.voc — Determiners that can open a verb's direct object: articles,
-# demonstratives, possessives and the indefinite article. Preposition+article
-# contractions (no, da, ao, pela…) are not here: they open a prepositional phrase.
+# demonstratives, possessives, the indefinite article, "cada" and "todo(s)/toda(s)".
+# Preposition+article contractions (no, da, ao, pela…) are not here: they open a
+# prepositional phrase.
 #
 # Format: one term per line, lowercase; '#' starts a comment.
 
@@ -45,3 +46,7 @@ vossa
 vossos
 vossas
 cada
+todo
+toda
+todos
+todas

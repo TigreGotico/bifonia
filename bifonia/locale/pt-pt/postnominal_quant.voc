@@ -1,9 +1,0 @@
-# postnominal_quant.voc — Quantifiers placed AFTER the noun they negate ('molho nenhum',
-# 'molho algum me convence'). Right after a homograph they mark the noun.
-#
-# Format: one term per line, lowercase; '#' starts a comment.
-
-alguma
-algum
-nenhum
-nenhuma
