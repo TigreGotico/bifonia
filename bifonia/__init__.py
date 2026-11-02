@@ -20,7 +20,7 @@ import re
 from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
-    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS,
+    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS, lect_overrides,
 )
 from bifonia.scoring import (
     guess_pos as _scoring_guess_pos,
@@ -60,8 +60,12 @@ def tokenize(text: str) -> list:
 
     Lookup sites strip both with :func:`_strip_edge`, and the target slot is
     normalised before scoring.
+
+    Each token is lowercased after the split, not before. Lowercasing can split
+    a word (``"İ".lower()`` is ``"i"`` plus a combining dot, which is not a word
+    character), and then the tokens no longer align with :func:`proper_flags`.
     """
-    return re.findall(r"-?\w+[.,;:!?]*", text.lower(), re.UNICODE)
+    return [t.lower() for t in re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)]
 
 
 _EDGE_PUNCT = ".,;:!?"
@@ -390,10 +394,14 @@ _DIACRITIZED: dict = {
 
 
 # Reverse maps from diacritized form:
-#   → base word   (for test normalisation and pre-AO1990 input stripping)
-#   → sense slug  (for unambiguous pre-AO1990 / already-diacritized input)
-_DIACRITIZED_TO_BASE:  dict = {v: k[0] for k, v in _DIACRITIZED.items()}
-_DIACRITIZED_TO_SENSE: dict = {v: k[1] for k, v in _DIACRITIZED.items()}
+#   → base word    (for test normalisation and pre-AO1990 input stripping)
+#   → sense slugs  (for pre-AO1990 / already-diacritized input; one form can
+#                   serve several senses, e.g. "chôco" = addled or cuttlefish)
+_DIACRITIZED_TO_BASE:   dict = {v: k[0] for k, v in _DIACRITIZED.items()}
+_DIACRITIZED_TO_SENSES: dict = {
+    form: [s for (_, s), f in _DIACRITIZED.items() if f == form]
+    for form in _DIACRITIZED.values()
+}
 
 
 @_lru_cache(maxsize=1)
@@ -421,7 +429,9 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
 
     If the token is already a diacritized form (pre-AO1990 orthography or output
     of :func:`add_extra_diacritics`), the sense is read straight off the diacritic
-    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop).
+    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop). When one form serves
+    several senses (*chôco* → addled or cuttlefish), the diacritic only narrows
+    the choice and the context picks among those senses.
 
     Otherwise, where a trained statistical model covers the word and is flagged to
     win over the rules (``route == "model"`` with sufficient margin), the model
@@ -436,13 +446,17 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
     """
     raw = words[idx]
     token = _strip_edge(raw)
-    if token in _DIACRITIZED_TO_SENSE:
-        return _DIACRITIZED_TO_SENSE[token]
+    senses = _DIACRITIZED_TO_SENSES.get(token)
+    if senses and len(senses) == 1:
+        return senses[0]
     base = _DIACRITIZED_TO_BASE.get(token, token)
     normalised = words
     if base != raw:                         # normalise a punctuated/diacritized slot
         normalised = list(words)
         normalised[idx] = base
+    if senses:                              # a form shared by several senses
+        sense = guess_sense(normalised, idx, pos=pos, proper=proper, postag=postag)
+        return sense if sense in senses else senses[0]
     if postag is not None:                  # hybrid-ensemble hint (see docstring)
         cands = POS_SENSES.get(base, {}).get(_UPOS_NORM.get(postag, postag))
         if cands and len(cands) == 1:
@@ -481,14 +495,15 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 
     Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
     its lexical class. Diacritized input (e.g. *pára*, *acôrdo*) is resolved
-    without context scoring. *proper* biases the NOUN reading for a mid-sentence
-    capitalised token.
+    without context scoring, except a form shared by several senses (*chôco*),
+    which :func:`guess_sense` narrows by context. *proper* biases the NOUN
+    reading for a mid-sentence capitalised token.
     """
     raw = words[idx]
     token = _strip_edge(raw)
     base = _DIACRITIZED_TO_BASE.get(token, token)
-    if token in _DIACRITIZED_TO_SENSE:
-        return SENSE_POS[base][_DIACRITIZED_TO_SENSE[token]]
+    if token in _DIACRITIZED_TO_SENSES:
+        return SENSE_POS[base][guess_sense(words, idx, proper=proper)]
     if base != raw:
         normalised = list(words)
         normalised[idx] = base
@@ -512,12 +527,15 @@ def proper_flags(text: str) -> list:
     # continuation ("Cerro Corá") or a number / nº marking a title ("Choro nº 13").
     if len(toks) > 1:
         nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
-        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "n.º", "no", "nr"}:
+        # The split turns "n.º" into "n." and "º"; read the pair as "nº".
+        if toks[1].lower() == "n." and len(toks) > 2 and toks[2].strip(_EDGE_PUNCT) == "º":
+            nxt = "nº"
+        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"}:
             flags[0] = True
     return flags
 
 
-def add_extra_diacritics(sentence: str) -> str:
+def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     """Return *sentence* with non-canonical diacritics on heterophonic homographs.
 
     The inserted diacritics are not AO1990-compliant but force a downstream
@@ -529,14 +547,25 @@ def add_extra_diacritics(sentence: str) -> str:
     Words that are not ambiguous, or whose POS reading needs no extra diacritic
     (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
     is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
+
+    *lang* is the lect tag; ``None`` means the default. The marks follow European
+    Portuguese for every lect that has no rows in ``data/lect_overrides.csv``.
+    ``pt-BR`` and its sub-lects (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows,
+    because Brazilian Portuguese has a closed nasal stressed vowel in every sense
+    of these words: *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay
+    unmarked, and *soma* is always *sôma*.
     """
+    overrides = lect_overrides(lang)
     words = tokenize(sentence)
     caps = proper_flags(sentence)
     replacements = {}
     for i, word in enumerate(words):
         base = _strip_edge(word)
         if is_ambiguous(base):
-            diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
+            if base in overrides:
+                diacritized = overrides[base]
+            else:
+                diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
             if diacritized:
                 replacements[i] = diacritized
     if not replacements:

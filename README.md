@@ -115,6 +115,28 @@ The meaning cues that disambiguate same-spelling readings live in **one declarat
 
 **131 homographs, 265 sense readings.** The disambiguation axis is **vowel quality** (open ɔ/ɛ vs closed o/e). The hard core is the same-POS pairs a tagger cannot touch: `sede`, `corte`, `forma`, `molho`, `bola`, `cor`, `lobo`, `polo`, `tola`. Per-word IPA, senses, and diacritized forms are in [`docs/word_references.md`](docs/word_references.md).
 
+## Brazilian Portuguese
+
+bifonia's pronunciations are European Portuguese, taken from Infopédia. A separate Brazilian table is not needed. For 122 of the 131 words, Brazilian Portuguese keeps the same contrast, with the same sense on the same stressed vowel. For 94 of these words, every sense was checked against the Brazilian transcription in Wiktionary. The others follow the general rule: nouns have a closed vowel and the homographic verb forms have an open one, as in *o gosto* [o] and *eu gosto* [ɔ]. One of the 122 words varies: Brazilian speakers say the noun *esmero* with [e] or [ɛ]. bifonia marks it *esmêro*, which is an accepted Brazilian form.
+
+`add_extra_diacritics` marks the stressed-vowel quality with é/ê/ó/ô. The pt-BR lect of the phonemizer builds the other segments, such as final [i], palatalised *t* and *d*, coda *s* and *r*, and vocalised *l*. A mark can also change how the phonemizer reads the rest of the word. In tugaphone pt-BR-x-rj, *abono* gives [aˈbõnʊ] and *abôno* gives [aˈbonu].
+
+Nine words differ in Brazil:
+
+- *para* has [a] in both senses. bifonia marks the verb *pára* and leaves the preposition unmarked. This is also correct for Brazil.
+- *pelo* has [e] as both contraction and noun. bifonia marks the noun *pêlo* and the verb *pélo* and leaves the contraction unmarked. This is also correct for Brazil.
+- *soma*, *abono*, *aceno*, *domo*, *empeno* and *desempeno* have a closed nasal stressed vowel in both senses. Before *m* or *n*, Brazilian Portuguese for the most part has no open mid vowel.
+- *tola* is closed in Brazil in the colloquial sense 'judgement, head' (Michaelis). bifonia files that sense and the timber under one `head` sense, and no Brazilian source covers the timber. So pt-BR keeps the European marks for *tola*.
+
+Pass `lang="pt-BR"`, or a sub-lect such as `pt-BR-x-rj`, to `add_extra_diacritics` to apply these differences. *abono*, *aceno*, *domo*, *empeno* and *desempeno* then stay unmarked. *soma* is always *sôma*, because an unmarked *soma* gets an open vowel from the tugalex pt-BR lexicons. Every other lect tag keeps the European marks, and `None` means the default. The rows are in `bifonia/data/lect_overrides.csv`, each with its source. For *empeno* and *desempeno* the source is the nasal rule and related verb forms, not a dictionary entry.
+
+```python
+add_extra_diacritics("Ele soma os números.")                # 'Ele sóma os números.'
+add_extra_diacritics("Ele soma os números.", lang="pt-BR")  # 'Ele sôma os números.'
+```
+
+Do not use the IPA column of `heterophonic_homographs.csv` as a transcription for Brazilian, African or Timorese lects.
+
 ## Related projects
 
 - [`TigreGotico/tugaphone`](https://github.com/TigreGotico/tugaphone): European Portuguese G2P, a consumer of bifonia's disambiguated output.
