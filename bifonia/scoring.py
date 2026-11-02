@@ -112,11 +112,12 @@ def _is_infinitive(word: str) -> bool:
 
 
 def _is_numeric(word: str) -> bool:
-    try:
-        float(word)
-        return True
-    except ValueError:
-        return word in NUMERIC
+    """A digit string, optionally negative ("5", "-5"), or a cardinal number word.
+
+    Tokens are split on punctuation, so "3,5" and "1.000" reach here as their
+    digit groups.
+    """
+    return word.removeprefix("-").isdecimal() or word in NUMERIC
 
 
 def score_adp(words: list, idx: int) -> int:
