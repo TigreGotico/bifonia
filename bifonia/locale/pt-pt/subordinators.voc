@@ -1,0 +1,14 @@
+# subordinators.voc — Conjunctions that open a subordinate clause (quando, porque,
+# que). The clause after them is not the homograph's own clause, so its verbs and
+# clitics say nothing about it: 'molho sempre que me lembro' is the verb, and
+# 'molho picante que arde é bom' is still decided by 'picante'.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+caso
+conforme
+embora
+enquanto
+porque
+quando
+que

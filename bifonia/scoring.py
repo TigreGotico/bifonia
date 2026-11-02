@@ -79,6 +79,7 @@ _NONFINITE_NEG_PREV = voc("nonfinite_neg_prev")
 _POST_VERB_ADVERBS = voc("post_verb_adverbs")
 _FREQUENCY_NOUNS = voc("frequency_nouns")
 _POR_CONTRACTIONS = voc("por_contractions")
+_SUBORDINATORS = voc("subordinators")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
@@ -247,30 +248,37 @@ def _molho_clause_is_noun(words: list, idx: int) -> bool:
     subject or a heading ("Molho verde acompanha o peixe", "Molho à parte").
     The first decisive word wins: an object determiner or an object pronoun
     marks the verb; a third-person finite verb, a free proclitic or a negated
-    finite verb marks the noun. Without one, the next word's class decides.
+    finite verb marks the noun. A determiner after a preposition or a
+    coordinator starts a second phrase, not an object, and a subordinating
+    conjunction ends the scan. Without a decisive word, the next word's class
+    decides. "de" + a noun after it ("Molho de soja tempera o arroz") is the noun before
+    any of these, because the verb after a sauce subject is an open class.
     """
     nxt = _next(words, idx)
     nxt2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
     if nxt.startswith("-") or nxt in _OBJECT_PRONOUNS:
         return False
-    if nxt in _POSTNOMINAL_QUANT:
+    if nxt in _POSTNOMINAL_QUANT or (nxt == "de" and nxt2 not in _ADVERBIAL_DE):
         return True
+    preps = _PP_PREPS | _CONTRACTED_DET | _POR_CONTRACTIONS | _COORDINATION
     adverbs = _ADV_BRIDGE | _NEG_ADV | _POST_VERB_ADVERBS | _DEFERRAL_ADV
     for j in range(idx + 1, len(words)):
         tok, prev = _strip(words[j]), _strip(words[j - 1])
         after = _strip(words[j + 1]) if j + 1 < len(words) else ""
+        if tok in _SUBORDINATORS:
+            break
         if tok in _SUBJECT_VERBS or tok in _PROCLITICS:
             return True
         if (tok == "não" and prev not in _NONFINITE_NEG_PREV
                 and after and after not in DET | _PP_PREPS):
             return True
-        if (tok in _OBJECT_DET and (j == idx + 1 or prev not in _PP_PREPS)
+        if (tok in _OBJECT_DET and (j == idx + 1 or prev not in preps)
                 and not (tok == "a" and after in _A_LOCUTIONS)):
             return False
         if words[j][-1:] in ".!?;:":
             break
-    if nxt == "de":
-        return nxt2 not in _ADVERBIAL_DE
+    if nxt == "de":                           # "molho de manhã as plantas"
+        return False
     if nxt == "mais":                         # "molho mais picante" vs "molho mais"
         return bool(nxt2) and nxt2 not in adverbs
     if nxt2 in _FREQUENCY_NOUNS and (nxt in NUMERIC or nxt in QUANT):
