@@ -1,0 +1,11 @@
+# proclitics.voc — Clitic pronouns that stand free before a later verb ('molho nenhum
+# me agrada'). After a homograph they show it is that verb's subject, so the noun.
+# 'se' is left out: it is also the conjunction 'if' ('molho se chover').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+lhe
+lhes
+me
+te
+vos

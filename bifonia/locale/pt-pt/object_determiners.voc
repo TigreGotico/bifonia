@@ -1,0 +1,46 @@
+# object_determiners.voc — Determiners that can open a verb's direct object: articles,
+# demonstratives, possessives and the indefinite article. Preposition+article
+# contractions (no, da, ao, pela…) are not here: they open a prepositional phrase.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+o
+a
+os
+as
+um
+uma
+uns
+umas
+este
+esta
+estes
+estas
+esse
+essa
+esses
+essas
+aquele
+aquela
+aqueles
+aquelas
+meu
+minha
+meus
+minhas
+teu
+tua
+teus
+tuas
+seu
+sua
+seus
+suas
+nosso
+nossa
+nossos
+nossas
+vosso
+vossa
+vossos
+vossas

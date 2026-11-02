@@ -68,6 +68,17 @@ _HEAD_LOCATIVE = voc("head_locative")
 _TOLA_DET_PREV = voc("tola_det_prev")
 _MOLHO_NOUN_PREV = voc("molho_noun_prev")
 _ADVERBIAL_DE = voc("adverbial_de")
+_OBJECT_PRONOUNS = voc("object_pronouns")
+_POSTNOMINAL_QUANT = voc("postnominal_quant")
+_OBJECT_DET = voc("object_determiners")
+_SUBJECT_VERBS = voc("subject_verbs")
+_PROCLITICS = voc("proclitics")
+_PP_PREPS = voc("pp_preps")
+_A_LOCUTIONS = voc("a_locutions")
+_NONFINITE_NEG_PREV = voc("nonfinite_neg_prev")
+_POST_VERB_ADVERBS = voc("post_verb_adverbs")
+_FREQUENCY_NOUNS = voc("frequency_nouns")
+_POR_CONTRACTIONS = voc("por_contractions")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
@@ -229,6 +240,44 @@ def score_adp(words: list, idx: int) -> int:
     return score
 
 
+def _molho_clause_is_noun(words: list, idx: int) -> bool:
+    """Decide a clause-initial "molho" from the rest of its clause.
+
+    The verb molhar takes a direct object ("Molho os pés"), and the noun is a
+    subject or a heading ("Molho verde acompanha o peixe", "Molho à parte").
+    The first decisive word wins: an object determiner or an object pronoun
+    marks the verb; a third-person finite verb, a free proclitic or a negated
+    finite verb marks the noun. Without one, the next word's class decides.
+    """
+    nxt = _next(words, idx)
+    nxt2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    if nxt.startswith("-") or nxt in _OBJECT_PRONOUNS:
+        return False
+    if nxt in _POSTNOMINAL_QUANT:
+        return True
+    adverbs = _ADV_BRIDGE | _NEG_ADV | _POST_VERB_ADVERBS | _DEFERRAL_ADV
+    for j in range(idx + 1, len(words)):
+        tok, prev = _strip(words[j]), _strip(words[j - 1])
+        after = _strip(words[j + 1]) if j + 1 < len(words) else ""
+        if tok in _SUBJECT_VERBS or tok in _PROCLITICS:
+            return True
+        if (tok == "não" and prev not in _NONFINITE_NEG_PREV
+                and after and after not in DET | _PP_PREPS):
+            return True
+        if (tok in _OBJECT_DET and (j == idx + 1 or prev not in _PP_PREPS)
+                and not (tok == "a" and after in _A_LOCUTIONS)):
+            return False
+        if words[j][-1:] in ".!?;:":
+            break
+    if nxt == "de":
+        return nxt2 not in _ADVERBIAL_DE
+    if nxt == "mais":                         # "molho mais picante" vs "molho mais"
+        return bool(nxt2) and nxt2 not in adverbs
+    if nxt2 in _FREQUENCY_NOUNS and (nxt in NUMERIC or nxt in QUANT):
+        return False                          # "molho duas vezes"
+    return nxt not in _PP_PREPS and nxt not in adverbs
+
+
 def score_noun(words: list, idx: int) -> int:
     prev_word = _prev(words, idx)
     next_word = _next(words, idx)
@@ -380,25 +429,26 @@ def score_noun(words: list, idx: int) -> int:
     # pés", "molho-as"), often after an adverb ("molho sempre as plantas"). These
     # mark the noun instead:
     #   - an interrogative or a verb of lack before it ("que molho escolhes",
-    #     "falta molho"); "qual"/"quais" never precede a verb, so they are decisive
-    #     even before an article ("Qual molho, o branco?");
-    #   - clause-initial "molho" before a word that cannot start its object or an
-    #     adverb ("Molho picante é…", "Molho, sal e pimenta", "…, molho verde");
-    #   - "de" + a noun after it ("molho de tomate"), but not an adverbial
-    #     locution ("molho de manhã as plantas").
+    #     "falta molho"). Interrogative "qual"/"quais" is decisive even before an
+    #     article ("Qual molho, o branco?"); after an article or a contraction it
+    #     is the relative pronoun, which a verb follows ("com a qual molho as plantas");
+    #   - at the start of a clause, the clause context (_molho_clause_is_noun);
+    #   - elsewhere, "de" + a noun after it ("molho de tomate"), but not an
+    #     adverbial locution ("molho de manhã as plantas").
     if word == "molho":
         no_object = next_word not in _ARTICLES | QUANT and not next_word.startswith("-")
-        if prev_word in ("qual", "quais"):
+        relative = _prev2(words, idx) in DET | _POR_CONTRACTIONS
+        if prev_word in ("qual", "quais") and not relative:
             score += 12
         elif prev_word in _MOLHO_NOUN_PREV and no_object:
             score += 8
-        clause_start = idx == 0 or words[idx - 1][-1:] in ",;:"
-        if (clause_start and no_object and next_word != "de"
-                and next_word not in DET | PRON | _ADV_BRIDGE | _NEG_ADV):
-            score += 4
-        _next2_m = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-        if next_word == "de" and _next2_m not in _ADVERBIAL_DE:
-            score += 4
+        if idx == 0 or words[idx - 1][-1:] in ",;:":
+            if _molho_clause_is_noun(words, idx):
+                score += 8
+        elif next_word == "de":
+            after_de = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+            if after_de not in _ADVERBIAL_DE:
+                score += 4
     return score
 
 
