@@ -1,0 +1,14 @@
+# duration_modifiers.voc — Adjectives that close a duration after its time noun
+# ('uma noite inteira', 'uma semana seguida'). They belong to the duration, so an
+# object can still follow them: 'molho uma noite inteira as sementes' is the verb.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+inteira
+inteiras
+inteiro
+inteiros
+seguida
+seguidas
+seguido
+seguidos
