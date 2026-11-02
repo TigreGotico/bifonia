@@ -4,7 +4,10 @@ Tests for per-lect marking in add_extra_diacritics (``lang=``).
 The pt-BR expectations come from Brazilian sources, not from bifonia's table:
 Wiktionary gives Brazil a closed nasal stressed vowel for soma, abono, aceno and
 domo in every sense (/ˈsõ.mɐ/, /aˈbõ.nu/, /aˈsẽ.nu/, /ˈdõ.mu/), and the same rule
-applies to empeno and desempeno. Michaelis gives tola 'cabeça' a closed (ô) vowel.
+applies to empeno and desempeno. soma is written closed (sôma), because an
+unmarked soma takes the open vowel of the tugalex rjx and spx lexicons. tola keeps
+the European marks: bifonia's head sense also covers the timber, which no
+Brazilian source covers.
 """
 
 import csv
@@ -16,17 +19,17 @@ import pytest
 
 from bifonia import add_extra_diacritics, AMBIGUOUS_WORDS
 
-BR_LANGS = ["pt-BR", "pt-BR-x-rj", "pt-BR-x-sp", "pt_br"]
-EUROPEAN_LANGS = ["pt-PT", "pt-PT-x-lbx", "pt-AO", "pt-brx", "en"]
+BR_LANGS = ["pt-BR", "pt-BR-x-rj", "pt-BR-x-sp", "pt_br", " pt-BR ", "pt-Latn-BR"]
+EUROPEAN_LANGS = [None, "", "pt-PT", "pt-PT-x-lbx", "pt-AO", "pt-brx", "pt-Latn", "en"]
 
 # (sentence, European output, Brazilian output)
 CASES = [
     ("Ele soma os números de cabeça em poucos segundos.",
      "Ele sóma os números de cabeça em poucos segundos.",
-     "Ele soma os números de cabeça em poucos segundos."),
+     "Ele sôma os números de cabeça em poucos segundos."),
     ("A soma das parcelas dá cem euros certos.",
      "A sôma das parcelas dá cem euros certos.",
-     "A soma das parcelas dá cem euros certos."),
+     "A sôma das parcelas dá cem euros certos."),
     ("O abono de transporte foi pedido no início do mês.",
      "O abôno de transporte foi pedido no início do mês.",
      "O abono de transporte foi pedido no início do mês."),
@@ -59,7 +62,10 @@ CASES = [
      "Eu desempeno o meu dever com cuidado."),
     ("Bateu com a tola na porta do carro ao sair e ficou com uma nódoa negra.",
      "Bateu com a tóla na porta do carro ao sair e ficou com uma nódoa negra.",
-     "Bateu com a tôla na porta do carro ao sair e ficou com uma nódoa negra."),
+     "Bateu com a tóla na porta do carro ao sair e ficou com uma nódoa negra."),
+    ("A madeira de tola é leve e resistente, ideal para móveis de jardim.",
+     "A madeira de tóla é leve e resistente, ideal para móveis de jardim.",
+     "A madeira de tóla é leve e resistente, ideal para móveis de jardim."),
     ("Não sejas tola e pensa bem antes de decidir.",
      "Não sejas tôla e pensa bem antes de decidir.",
      "Não sejas tôla e pensa bem antes de decidir."),
@@ -84,7 +90,7 @@ CASES = [
 _IDS = [c[0][:40] for c in CASES]
 
 # Words whose Brazilian marking differs from the European one.
-BR_WORDS = {"soma", "abono", "aceno", "domo", "empeno", "desempeno", "tola"}
+BR_WORDS = {"soma", "abono", "aceno", "domo", "empeno", "desempeno"}
 
 
 @pytest.mark.parametrize("lang", BR_LANGS)
@@ -115,7 +121,7 @@ def test_pt_br_differs_only_on_override_words():
                 continue
             changed += 1
             assert src.lower() in BR_WORDS, (sentence, src, eu, br)
-            assert br.lower() in (src.lower(), "tôla"), (sentence, src, eu, br)
+            assert br.lower() in (src.lower(), "sôma"), (sentence, src, eu, br)
     assert changed > 0
 
 
@@ -129,4 +135,4 @@ def test_override_rows_are_known_homographs_with_a_source():
     for row in rows:
         assert row["word"] in AMBIGUOUS_WORDS
         assert row["source"].strip()
-    assert LECT_OVERRIDES["pt-BR"]["tola"] == "tôla"
+    assert LECT_OVERRIDES["pt-BR"]["soma"] == "sôma"

@@ -530,11 +530,12 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
     is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
 
-    *lang* is the lect tag. The marks follow European Portuguese for every lect
-    that has no rows in ``data/lect_overrides.csv``. ``pt-BR`` and its sub-lects
-    (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows: *soma*, *abono*, *aceno*, *domo*,
-    *empeno* and *desempeno* stay unmarked, because Brazilian Portuguese has a
-    closed nasal vowel there in every sense, and *tola* is always *tôla*.
+    *lang* is the lect tag; ``None`` means the default. The marks follow European
+    Portuguese for every lect that has no rows in ``data/lect_overrides.csv``.
+    ``pt-BR`` and its sub-lects (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows,
+    because Brazilian Portuguese has a closed nasal stressed vowel in every sense
+    of these words: *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay
+    unmarked, and *soma* is always *sôma*.
     """
     overrides = lect_overrides(lang)
     words = tokenize(sentence)

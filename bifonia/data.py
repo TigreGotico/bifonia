@@ -53,8 +53,8 @@ POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
 
 # Per-lect marking overrides: lect tag → {word: form}. The form replaces the
 # diacritized form of every sense of the word; an empty form leaves the word
-# unmarked. Brazilian Portuguese needs only these rows, because downstream
-# engines read the vowel quality from the mark and build the other segments.
+# unmarked. A lect needs rows only where its stressed vowel differs from the
+# European one.
 LECT_OVERRIDES: dict = {}
 with _LECT_CSV.open(encoding="utf-8") as fh:
     for row in csv.DictReader(fh):
@@ -66,10 +66,17 @@ def lect_overrides(lang: str) -> dict:
 
     A tag matches an override lect when it is that lect or one of its sub-lects,
     case-insensitively and with ``_`` read as ``-``: ``pt-BR``, ``pt_br`` and
-    ``pt-BR-x-rj`` all match ``pt-BR``. A tag that matches no lect returns an
-    empty dict, so it keeps the default European Portuguese marking.
+    ``pt-BR-x-rj`` all match ``pt-BR``. Surrounding whitespace is ignored, and a
+    script subtag is dropped, so ``pt-Latn-BR`` also matches ``pt-BR``. ``None``,
+    an empty tag and a tag that matches no lect return an empty dict, so they keep
+    the default European Portuguese marking.
     """
-    tag = lang.replace("_", "-").lower()
+    if not lang:
+        return {}
+    subtags = lang.strip().replace("_", "-").lower().split("-")
+    if len(subtags) > 1 and len(subtags[1]) == 4 and subtags[1].isalpha():
+        del subtags[1]  # BCP 47 script subtag, e.g. "latn"
+    tag = "-".join(subtags)
     for lect, overrides in LECT_OVERRIDES.items():
         if tag == lect.lower() or tag.startswith(lect.lower() + "-"):
             return overrides
