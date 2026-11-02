@@ -1,0 +1,20 @@
+# evaluative_adjectives.voc — Adjectives that intensify an evaluative noun after
+# 'um'/'uma' ('uma autêntica delícia', 'uma verdadeira maravilha'). Read only by the
+# molho object rule; the shared prenominal_adj.voc is not changed.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+autêntica
+autêntico
+bela
+belo
+completa
+completo
+enorme
+grande
+perfeita
+perfeito
+pura
+puro
+verdadeira
+verdadeiro

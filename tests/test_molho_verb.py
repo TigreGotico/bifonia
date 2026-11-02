@@ -207,6 +207,7 @@ _CLAUSE_CASES = {
     ),
     "cooking step label": (
         ["Molho a ferver, junte o sal.", "Molho a engrossar, baixe o lume.",
+         "Molho a borbulhar, baixe o lume.", "Molho a cozinhar durante dez minutos.",
          "Molho a apurar, mexa sempre.", "Molho a reduzir, prove o sal.",
          "Molho a arrefecer, tape o tacho.", "Molho a aquecer, junte as natas."],
         ["Molho a colher no café.", "Molho a mulher com a mangueira.",
@@ -217,6 +218,25 @@ _CLAUSE_CASES = {
          "Molho, uma delícia.", "Molho um desastre, demasiado salgado."],
         ["Molho uma toalha.", "Molho um pano.", "Molho um pano e passo na mesa.",
          "Molho uma toalha em água quente."],
+    ),
+    "degree locution + de opens the object": (
+        ["Molho um bocadinho salgado.", "Molho um pouquinho picante.",
+         "Molho um nadinha doce.", "Molho um pouco salgado."],
+        ["Molho um pouco de pão no café.", "Molho um bocado de pão no leite.",
+         "Molho um bocadinho de pão no café.", "Molho um pouco de algodão em álcool."],
+    ),
+    "duration closed by inteiro or seguido": (
+        ["Molho uma noite inteira no frigorífico fica melhor.",
+         "Molho todo o dia seguido ao lume.", "Molho uma semana inteira no frio."],
+        ["Molho uma noite inteira as sementes.", "Molho uma semana seguida o canteiro.",
+         "Molho um dia inteiro os vasos.", "Molho todas as noites seguidas a relva."],
+    ),
+    "intensified or further evaluative noun": (
+        ["Molho uma autêntica delícia.", "Molho uma verdadeira maravilha.",
+         "Molho um grande desastre.", "Molho uma bela surpresa!", "Molho uma desgraça.",
+         "Molho um mimo.", "Molho uma surpresa.", "Molho um pecado.", "Molho uma festa."],
+        ["Molho uma grande toalha.", "Molho uma bela toalha de linho.",
+         "Molho um verdadeiro balde de água no chão."],
     ),
     "hyphenated compound": (
         ["Molho todo-o-terreno da avó", "Molho tudo-em-um para massas",

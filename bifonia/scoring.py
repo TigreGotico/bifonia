@@ -76,6 +76,8 @@ _FREQUENCY_NOUNS = voc("frequency_nouns")
 _TIME_NOUNS = voc("time_nouns")
 _DEGREE_NOUNS = voc("degree_nouns")
 _EVALUATIVE_NOUNS = voc("evaluative_nouns")
+_EVALUATIVE_ADJ = voc("evaluative_adjectives")
+_DURATION_MODIFIERS = voc("duration_modifiers")
 _POR_CONTRACTIONS = voc("por_contractions")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
@@ -259,13 +261,18 @@ def _molho_takes_object(words: list, idx: int) -> bool:
         tok = _strip(words[j])
         after = _strip(words[j + 1]) if j + 1 < len(words) else ""
         after2 = _strip(words[j + 2]) if j + 2 < len(words) else ""
-        if tok in ("um", "uma") and after in _EVALUATIVE_NOUNS:
-            return False
+        if tok in ("um", "uma") and (after in _EVALUATIVE_NOUNS or (
+                after in _EVALUATIVE_ADJ and after2 in _EVALUATIVE_NOUNS)):
+            return False                      # "uma delícia", "uma autêntica delícia"
+        if tok in ("um", "uma") and after in _DEGREE_NOUNS and after2 == "de":
+            return True                       # "um pouco de pão" is the object
         if after.startswith("-") and (tok in _OBJECT_PRONOUNS or tok in _OBJECT_DET):
             return False                      # "todo-o-terreno", "tudo-em-um"
         if tok in ("todo", "toda", "todos", "todas", "um", "uma") and (
                 after in _TIME_NOUNS or (after in _ARTICLES and after2 in _TIME_NOUNS)):
             j += 1 if after in _TIME_NOUNS else 2    # "todo o dia", "uma noite"
+            if j + 1 < len(words) and _strip(words[j + 1]) in _DURATION_MODIFIERS:
+                j += 1                        # "uma noite inteira"
         elif ((tok == "de" and after in _ADVERBIAL_DE)
                 or (tok in ("a", "à") and after in _A_LOCUTIONS)
                 or ((tok in NUMERIC or tok in QUANT) and after in _FREQUENCY_NOUNS)
