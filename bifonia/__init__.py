@@ -516,7 +516,10 @@ def proper_flags(text: str) -> list:
     # continuation ("Cerro Corá") or a number / nº marking a title ("Choro nº 13").
     if len(toks) > 1:
         nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
-        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "n.º", "no", "nr"}:
+        # The split turns "n.º" into "n." and "º"; read the pair as "nº".
+        if toks[1].lower() == "n." and len(toks) > 2 and toks[2].strip(_EDGE_PUNCT) == "º":
+            nxt = "nº"
+        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "no", "nr"}:
             flags[0] = True
     return flags
 
