@@ -18,3 +18,9 @@ def test_ipa_selects_reading_by_ud_tag(word, pos, expected):
 
 def test_ipa_unknown_word_is_none():
     assert infopedia.ipa("inexistente", "NOUN") is None
+
+
+def test_molho_verb_is_open():
+    # 1sg of molhar is open (Portugal /ˈmɔ.ʎu/); only the sauce noun is closed.
+    assert infopedia.ipa("molho", "VERB") == "ˈmɔʎu"
+    assert infopedia.ipa("molho", "NOUN") == "ˈmoʎu"   # NOUN-only row: sauce

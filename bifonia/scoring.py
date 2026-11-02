@@ -777,8 +777,8 @@ def _resolve_sede(words: list, idx: int) -> str:
 
 def _resolve_molho(words: list, idx: int) -> str:
     """Disambiguate the NOUN reading of "molho": BUNDLE (open ɔ, "um molho de
-    chaves") vs SAUCE (closed o).  The closed reading also covers the verb molhar
-    ("eu molho", ˈmoʎu) — that is handled upstream as pos=VERB → sauce — so here
+    chaves") vs SAUCE (closed o).  The open reading also covers the verb molhar
+    ("eu molho", ˈmɔʎu) — that is handled upstream as pos=VERB → bundle — so here
     only the noun pair remains.  Bundle requires an explicit bundled thing; the
     culinary sauce is the default.
     """
