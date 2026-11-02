@@ -67,6 +67,7 @@ _MATERIAL_PREP = voc("material_prep")
 _HEAD_LOCATIVE = voc("head_locative")
 _TOLA_DET_PREV = voc("tola_det_prev")
 _MOLHO_NOUN_PREV = voc("molho_noun_prev")
+_ADVERBIAL_DE = voc("adverbial_de")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
@@ -376,13 +377,27 @@ def score_noun(words: list, idx: int) -> int:
             score = 0
 
     # "molho" as the verb molhar takes a direct object or a clitic ("molho os
-    # pés", "molho-as"). An interrogative or a verb of lack before it ("qual
-    # molho", "falta molho"), or "de" after it ("molho de tomate"), marks the noun.
+    # pés", "molho-as"), often after an adverb ("molho sempre as plantas"). These
+    # mark the noun instead:
+    #   - an interrogative or a verb of lack before it ("que molho escolhes",
+    #     "falta molho"); "qual"/"quais" never precede a verb, so they are decisive
+    #     even before an article ("Qual molho, o branco?");
+    #   - clause-initial "molho" before a word that cannot start its object or an
+    #     adverb ("Molho picante é…", "Molho, sal e pimenta", "…, molho verde");
+    #   - "de" + a noun after it ("molho de tomate"), but not an adverbial
+    #     locution ("molho de manhã as plantas").
     if word == "molho":
-        if (prev_word in _MOLHO_NOUN_PREV and next_word not in _ARTICLES | QUANT
-                and not next_word.startswith("-")):
+        no_object = next_word not in _ARTICLES | QUANT and not next_word.startswith("-")
+        if prev_word in ("qual", "quais"):
+            score += 12
+        elif prev_word in _MOLHO_NOUN_PREV and no_object:
             score += 8
-        if next_word == "de":
+        clause_start = idx == 0 or words[idx - 1][-1:] in ",;:"
+        if (clause_start and no_object and next_word != "de"
+                and next_word not in DET | PRON | _ADV_BRIDGE | _NEG_ADV):
+            score += 4
+        _next2_m = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+        if next_word == "de" and _next2_m not in _ADVERBIAL_DE:
             score += 4
     return score
 

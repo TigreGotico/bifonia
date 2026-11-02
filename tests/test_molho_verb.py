@@ -73,3 +73,53 @@ def test_verb_molho_stays_verb(sentence):
     words, idx = _molho(sentence)
     assert guess_pos(words, idx) == "VERB"
     assert disambiguate(words, idx) == "ˈmɔʎu"
+
+
+# A clause-initial bare sauce noun before a modifier is not the verb.
+_CLAUSE_INITIAL_SAUCE = [
+    "Molho picante é o meu preferido.",
+    "Molho bechamel leva farinha e leite.",
+    "Molho branco ou vermelho?",
+    "Molho verde acompanha o peixe.",
+    "Molho inglês dá sabor à carne.",
+    "Molho caseiro é sempre melhor.",
+    "Molho, sal e pimenta a gosto.",
+    "Molho pesto com massa fresca.",
+    "Molho agridoce combina com frango.",
+    "Qual molho, o branco?",
+    "Qual molho, o de tomate?",
+    "Com o peixe, molho verde.",
+]
+
+# An adverbial "de" locution after the verb does not make it the noun.
+_VERB_WITH_ADVERBIAL_DE = [
+    "Molho de manhã as plantas.",
+    "Molho de novo os pés.",
+    "Molho de propósito o chão.",
+    "Molho de vez em quando as plantas.",
+    "Molho de seguida as plantas.",
+    "Já molho de manhã, já rego à tarde.",
+    "Eu molho de manhã as plantas.",
+    "Molho-as de manhã.",
+]
+
+
+@pytest.mark.parametrize("sentence", _CLAUSE_INITIAL_SAUCE)
+def test_clause_initial_sauce_keeps_closed_mark(sentence):
+    out = add_extra_diacritics(sentence)
+    assert "ôlho" in out and "ólho" not in out
+
+
+@pytest.mark.parametrize("sentence", _VERB_WITH_ADVERBIAL_DE)
+def test_verb_before_adverbial_de_keeps_open_mark(sentence):
+    out = add_extra_diacritics(sentence)
+    assert "ólho" in out and "ôlho" not in out
+
+
+# "também" and "à" also start a verb's complement ("molho também as roseiras",
+# "molho à pressa as plantas"), so these nouns still read as the verb.
+@pytest.mark.xfail(strict=True, reason="clause-initial molho before também/à reads as the verb")
+@pytest.mark.parametrize("sentence", ["Molho também é comida.", "Molho à parte, por favor."])
+def test_sauce_before_complement_word_known_miss(sentence):
+    out = add_extra_diacritics(sentence)
+    assert "ôlho" in out and "ólho" not in out
