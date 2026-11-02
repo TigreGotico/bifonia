@@ -73,6 +73,9 @@ _OBJECT_DET = voc("object_determiners")
 _A_LOCUTIONS = voc("a_locutions")
 _POST_VERB_ADVERBS = voc("post_verb_adverbs")
 _FREQUENCY_NOUNS = voc("frequency_nouns")
+_TIME_NOUNS = voc("time_nouns")
+_DEGREE_NOUNS = voc("degree_nouns")
+_EVALUATIVE_NOUNS = voc("evaluative_nouns")
 _POR_CONTRACTIONS = voc("por_contractions")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
@@ -243,6 +246,9 @@ def _molho_takes_object(words: list, idx: int) -> bool:
     an object pronoun ("Molho tudo") or an object determiner ("Molho as
     plantas"). Adverbs and fixed locutions may stand between them ("Molho
     sempre as plantas", "Molho de manhã as plantas", "Molho duas vezes os vasos").
+    A degree or duration locution ("um pouco", "todo o dia") is skipped too. An
+    evaluative noun after "um"/"uma" ("Molho uma delícia!") and a hyphenated
+    compound ("Molho todo-o-terreno") are not objects.
     """
     adverbs = (_ADV_BRIDGE | _NEG_ADV | _POST_VERB_ADVERBS | _DEFERRAL_ADV
                | _INTENSIFIERS | {"mais"})
@@ -252,10 +258,19 @@ def _molho_takes_object(words: list, idx: int) -> bool:
     while j < len(words):
         tok = _strip(words[j])
         after = _strip(words[j + 1]) if j + 1 < len(words) else ""
-        if ((tok == "de" and after in _ADVERBIAL_DE)
+        after2 = _strip(words[j + 2]) if j + 2 < len(words) else ""
+        if tok in ("um", "uma") and after in _EVALUATIVE_NOUNS:
+            return False
+        if after.startswith("-") and (tok in _OBJECT_PRONOUNS or tok in _OBJECT_DET):
+            return False                      # "todo-o-terreno", "tudo-em-um"
+        if tok in ("todo", "toda", "todos", "todas", "um", "uma") and (
+                after in _TIME_NOUNS or (after in _ARTICLES and after2 in _TIME_NOUNS)):
+            j += 1 if after in _TIME_NOUNS else 2    # "todo o dia", "uma noite"
+        elif ((tok == "de" and after in _ADVERBIAL_DE)
                 or (tok in ("a", "à") and after in _A_LOCUTIONS)
-                or ((tok in NUMERIC or tok in QUANT) and after in _FREQUENCY_NOUNS)):
-            j += 1                            # two-word locution: "de manhã", "duas vezes"
+                or ((tok in NUMERIC or tok in QUANT) and after in _FREQUENCY_NOUNS)
+                or (tok in ("um", "uma") and after in _DEGREE_NOUNS)):
+            j += 1                            # "de manhã", "duas vezes", "um pouco"
         elif tok in _OBJECT_PRONOUNS or tok in _OBJECT_DET:
             return True
         elif tok not in adverbs:
