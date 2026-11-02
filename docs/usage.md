@@ -133,7 +133,7 @@ All context lookups strip trailing punctuation (`.,;:!?`) from neighbour tokens 
 
 ## Orthographic normalisation
 
-The scorer operates on plain (AO1990) orthography. Diacritized input (`pára`, `pêlo`, `côrte`, and others) is handled directly: `guess_sense` reads the sense straight off the diacritic, for example *séde* → seat, *sêde* → thirst, *pára* → stop, without context scoring. The `bifonia._DIACRITIZED_TO_BASE` and `_DIACRITIZED_TO_SENSE` maps back this lookup.
+The scorer operates on plain (AO1990) orthography. Diacritized input (`pára`, `pêlo`, `côrte`, and others) is handled directly: `guess_sense` reads the sense straight off the diacritic, for example *séde* → seat, *sêde* → thirst, *pára* → stop, without context scoring. One form can serve several senses: *chôco* is addled or cuttlefish. For such a form the diacritic narrows the choice, and the context scorer picks among the allowed senses. The `bifonia._DIACRITIZED_TO_BASE` and `_DIACRITIZED_TO_SENSES` maps back this lookup.
 
 ## Engines, training, and benchmarks
 

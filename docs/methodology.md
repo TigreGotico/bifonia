@@ -177,7 +177,7 @@ The learned path carries no such Portuguese-specific assumptions. Its feature ex
 
 Some diacritized forms are unambiguous: *pára* (stop), *pêlo* (hair), *côrte* (court), and others. The acute/circumflex marks the vowel quality directly, so:
 
-- `guess_sense` reads the meaning straight off a diacritized token, for example *séde* → seat, *sêde* → thirst, *pára* → stop, without invoking the context scorer. The `_DIACRITIZED_TO_SENSE` and `_DIACRITIZED_TO_BASE` maps in `bifonia/__init__.py` back this lookup.
+- `guess_sense` reads the meaning straight off a diacritized token, for example *séde* → seat, *sêde* → thirst, *pára* → stop, without invoking the context scorer. A form shared by several senses (*chôco*: addled or cuttlefish) only narrows the choice, and the context scorer picks among the allowed senses. The `_DIACRITIZED_TO_SENSES` and `_DIACRITIZED_TO_BASE` maps in `bifonia/__init__.py` back this lookup.
 - Plain (AO1990) tokens are resolved by the context scorer. `add_extra_diacritics` performs the reverse: it inserts the non-canonical diacritic that forces the resolved reading in a downstream rule-based G2P.
 
 ---
