@@ -1,8 +1,24 @@
 # Changelog
 
+## [0.3.0a1](https://github.com/TigreGotico/bifonia/tree/0.3.0a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.3a1...0.3.0a1)
+
+**Merged pull requests:**
+
+- feat: add pt-BR marking to add\_extra\_diacritics [\#24](https://github.com/TigreGotico/bifonia/pull/24) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
+## [0.2.3a1](https://github.com/TigreGotico/bifonia/tree/0.2.3a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.2a1...0.2.3a1)
+
 ## [0.2.2a1](https://github.com/TigreGotico/bifonia/tree/0.2.2a1) (2026-11-02)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a4...0.2.2a1)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.1a1...0.2.2a1)
+
+## [0.2.1a1](https://github.com/TigreGotico/bifonia/tree/0.2.1a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a4...0.2.1a1)
 
 **Merged pull requests:**
 
