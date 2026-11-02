@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.5a1](https://github.com/TigreGotico/bifonia/tree/0.3.5a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.4a1...0.3.5a1)
+
+**Merged pull requests:**
+
+- fix: read a clause-initial "molho" as the sauce unless an object follows [\#35](https://github.com/TigreGotico/bifonia/pull/35) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.3.4a1](https://github.com/TigreGotico/bifonia/tree/0.3.4a1) (2026-11-02)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.3a2...0.3.4a1)
