@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.3a1](https://github.com/TigreGotico/bifonia/tree/0.2.3a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a4...0.2.3a1)
+
+**Merged pull requests:**
+
+- fix: count only digit strings and number words as numeric [\#18](https://github.com/TigreGotico/bifonia/pull/18) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: let proper\_flags recognise the "n.º" title abbreviation [\#16](https://github.com/TigreGotico/bifonia/pull/16) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: keep tokenize aligned with proper\_flags for dotted capital I [\#15](https://github.com/TigreGotico/bifonia/pull/15) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.2.0a4](https://github.com/TigreGotico/bifonia/tree/0.2.0a4) (2026-07-30)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.0a3...0.2.0a4)
