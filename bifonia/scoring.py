@@ -69,17 +69,11 @@ _TOLA_DET_PREV = voc("tola_det_prev")
 _MOLHO_NOUN_PREV = voc("molho_noun_prev")
 _ADVERBIAL_DE = voc("adverbial_de")
 _OBJECT_PRONOUNS = voc("object_pronouns")
-_POSTNOMINAL_QUANT = voc("postnominal_quant")
 _OBJECT_DET = voc("object_determiners")
-_SUBJECT_VERBS = voc("subject_verbs")
-_PROCLITICS = voc("proclitics")
-_PP_PREPS = voc("pp_preps")
 _A_LOCUTIONS = voc("a_locutions")
-_NONFINITE_NEG_PREV = voc("nonfinite_neg_prev")
 _POST_VERB_ADVERBS = voc("post_verb_adverbs")
 _FREQUENCY_NOUNS = voc("frequency_nouns")
 _POR_CONTRACTIONS = voc("por_contractions")
-_SUBORDINATORS = voc("subordinators")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
@@ -241,49 +235,35 @@ def score_adp(words: list, idx: int) -> int:
     return score
 
 
-def _molho_clause_is_noun(words: list, idx: int) -> bool:
-    """Decide a clause-initial "molho" from the rest of its clause.
+def _molho_takes_object(words: list, idx: int) -> bool:
+    """Return True when a clause-initial "molho" is followed by its object.
 
-    The verb molhar takes a direct object ("Molho os pés"), and the noun is a
-    subject or a heading ("Molho verde acompanha o peixe", "Molho à parte").
-    The first decisive word wins: an object determiner or an object pronoun
-    marks the verb; a third-person finite verb, a free proclitic or a negated
-    finite verb marks the noun. A determiner after a preposition or a
-    coordinator starts a second phrase, not an object, and a subordinating
-    conjunction ends the scan. Without a decisive word, the next word's class
-    decides. "de" + a noun after it ("Molho de soja tempera o arroz") is the noun before
-    any of these, because the verb after a sauce subject is an open class.
+    The verb molhar is rare next to the sauce noun, so a clause-initial "molho"
+    is the noun unless a direct object marks the verb: an enclitic ("Molho-as"),
+    an object pronoun ("Molho tudo") or an object determiner ("Molho as
+    plantas"). Adverbs and fixed locutions may stand between them ("Molho
+    sempre as plantas", "Molho de manhã as plantas", "Molho duas vezes os vasos").
     """
-    nxt = _next(words, idx)
-    nxt2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-    if nxt.startswith("-") or nxt in _OBJECT_PRONOUNS:
-        return False
-    if nxt in _POSTNOMINAL_QUANT or (nxt == "de" and nxt2 not in _ADVERBIAL_DE):
+    adverbs = (_ADV_BRIDGE | _NEG_ADV | _POST_VERB_ADVERBS | _DEFERRAL_ADV
+               | _INTENSIFIERS | {"mais"})
+    if _next(words, idx).startswith("-"):
         return True
-    preps = _PP_PREPS | _CONTRACTED_DET | _POR_CONTRACTIONS | _COORDINATION
-    adverbs = _ADV_BRIDGE | _NEG_ADV | _POST_VERB_ADVERBS | _DEFERRAL_ADV
-    for j in range(idx + 1, len(words)):
-        tok, prev = _strip(words[j]), _strip(words[j - 1])
+    j = idx + 1
+    while j < len(words):
+        tok = _strip(words[j])
         after = _strip(words[j + 1]) if j + 1 < len(words) else ""
-        if tok in _SUBORDINATORS:
-            break
-        if tok in _SUBJECT_VERBS or tok in _PROCLITICS:
+        if ((tok == "de" and after in _ADVERBIAL_DE)
+                or (tok in ("a", "à") and after in _A_LOCUTIONS)
+                or ((tok in NUMERIC or tok in QUANT) and after in _FREQUENCY_NOUNS)):
+            j += 1                            # two-word locution: "de manhã", "duas vezes"
+        elif tok in _OBJECT_PRONOUNS or tok in _OBJECT_DET:
             return True
-        if (tok == "não" and prev not in _NONFINITE_NEG_PREV
-                and after and after not in DET | _PP_PREPS):
-            return True
-        if (tok in _OBJECT_DET and (j == idx + 1 or prev not in preps)
-                and not (tok == "a" and after in _A_LOCUTIONS)):
+        elif tok not in adverbs:
             return False
-        if words[j][-1:] in ".!?;:":
-            break
-    if nxt == "de":                           # "molho de manhã as plantas"
-        return False
-    if nxt == "mais":                         # "molho mais picante" vs "molho mais"
-        return bool(nxt2) and nxt2 not in adverbs
-    if nxt2 in _FREQUENCY_NOUNS and (nxt in NUMERIC or nxt in QUANT):
-        return False                          # "molho duas vezes"
-    return nxt not in _PP_PREPS and nxt not in adverbs
+        if words[j][-1:] in ".!?;:,":
+            return False
+        j += 1
+    return False
 
 
 def score_noun(words: list, idx: int) -> int:
@@ -440,7 +420,7 @@ def score_noun(words: list, idx: int) -> int:
     #     "falta molho"). Interrogative "qual"/"quais" is decisive even before an
     #     article ("Qual molho, o branco?"); after an article or a contraction it
     #     is the relative pronoun, which a verb follows ("com a qual molho as plantas");
-    #   - at the start of a clause, the clause context (_molho_clause_is_noun);
+    #   - at the start of a clause, the absence of an object (_molho_takes_object);
     #   - elsewhere, "de" + a noun after it ("molho de tomate"), but not an
     #     adverbial locution ("molho de manhã as plantas").
     if word == "molho":
@@ -451,7 +431,7 @@ def score_noun(words: list, idx: int) -> int:
         elif prev_word in _MOLHO_NOUN_PREV and no_object:
             score += 8
         if idx == 0 or words[idx - 1][-1:] in ",;:":
-            if _molho_clause_is_noun(words, idx):
+            if not _molho_takes_object(words, idx):
                 score += 8
         elif next_word == "de":
             after_de = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
