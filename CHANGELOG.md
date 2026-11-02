@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.3.3a1](https://github.com/TigreGotico/bifonia/tree/0.3.3a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.2a1...0.3.3a1)
+
+**Merged pull requests:**
+
+- fix: remove generator meta-text rows from the corpus [\#27](https://github.com/TigreGotico/bifonia/pull/27) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
+## [0.3.2a1](https://github.com/TigreGotico/bifonia/tree/0.3.2a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.1a1...0.3.2a1)
+
+## [0.3.1a1](https://github.com/TigreGotico/bifonia/tree/0.3.1a1) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.0a2...0.3.1a1)
+
+## [0.3.0a2](https://github.com/TigreGotico/bifonia/tree/0.3.0a2) (2026-11-02)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.0a1...0.3.0a2)
+
+**Merged pull requests:**
+
+- ci: run the coverage workflow on tests/ [\#26](https://github.com/TigreGotico/bifonia/pull/26) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: drop the contraction "no" from the proper\_flags title set [\#25](https://github.com/TigreGotico/bifonia/pull/25) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: resolve a diacritized form shared by two senses by context [\#17](https://github.com/TigreGotico/bifonia/pull/17) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.3.0a1](https://github.com/TigreGotico/bifonia/tree/0.3.0a1) (2026-11-02)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.2.3a1...0.3.0a1)
