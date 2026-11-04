@@ -3,10 +3,11 @@
 ## Install
 
 ```bash
-pip install -e /path/to/bifonia --no-deps
+pip install --pre bifonia          # latest alpha from PyPI
+pip install -e ".[test]"           # from a clone, with pytest
 ```
 
-No dependencies. bifonia uses only the Python standard library.
+No runtime dependencies. bifonia uses only the Python standard library.
 
 ## Quick start
 
@@ -30,16 +31,16 @@ for i, word in enumerate(words):
 ## API
 
 ### `tokenize(text) → list[str]`
-Lowercase and split text into word tokens, stripping punctuation.
+Split text into lowercase word tokens. Trailing sentence punctuation (`. , ; : ! ?`) stays on the token it follows (`"toda."`), and the hyphen of an enclitic stays on the clitic (`"torno-me"` → `["torno", "-me"]`). The context scorer uses both as clause and verb signals. `is_ambiguous`, `guess_sense` and `disambiguate` accept these tokens directly, so search for a word with `is_ambiguous` or by its stripped form, not with `words.index(...)`, when the word can end a clause.
 
 ### `is_ambiguous(word) → bool`
 True if the word is a known heterophonic homograph.
 
-### `guess_sense(words, idx, pos=None, postag=None) → str`
-Primary entry point. Returns the most likely **meaning slug** (the label to predict) for the word at position *idx* based on its context, for example `"thirst"`, `"seat"`, `"stop"`. This uses the **per-word ensemble**: the learned model serves words it is routed to and clears its margin on, and the rule engine serves the rest and is always the fallback, so a caller gets the best available reading without choosing an engine. Pass `pos=` to force the rule resolver within that POS. Pass `postag=` to supply an external POS tag (for example from spaCy or Stanza) as a hybrid-ensemble hint that restricts the candidate senses.
+### `guess_sense(words, idx, pos=None, proper=False, postag=None) → str`
+Primary entry point. Returns the most likely **meaning slug** (the label to predict) for the word at position *idx* based on its context, for example `"thirst"`, `"seat"`, `"stop"`. A diacritized token (*séde*, *pára*) gives its sense directly. Otherwise this uses the **per-word ensemble**: the learned model serves words that it is routed to and clears its margin on, and the rule engine serves the rest. In the shipped model no word is routed to the model, so the rule engine answers for every word. Pass `pos=` to force the rule resolver within that POS. Pass `proper=True` for a mid-sentence capitalised token, which biases the NOUN reading and skips the model. `proper_flags(text)` gives this flag for each token. Pass `postag=` to supply an external POS tag (for example from spaCy or Stanza). The tag decides only when that POS maps to exactly one sense of the word. Otherwise the ensemble decides.
 
 ### `guess_pos(words, idx) → str`
-Returns the **lexical class that selects the word's pronunciation**: `"ADP"`, `"NOUN"`, `"VERB"`, or `"ADJ"`. It is a thin wrapper over `guess_sense` that maps the resolved meaning back to its lexical class, used only to feed `guess_sense`/`disambiguate`.
+Returns the **lexical class that selects the word's pronunciation**: `"ADP"`, `"NOUN"`, `"VERB"`, or `"ADJ"`. For a plain token it returns the rule scorer's winning class (`bifonia.scoring.guess_pos`), with no learned model. For a diacritized token it maps the sense from `guess_sense` back to its lexical class.
 
 > **This is not a part-of-speech tagger and must not be used as one.** The tag is chosen to land on the correct IPA, and can deliberately disagree with the word's syntactic function. The clearest case is an **adjective used as a noun**: in *"aquela tola comprou um carro"*, `tola` is syntactically a NOUN (the subject), but keeps the *adjective* reading (`foolish`, closed ˈtolɐ), so `guess_pos` returns `"ADJ"`. The roster even tags that sense `ADJ|NOUN`, so an external NOUN tag defers to the rules rather than forcing the concrete `head` noun (open ˈtɔlɐ). For genuine POS tagging use a real tagger (spaCy, Stanza). For pronunciation use `guess_sense`/`disambiguate`.
 
@@ -58,47 +59,20 @@ The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO h
 
 ## Word coverage
 
-IPA data is sourced from `bifonia/data/heterophonic_homographs.csv`, keyed on `(word, sense)`.
+The roster has 131 words and 297 `(word, sense)` readings. The IPA for each reading is in `bifonia/data/heterophonic_homographs.csv`, keyed on `(word, sense)`, and `HOMOGRAPHS` holds the same table in Python:
 
-| Word | Senses (pos) |
-|------|-------------|
-| para | purpose (ADP) / stop (VERB) |
-| pelo | by_the (ADP) / hair (NOUN) / peel (VERB) |
-| tola | foolish (ADJ) / head (NOUN) |
-| seco | dry (ADJ) / dry_vb (VERB) |
-| acordo | agreement (NOUN) / wake (VERB) |
-| acerto | settlement (NOUN) / adjust (VERB) |
-| cerro | hill (NOUN) / shut (VERB) |
-| choro | weeping (NOUN) / weep (VERB) |
-| colher | spoon (NOUN) / harvest (VERB) |
-| começo | beginning (NOUN) / begin (VERB) |
+```python
+from bifonia import HOMOGRAPHS
+len(HOMOGRAPHS)                          # 131
+sum(map(len, HOMOGRAPHS.values()))       # 297
+HOMOGRAPHS["sede"]                       # {'seat': 'ˈsɛdɨ', 'thirst': 'ˈsedɨ', 'legal_context': 'ˈsɛdɨ'}
+```
 
-| Word (continued) | Senses (pos) |
-|------|-------------|
-| conserto | repair (NOUN) / mend (VERB) |
-| coro | choir (NOUN) / blush (VERB) |
-| corte | court (NOUN) / cut (VERB) |
-| forma | mould (NOUN) / shape (VERB) |
-| gozo | enjoyment (NOUN) / enjoy (VERB) |
-| gosto | taste (NOUN) / like (VERB) |
-| jogo | game (NOUN) / play (VERB) |
-| molho | sauce (NOUN) / bundle (VERB) |
-| olho | eye (NOUN) / look (VERB) |
-| rego | furrow (NOUN) / water (VERB) |
-
-| Word (more) | Senses (pos) |
-|------|-------------|
-| sede | thirst (NOUN) / seat (NOUN) |
-| sobre | about (ADP) / sail (NOUN) / leftover (VERB) |
-| torre | tower (NOUN) / roast (VERB) |
-| transtorno | disorder (NOUN) / upset (VERB) |
-| peso | weight (NOUN) / weigh (VERB) |
-| porto | harbour (NOUN) / carry (VERB) |
-| posto | station (NOUN) / post (VERB) |
+[`word_references.md`](word_references.md) lists every word with its senses, IPA and diacritized forms.
 
 ## Scoring heuristic
 
-The disambiguator assigns an integer score to each applicable POS using signals derived from the ±4-word context. The POS with the highest score wins, and ties fall back to `DEFAULT_POS[word]`. The winning POS is then **narrowed to a sense**: for most words each POS maps to exactly one sense, so the lookup is direct. For `sede` (whose two senses are both nouns) `resolve_sense` reads sense-specific cues (`bifonia/locale/pt-pt/sede_{seat,thirst}_cues.voc`), for example `sede de X` → thirst, `sede da empresa` → seat.
+The disambiguator assigns an integer score to each applicable POS using signals derived from the ±4-word context. The POS with the highest score wins. A tie, or a best score of zero or below, falls back to `DEFAULT_POS[word]`. The winning POS is then **narrowed to a sense**: for most words each POS maps to exactly one sense, so the lookup is direct. `sede`, `molho` and `tola` have hand-written resolvers. `sede` reads sense-specific cues (`bifonia/locale/pt-pt/sede_{seat,thirst}_cues.voc`), for example `sede de X` → thirst, `sede da empresa` → seat. `bola`, `cor`, `forma`, `lobo` and `polo` use the generic cue resolver over the `SENSE_CUES` registry in `bifonia/cues.py`.
 
 **ADP signals (score_adp)**
 - Governing verb before (`falou sobre`, `discutir sobre`, and others) → +6
@@ -151,9 +125,12 @@ python scripts/train.py --model perceptron --min-count 3 --seed 1337
 Measure sense-prediction accuracy two ways:
 
 ```bash
-python scripts/benchmark_tagger.py            # synthetic held-out split (per-word breakdown)
-python scripts/benchmark_ood.py               # out-of-distribution real-text set (downloads from Hugging Face)
+python scripts/benchmark_tagger.py --no-taggers   # synthetic held-out split (per-word breakdown)
+pip install huggingface_hub
+python scripts/benchmark_ood.py                   # out-of-distribution real-text set (downloads from Hugging Face)
 ```
+
+`benchmark_tagger.py` fails with a `ValueError` on homograph tokens that carry trailing punctuation ([#43](https://github.com/TigreGotico/bifonia/issues/43)). Both scripts also score spaCy and Stanza when those packages and their Portuguese models are installed. [`benchmarks.md`](benchmarks.md) gives the results.
 
 ---
 [Home](../README.md) · [Methodology →](methodology.md)

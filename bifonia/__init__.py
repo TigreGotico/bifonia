@@ -2,7 +2,8 @@
 bifonia — Portuguese heterophonic homograph disambiguation.
 
 Identifies the correct IPA pronunciation of words whose spelling is identical
-but whose phonology depends on their part of speech (e.g. NOUN vs VERB).
+but whose pronunciation depends on their meaning (e.g. *sede* thirst vs seat),
+which part of speech alone does not always settle.
 
 Quick start::
 
@@ -92,7 +93,8 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None,
     Parameters
     ----------
     words:
-        Tokenized (lowercased) sentence as returned by :func:`tokenize`.
+        Tokenized (lowercased) sentence as returned by :func:`tokenize`. The
+        target token may carry trailing punctuation or a diacritic (*pára*).
     idx:
         Index of the ambiguous word within *words*.
     pos:
@@ -100,6 +102,9 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None,
         ``"VERB"``, ``"ADJ"``); the sense is then resolved within that POS.
     sense:
         Override entirely with an explicit meaning slug (see the CSV / HOMOGRAPHS).
+    postag:
+        External POS tag passed through to :func:`guess_sense` as the
+        hybrid-ensemble hint. Ignored when *sense* is given.
 
     Raises
     ------
@@ -436,7 +441,9 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
     Otherwise, where a trained statistical model covers the word and is flagged to
     win over the rules (``route == "model"`` with sufficient margin), the model
     predicts the sense; every other case falls back to the corpus-free rule engine.
-    An explicit *pos* override always uses the rule resolver.
+    An explicit *pos* override always uses the rule resolver. *proper* marks a
+    mid-sentence capitalised token (see :func:`proper_flags`): it biases the
+    NOUN reading and skips the statistical model.
 
     *postag* is the hybrid-ensemble hint: an external POS tag (e.g. from spaCy).
     It resolves the reading only when that POS maps to exactly ONE sense
@@ -493,8 +500,10 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
        to :func:`guess_sense`/:func:`disambiguate`; for genuine POS tagging use a
        real tagger (spaCy, Stanza).
 
-    Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
-    its lexical class. Diacritized input (e.g. *pára*, *acôrdo*) is resolved
+    For a plain token this returns the rule scorer's winning class
+    (:func:`bifonia.scoring.guess_pos`); the statistical model is not consulted.
+    For a diacritized token (e.g. *pára*, *acôrdo*) it maps the sense from
+    :func:`guess_sense` back to its lexical class, so the diacritic decides
     without context scoring, except a form shared by several senses (*chôco*),
     which :func:`guess_sense` narrows by context. *proper* biases the NOUN
     reading for a mid-sentence capitalised token.

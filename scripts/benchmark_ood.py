@@ -9,7 +9,9 @@ lives in this repository. This is the honest generalisation number — synthetic
 benchmarks (``benchmark_tagger.py``) run several points higher because their train
 and test sentences share phrasing.
 
-Scores: most-common · rules (no corpus) · Naive-Bayes · perceptron · ensemble ensemble.
+Scores: most-common · spaCy · Stanza · rules (no corpus) · Naive-Bayes · perceptron ·
+ensemble. spaCy and Stanza score 0% unless they are installed with their
+Portuguese models.
 
 Usage::
 

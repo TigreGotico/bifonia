@@ -5,7 +5,7 @@ so the shipped inference path stays lean and dependency-free. Each baseline
 implements the small :class:`Baseline` protocol, so the harness can fit and score
 them uniformly and new baselines drop in without touching the runner.
 
-Baselines here are all **pure stdlib** (no numpy):
+The baselines in :data:`BASELINES` are **pure stdlib** (no numpy):
 
 * :class:`MostCommon`   — per-word majority sense from training. The floor.
 * :class:`CueOnly`      — the sense-cue registry alone (no POS, no learning):
@@ -15,8 +15,9 @@ Baselines here are all **pure stdlib** (no numpy):
                           confident matching collocation. Interpretable and a
                           strong, well-understood reference point.
 
-A numpy-only tier (logistic regression on the same features, TF-IDF
-nearest-neighbour) is a natural next step — it would implement the same protocol.
+:data:`NUMPY_BASELINES` holds the numpy-only tier, :class:`LogisticRegression`
+on the same features, behind the same protocol. The module has no command-line
+entry point: import it and call :func:`load_examples` and :func:`score`.
 """
 from __future__ import annotations
 
