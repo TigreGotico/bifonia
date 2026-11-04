@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.8a1](https://github.com/TigreGotico/bifonia/tree/0.3.8a1) (2026-11-04)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.7a2...0.3.8a1)
+
+**Merged pull requests:**
+
+- fix\(scripts\): read rebuild\_infopedia paths and service from arguments [\#47](https://github.com/TigreGotico/bifonia/pull/47) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.7a2](https://github.com/TigreGotico/bifonia/tree/0.3.7a2) (2026-11-04)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.7a1...0.3.7a2)
