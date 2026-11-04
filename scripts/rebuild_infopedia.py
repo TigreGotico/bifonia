@@ -1,14 +1,28 @@
 """Rebuild bifonia/data/infopedia_pt.csv keyed on bifonia's (word,sense,pos)
 slugs. Each sense's definitions come from the Infopédia entry whose pronunciation
 matches the sense's IPA (noun readings on the word page; verb readings on the
-verb-lemma page). Fetches are cached so the assembly is re-runnable."""
-import csv, json, sys, os, pathlib, unicodedata
-sys.path.insert(0,"/home/miro/AgentWorkspaces/clients/language/pyinfopedia")
+verb-lemma page). Fetches are cached so the assembly is re-runnable.
+
+Needs the ``pyinfopedia`` client importable and a FlareSolverr service, because
+Infopédia refuses plain scripted requests::
+
+    python scripts/rebuild_infopedia.py --fetch --flaresolverr http://HOST:8191
+    python scripts/rebuild_infopedia.py
+"""
+import argparse, csv, json, os, pathlib, unicodedata
 from pyinfopedia.client import get_word, _word_url
 from pyinfopedia.transport import Transport
-ROOT="/home/miro/AgentWorkspaces/ml/portuguese/homogr"
-CACHE="/home/miro/AgentWorkspaces/.tmp/infopedia_cache.jsonl"
-T=Transport(mode="flaresolverr", flaresolverr_url="http://192.168.1.116:8191")
+
+ap=argparse.ArgumentParser(description=__doc__.splitlines()[0])
+ap.add_argument("--fetch", action="store_true", help="fetch missing entries into the cache and stop")
+ap.add_argument("--cache", default="infopedia_cache.jsonl", help="JSONL fetch cache (default: %(default)s)")
+ap.add_argument("--flaresolverr", default=os.environ.get("FLARESOLVERR_URL", "http://localhost:8191"),
+                help="FlareSolverr URL (default: $FLARESOLVERR_URL or %(default)s)")
+ap.add_argument("--extra-lemmas", help="whitespace-separated file of extra lemmas to fetch")
+args=ap.parse_args()
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+CACHE=args.cache
+T=Transport(mode="flaresolverr", flaresolverr_url=args.flaresolverr)
 
 def nrm(ipa):
     if not ipa: return ""
@@ -29,7 +43,7 @@ lemma[("renovo","renew")]="renovar"; lemma[("soma","add")]="somar"; lemma[("for�
 words=sorted({r["word"] for r in roster})
 lemmas=sorted({lemma[(r["word"],r["sense"])] for r in roster
                if "VERB" in r["pos"].split("|") and (r["word"],r["sense"]) in lemma})
-extra=open("/home/miro/AgentWorkspaces/.tmp/extra_lemmas.txt").read().split() if os.path.exists("/home/miro/AgentWorkspaces/.tmp/extra_lemmas.txt") else []
+extra=open(args.extra_lemmas,encoding="utf-8").read().split() if args.extra_lemmas else []
 fetch_list=sorted(set(words)|set(lemmas)|set(extra))
 
 # cache
@@ -46,12 +60,12 @@ def fetch(name):
     with open(CACHE,"a",encoding="utf-8") as fh: fh.write(json.dumps(d,ensure_ascii=False)+"\n")
     cache[name]=d; return d
 
-if "--fetch" in sys.argv:
+if args.fetch:
     for i,name in enumerate(fetch_list):
         if name not in cache:
             fetch(name); print(f"[{i+1}/{len(fetch_list)}] {name}",flush=True)
     print(f"FETCH DONE: {len(cache)} cached")
-    sys.exit()
+    raise SystemExit
 
 # ASSEMBLE (run after fetch)
 def cats_by_pron(entry, ipa_norm):
