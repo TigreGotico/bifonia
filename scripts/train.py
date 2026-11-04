@@ -10,10 +10,12 @@ Two corpus-using models, both serialised to the same JSON shape consumed by
                  correlated cues that NB double-counts.
 
 Trains only on hf/train.jsonl (never test). A seeded internal validation fold per
-word drives perceptron early-stopping and the per-word `route` gate: a word is
-flagged `route="model"` only where the model's val accuracy ≥ the corpus-free rule
-engine's val accuracy — otherwise it stays on the rules. Deterministic: same seed →
-byte-identical JSON.
+word drives perceptron early-stopping. The per-word `route` gate reads the
+hand-curated behavioral set (tests/test_sentences.jsonl): a word is flagged
+`route="model"` only when it has at least 3 behavioral cases, the model gets
+strictly more of them right than the corpus-free rule engine, and the model loses
+no case the rules get right. Otherwise it stays on the rules. Deterministic: same
+seed → byte-identical JSON.
 
 Usage::
 

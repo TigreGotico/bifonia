@@ -20,7 +20,7 @@ Adjudicated disagreements are resolved by relabelling the line to the verified s
 
 With the model-flagged stratum cleaned, the bulk all-methods-agree lines and the spaCy-only-flagged bucket each run around 98 to 99% correct, giving overall label accuracy near 98.5% and the dominant systematic error class removed.
 
-Reproduce: `qc_phase1.py` performs the flagging. The per-stratum sampling and agent adjudication follow the procedure above, and re-run on any corpus revision.
+The flagging script (`qc_phase1.py`) is not in this repository, so a fresh clone cannot reproduce the rates on this page. The per-stratum sampling and agent adjudication follow the procedure above, and re-run on any corpus revision.
 
 ## Out-of-fold model signal (all words)
 
@@ -28,7 +28,7 @@ spaCy only helps POS-separable words and is noun-biased. For an independent sign
 
 Both OOF models disagree with the label on roughly 0.5% of lines. Agent adjudication of the flagged set (deduped against the spaCy/in-fold pass) detects the same systematic sense confusions (for example `sede` thirst↔seat blocks, `forma` shape↔mould), plus **generation-artifact lines**: agent chatter, file logs, and English prompt echoes that leaked in as "sentences" (for example ``Ficheiro `frases_x.txt` com 40 frases``). Artifacts are identified by markers absent from natural sentences: backticks, `.txt`/`.jsonl` references, "N frases", and "como verbo/substantivo". Adjudicated lines are relabelled, dropped (defective), or swept (artifacts).
 
-Reproduce: `oof_qc.py`.
+The out-of-fold script (`oof_qc.py`) is not in this repository either.
 
 ---
 [← Benchmarks](benchmarks.md) · [Home](../README.md) · [Dataset →](dataset.md)

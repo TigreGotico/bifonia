@@ -4,6 +4,8 @@ Per-word reference for European-Portuguese (pt-PT) heterophonic homographs: word
 
 The disambiguation key is the **meaning** (`sense`), the `pos` column is the descriptive grammatical reading of that sense and may repeat (both senses of `sede` are nouns).
 
+The page lists all 131 words in `bifonia/data/heterophonic_homographs.csv`. The [Index](#index) and the [Word entries](#word-entries) describe 27 words in full. The [Extended roster](#extended-roster) gives 97 more words in one table, and [Diacritic-collapse and noun/noun pairs](#diacritic-collapse-and-nounnoun-pairs) gives the last 7. The IPA on this page is the Infopédia transcription.
+
 ## Diacritic convention
 
 The diacritic convention encodes vowel quality (acute = open, circumflex = closed):

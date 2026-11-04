@@ -22,7 +22,7 @@ The acute and circumflex accents used here are standard Portuguese orthographic 
 - **Acute (´)** marks an open vowel: *ó* = /ɔ/, *é* = /ɛ/
 - **Circumflex (^)** marks a closed vowel: *ô* = /o/, *ê* = /e/
 
-Every Portuguese G2P engine, phonemiser, and TTS system handles these accents correctly. They appear in thousands of unambiguous words (*ótimo*, *ônibus*, *êxito*, *pé*, *pó*, and others). The disambiguation output is therefore **drop-in compatible** with any Portuguese TTS pipeline: insert the diacritised form before G2P and the correct vowel is produced without any changes to the downstream system.
+These accents appear in thousands of unambiguous words (*ótimo*, *ônibus*, *êxito*, *pé*, *pó*, and others), so a Portuguese G2P that reads accents already handles them. Insert the diacritised form before G2P, and such a G2P produces the correct vowel with no change to the downstream system.
 
 AO1990 (the 1990 Orthographic Agreement) writes a small set of formerly-heterophonic words without these accents, the words this package covers. Under AO1990, *pára* (stops) is written *para*, orthographically identical to the preposition. Placing the diacritic on the verbal reading supplies the phonological signal the plain spelling lacks.
 
@@ -69,32 +69,9 @@ The polarity tracks **vowel quality**, not POS: where a word's senses share a PO
 - a **rule engine** (`scoring.py`): a hand-crafted context scorer that inspects a ±4-word window using integer signals for determiners, pronouns, passive auxiliaries, copular verbs, infinitive markers, degree adverbs, and governing verbs, then narrows the winning POS to a `sense`. It needs no corpus.
 - **learned per-word models** (`model.py`, trained by `scripts/train.py`): a Naive-Bayes log-odds classifier and an averaged perceptron, fit from the labelled corpus over the language-agnostic features in `features.py`.
 
-`guess_sense` is a per-word ensemble that routes each word to whichever engine is at least as accurate on held-out data, with the rule engine as the fallback.
+`guess_sense` is a per-word ensemble. A word goes to the model only when the model passes the route gate in [`methodology.md`](methodology.md), and the rule engine serves every other word.
 
-Sense-prediction accuracy, measured on a **synthetic** held-out split (`scripts/benchmark_tagger.py`) and on an **out-of-distribution (OOD)** set of real Wikipedia/web sentences (`scripts/benchmark_ood.py`, `TigreGotico/bifonia-pt-homographs-wild`):
-
-| Approach | Synthetic test | OOD (real text) |
-|---|---|---|
-| most-common (majority sense per word) | 52.7% | 47.5% |
-| spaCy (`pt_core_news_lg`) POS→sense | 65.7% | 81.4% |
-| Stanza POS→sense | 75.5% | 82.5% |
-
-| Approach (continued) | Synthetic test | OOD (real text) |
-|---|---|---|
-| rules (no corpus) | 94.5% | 84.6% |
-| Naive-Bayes | 98.1% | 86.7% |
-| averaged perceptron | 99.0% | 89.6% |
-| **ensemble** | **96.1%** | **90.5%** |
-
-The OOD column is the more representative measure: synthetic train and test sentences share phrasing, so synthetic accuracy runs higher. On real text the corpus-trained perceptron beats the rules by about five points (89.6 vs 84.6), since it generalizes rather than memorizes. The POS taggers plateau because they cannot separate two senses that share a POS (for example `sede`): they get the dominant noun sense right and miss the minority one by construction.
-
-Run the comparison:
-
-```bash
-python scripts/benchmark_tagger.py            # synthetic held-out split
-python scripts/benchmark_tagger.py --word sede --errors
-python scripts/benchmark_ood.py               # OOD real-text set
-```
+[`benchmarks.md`](benchmarks.md) gives the accuracy of each approach on the synthetic split (`scripts/benchmark_tagger.py`) and on the out-of-distribution set of real Wikipedia and web sentences (`scripts/benchmark_ood.py`, `TigreGotico/bifonia-pt-homographs-wild`). The OOD set is the more representative measure: synthetic train and test sentences share phrasing, so synthetic accuracy runs higher. The POS taggers plateau because they cannot separate two senses that share a POS (for example `sede`): they get the dominant noun sense right and miss the minority one by construction.
 
 ### When the scorer succeeds
 
@@ -124,7 +101,7 @@ Common failure modes:
 
 `forma` carries two senses on two IPA forms: *mould* (`ˈfoɾmɐ`, closed-o, `NOUN`) and *shape* (`ˈfɔɾmɐ`, open-o, `VERB`), where *shape* absorbs manner/way/geometric-form readings and 3sg *formar*. The closed-o mould reading fires only on explicit baking-tin cues; everything else defaults to open-o. `molho` is parallel: *sauce* (`ˈmoʎu`, `NOUN`) vs *bundle* (`ˈmɔʎu`, `VERB`). Separating "baking mould" from "manner/way", or "sauce" from "bundle of keys", requires comprehension of the noun phrase that local context cannot always supply.
 
-These are the cases the learned models address: trained over the corpus, the perceptron beats the rule engine on real text (see the accuracy table above), recovering some of the harder shared-POS and long-range cases the rules cannot reach.
+The learned models were trained to address these cases. On the real-text OOD set they trail the rule engine ([`benchmarks.md`](benchmarks.md)), so the shipped model routes no word away from the rules.
 
 ## Learned statistical models
 
@@ -149,13 +126,13 @@ python scripts/dataset.py --out data/
 
 | Metric | Value |
 |--------|-------|
-| Total sentences | 56 891 |
-| Train / test split | 45 492 / 11 400 |
-| Unique ambiguous words | 27 |
+| Total sentences | 155,204 |
+| Train / test split | 124,339 / 30,944 |
+| Unique ambiguous words | 131 |
 | POS attributes | NOUN, VERB, ADP, ADJ |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
 
-Sense-prediction accuracy for every approach is in the [Engines and accuracy](#engines-and-accuracy) table above.
+Sense-prediction accuracy for every approach is in [`benchmarks.md`](benchmarks.md).
 
 ### Record schema (`corpus.jsonl`)
 
