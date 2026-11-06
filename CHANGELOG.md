@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.9a1](https://github.com/TigreGotico/bifonia/tree/0.3.9a1) (2026-11-06)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.8a1...0.3.9a1)
+
+**Merged pull requests:**
+
+- fix: keep letter case in add\_extra\_diacritics [\#50](https://github.com/TigreGotico/bifonia/pull/50) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.8a1](https://github.com/TigreGotico/bifonia/tree/0.3.8a1) (2026-11-04)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.7a2...0.3.8a1)
