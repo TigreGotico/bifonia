@@ -554,8 +554,9 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     - circumflex (ô/ê) → closed /o/ or /e/  (typically noun reading)
 
     Words that are not ambiguous, or whose POS reading needs no extra diacritic
-    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
-    is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
+    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Each letter keeps its
+    case, so a sentence-initial homograph keeps its capital (*Acórdo …*) and an
+    all-caps word stays in capitals (*ACÓRDO*).
 
     *lang* is the lect tag; ``None`` means the default. The marks follow European
     Portuguese for every lect that has no rows in ``data/lect_overrides.csv``.
@@ -590,8 +591,9 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
         out.append(sentence[pos:m.start()])
         tok = m.group(0)
         diac = replacements.get(idx)
-        if diac is not None and tok[:1].isupper():
-            diac = diac[:1].upper() + diac[1:]
+        if diac is not None:
+            diac = "".join(mark.upper() if letter.isupper() else mark
+                           for letter, mark in zip(tok, diac))
         out.append(diac if diac is not None else tok)
         pos, idx = m.end(), idx + 1
     out.append(sentence[pos:])
