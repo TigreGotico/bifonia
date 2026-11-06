@@ -1,0 +1,14 @@
+# sense: tumble
+Gera {n} frases em Português Europeu natural onde "rolo" é a 1.ª pessoa do singular do presente do indicativo de «rolar».
+
+Significado de «rolar»: fazer girar; fazer avançar, obrigando a dar voltas sobre si próprio; mover-se sobre si mesmo; cair, revoluteando ou girando; decorrer; andar sobre rodas; encapelar-se; acontecer; emitir (pombo ou rola) o som característico da sua espécie; cantar e embalar para fazer adormecer
+IPA: /ˈʁɔlu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "rolo" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

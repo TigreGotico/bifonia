@@ -1,0 +1,15 @@
+# sense: burden
+Gera {n} frases em Português Europeu natural onde a palavra "peso" é usada como SUBSTANTIVO no sentido de «fardo, carga (peso da coroa/consciência)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "peso" (em minúsculas, sem acento diacrítico)
+- A palavra "peso" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: aquilo que oprime, preocupa ou sobrecarrega alguem
+IPA: /ˈpezu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «sentia o peso da responsabilidade nos ombros»; «o peso da consciencia nao o deixava dormir»; «carregava o peso da familia toda»; «tirou-me um peso de cima com aquela noticia»; «o peso da decisao era enorme»
+Responde APENAS com as frases, uma por linha:

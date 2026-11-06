@@ -1,0 +1,15 @@
+# sense: at_stake
+Gera {n} frases em Português Europeu natural onde a palavra "jogo" é usada como SUBSTANTIVO no sentido de «aquilo que se arrisca (em jogo)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "jogo" (em minúsculas, sem acento diacrítico)
+- A palavra "jogo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: aquilo que se arrisca ou se pode ganhar ou perder numa situacao (em jogo).
+IPA: /ˈʒoɡu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «esta em jogo o futuro da empresa.»; «ha muito dinheiro em jogo neste negocio.»; «a sua reputacao esta em jogo.»; «com tanto em jogo, ninguem quer falhar.»; «esta em jogo o emprego de dezenas de pessoas.»; «naquela decisao estava em jogo a saude dele.»
+Responde APENAS com as frases, uma por linha:

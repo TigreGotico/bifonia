@@ -1,0 +1,26 @@
+# evaluative_nouns.voc — Nouns that judge a thing in a short review ('uma delícia',
+# 'um espetáculo'). After 'um'/'uma' right after the homograph they are a verbless
+# predicate on the noun ('Molho uma delícia!'), not a direct object.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+achado
+bomba
+delícia
+desastre
+desgraça
+desilusão
+espetáculo
+festa
+fracasso
+horror
+luxo
+maravilha
+mimo
+nojo
+pecado
+perfeição
+porcaria
+sucesso
+surpresa
+vergonha

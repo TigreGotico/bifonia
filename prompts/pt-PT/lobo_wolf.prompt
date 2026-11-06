@@ -1,0 +1,15 @@
+# sense: wolf
+Gera {n} frases em Português Europeu natural onde a palavra "lobo" é usada como SUBSTANTIVO (animal).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "lobo" (em minúsculas, sem acento diacrítico)
+- A palavra "lobo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: o animal selvagem (Canis lupus), alcateia, uivo.
+Exemplos de uso: «o lobo uivou na serra», «a alcateia de lobos», «o lobo ibérico».
+Pronúncia: /ˈlobu/ — vogal O FECHADA (circunflexo em "lôbo").
+NÃO uses no sentido anatómico de lobo (parte de órgão, O aberto).
+Responde APENAS com as frases, uma por linha:

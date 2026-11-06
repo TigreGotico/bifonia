@@ -1,0 +1,15 @@
+# sense: manner
+Gera {n} frases em Português Europeu natural onde a palavra "forma" é usada como SUBSTANTIVO no sentido de «modo, maneira (de certa forma)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "forma" (em minúsculas, sem acento diacrítico)
+- A palavra "forma" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: modo ou maneira como algo se faz ou acontece
+IPA: /ˈfɔɾmɐ/ — vogal aberta (ɔ/ɛ).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «de certa forma, ele tinha razao»; «resolveram o problema da melhor forma possivel»; «fala de uma forma muito calma»; «trata os clientes sempre da mesma forma»; «nao gosto da forma como ele responde»
+Responde APENAS com as frases, uma por linha:

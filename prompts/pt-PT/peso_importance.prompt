@@ -1,0 +1,15 @@
+# sense: importance
+Gera {n} frases em Português Europeu natural onde a palavra "peso" é usada como SUBSTANTIVO no sentido de «importância, relevância».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "peso" (em minúsculas, sem acento diacrítico)
+- A palavra "peso" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: influencia, importancia ou relevancia de algo ou alguem
+IPA: /ˈpezu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «a sua opiniao tem muito peso na equipa»; «esse argumento teve peso na decisao final»; «e uma figura de grande peso na politica»; «o voto dele tem peso na assembleia»; «deu peso as palavras do professor»
+Responde APENAS com as frases, uma por linha:

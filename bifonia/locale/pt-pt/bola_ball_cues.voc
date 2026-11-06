@@ -1,0 +1,65 @@
+# bola_ball_cues.voc
+#
+# WHAT: sport / play / round-object context — the cue that "bola" is the BALL
+#       reading (open ɔ, /ˈbɔlɐ/), not the «bôla» bread/cake (closed o, /ˈbolɐ/).
+# WHERE USED: bifonia/scoring.py → _resolve_bola(), weighted against
+#       bola_loaf_cues.voc. The reading with the stronger (proximity-weighted)
+#       cue total wins; ball is the default on a tie.
+# WHY: a football sentence that happens to mention one food word ("comeu antes do
+#       jogo") must not flip to the loaf reading — the sport cues outweigh it.
+# HOW TO EXTEND: add only terms that signal a ball / sphere / ball-game and never a
+#       loaf. One term per line, lowercase.
+futebol
+futebolista
+jogar
+joga
+jogou
+jogue
+chutar
+chuta
+chutou
+chuto
+pontapé
+remate
+rematar
+rematou
+golo
+golos
+gol
+baliza
+relvado
+campo
+jogador
+jogadores
+jogadora
+equipa
+equipas
+seleção
+redonda
+ténis
+basquete
+basquetebol
+voleibol
+andebol
+futsal
+bilhar
+esfera
+esférica
+rolar
+rola
+rolou
+atirar
+atira
+atirou
+lançar
+lança
+passe
+drible
+driblar
+quica
+quicar
+guarda-redes
+brincar
+brinca
+partida
+golfe

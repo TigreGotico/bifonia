@@ -1,0 +1,15 @@
+# sense: sport_polo
+Gera {n} frases em Português Europeu natural onde a palavra "polo" é usada como SUBSTANTIVO no sentido de «desporto de equipa a cavalo».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "polo" (em minúsculas, sem acento diacrítico)
+- A palavra "polo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: desporto de equipa jogado a cavalo, em que os jogadores usam tacos de cabo comprido para empurrar uma bola para a baliza adversaria.
+IPA: /ˈpɔlu/ — vogal aberta (ɔ/ɛ).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «ele joga polo num clube perto de lisboa.»; «o polo exige boa relacao entre o cavaleiro e o cavalo.»; «assistimos a uma partida de polo no fim de semana.»; «a equipa de polo treina todas as tardes.»; «no polo cada jogador leva um taco comprido.»; «ela aprendeu a montar para poder jogar polo.»
+Responde APENAS com as frases, uma por linha:

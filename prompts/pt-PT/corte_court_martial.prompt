@@ -1,0 +1,15 @@
+# sense: court_martial
+Gera {n} frases em Português Europeu natural onde a palavra "corte" é usada como SUBSTANTIVO no sentido de «tribunal militar».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "corte" (em minúsculas, sem acento diacrítico)
+- A palavra "corte" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: tribunal militar que julga crimes cometidos por militares
+IPA: /ˈkoɾtɨ/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «o soldado foi julgado por uma corte militar»; «a corte marcial condenou o oficial a prisao»; «o caso seguiu para a corte do exercito»; «a corte militar reuniu-se em sessao fechada»; «compareceu perante a corte marcial de manha»
+Responde APENAS com as frases, uma por linha:

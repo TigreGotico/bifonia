@@ -1,0 +1,14 @@
+# sense: decorum
+Gera {n} frases em Português Europeu natural onde "decoro" é SUBSTANTIVO.
+
+Significado: respeito pelas normas de convivência, pelas boas maneiras; honestidade; pudor no agir e no falar; adequação do estilo literário ao tema
+IPA: /dɨˈkoɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "decoro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

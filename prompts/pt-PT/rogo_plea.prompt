@@ -1,0 +1,15 @@
+# sense: plea
+Gera {n} frases em Português Europeu natural onde "rogo" é SUBSTANTIVO.
+
+Significado: pedido feito com humildade e insistencia; suplica ou oracao dirigida a alguem
+IPA: /ˈʁoɡu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "rogo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «atendeu ao rogo da mae e voltou para casa»; «o rogo dos fieis subiu em silencio»; «fez um rogo sentido para que o perdoassem»; «ninguem ficou indiferente ao seu rogo»; «a carta era um rogo desesperado por ajuda»
+Responde APENAS com as frases, uma por linha:

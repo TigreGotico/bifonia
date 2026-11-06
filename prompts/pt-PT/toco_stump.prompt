@@ -1,0 +1,15 @@
+# sense: stump
+Gera {n} frases em Português Europeu natural onde "toco" é SUBSTANTIVO.
+
+Significado: parte do tronco ou da raiz de uma arvore que fica presa na terra depois de a arvore ser cortada
+IPA: /ˈtoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "toco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «sentei-me no toco da arvore cortada»; «o jardineiro arrancou o toco que ficou no quintal»; «tropecei num toco escondido na relva»; «restou apenas o toco depois de derrubarem o carvalho»; «havia musgo a crescer no toco antigo»
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,15 @@
+# sense: record_label
+Gera {n} frases em Português Europeu natural onde a palavra "selo" é usada como SUBSTANTIVO no sentido de «editora discográfica».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "selo" (em minúsculas, sem acento diacrítico)
+- A palavra "selo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: empresa ou marca que edita e publica gravacoes musicais.
+IPA: /ˈselu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «a banda assinou com um selo independente.»; «esse disco saiu por um selo americano famoso.»; «ele fundou um selo para lancar musica nova.»; «o selo distribui os albuns em todo o pais.»; «muitos artistas saem de um grande selo para serem livres.»; «o catalogo do selo inclui jazz e fado.»
+Responde APENAS com as frases, uma por linha:

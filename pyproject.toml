@@ -9,7 +9,7 @@ description = "Portuguese heterophonic homograph disambiguation (rule-based + le
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [{ name = "JarbasAi", email = "jarbasai@mailfence.com" }]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = []
 keywords = ["portuguese", "nlp", "homograph", "ipa", "phonetics", "g2p", "tts"]
 classifiers = [
