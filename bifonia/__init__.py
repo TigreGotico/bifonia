@@ -523,23 +523,34 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 def proper_flags(text: str) -> list:
     """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
     noun: a mid-sentence capitalised token (not sentence-initial). Used to bias
-    the NOUN reading (names like "Cerro Corá" are not finite verbs)."""
+    the NOUN reading (names like "Cerro Corá" are not finite verbs).
+
+    A word written all in capitals is not a name signal on its own, so it is
+    never flagged mid-sentence. After a first word in title case, an all-caps
+    token (an acronym, a roman numeral or an initial) still marks that first
+    word as a name."""
     toks = re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)
     flags = [False] * len(toks)
     for i in range(1, len(toks)):
         core = toks[i].lstrip("-")
         prev = toks[i - 1]
-        if core[:1].isupper() and not (prev and prev[-1] in ".!?:…"):
+        if (core[:1].isupper() and not core.isupper()
+                and not (prev and prev[-1] in ".!?:…")):
             flags[i] = True
     # Sentence-initial proper-noun phrase / title: the first word is always
     # capitalised, so only flag it when the *next* token is itself a proper-noun
-    # continuation ("Cerro Corá") or a number / nº marking a title ("Choro nº 13").
+    # continuation ("Cerro Corá", "Governo PS", "Choro IV") or a number / nº
+    # marking a title ("Choro nº 13"). An all-caps next token counts only after a
+    # first word in title case; in text in capitals it has no case signal.
     if len(toks) > 1:
+        first = toks[0].lstrip("-")
+        title_first = first[:1].isupper() and not first.isupper()
         nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
         # The split turns "n.º" into "n." and "º"; read the pair as "nº".
         if toks[1].lower() == "n." and len(toks) > 2 and toks[2].strip(_EDGE_PUNCT) == "º":
             nxt = "nº"
-        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"}:
+        if ((nxt[:1].isupper() and (title_first or not nxt.isupper()))
+                or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"}):
             flags[0] = True
     return flags
 
