@@ -70,6 +70,8 @@ def tokenize(text: str) -> list:
 
 
 _EDGE_PUNCT = ".,;:!?"
+_SENTENCE_END = ".!?:…"
+_FIRST_WORD_END = ".!?"
 
 
 def _strip_edge(token: str) -> str:
@@ -535,14 +537,16 @@ def proper_flags(text: str) -> list:
         core = toks[i].lstrip("-")
         prev = toks[i - 1]
         if (core[:1].isupper() and not core.isupper()
-                and not (prev and prev[-1] in ".!?:…")):
+                and not (prev and prev[-1] in _SENTENCE_END)):
             flags[i] = True
     # Sentence-initial proper-noun phrase / title: the first word is always
     # capitalised, so only flag it when the *next* token is itself a proper-noun
     # continuation ("Cerro Corá", "Governo PS", "Choro IV") or a number / nº
     # marking a title ("Choro nº 13"). An all-caps next token counts only after a
-    # first word in title case; in text in capitals it has no case signal.
-    if len(toks) > 1:
+    # first word in title case; in text in capitals it has no case signal. A first
+    # word that ends its sentence ("Jogo. Depois descanso.") starts no phrase. A
+    # colon does not end a sentence: "Governo: PS aprova orçamento." is a label.
+    if len(toks) > 1 and toks[0][-1] not in _FIRST_WORD_END:
         first = toks[0].lstrip("-")
         title_first = first[:1].isupper() and not first.isupper()
         nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
