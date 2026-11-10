@@ -7,12 +7,13 @@ The expected strings are written by hand from the sense that the same sentence
 gets in lower case. The table checks read ``base`` from Unicode, not from bifonia.
 """
 
+import csv
 import unicodedata
 
 import pytest
 
 from bifonia import _DIACRITIZED, add_extra_diacritics
-from bifonia.data import LECT_OVERRIDES
+from bifonia.data import _LECT_CSV, LECT_OVERRIDES
 
 
 def base(text: str) -> str:
@@ -44,11 +45,16 @@ def test_every_table_word_keeps_its_letters_in_capitals(lang):
 
 
 def test_every_table_form_has_the_letters_of_its_word():
+    # add_extra_diacritics copies the case of each letter of the word onto the
+    # code point of the form at the same position, so a form must be in NFC and
+    # as long as its word. The C++ port reads the override file as it is, so the
+    # file rows are checked, not the forms that bifonia loads from them.
     forms = {(word, form) for (word, _), form in _DIACRITIZED.items()}
-    forms |= {(word, form) for overrides in LECT_OVERRIDES.values()
-              for word, form in overrides.items() if form}
+    with _LECT_CSV.open(encoding="utf-8") as fh:
+        forms |= {(row["word"], row["form"]) for row in csv.DictReader(fh) if row["form"]}
 
     assert len(forms) > 250
     assert {(word, form) for word, form in forms
             if base(form) != base(word)
-            or len(unicodedata.normalize("NFC", form)) != len(word)} == set()
+            or unicodedata.normalize("NFC", form) != form
+            or len(form) != len(word)} == set()
