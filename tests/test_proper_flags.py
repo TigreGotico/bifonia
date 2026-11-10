@@ -103,3 +103,19 @@ def test_only_a_capital_before_lower_case_letters_flags_a_name(sentence, expecte
 def test_a_name_in_mixed_case_text_keeps_the_noun_reading():
     # Cerro Corá is a place name: the noun "cerro" (hill) has the closed vowel.
     assert add_extra_diacritics("Cerro Corá fica longe") == "Cêrro Corá fica longe"
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    ("Governo PS aprova orçamento", "Govêrno PS aprova orçamento"),
+    ("Acordo UE-Mercosul entra em vigor", "Acôrdo UE-Mercosul entra em vigor"),
+    ("Choro IV", "Chôro IV"),
+    ("Torre D. Fernando", "Tôrre D. Fernando"),
+])
+def test_an_all_caps_token_after_a_title_case_word_marks_a_name(sentence, expected):
+    # After a first word in title case, an all-caps token is an acronym, a roman
+    # numeral or an initial. The first word is then a name: the noun, closed vowel.
+    assert add_extra_diacritics(sentence) == expected
+
+
+def test_a_sentence_in_capitals_has_no_name_signal():
+    assert proper_flags("GOVERNO PS APROVA ORÇAMENTO") == [False, False, False, False]
