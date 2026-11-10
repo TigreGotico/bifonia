@@ -42,9 +42,10 @@ __all__ = [
 ]
 
 
-# A word and the punctuation after it. That punctuation can follow a closing quote
-# or bracket ("Jogo»." or "(Jogo)."); the closer itself is not kept.
-_TOKEN = re.compile(r"(-?\w+)(?:[»\")”]*([.,;:!?…]+))?")
+# A word and the punctuation after it. That punctuation can follow the closing
+# quotes » ” ’ › " ' or the closing brackets ) ] ("Jogo»." or "(Jogo)."); the
+# closer itself is not kept.
+_TOKEN = re.compile(r"(-?\w+)(?:[»”’›\"')\]]*([.,;:!?…]+))?")
 
 
 def _tokens(text: str) -> list:
@@ -65,8 +66,9 @@ def tokenize(text: str) -> list:
 
     - Trailing sentence punctuation (``. , ; : ! ? …``) stays attached to the
       token it follows (``"querer,"``) → clause-boundary guards
-      (``_prev_raw[-1] in punct``). It stays attached after a closing quote or
-      bracket too (``"jogo»."`` → ``"jogo."``), and ``…`` is written ``...``.
+      (``_prev_raw[-1] in punct``). It stays attached after the closing quotes
+      ``» ” ’ › " '`` and the closing brackets ``) ]`` too (``"jogo»."`` →
+      ``"jogo."``), and ``…`` is written ``...``.
     - A hyphen that attaches an *enclitic* clitic is kept as a leading marker on
       the clitic token (``"torno-me"`` → ``["torno", "-me"]``). The marker
       distinguishes an enclitic from a homographic article/preposition
@@ -546,32 +548,38 @@ def proper_flags(text: str) -> list:
     all-caps token (an acronym, a roman numeral or an initial) still marks that
     first word as a name.
 
-    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after a closing quote
-    or bracket. A colon does not end a sentence: "Governo: PS aprova orçamento."
-    is a label. The full stop of "n.º" ends no sentence."""
+    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after the closing
+    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. The full stop of
+    "n.º" ends no sentence. A colon does not end the sentence of the word before
+    it: "Governo: PS aprova orçamento." is a label. The word after a colon starts
+    a clause, as in direct speech ("Ele disse: Jogo amanhã."), so it takes the
+    first-word rule."""
     toks = _tokens(text)
     # The split turns "n.º" into "n." and "º"; read the pair as "nº".
     numero = [tok.lower() == "n." and nxt.strip(_EDGE_PUNCT) == "º"
               for tok, nxt in zip(toks, toks[1:] + [""])]
     ends = [tok[-1] in _SENTENCE_END and not num for tok, num in zip(toks, numero)]
+    starts = [True] + [end or tok[-1] == ":" for tok, end in zip(toks, ends)]
     flags = [False] * len(toks)
     for i, tok in enumerate(toks):
         core = tok.lstrip("-")
-        if i > 0 and not ends[i - 1]:
+        if not starts[i]:
             flags[i] = core[:1].isupper() and not core.isupper()
             continue
         # The first word of a sentence is always capitalised, so only flag it
         # when the *next* token is itself a proper-noun continuation ("Cerro
-        # Corá", "Governo PS", "Choro IV") or a number / nº marking a title
-        # ("Choro nº 13"). An all-caps next token counts only after a first word
-        # in title case; in text in capitals it has no case signal. A first word
-        # that ends its sentence ("Jogo. Depois descanso.") starts no phrase.
-        if i + 1 == len(toks) or ends[i]:
+        # Corá", "Governo PS", "Choro IV") or nº marking a title ("Choro nº
+        # 13"). A bare number is no title signal ("Choro 2 vezes por semana").
+        # An all-caps next token counts only after a first word in title case;
+        # in text in capitals it has no case signal. A first word that ends its
+        # sentence ("Jogo. Depois descanso.") starts no phrase. A lower-case
+        # word after the first token starts no sentence ("Bem… jogo 3 vezes").
+        if i + 1 == len(toks) or ends[i] or (i > 0 and not core[:1].isupper()):
             continue
         title_first = core[:1].isupper() and not core.isupper()
         nxt = "nº" if numero[i + 1] else toks[i + 1].lstrip("-").strip(_EDGE_PUNCT)
         flags[i] = bool((nxt[:1].isupper() and (title_first or not nxt.isupper()))
-                        or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"})
+                        or nxt.lower() in {"nº", "nr"})
     return flags
 
 

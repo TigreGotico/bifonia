@@ -163,21 +163,23 @@ def test_a_first_word_before_a_colon_keeps_the_noun_reading(sentence, expected):
 # Readings from bifonia/data/heterophonic_homographs.csv: a noun with the closed
 # vowel takes the circumflex, a verb with the open vowel takes the acute.
 #   governo,government,NOUN,ɡuˈveɾnu      jogo,play,VERB,ˈʒɔɡu
+#   gosto,like,VERB,ˈɡɔʃtu
 #   acordo,agreement,NOUN,ɐˈkoɾdu         jogo,game,NOUN,ˈʒoɡu
 #   acordo,wake,VERB,ɐˈkɔɾdu              choro,weep,VERB,ˈʃɔɾu
 #   choro,weeping,NOUN,ˈʃoɾu
 
 
 @pytest.mark.parametrize("sentence, expected", [
-    # "Agreement: Government and unions sign." Government is a name here.
-    ("Acordo: Governo e sindicatos assinam.", "Acôrdo: Govêrno e sindicatos assinam."),
-    ("Atenção: Governo aprova orçamento.", "Atenção: Govêrno aprova orçamento."),
+    # "He said: 'I play tomorrow.'"
+    ('Ele disse: "Jogo amanhã."', 'Ele disse: "Jógo amanhã."'),
+    # "He confessed: I like you a lot."
+    ("Ele confessou: Gosto muito de ti.", "Ele confessou: Gósto muito de ti."),
+    # "Pedro asked: Do I cry?"
+    ("O Pedro perguntou: Choro?", "O Pedro perguntou: Chóro?"),
 ])
-def test_a_capitalised_word_after_a_colon_is_inside_the_sentence(sentence, expected):
-    # A colon does not end a Portuguese sentence, so the capital of "Governo"
-    # marks a name, and the name takes the noun reading.
+def test_direct_speech_after_a_colon_keeps_the_verb_reading(sentence, expected):
+    # The word after a colon starts a clause, so its capital is no name signal.
     assert add_extra_diacritics(sentence) == expected
-    assert proper_flags(sentence)[1] is True
 
 
 @pytest.mark.parametrize("sentence, expected", [
@@ -229,3 +231,49 @@ def test_a_full_stop_after_a_closing_quote_or_bracket_ends_a_sentence(sentence, 
 def test_the_first_word_of_every_sentence_can_start_a_name(sentence, expected, flags):
     assert add_extra_diacritics(sentence) == expected
     assert proper_flags(sentence) == flags
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # "Well… I play 3 times a week."
+    ("Bem… jogo 3 vezes por semana.", "Bem… jógo 3 vezes por semana."),
+    ("Bem. jogo 3 vezes por semana.", "Bem. jógo 3 vezes por semana."),
+    ("Bem! jogo 3 vezes por semana.", "Bem! jógo 3 vezes por semana."),
+    ("Bem? jogo 3 vezes por semana.", "Bem? jógo 3 vezes por semana."),
+])
+def test_a_lower_case_word_after_a_sentence_end_starts_no_name(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence) == [False] * 6
+
+
+@pytest.mark.parametrize("end", ["…", ".", "!", "?"])
+def test_a_lower_case_word_before_a_capital_starts_no_name(end):
+    # "Well… I play Monopoly with my children." Monopólio is a name, jogo the verb.
+    sentence = f"Bem{end} jogo Monopólio com os meus filhos."
+    assert add_extra_diacritics(sentence) == f"Bem{end} jógo Monopólio com os meus filhos."
+    assert proper_flags(sentence) == [False, False, True, False, False, False, False]
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # "I am sensitive. I cry 2 times a week."
+    ("Sou sensível. Choro 2 vezes por semana.", "Sou sensível. Chóro 2 vezes por semana."),
+    # "I play 2 times a week."
+    ("Jogo 2 vezes por semana.", "Jógo 2 vezes por semana."),
+])
+def test_a_bare_number_after_the_first_word_is_no_title(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    ("‘Jogo’. Depois descanso.", "‘Jógo’. Depois descanso."),
+    ("[Jogo]. Depois descanso.", "[Jógo]. Depois descanso."),
+    ("‹Jogo›. Depois descanso.", "‹Jógo›. Depois descanso."),
+    ("'Jogo'. Depois descanso.", "'Jógo'. Depois descanso."),
+])
+def test_a_full_stop_after_any_closing_quote_or_bracket_ends_a_sentence(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence) == [False, False, False]
+
+
+def test_an_apostrophe_inside_a_word_is_no_closer():
+    assert tokenize("Bebo um copo d'água. Jogo depois.") == [
+        "bebo", "um", "copo", "d", "água.", "jogo", "depois."]
