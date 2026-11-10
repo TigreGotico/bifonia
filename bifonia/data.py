@@ -8,6 +8,7 @@ data/lect_overrides.csv.
 
 import csv
 import pathlib
+import unicodedata
 
 from bifonia.vocab import voc
 
@@ -54,11 +55,14 @@ POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
 # Per-lect marking overrides: lect tag → {word: form}. The form replaces the
 # diacritized form of every sense of the word; an empty form leaves the word
 # unmarked. A lect needs rows only where its stressed vowel differs from the
-# European one.
+# European one. Each form is read in NFC, because add_extra_diacritics copies the
+# case of each letter of the word onto the code point of the form at the same
+# position.
 LECT_OVERRIDES: dict = {}
 with _LECT_CSV.open(encoding="utf-8") as fh:
     for row in csv.DictReader(fh):
-        LECT_OVERRIDES.setdefault(row["lang"], {})[row["word"]] = row["form"]
+        form = unicodedata.normalize("NFC", row["form"])
+        LECT_OVERRIDES.setdefault(row["lang"], {})[row["word"]] = form
 
 
 def lect_overrides(lang: str) -> dict:

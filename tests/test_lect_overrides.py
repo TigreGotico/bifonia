@@ -14,12 +14,15 @@ Portuguese; it is inferred from its rural Rio Grande do Sul vowel system.
 """
 
 import csv
+import importlib.util
 import json
 import re
+import shutil
 from pathlib import Path
 
 import pytest
 
+import bifonia.data
 from bifonia import add_extra_diacritics, AMBIGUOUS_WORDS
 
 BR_LANGS = ["pt-BR", "pt-BR-x-rj", "pt-BR-x-sp", "pt_br", " pt-BR ", "pt-Latn-BR"]
@@ -157,3 +160,23 @@ def test_override_rows_are_known_homographs_with_a_source():
         assert row["word"] in AMBIGUOUS_WORDS
         assert row["source"].strip()
     assert LECT_OVERRIDES["pt-BR"]["soma"] == "sôma"
+
+
+def test_an_override_form_in_nfd_keeps_every_letter(tmp_path, monkeypatch):
+    # Load bifonia/data.py next to a copy of its tables with one more row, whose
+    # form is in NFD: "o" and U+0302 in place of "ô". A text editor can save it so.
+    package = Path(bifonia.data.__file__).parent
+    (tmp_path / "data").mkdir()
+    shutil.copy(package / "data" / "heterophonic_homographs.csv", tmp_path / "data")
+    rows = (package / "data" / "lect_overrides.csv").read_text(encoding="utf-8")
+    (tmp_path / "data" / "lect_overrides.csv").write_text(
+        rows + "pt-AO,soma,so\u0302ma,probe,probe\n", encoding="utf-8")
+    shutil.copy(package / "data.py", tmp_path)
+    spec = importlib.util.spec_from_file_location("data_copy", tmp_path / "data.py")
+    data = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(data)
+
+    monkeypatch.setitem(bifonia.data.LECT_OVERRIDES, "pt-AO", data.LECT_OVERRIDES["pt-AO"])
+    assert add_extra_diacritics("A SOMA DE DOIS", "pt-AO") == "A S\u00d4MA DE DOIS"
+    assert add_extra_diacritics("soma", "pt-AO") == "s\u00f4ma"
+    assert data.LECT_OVERRIDES["pt-AO"] == {"soma": "s\u00f4ma"}, ascii(data.LECT_OVERRIDES)
