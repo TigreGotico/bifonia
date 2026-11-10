@@ -42,6 +42,20 @@ __all__ = [
 ]
 
 
+# A word and the punctuation after it. That punctuation can follow the closing
+# quotes » ” ’ › " ' or the closing brackets ) ] ("Jogo»." or "(Jogo)."); the
+# closer itself is not kept.
+_TOKEN = re.compile(r"(-?\w+)(?:[»”’›\"')\]]*([.,;:!?…]+))?")
+
+
+def _tokens(text: str) -> list:
+    """Split *text* into the tokens of :func:`tokenize`, in their original case.
+
+    The ellipsis character is written as three full stops, so every rule reads
+    ``…`` as it reads ``...``."""
+    return [(word + punct).replace("…", "...") for word, punct in _TOKEN.findall(text)]
+
+
 def tokenize(text: str) -> list:
     """Lowercase and split *text* into word tokens.
 
@@ -50,9 +64,11 @@ def tokenize(text: str) -> list:
     (keeping the position-indexed replacement walk in
     :func:`add_extra_diacritics` aligned):
 
-    - Trailing sentence punctuation (``. , ; : ! ?``) stays attached to the token
-      it follows (``"querer,"``) → clause-boundary guards
-      (``_prev_raw[-1] in punct``).
+    - Trailing sentence punctuation (``. , ; : ! ? …``) stays attached to the
+      token it follows (``"querer,"``) → clause-boundary guards
+      (``_prev_raw[-1] in punct``). It stays attached after the closing quotes
+      ``» ” ’ › " '`` and the closing brackets ``) ]`` too (``"jogo»."`` →
+      ``"jogo."``), and ``…`` is written ``...``.
     - A hyphen that attaches an *enclitic* clitic is kept as a leading marker on
       the clitic token (``"torno-me"`` → ``["torno", "-me"]``). The marker
       distinguishes an enclitic from a homographic article/preposition
@@ -66,12 +82,12 @@ def tokenize(text: str) -> list:
     a word (``"İ".lower()`` is ``"i"`` plus a combining dot, which is not a word
     character), and then the tokens no longer align with :func:`proper_flags`.
     """
-    return [t.lower() for t in re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)]
+    return [t.lower() for t in _tokens(text)]
 
 
 _EDGE_PUNCT = ".,;:!?"
-_SENTENCE_END = ".!?:…"
-_FIRST_WORD_END = ".!?"
+# A colon does not end a Portuguese sentence.
+_SENTENCE_END = ".!?"
 
 
 def _strip_edge(token: str) -> str:
@@ -524,38 +540,45 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 
 def proper_flags(text: str) -> list:
     """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
-    noun: a mid-sentence capitalised token (not sentence-initial). Used to bias
-    the NOUN reading (names like "Cerro Corá" are not finite verbs).
+    noun: a capitalised token inside a sentence. Used to bias the NOUN reading
+    (names like "Cerro Corá" are not finite verbs).
 
     A word written all in capitals is not a name signal on its own, so it is
-    never flagged mid-sentence. After a first word in title case, an all-caps
-    token (an acronym, a roman numeral or an initial) still marks that first
-    word as a name."""
-    toks = re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)
+    never flagged inside a sentence. After a first word in title case, an
+    all-caps token (an acronym, a roman numeral or an initial) still marks that
+    first word as a name.
+
+    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after the closing
+    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. A colon does not
+    end the sentence of the word before it: "Governo: PS aprova orçamento." is a
+    label. The word after a colon starts a clause, as in direct speech ("Ele
+    disse: Jogo amanhã."), so it takes the first-word rule."""
+    toks = _tokens(text)
+    # The split turns "n.º" into "n." and "º"; read the pair as "nº".
+    numero = [tok.lower() == "n." and nxt.strip(_EDGE_PUNCT) == "º"
+              for tok, nxt in zip(toks, toks[1:] + [""])]
+    ends = [tok[-1] in _SENTENCE_END for tok in toks]
+    starts = [True] + [end or tok[-1] == ":" for tok, end in zip(toks, ends)]
     flags = [False] * len(toks)
-    for i in range(1, len(toks)):
-        core = toks[i].lstrip("-")
-        prev = toks[i - 1]
-        if (core[:1].isupper() and not core.isupper()
-                and not (prev and prev[-1] in _SENTENCE_END)):
-            flags[i] = True
-    # Sentence-initial proper-noun phrase / title: the first word is always
-    # capitalised, so only flag it when the *next* token is itself a proper-noun
-    # continuation ("Cerro Corá", "Governo PS", "Choro IV") or a number / nº
-    # marking a title ("Choro nº 13"). An all-caps next token counts only after a
-    # first word in title case; in text in capitals it has no case signal. A first
-    # word that ends its sentence ("Jogo. Depois descanso.") starts no phrase. A
-    # colon does not end a sentence: "Governo: PS aprova orçamento." is a label.
-    if len(toks) > 1 and toks[0][-1] not in _FIRST_WORD_END:
-        first = toks[0].lstrip("-")
-        title_first = first[:1].isupper() and not first.isupper()
-        nxt = toks[1].lstrip("-").strip(_EDGE_PUNCT)
-        # The split turns "n.º" into "n." and "º"; read the pair as "nº".
-        if toks[1].lower() == "n." and len(toks) > 2 and toks[2].strip(_EDGE_PUNCT) == "º":
-            nxt = "nº"
-        if ((nxt[:1].isupper() and (title_first or not nxt.isupper()))
-                or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"}):
-            flags[0] = True
+    for i, tok in enumerate(toks):
+        core = tok.lstrip("-")
+        if not starts[i]:
+            flags[i] = core[:1].isupper() and not core.isupper()
+            continue
+        # The first word of a sentence is always capitalised, so only flag it
+        # when the *next* token is itself a proper-noun continuation ("Cerro
+        # Corá", "Governo PS", "Choro IV") or nº marking a title ("Choro nº
+        # 13"). A bare number is no title signal ("Choro 2 vezes por semana").
+        # An all-caps next token counts only after a first word in title case;
+        # in text in capitals it has no case signal. A first word that ends its
+        # sentence ("Jogo. Depois descanso.") starts no phrase. A lower-case
+        # word after the first token starts no sentence ("Bem… jogo 3 vezes").
+        if i + 1 == len(toks) or ends[i] or (i > 0 and not core[:1].isupper()):
+            continue
+        title_first = core[:1].isupper() and not core.isupper()
+        nxt = "nº" if numero[i + 1] else toks[i + 1].lstrip("-").strip(_EDGE_PUNCT)
+        flags[i] = bool((nxt[:1].isupper() and (title_first or not nxt.isupper()))
+                        or nxt.lower() in {"nº", "nr"})
     return flags
 
 
