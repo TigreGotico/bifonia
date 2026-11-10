@@ -119,3 +119,30 @@ def test_an_all_caps_token_after_a_title_case_word_marks_a_name(sentence, expect
 
 def test_a_sentence_in_capitals_has_no_name_signal():
     assert proper_flags("GOVERNO PS APROVA ORÇAMENTO") == [False, False, False, False]
+
+
+@pytest.mark.parametrize("sentence", [
+    "Jogo. Depois descanso.",
+    "Jogo! Depois descanso.",
+    "Jogo? Depois descanso.",
+    "Jogo... Depois descanso.",
+])
+def test_a_first_word_that_ends_its_sentence_is_no_name(sentence):
+    # "Jogo" is a sentence of one word and "Depois" starts the next sentence, so
+    # no word is a capitalised word inside a sentence.
+    assert proper_flags(sentence) == [False, False, False]
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # Verb "jogar", first person: "I play. Then I rest."
+    ("Jogo. Depois descanso.", "Jógo. Depois descanso."),
+    ("Jogo? Sim, jogo todos os sábados.", "Jógo? Sim, jógo todos os sábados."),
+    # Verb "chorar": "Do I cry? I never cry in public."
+    ("Choro? Nunca choro em público.", "Chóro? Nunca chóro em público."),
+    # Verb "acordar": "I wake up. Then I take a shower."
+    ("Acordo. Depois tomo banho.", "Acórdo. Depois tomo banho."),
+])
+def test_a_verb_that_ends_its_sentence_keeps_the_verb_reading(sentence, expected):
+    # The verb readings have the open vowel (jogo /ˈʒɔɡu/, choro /ˈʃɔɾu/,
+    # acordo /ɐˈkɔɾdu/), so they take the acute accent.
+    assert add_extra_diacritics(sentence) == expected
