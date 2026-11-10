@@ -57,12 +57,19 @@ POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
 # unmarked. A lect needs rows only where its stressed vowel differs from the
 # European one. Each form is read in NFC, because add_extra_diacritics copies the
 # case of each letter of the word onto the code point of the form at the same
-# position.
+# position. A form that is not as long as its word in NFC would lose letters
+# there, so the loader rejects it.
 LECT_OVERRIDES: dict = {}
 with _LECT_CSV.open(encoding="utf-8") as fh:
-    for row in csv.DictReader(fh):
+    reader = csv.DictReader(fh)
+    for row in reader:
+        word = row["word"]
         form = unicodedata.normalize("NFC", row["form"])
-        LECT_OVERRIDES.setdefault(row["lang"], {})[row["word"]] = form
+        if form and len(form) != len(word):
+            raise ValueError(
+                f"{_LECT_CSV}, line {reader.line_num}: the form {form!r} of {word!r} "
+                f"has {len(form)} code points in NFC, but the word has {len(word)}")
+        LECT_OVERRIDES.setdefault(row["lang"], {})[word] = form
 
 
 def lect_overrides(lang: str) -> dict:

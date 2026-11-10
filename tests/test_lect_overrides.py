@@ -162,21 +162,59 @@ def test_override_rows_are_known_homographs_with_a_source():
     assert LECT_OVERRIDES["pt-BR"]["soma"] == "sôma"
 
 
-def test_an_override_form_in_nfd_keeps_every_letter(tmp_path, monkeypatch):
-    # Load bifonia/data.py next to a copy of its tables with one more row, whose
-    # form is in NFD: "o" and U+0302 in place of "ô". A text editor can save it so.
+def _load_data_with(tmp_path, extra_rows):
+    """Load bifonia/data.py next to a copy of its tables, with *extra_rows*
+    appended to lect_overrides.csv. Return the module and the csv path."""
     package = Path(bifonia.data.__file__).parent
     (tmp_path / "data").mkdir()
     shutil.copy(package / "data" / "heterophonic_homographs.csv", tmp_path / "data")
     rows = (package / "data" / "lect_overrides.csv").read_text(encoding="utf-8")
-    (tmp_path / "data" / "lect_overrides.csv").write_text(
-        rows + "pt-AO,soma,so\u0302ma,probe,probe\n", encoding="utf-8")
+    lect_csv = tmp_path / "data" / "lect_overrides.csv"
+    lect_csv.write_text(rows + extra_rows, encoding="utf-8")
     shutil.copy(package / "data.py", tmp_path)
     spec = importlib.util.spec_from_file_location("data_copy", tmp_path / "data.py")
     data = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(data)
+    return data, lect_csv
+
+
+def test_an_override_form_in_nfd_keeps_every_letter(tmp_path, monkeypatch):
+    # One more row whose form is in NFD: "o" and U+0302 in place of "ô". A text
+    # editor can save it so.
+    data, _ = _load_data_with(tmp_path, "pt-AO,soma,so\u0302ma,probe,probe\n")
 
     monkeypatch.setitem(bifonia.data.LECT_OVERRIDES, "pt-AO", data.LECT_OVERRIDES["pt-AO"])
     assert add_extra_diacritics("A SOMA DE DOIS", "pt-AO") == "A S\u00d4MA DE DOIS"
     assert add_extra_diacritics("soma", "pt-AO") == "s\u00f4ma"
     assert data.LECT_OVERRIDES["pt-AO"] == {"soma": "s\u00f4ma"}, ascii(data.LECT_OVERRIDES)
+
+
+def test_the_shipped_override_rows_load(tmp_path):
+    data, lect_csv = _load_data_with(tmp_path, "")
+    with lect_csv.open(encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    assert len(rows) == 12
+    assert data.LECT_OVERRIDES == bifonia.data.LECT_OVERRIDES
+    assert sum(len(forms) for forms in data.LECT_OVERRIDES.values()) == len(rows)
+
+
+# A form that is still longer or shorter than its word in NFC. add_extra_diacritics
+# copies the case of each letter of the word onto the form position by position,
+# so such a form would drop letters: "A soma dá dez." would become "A só̂m dá dez.".
+# "so" + U+0301 + U+0302 + "ma" is "s", "ó", U+0302, "m", "a" in NFC: 5 code points
+# for the 4 letters of soma.
+@pytest.mark.parametrize("row,form,word,form_len,word_len", [
+    ("pt-CV,soma,so\u0301\u0302ma,probe,probe\n", "s\u00f3\u0302ma", "soma", 5, 4),
+    ("pt-CV,acordo,aco\u0308\u0301rdo,probe,probe\n", "ac\u00f6\u0301rdo", "acordo", 7, 6),
+    ("pt-CV,jogo,j\u00f4g,probe,probe\n", "j\u00f4g", "jogo", 3, 4),
+])
+def test_an_override_form_of_another_length_is_rejected_at_load(
+        tmp_path, row, form, word, form_len, word_len):
+    shipped = (Path(bifonia.data.__file__).parent / "data" / "lect_overrides.csv")
+    line = len(shipped.read_text(encoding="utf-8").splitlines()) + 1
+    lect_csv = tmp_path / "data" / "lect_overrides.csv"
+    message = (f"{lect_csv}, line {line}: the form {form!r} of {word!r} has "
+               f"{form_len} code points in NFC, but the word has {word_len}")
+    with pytest.raises(ValueError) as err:
+        _load_data_with(tmp_path, row)
+    assert str(err.value) == message
