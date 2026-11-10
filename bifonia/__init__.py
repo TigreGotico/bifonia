@@ -549,16 +549,15 @@ def proper_flags(text: str) -> list:
     first word as a name.
 
     A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after the closing
-    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. The full stop of
-    "n.º" ends no sentence. A colon does not end the sentence of the word before
-    it: "Governo: PS aprova orçamento." is a label. The word after a colon starts
-    a clause, as in direct speech ("Ele disse: Jogo amanhã."), so it takes the
-    first-word rule."""
+    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. A colon does not
+    end the sentence of the word before it: "Governo: PS aprova orçamento." is a
+    label. The word after a colon starts a clause, as in direct speech ("Ele
+    disse: Jogo amanhã."), so it takes the first-word rule."""
     toks = _tokens(text)
     # The split turns "n.º" into "n." and "º"; read the pair as "nº".
     numero = [tok.lower() == "n." and nxt.strip(_EDGE_PUNCT) == "º"
               for tok, nxt in zip(toks, toks[1:] + [""])]
-    ends = [tok[-1] in _SENTENCE_END and not num for tok, num in zip(toks, numero)]
+    ends = [tok[-1] in _SENTENCE_END for tok in toks]
     starts = [True] + [end or tok[-1] == ":" for tok, end in zip(toks, ends)]
     flags = [False] * len(toks)
     for i, tok in enumerate(toks):
