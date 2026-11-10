@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.14a1](https://github.com/TigreGotico/bifonia/tree/0.3.14a1) (2026-11-10)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.13a1...0.3.14a1)
+
+**Merged pull requests:**
+
+- fix: end sentences in proper\_flags as Portuguese does [\#59](https://github.com/TigreGotico/bifonia/pull/59) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.13a1](https://github.com/TigreGotico/bifonia/tree/0.3.13a1) (2026-11-10)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.12a1...0.3.13a1)
