@@ -146,3 +146,15 @@ def test_a_verb_that_ends_its_sentence_keeps_the_verb_reading(sentence, expected
     # The verb readings have the open vowel (jogo /ˈʒɔɡu/, choro /ˈʃɔɾu/,
     # acordo /ɐˈkɔɾdu/), so they take the acute accent.
     assert add_extra_diacritics(sentence) == expected
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # A colon does not end a sentence: the first word labels what follows, and the
+    # label is the noun. Government ɡuˈveɾnu, agreement ɐˈkoɾdu, game ˈʒoɡu.
+    ("Governo: PS aprova orçamento.", "Govêrno: PS aprova orçamento."),
+    ("Acordo: PS e PSD aprovam.", "Acôrdo: PS e PSD aprovam."),
+    # The club "o Porto" is named after the city, the noun harbour ˈpoɾtu.
+    ("Jogo: Benfica vence o Porto.", "Jôgo: Benfica vence o Pôrto."),
+])
+def test_a_first_word_before_a_colon_keeps_the_noun_reading(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
