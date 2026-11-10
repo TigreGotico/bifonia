@@ -158,3 +158,74 @@ def test_a_verb_that_ends_its_sentence_keeps_the_verb_reading(sentence, expected
 ])
 def test_a_first_word_before_a_colon_keeps_the_noun_reading(sentence, expected):
     assert add_extra_diacritics(sentence) == expected
+
+
+# Readings from bifonia/data/heterophonic_homographs.csv: a noun with the closed
+# vowel takes the circumflex, a verb with the open vowel takes the acute.
+#   governo,government,NOUN,ɡuˈveɾnu      jogo,play,VERB,ˈʒɔɡu
+#   acordo,agreement,NOUN,ɐˈkoɾdu         jogo,game,NOUN,ˈʒoɡu
+#   acordo,wake,VERB,ɐˈkɔɾdu              choro,weep,VERB,ˈʃɔɾu
+#   choro,weeping,NOUN,ˈʃoɾu
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # "Agreement: Government and unions sign." Government is a name here.
+    ("Acordo: Governo e sindicatos assinam.", "Acôrdo: Govêrno e sindicatos assinam."),
+    ("Atenção: Governo aprova orçamento.", "Atenção: Govêrno aprova orçamento."),
+])
+def test_a_capitalised_word_after_a_colon_is_inside_the_sentence(sentence, expected):
+    # A colon does not end a Portuguese sentence, so the capital of "Governo"
+    # marks a name, and the name takes the noun reading.
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence)[1] is True
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # "I play… Then I rest."
+    ("Jogo… Depois descanso.", "Jógo… Depois descanso."),
+    # "I wake up… Then I take a shower."
+    ("Acordo… Depois tomo banho.", "Acórdo… Depois tomo banho."),
+    # "I cry… I never cry in public."
+    ("Choro… Nunca choro em público.", "Chóro… Nunca chóro em público."),
+])
+def test_an_ellipsis_character_ends_a_sentence(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence)[:2] == [False, False]
+
+
+def test_an_ellipsis_character_gives_the_tokens_of_three_full_stops():
+    assert tokenize("Jogo… Depois descanso.") == ["jogo...", "depois", "descanso."]
+    assert tokenize("Jogo… Depois descanso.") == tokenize("Jogo... Depois descanso.")
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    ("«Jogo». Depois descanso.", "«Jógo». Depois descanso."),
+    ("Jogo». Depois descanso.", "Jógo». Depois descanso."),
+    ("(Jogo). Depois descanso.", "(Jógo). Depois descanso."),
+    ('"Jogo". Depois descanso.', '"Jógo". Depois descanso.'),
+    ("“Jogo”. Depois descanso.", "“Jógo”. Depois descanso."),
+    ("«Acordo». Depois tomo banho.", "«Acórdo». Depois tomo banho."),
+])
+def test_a_full_stop_after_a_closing_quote_or_bracket_ends_a_sentence(sentence, expected):
+    # The same reading and the same flags as "Jogo. Depois descanso.".
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence) == [False] * len(tokenize(sentence))
+
+
+@pytest.mark.parametrize("sentence, expected, flags", [
+    # "Today. Jogo Bonito won." Jogo Bonito is a name: the noun "game".
+    ("Hoje. Jogo Bonito venceu.", "Hoje. Jôgo Bonito venceu.", [False, True, True, False]),
+    ("Ganhámos ontem! Governo PS aprova orçamento.",
+     "Ganhámos ontem! Govêrno PS aprova orçamento.",
+     [False, False, True, False, False, False]),
+    # Choro IV is the title of a piece of music: the noun "weeping".
+    ("Ouvi o concerto. Choro IV é a minha peça preferida.",
+     "Ouvi o concerto. Chôro IV é a minha peça preferida.",
+     [False, False, False, True, False, False, False, False, False, False]),
+    ("Ouvi o concerto. Choro n.º 13 é a minha peça preferida.",
+     "Ouvi o concerto. Chôro n.º 13 é a minha peça preferida.",
+     [False, False, False, True, False, False, False, False, False, False, False, False]),
+])
+def test_the_first_word_of_every_sentence_can_start_a_name(sentence, expected, flags):
+    assert add_extra_diacritics(sentence) == expected
+    assert proper_flags(sentence) == flags
