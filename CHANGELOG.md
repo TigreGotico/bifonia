@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.11a1](https://github.com/TigreGotico/bifonia/tree/0.3.11a1) (2026-11-10)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.10a1...0.3.11a1)
+
+**Merged pull requests:**
+
+- fix: do not flag a word in capitals as a proper noun [\#52](https://github.com/TigreGotico/bifonia/pull/52) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.10a1](https://github.com/TigreGotico/bifonia/tree/0.3.10a1) (2026-11-10)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.9a1...0.3.10a1)
