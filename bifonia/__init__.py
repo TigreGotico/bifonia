@@ -523,13 +523,18 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 def proper_flags(text: str) -> list:
     """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
     noun: a mid-sentence capitalised token (not sentence-initial). Used to bias
-    the NOUN reading (names like "Cerro Corá" are not finite verbs)."""
+    the NOUN reading (names like "Cerro Corá" are not finite verbs).
+
+    A token counts as capitalised only when it also has a lower-case letter. A
+    word written all in capitals has no case signal, so it never flags itself
+    or the word before it."""
     toks = re.findall(r"-?\w+[.,;:!?]*", text, re.UNICODE)
     flags = [False] * len(toks)
     for i in range(1, len(toks)):
         core = toks[i].lstrip("-")
         prev = toks[i - 1]
-        if core[:1].isupper() and not (prev and prev[-1] in ".!?:…"):
+        if (core[:1].isupper() and not core.isupper()
+                and not (prev and prev[-1] in ".!?:…")):
             flags[i] = True
     # Sentence-initial proper-noun phrase / title: the first word is always
     # capitalised, so only flag it when the *next* token is itself a proper-noun
@@ -539,7 +544,8 @@ def proper_flags(text: str) -> list:
         # The split turns "n.º" into "n." and "º"; read the pair as "nº".
         if toks[1].lower() == "n." and len(toks) > 2 and toks[2].strip(_EDGE_PUNCT) == "º":
             nxt = "nº"
-        if nxt[:1].isupper() or nxt[:1].isdigit() or nxt.lower() in {"nº", "nr"}:
+        if ((nxt[:1].isupper() and not nxt.isupper()) or nxt[:1].isdigit()
+                or nxt.lower() in {"nº", "nr"}):
             flags[0] = True
     return flags
 

@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from bifonia import HOMOGRAPHS, add_extra_diacritics, guess_sense, proper_flags, tokenize
+from bifonia import (HOMOGRAPHS, _strip_edge, add_extra_diacritics, guess_sense, proper_flags,
+                     tokenize)
 
 
 @pytest.mark.parametrize("abbrev", ["n.º", "N.º"])
@@ -54,3 +55,51 @@ def test_contraction_no_does_not_mark_a_title(case):
 ])
 def test_title_abbreviations(sentence, expected):
     assert add_extra_diacritics(sentence) == expected
+
+
+def _gold_rows():
+    path = Path(__file__).parent / "test_sentences.jsonl"
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip()]
+    return [row for row in rows if not row["xfail"]]
+
+
+@pytest.mark.parametrize("change_case", [str.upper, str.swapcase], ids=["upper", "swapcase"])
+def test_letter_case_does_not_change_the_gold_reading(change_case):
+    # A word written all in capitals has no case signal, so each gold sentence
+    # takes the reading of its gold sense in capitals and in swapped case too.
+    misses = []
+    for case in _gold_rows():
+        sentence = change_case(case["sentence"])
+        words, flags = tokenize(sentence), proper_flags(sentence)
+        idx = next(i for i, w in enumerate(words) if _strip_edge(w) == case["word"])
+        readings = HOMOGRAPHS[case["word"]]
+        if readings[guess_sense(words, idx, proper=flags[idx])] != readings[case["sense"]]:
+            misses.append(sentence)
+    assert len(misses) == 0, (len(misses), misses[:3])
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    ("ELE ENTROU PELO PORTÃO", "ELE ENTROU PELO PORTÃO"),
+    ("OLHO PARA TI", "ÓLHO PARA TI"),
+    ("EU ALMOÇO às duas", "EU ALMÓÇO às duas"),
+    ("CHORO Nº 13", "CHÔRO Nº 13"),
+])
+def test_capitals_are_no_proper_noun_signal(sentence, expected):
+    assert add_extra_diacritics(sentence) == expected
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    ("Vivo perto de Cerro Corá", [False, False, False, True, True]),
+    ("VIVO PERTO DE CERRO CORÁ", [False, False, False, False, False]),
+    ("Vivo perto de CERRO Corá", [False, False, False, False, True]),
+    ("Cerro Corá fica longe", [True, True, False, False]),
+    ("CERRO CORÁ FICA LONGE", [False, False, False, False]),
+])
+def test_only_a_capital_before_lower_case_letters_flags_a_name(sentence, expected):
+    assert proper_flags(sentence) == expected
+
+
+def test_a_name_in_mixed_case_text_keeps_the_noun_reading():
+    # Cerro Corá is a place name: the noun "cerro" (hill) has the closed vowel.
+    assert add_extra_diacritics("Cerro Corá fica longe") == "Cêrro Corá fica longe"
