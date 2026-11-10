@@ -18,6 +18,7 @@ import importlib.util
 import json
 import re
 import shutil
+import unicodedata
 from pathlib import Path
 
 import pytest
@@ -189,13 +190,17 @@ def test_an_override_form_in_nfd_keeps_every_letter(tmp_path, monkeypatch):
     assert data.LECT_OVERRIDES["pt-AO"] == {"soma": "s\u00f4ma"}, ascii(data.LECT_OVERRIDES)
 
 
-def test_the_shipped_override_rows_load(tmp_path):
-    data, lect_csv = _load_data_with(tmp_path, "")
-    with lect_csv.open(encoding="utf-8") as fh:
+def test_every_shipped_override_row_has_one_code_point_per_letter():
+    # The rule of the loader: in NFC, a form has as many code points as its word
+    # has letters, and no combining mark is left over. An empty form is valid.
+    path = Path(bifonia.data.__file__).parent / "data" / "lect_overrides.csv"
+    with path.open(encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
-    assert len(rows) == 12
-    assert data.LECT_OVERRIDES == bifonia.data.LECT_OVERRIDES
-    assert sum(len(forms) for forms in data.LECT_OVERRIDES.values()) == len(rows)
+    for row in rows:
+        form = unicodedata.normalize("NFC", row["form"])
+        assert not form or len(form) == len(row["word"]), row
+        assert not any(unicodedata.combining(c) for c in form), row
+    assert sum(len(forms) for forms in bifonia.data.LECT_OVERRIDES.values()) == len(rows)
 
 
 # A form that is still longer or shorter than its word in NFC. add_extra_diacritics
@@ -218,3 +223,25 @@ def test_an_override_form_of_another_length_is_rejected_at_load(
     with pytest.raises(ValueError) as err:
         _load_data_with(tmp_path, row)
     assert str(err.value) == message
+
+
+def test_an_override_form_that_keeps_a_combining_mark_is_rejected_at_load(tmp_path):
+    # "so" + U+0301 + U+0302 + "m" is "s", "ó", U+0302, "m" in NFC: 4 code points,
+    # as many as the letters of soma, because no precomposed "ó̂" exists. The mark
+    # takes the place of a letter, so "A soma dá dez." would become "A só̂m dá dez.".
+    shipped = (Path(bifonia.data.__file__).parent / "data" / "lect_overrides.csv")
+    line = len(shipped.read_text(encoding="utf-8").splitlines()) + 1
+    lect_csv = tmp_path / "data" / "lect_overrides.csv"
+    form = "s\u00f3\u0302m"
+    message = f"{lect_csv}, line {line}: the form {form!r} of 'soma' keeps a combining mark in NFC"
+    with pytest.raises(ValueError) as err:
+        _load_data_with(tmp_path, "pt-CV,soma,so\u0301\u0302m,probe,probe\n")
+    assert str(err.value) == message
+
+
+@pytest.mark.parametrize("raw", ["s\u1ed1ma", "so\u0302\u0301ma"])
+def test_an_override_form_with_a_precomposed_double_mark_loads(tmp_path, raw):
+    # U+1ED1 is "o" with circumflex and acute in one code point; the NFD spelling
+    # composes to it.
+    data, _ = _load_data_with(tmp_path, f"pt-CV,soma,{raw},probe,probe\n")
+    assert data.LECT_OVERRIDES["pt-CV"] == {"soma": "s\u1ed1ma"}
