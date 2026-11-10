@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.12a1](https://github.com/TigreGotico/bifonia/tree/0.3.12a1) (2026-11-10)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.11a1...0.3.12a1)
+
+**Merged pull requests:**
+
+- fix: stop the first-word rule at a sentence end [\#56](https://github.com/TigreGotico/bifonia/pull/56) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.11a1](https://github.com/TigreGotico/bifonia/tree/0.3.11a1) (2026-11-10)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.10a1...0.3.11a1)
@@ -171,6 +179,20 @@
 **Merged pull requests:**
 
 - feat: European-Portuguese heterophone disambiguator — 131 words, meaning-keyed + fully-verified datasets, cue-registry engine [\#7](https://github.com/TigreGotico/bifonia/pull/7) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.1.1](https://github.com/TigreGotico/bifonia/tree/0.1.1) (2026-06-12)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.1.1a1...0.1.1)
+
+## [0.1.1a1](https://github.com/TigreGotico/bifonia/tree/0.1.1a1) (2026-06-12)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/d88b868d0e8d91208c431b9c498e5d1377820ce8...0.1.1a1)
+
+**Merged pull requests:**
+
+- chore: wire gh-automations shared CI and release workflows [\#4](https://github.com/TigreGotico/bifonia/pull/4) ([JarbasAl](https://github.com/JarbasAl))
+- fix: add\_extra\_diacritics preserves case and replaces by token position [\#3](https://github.com/TigreGotico/bifonia/pull/3) ([JarbasAl](https://github.com/JarbasAl))
+- Configure Renovate [\#1](https://github.com/TigreGotico/bifonia/pull/1) ([renovate[bot]](https://github.com/apps/renovate))
 
 
 
