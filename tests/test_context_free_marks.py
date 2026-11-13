@@ -18,10 +18,11 @@ or orthography2ipa:
   and tranquilo say [ɡw] and [kw].
 - areia: Michaelis areia [aˈɾejɐ] has a closed vowel, so pt-BR keeps «areia»
   although the pt-BR norm wrote «aréia».
-- ideia, estreia: also forms of idear and estrear, and an ⟨-ear⟩ verb form says
-  [ej] (Cunha & Cintra, Nova Gramática, pp. 437-439), so pt-BR keeps them.
+- ideia, estreia: also forms of idear and estrear, a second reading
+  (EAR_VERB_RULE in scripts/build_context_free_marks.py), so pt-BR leaves them
+  unmarked.
 - ateia: pt.wiktionary gives the verb forms of atear /ɐˈtej.ɐ/ for Brazil, so
-  pt-BR keeps «ateia».
+  pt-BR leaves «ateia» unmarked.
 
 The trema is not written for the pt-BR sub-lects whose orthography2ipa spec
 reads ⟨ü⟩ as a full vowel (pt-BR-x-sp gives tranqüilo [tɾɐ̃kuˈilu]); the accent
@@ -43,7 +44,12 @@ PT_LANGS = [None, "", "pt", "PT", "pt-PT", "pt_pt", "pt-PT-x-lisbon", "pt-PT-x-u
             " pt-PT ", "pt-Latn-PT"]
 BR_LANGS = ["pt-BR", "pt_br", "pt-Latn-BR", "pt-BR-x-cuiaba", "pt-BR-x-floripa",
             "pt-BR-x-unknown"]
-BR_NO_TREMA_LANGS = ["pt-BR-x-sp", "pt-BR-x-rj", "pt-BR-x-mg", "pt-BR-x-recife", "pt-BR-x-sul"]
+# orthography2ipa reads ⟨ü⟩ as a full vowel in these 11 specs. The last three tags
+# are orthography2ipa aliases of pt-BR-x-sp, pt-BR-x-rj and pt-BR-x-fluminen.
+BR_NO_TREMA_LANGS = ["pt-BR-x-bahia", "pt-BR-x-caipira", "pt-BR-x-ce", "pt-BR-x-fluminen",
+                     "pt-BR-x-mg", "pt-BR-x-norte", "pt-BR-x-pr", "pt-BR-x-recife", "pt-BR-x-rj",
+                     "pt-BR-x-sp", "pt-BR-x-sul",
+                     "pt-BR-x-sao-paulo", "pt-BR-x-rio-janeiro", "pt-BR-x-fluminense"]
 UNCHECKED_LANGS = ["pt-AO", "pt-MZ", "pt-UY", "pt-brx", "en"]
 
 # (sentence, pt-PT output, pt-BR output, output of a pt-BR sub-lect with no trema)

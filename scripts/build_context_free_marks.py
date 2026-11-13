@@ -22,7 +22,7 @@ enters the table for a lect code only when it passes three checks:
    cited source marks archaic (ARCHAIC_COMPETITORS). The script also drops a
    word whose cited source lists a second reading (SECOND_READINGS), and a
    pt-BR ⟨-eia⟩ word that is also a form of an ⟨-ear⟩ verb of the unified
-   lexicon, because those verb forms say a closed [ej] (EAR_VERB_RULE).
+   lexicon, because the verb form is a second reading (EAR_VERB_RULE).
 3. orthography2ipa reads the mark and gets closer to the source, for every
    lect code that the lect matching of bifonia.data reaches: each pt-PT and
    pt-BR code of ``orthography2ipa.available_codes()``. The pt-PT codes read
@@ -90,8 +90,11 @@ SECOND_READINGS = {
 # forms say a closed [ej]: five ⟨-iar⟩ verbs change [i] to [ej] by analogy with
 # the ⟨-ear⟩ verbs. pt-BR ⟨-eia⟩ is [ɛj] in the noun, so a word that is also an
 # ⟨-ear⟩ verb form has two readings.
-EAR_VERB_RULE = ("Cunha & Cintra, Nova Gramática do Português Contemporâneo, pp. 437-439: "
-                 "verbs in -ear take i after e in rhizotonic forms (passeia), [ej]")
+EAR_VERB_RULE = ("an -ear verb inserts i after the stem e in its stressed present forms (Priberam "
+                 "https://dicionario.priberam.org/conjugar/passear: passeio, passeia, passeiam; "
+                 "https://dicionario.priberam.org/conjugar/atear: ateia), so an -eia word can also "
+                 "be a verb form; pt.wiktionary https://pt.wiktionary.org/wiki/ateia (Brasil) gives "
+                 "the noun and adjective /ɐˈtɛj.ɐ/ and the verb forms /ɐˈtej.ɐ/, another vowel")
 
 # Differential marks whose other readings belong to archaic homographs.
 ARCHAIC_COMPETITORS = {
@@ -233,7 +236,8 @@ def main():
     args = ap.parse_args()
 
     import o2i_lexicons
-    from orthography2ipa import G2P, Pipeline, available_codes, packaged_lexicon
+    from orthography2ipa import G2P, Pipeline, available_codes, packaged_lexicon, resolve
+    from orthography2ipa.registry import _ALIASES  # orthography2ipa has no public alias list
 
     codes = {lect: [c for c in available_codes() if c == lect or c.startswith(lect + "-")]
              for lect in LECTS}
@@ -345,6 +349,11 @@ def main():
 
     rows = []
     all_codes = [c for cs in codes.values() for c in cs]
+    # An orthography2ipa sub-lect alias (pt-BR-x-sao-paulo for pt-BR-x-sp) names
+    # the same spec, so it takes the same rows. Matched by prefix alone, it would
+    # take the rows of its parent, which its spec may misread.
+    aliases = {code: sorted(a for a in _ALIASES if a.startswith(code[:5] + "-x-") and resolve(a) == code)
+               for code in all_codes}
     for (word, form), per_code in sorted(kept.items()):
         maps = evaluated[(word, form)]
         clause = norm_clause(word, form)
@@ -359,7 +368,7 @@ def main():
         rows.append({
             "word": word,
             "form": form,
-            "lects": "|".join(c for c in all_codes if c in per_code),
+            "lects": "|".join(name for c in all_codes if c in per_code for name in [c, *aliases[c]]),
             "norm_source": norm,
             "pronunciation_source": "; ".join(f"{lect}: {' | '.join(sourced[lect][0])}" for lect in lects),
             "transcription": "; ".join(f"{lect}: {' | '.join(sourced[lect][1])}" for lect in lects),
