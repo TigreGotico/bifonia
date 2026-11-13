@@ -129,13 +129,13 @@ def test_pt_br_sub_lects_with_no_trema(sentence, _european, _brazilian, no_trema
     assert add_extra_diacritics(sentence, lang=lang) == no_trema
 
 
-def test_pt_br_x_sp_gets_no_trema():
+@pytest.mark.parametrize("lang", BR_NO_TREMA_LANGS)
+def test_no_trema_sub_lects_get_no_trema_row(lang):
     from bifonia.data import context_free_marks
 
-    marks = context_free_marks("pt-BR-x-sp")
+    marks = context_free_marks(lang)
     assert marks and not any("ü" in form for form in marks.values())
-    assert add_extra_diacritics("Tranquilo, comi linguiça.", lang="pt-BR-x-sp") == \
-        "Tranquilo, comi linguiça."
+    assert add_extra_diacritics("Tranquilo, comi linguiça.", lang=lang) == "Tranquilo, comi linguiça."
 
 
 @pytest.mark.parametrize("lang", UNCHECKED_LANGS)

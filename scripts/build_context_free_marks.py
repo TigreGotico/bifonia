@@ -86,10 +86,9 @@ SECOND_READINGS = {
                          "verb forms of atear /ɐˈtej.ɐ/"),
 }
 
-# An ⟨-ear⟩ verb takes i after e in its rhizotonic forms (passeia), and those
-# forms say a closed [ej]: five ⟨-iar⟩ verbs change [i] to [ej] by analogy with
-# the ⟨-ear⟩ verbs. pt-BR ⟨-eia⟩ is [ɛj] in the noun, so a word that is also an
-# ⟨-ear⟩ verb form has two readings.
+# A pt-BR ⟨-eia⟩ word that is also an ⟨-ear⟩ verb form has a second reading. The
+# sources show the two vowels for ateia only; ideia, estreia and traqueia stay out
+# by analogy with it, which leaves their output as it was.
 EAR_VERB_RULE = ("an -ear verb inserts i after the stem e in its stressed present forms (Priberam "
                  "https://dicionario.priberam.org/conjugar/passear: passeio, passeia, passeiam; "
                  "https://dicionario.priberam.org/conjugar/atear: ateia), so an -eia word can also "
