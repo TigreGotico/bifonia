@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0a1](https://github.com/TigreGotico/bifonia/tree/0.4.0a1) (2026-11-13)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.14a1...0.4.0a1)
+
+**Merged pull requests:**
+
+- feat: write marks that need no context in add\_extra\_diacritics [\#62](https://github.com/TigreGotico/bifonia/pull/62) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.14a1](https://github.com/TigreGotico/bifonia/tree/0.3.14a1) (2026-11-10)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.13a1...0.3.14a1)
