@@ -1,0 +1,14 @@
+# sense: line
+Gera {n} frases em Português Europeu natural onde "forro" é a 1.ª pessoa do singular do presente do indicativo de «forrar».
+
+Significado de «forrar»: revestir com tecido, papel ou outro material; enchumaçar; reforçar com entretela; servir de cobertura a; vestir-se; cobrir-se; conceder liberdade a; livrar de; libertar-se do cativeiro; livrar-se (de)
+IPA: /ˈfɔʁu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "forro" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

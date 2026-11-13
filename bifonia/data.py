@@ -1,35 +1,148 @@
 """
-IPA mappings and context wordlists for Portuguese heterophonic bifoniaaph disambiguation.
+IPA mappings and context wordlists for Portuguese heterophonic homograph disambiguation.
 
-IPA data is loaded from tugalex's heterophonic_homographs.csv (sibling package).
+IPA data is loaded from bifonia's own data/heterophonic_homographs.csv and is
+European Portuguese. Per-lect marking overrides are loaded from
+data/lect_overrides.csv, and the marks that need no context from
+data/context_free_marks.csv.
 """
 
 import csv
 import pathlib
+import unicodedata
 
 from bifonia.vocab import voc
 
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
+_LECT_CSV = pathlib.Path(__file__).parent / "data" / "lect_overrides.csv"
+_MARKS_CSV = pathlib.Path(__file__).parent / "data" / "context_free_marks.csv"
 
-# The dataset is keyed on MEANING (`sense`), not POS: a word's distinct readings
-# are identified by a meaning slug, because two senses can share a POS (e.g.
-# "sede" thirst and seat are both nouns).  `pos` is a descriptive attribute (the
-# dominant grammatical reading) used by the context scorer, and may repeat.
+# The dataset is keyed on (MEANING, POS) combos: a word's distinct readings are
+# identified by a meaning slug, and each slug carries the set of parts of speech
+# it can realise at its pronunciation.  Most readings are single-POS, but a slug
+# may carry several when a noun reading and a homographic verb share one vowel —
+# e.g. «forma» (shape) is the noun "a forma" AND the verb «formar» (3sg "forma"),
+# both open-o ˈfɔɾmɐ → pos = {NOUN, VERB}.  The CSV encodes a multi-POS slug as
+# "NOUN|VERB".  A word is POS-ambiguous (a tagger cannot pick the reading) iff
+# some POS maps to more than one sense — that is the set the hybrid ensemble
+# routes to the rules instead of to a tagger.
 #
-#   HOMOGRAPHS  : word → {sense: IPA}      e.g. {"sede": {"thirst": "ˈsedɨ", "seat": "ˈsɛdɨ"}}
-#   SENSE_POS   : word → {sense: pos}      the descriptive POS of each sense
-#   POS_SENSES  : word → {pos: [sense,…]}  senses the scorer's POS guess maps to
+#   HOMOGRAPHS   : word → {sense: IPA}       e.g. {"sede": {"thirst": "ˈsedɨ", "seat": "ˈsɛdɨ"}}
+#   SENSE_POS    : word → {sense: pos}        primary (first) POS of each sense
+#   SENSE_POSES  : word → {sense: (pos,…)}    full POS set of each (sense,POS) combo
+#   POS_SENSES   : word → {pos: [sense,…]}    senses a tagger's POS maps to
+#   POS_AMBIGUOUS: words where some POS maps to ≥2 senses (postag cannot resolve)
 HOMOGRAPHS: dict = {}
 SENSE_POS: dict = {}
+SENSE_POSES: dict = {}
 POS_SENSES: dict = {}
 with _CSV.open(encoding="utf-8") as fh:
     for row in csv.DictReader(fh):
-        w, s, p, ipa = row["word"], row["sense"], row["pos"], row["ipa"]
+        w, s, ipa = row["word"], row["sense"], row["ipa"]
+        poses = tuple(p for p in row["pos"].split("|") if p)
         HOMOGRAPHS.setdefault(w, {})[s] = ipa
-        SENSE_POS.setdefault(w, {})[s] = p
-        POS_SENSES.setdefault(w, {}).setdefault(p, []).append(s)
+        SENSE_POS.setdefault(w, {})[s] = poses[0]
+        SENSE_POSES.setdefault(w, {})[s] = poses
+        for p in poses:
+            POS_SENSES.setdefault(w, {}).setdefault(p, []).append(s)
 
 AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
+
+# Words a part-of-speech tag cannot disambiguate (some POS maps to ≥2 senses):
+# the genuine same-POS / overlapping-POS heterophones (e.g. sede, molho,
+# corte, forma, tola, bola, cor, lobo, polo).
+POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
+                      if any(len(senses) > 1 for senses in pm.values())}
+
+
+def _form(path: pathlib.Path, line: int, word: str, form: str) -> str:
+    """Return *form* in NFC, or raise if a letter of *word* has no code point."""
+    form = unicodedata.normalize("NFC", form)
+    where = f"{path}, line {line}: the form {form!r} of {word!r}"
+    if form and len(form) != len(word):
+        raise ValueError(f"{where} has {len(form)} code points in NFC, "
+                         f"but the word has {len(word)}")
+    if any(unicodedata.combining(c) for c in form):
+        raise ValueError(f"{where} keeps a combining mark in NFC")
+    return form
+
+
+# Per-lect marking overrides: lect tag → {word: form}. The form replaces the
+# diacritized form of every sense of the word; an empty form leaves the word
+# unmarked. A lect needs rows only where its stressed vowel differs from the
+# European one. Each form is read in NFC, because add_extra_diacritics copies the
+# case of each letter of the word onto the code point of the form at the same
+# position. So each code point of the form must be one letter of the word: a form
+# that is not as long as its word in NFC, or that keeps a combining mark in NFC,
+# would lose letters there, and the loader rejects it.
+LECT_OVERRIDES: dict = {}
+with _LECT_CSV.open(encoding="utf-8") as fh:
+    reader = csv.DictReader(fh)
+    for row in reader:
+        word = row["word"]
+        form = _form(_LECT_CSV, reader.line_num, word, row["form"])
+        LECT_OVERRIDES.setdefault(row["lang"], {})[word] = form
+
+# Marks that need no context: lect code → {word: form}. Each row names the
+# orthography2ipa lect codes where it passed the checks of
+# scripts/build_context_free_marks.py ("pt-BR|pt-BR-x-cuiaba|..."), which builds
+# the file and records the evidence. The context table owns its words, so a row
+# for one of them is rejected.
+CONTEXT_FREE_MARKS: dict = {}
+with _MARKS_CSV.open(encoding="utf-8") as fh:
+    reader = csv.DictReader(fh)
+    for row in reader:
+        word = row["word"]
+        if word in AMBIGUOUS_WORDS:
+            raise ValueError(f"{_MARKS_CSV}, line {reader.line_num}: {word!r} "
+                             "belongs to the context table")
+        form = _form(_MARKS_CSV, reader.line_num, word, row["form"])
+        for lect in row["lects"].split("|"):
+            CONTEXT_FREE_MARKS.setdefault(lect, {})[word] = form
+
+
+def _tag(lang: str) -> str:
+    """Return *lang* lowercased, with ``-`` for ``_`` and no script subtag."""
+    subtags = lang.strip().replace("_", "-").lower().split("-")
+    if len(subtags) > 1 and len(subtags[1]) == 4 and subtags[1].isalpha():
+        del subtags[1]  # BCP 47 script subtag, e.g. "latn"
+    return "-".join(subtags)
+
+
+def _for_lect(table: dict, tag: str) -> dict:
+    """Return the entry of *table* for the longest lect that is *tag* or a parent
+    of it."""
+    matches = [lect for lect in table
+               if tag == lect.lower() or tag.startswith(lect.lower() + "-")]
+    return table[max(matches, key=len)] if matches else {}
+
+
+def lect_overrides(lang: str) -> dict:
+    """Return the {word: form} overrides for the lect tag *lang*.
+
+    A tag matches an override lect when it is that lect or one of its sub-lects,
+    case-insensitively and with ``_`` read as ``-``: ``pt-BR``, ``pt_br`` and
+    ``pt-BR-x-rj`` all match ``pt-BR``. Surrounding whitespace is ignored, and a
+    script subtag is dropped, so ``pt-Latn-BR`` also matches ``pt-BR``. ``None``,
+    an empty tag and a tag that matches no lect return an empty dict, so they keep
+    the default European Portuguese marking.
+    """
+    return _for_lect(LECT_OVERRIDES, _tag(lang)) if lang else {}
+
+
+def context_free_marks(lang: str) -> dict:
+    """Return the {word: form} marks that need no context for the lect tag *lang*.
+
+    A tag is read as in :func:`lect_overrides` and takes the rows of the longest
+    lect code of the table that is the tag or its parent: ``pt-BR-x-sp`` takes
+    the rows that passed for ``pt-BR-x-sp``, and ``pt-BR-x-foo`` the rows of
+    ``pt-BR``. ``None``, an empty tag and a bare ``pt`` mean ``pt-PT``, the
+    default lect. The table has codes of pt-PT and pt-BR only, so every other
+    tag, ``pt-AO`` and ``pt-UY`` included, returns an empty dict: no
+    transcription of those lects was checked.
+    """
+    tag = _tag(lang) if lang else "pt-pt"
+    return _for_lect(CONTEXT_FREE_MARKS, "pt-pt" if tag == "pt" else tag)
 
 
 # Membership helpers for the POS scorer (word → representative IPA for that POS).
@@ -51,6 +164,8 @@ ADJ_IPA: dict = _ipa_by_pos("ADJ")
 # scoring.resolve_sense.
 DEFAULT_SENSE: dict = {
     "sede": "thirst",
+    "bola": "ball", "cor": "colour", "lobo": "wolf", "polo": "pole",
+    "corte": "cut", "forma": "shape", "molho": "sauce", "tola": "foolish",
 }
 
 # sensible linguistic defaults when context scoring yields no winner
@@ -85,6 +200,99 @@ DEFAULT_POS: dict = {
     "transtorno": "NOUN",
     "peso": "NOUN",
     "posto": "NOUN",
+    # noun/verb -o alternation words (closed-o noun citation form is the default;
+    # explicit context cues flip to the open-ɔ verb reading).
+    "torno": "NOUN",      # «o torno» / «em torno de» (closed) vs «eu torno» (open)
+    "troco": "NOUN",      # «o troco» (closed) vs «eu troco» (open)
+    "toco": "NOUN",       # «o toco» (closed) vs «eu toco» (open)
+    "rogo": "NOUN",       # «o rogo» / «a rogo de» (closed) vs «eu rogo» (open)
+    "contorno": "NOUN",   # «o contorno» (closed) vs «eu contorno» (open)
+    "entorno": "NOUN",    # «o entorno» (closed) vs «eu entorno» (open)
+    # choco: adjective (ovo choco) and noun (cuttlefish) share closed-o; the
+    # verb «eu choco» is the only open-ɔ reading. Default to the adjective.
+    "choco": "ADJ",
+    # deverbal noun (closed) vs 1sg -ar/-er verb (open) — IPA from infopedia.
+    "almoço": "NOUN", "rolo": "NOUN", "soco": "NOUN",
+    "esforço": "NOUN", "conforto": "NOUN", "aborto": "NOUN", "adorno": "NOUN",
+    "reforço": "NOUN", "soldo": "NOUN", "esboço": "NOUN",
+    "governo": "NOUN", "emprego": "NOUN", "selo": "NOUN", "gelo": "NOUN",
+    # wave 3 (agent-discovered, infopedia-validated; n/v slugs)
+    "sopro": "NOUN",
+    "forro": "NOUN",
+    "dobro": "NOUN",
+    "abono": "NOUN",
+    "logro": "NOUN",
+    "topo": "NOUN",
+    "jorro": "NOUN",
+    "golfo": "NOUN",
+    "colmo": "NOUN",
+    "fosso": "NOUN",
+    "toldo": "NOUN",
+    "arrojo": "NOUN",
+    "despojo": "NOUN",
+    "cobro": "NOUN",
+    "domo": "NOUN",
+    "sobro": "NOUN",
+    "retorno": "NOUN",
+    "desgosto": "NOUN",
+    "desconforto": "NOUN",
+    "desdobro": "NOUN",
+    "redobro": "NOUN",
+    "reboco": "NOUN",
+    "decoro": "NOUN",
+    "estofo": "NOUN",
+    "destroço": "NOUN",
+    "desafogo": "NOUN",
+    "arroto": "NOUN",
+    "consolo": "NOUN",
+    "desconsolo": "NOUN",
+    "desacordo": "NOUN",
+    "engodo": "NOUN",
+    "escorço": "NOUN",
+    "desaforo": "NOUN",
+    "abrolho": "NOUN",
+    "rola": "NOUN",
+    "solto": "ADJ",
+    "encosto": "NOUN",
+    "apelo": "NOUN",
+    "desprezo": "NOUN",
+    "enredo": "NOUN",
+    "desenredo": "NOUN",
+    "espeto": "NOUN",
+    "aperto": "NOUN",
+    "desvelo": "NOUN",
+    "repelo": "NOUN",
+    "arrepelo": "NOUN",
+    "congelo": "NOUN",
+    "arremesso": "NOUN",
+    "arremedo": "NOUN",
+    "despego": "NOUN",
+    "desapego": "NOUN",
+    "apego": "NOUN",
+    "desemprego": "NOUN",
+    "desmantelo": "NOUN",
+    "atropelo": "NOUN",
+    "degelo": "NOUN",
+    "desgelo": "NOUN",
+    "desespero": "NOUN",
+    "escabelo": "NOUN",
+    "novelo": "NOUN",
+    "relevo": "NOUN",
+    "aceno": "NOUN",
+    "sopeso": "NOUN",
+    "empeno": "NOUN",
+    "desempeno": "NOUN",
+    "sossego": "NOUN",
+    "desassossego": "NOUN",
+    "esmero": "NOUN",
+    "azedo": "ADJ",
+    "desempeço": "NOUN",
+    "desemperro": "NOUN",
+    "emperro": "NOUN",
+    "zelo": "NOUN", "cerco": "NOUN", "erro": "NOUN", "tempero": "NOUN",
+    # diacritic-collapse + deverbal additions
+    "bola": "NOUN", "cor": "NOUN", "lobo": "NOUN", "polo": "NOUN",
+    "renovo": "NOUN", "soma": "NOUN", "força": "NOUN",
 }
 assert set(DEFAULT_POS) == AMBIGUOUS_WORDS, (
     f"DEFAULT_POS missing: {AMBIGUOUS_WORDS - set(DEFAULT_POS)}"

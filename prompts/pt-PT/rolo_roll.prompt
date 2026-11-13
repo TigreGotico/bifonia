@@ -1,0 +1,15 @@
+# sense: roll
+Gera {n} frases em Português Europeu natural onde "rolo" é SUBSTANTIVO.
+
+Significado: peca cilindrica e comprida, ou aquilo que se enrola formando um cilindro (papel, tecido, pelicula)
+IPA: /ˈʁolu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "rolo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «passei o rolo de tinta pela parede»; «comprei um rolo de papel de cozinha»; «o tecido estava guardado num grande rolo»; «ela usou o rolo de massa para esticar a tarte»; «sobrou meio rolo de fita-cola»; «enrolou o cartaz e prendeu-o com um elastico»
+Responde APENAS com as frases, uma por linha:

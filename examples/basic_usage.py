@@ -19,6 +19,15 @@ sentences = [
     "A corte do rei reunia-se no salão.",           # corte → court   (ˈkoɾtɨ)
     "Untou a forma antes de deitar a massa.",       # forma → mould   (ˈfoɾmɐ)
     "Resolveu o problema desta forma simples.",     # forma → shape   (ˈfɔɾmɐ)
+    # ── expanded roster (noun closed-vowel vs verb open-vowel) ──────────────
+    "O governo aprovou o orçamento de Estado.",     # governo → noun  (ɡuˈveɾnu)
+    "Eu governo a casa sozinho há anos.",           # governo → verb  (ɡuˈvɛɾnu)
+    "Pagámos o dobro do preço previsto.",           # dobro   → noun  (ˈdobɾu)
+    "Eu dobro a roupa e arrumo-a no armário.",      # dobro   → verb  (ˈdɔbɾu)
+    "Foi um erro grave de cálculo.",                # erro    → noun  (ˈeʁu)
+    "Eu erro o caminho sempre que aqui conduzo.",   # erro    → verb  (ˈɛʁu)
+    "O torno do carpinteiro girava devagar.",       # torno   → noun  (ˈtoɾnu)
+    "Torno-me mais paciente com o tempo.",          # torno   → verb (enclitic!) (ˈtɔɾnu)
 ]
 
 for sentence in sentences:

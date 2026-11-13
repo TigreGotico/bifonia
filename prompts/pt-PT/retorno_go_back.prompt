@@ -1,0 +1,14 @@
+# sense: go_back
+Gera {n} frases em Português Europeu natural onde "retorno" é a 1.ª pessoa do singular do presente do indicativo de «retornar».
+
+Significado de «retornar»: voltar (ao ponto de partida); ir novamente (a); voltar a aparecer ou a manifestar-se; reatar; restituir; dar resposta a apelo ou tentativa de contacto
+IPA: /ʁɨˈtɔɾnu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "retorno" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

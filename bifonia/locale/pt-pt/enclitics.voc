@@ -1,0 +1,38 @@
+# enclitics.voc — Clitic pronouns that attach AFTER the verb with a hyphen
+# ("torno-me", "vejo-o", "fá-lo", "deu-lhe", "tem-nos"). The tokenizer keeps the
+# hyphen as a leading marker on the clitic token, so matching here (after
+# stripping the "-") is an unambiguous finite-VERB host signal — the hyphen
+# rules out the homographic article/preposition readings of o/a/nos/vos, so the
+# FULL inventory (incl. allomorphs -lo/-la/-no/-na and combined forms) is safe.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+me
+te
+se
+lhe
+lhes
+nos
+vos
+o
+a
+os
+as
+lo
+la
+los
+las
+no
+na
+nas
+mo
+ma
+mos
+mas
+to
+ta
+tos
+tas
+lho
+lha
+lhos
+lhas

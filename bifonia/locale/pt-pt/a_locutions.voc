@@ -1,0 +1,27 @@
+# a_locutions.voc — Words after 'a' that make it a preposition in a fixed locution
+# ('a mais', 'a gosto', 'a vapor'), not the article that opens a direct object.
+# Cooking infinitives are listed one by one ('molho a ferver'): a general 'a' +
+# infinitive test would misread objects ending in -er ('molho a colher', 'a mulher').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+apurar
+aquecer
+arrefecer
+borbulhar
+cozinhar
+engrossar
+ferver
+frio
+fundo
+gosto
+granel
+mais
+menos
+olho
+pressa
+quente
+reduzir
+rigor
+seguir
+vapor

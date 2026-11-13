@@ -1,0 +1,14 @@
+# sense: strip
+Gera {n} frases em Português Europeu natural onde "despojo" é a 1.ª pessoa do singular do presente do indicativo de «despojar».
+
+Significado de «despojar»: privar da posse de; tirar; roubar; deixar | largar; despir-se
+IPA: /dɨsˈpɔʒu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "despojo" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

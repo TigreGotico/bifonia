@@ -63,7 +63,7 @@ class SenseModel:
 
     def route(self, word: str) -> str:
         entry = self.words.get(word)
-        return entry["route"] if entry else "rules"
+        return entry.get("route", "rules") if entry else "rules"
 
     def margin_tau(self, word: str) -> float:
         entry = self.words.get(word)

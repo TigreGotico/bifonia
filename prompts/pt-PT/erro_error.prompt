@@ -1,0 +1,15 @@
+# sense: error
+Gera {n} frases em Português Europeu natural onde "erro" é SUBSTANTIVO.
+
+Significado: decisao, ato ou resposta incorreta; aquilo que esta em desacordo com a verdade ou com o correto
+IPA: /ˈeʁu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "erro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «cometeu um erro grave no relatorio»; «ha um erro de calculo nas contas»; «pedi desculpa pelo erro que fiz»; «o sistema acusou um erro de ligacao»; «foi um erro ter confiado nele»; «corrigi todos os erros do texto»
+Responde APENAS com as frases, uma por linha:

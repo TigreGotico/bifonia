@@ -1,0 +1,9 @@
+# por_contractions.voc — por + definite article (pelo, pela, pelos, pelas). With the
+# determiners they mark a relative 'qual' ('a razão pela qual molho as plantas').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+pela
+pelas
+pelo
+pelos

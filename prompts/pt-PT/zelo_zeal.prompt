@@ -1,0 +1,14 @@
+# sense: zeal
+Gera {n} frases em Português Europeu natural onde "zelo" é SUBSTANTIVO.
+
+Significado: afeição viva e ardente por alguém ou algo; cuidado; diligência e pontualidade em qualquer serviço; ciúme
+IPA: /ˈzelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "zelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

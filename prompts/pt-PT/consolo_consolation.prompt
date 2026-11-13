@@ -1,0 +1,15 @@
+# sense: consolation
+Gera {n} frases em Português Europeu natural onde "consolo" é SUBSTANTIVO.
+
+Significado: aquilo que alivia ou conforta uma pessoa na sua dor ou tristeza; alivio
+IPA: /kõˈsolu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "consolo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «a visita dos amigos foi um grande consolo»; «as palavras dela trouxeram-lhe algum consolo»; «encontrou consolo na companhia dos netos»; «a musica era o seu unico consolo»; «nem o tempo lhe deu consolo da perda»
+Responde APENAS com as frases, uma por linha:

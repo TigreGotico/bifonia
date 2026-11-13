@@ -1,0 +1,15 @@
+# sense: sum
+Gera {n} frases em Português Europeu natural onde a palavra "soma" é usada como SUBSTANTIVO (adição/total).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "soma" (em minúsculas, sem acento diacrítico)
+- A palavra "soma" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: a soma — resultado de uma adição, o total.
+Exemplos de uso: «a soma das parcelas», «a soma final da conta», «a soma dos pontos».
+Pronúncia: /ˈsomɐ/ — vogal O FECHADA (circunflexo em "sôma").
+NÃO uses como verbo «ele soma» (O aberto).
+Responde APENAS com as frases, uma por linha:

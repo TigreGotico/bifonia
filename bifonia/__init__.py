@@ -2,7 +2,8 @@
 bifonia — Portuguese heterophonic homograph disambiguation.
 
 Identifies the correct IPA pronunciation of words whose spelling is identical
-but whose phonology depends on their part of speech (e.g. NOUN vs VERB).
+but whose pronunciation depends on their meaning (e.g. *sede* thirst vs seat),
+which part of speech alone does not always settle.
 
 Quick start::
 
@@ -20,7 +21,8 @@ import re
 from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
-    AMBIGUOUS_WORDS, HOMOGRAPHS, DEFAULT_POS, POS_SENSES, SENSE_POS,
+    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS, context_free_marks,
+    lect_overrides,
 )
 from bifonia.scoring import (
     guess_pos as _scoring_guess_pos,
@@ -41,17 +43,66 @@ __all__ = [
 ]
 
 
+# A word and the punctuation after it. That punctuation can follow the closing
+# quotes » ” ’ › " ' or the closing brackets ) ] ("Jogo»." or "(Jogo)."); the
+# closer itself is not kept.
+_TOKEN = re.compile(r"(-?\w+)(?:[»”’›\"')\]]*([.,;:!?…]+))?")
+
+
+def _tokens(text: str) -> list:
+    """Split *text* into the tokens of :func:`tokenize`, in their original case.
+
+    The ellipsis character is written as three full stops, so every rule reads
+    ``…`` as it reads ``...``."""
+    return [(word + punct).replace("…", "...") for word, punct in _TOKEN.findall(text)]
+
+
 def tokenize(text: str) -> list:
-    """Lowercase and split *text* into word tokens (strips punctuation)."""
-    return re.findall(r"\w+", text.lower(), re.UNICODE)
+    """Lowercase and split *text* into word tokens.
+
+    Two pieces of orthography are kept so the context scorer can use them, both
+    chosen so the token count and order are identical to a bare ``\\w+`` split
+    (keeping the position-indexed replacement walk in
+    :func:`add_extra_diacritics` aligned):
+
+    - Trailing sentence punctuation (``. , ; : ! ? …``) stays attached to the
+      token it follows (``"querer,"``) → clause-boundary guards
+      (``_prev_raw[-1] in punct``). It stays attached after the closing quotes
+      ``» ” ’ › " '`` and the closing brackets ``) ]`` too (``"jogo»."`` →
+      ``"jogo."``), and ``…`` is written ``...``.
+    - A hyphen that attaches an *enclitic* clitic is kept as a leading marker on
+      the clitic token (``"torno-me"`` → ``["torno", "-me"]``). The marker
+      distinguishes an enclitic from a homographic article/preposition
+      (``"torno-o"`` clitic vs ``"torno o carro"``), an unambiguous finite-verb
+      signal — see the enclitic rule in :mod:`bifonia.scoring`.
+
+    Lookup sites strip both with :func:`_strip_edge`, and the target slot is
+    normalised before scoring.
+
+    Each token is lowercased after the split, not before. Lowercasing can split
+    a word (``"İ".lower()`` is ``"i"`` plus a combining dot, which is not a word
+    character), and then the tokens no longer align with :func:`proper_flags`.
+    """
+    return [t.lower() for t in _tokens(text)]
+
+
+_EDGE_PUNCT = ".,;:!?"
+# A colon does not end a Portuguese sentence.
+_SENTENCE_END = ".!?"
+
+
+def _strip_edge(token: str) -> str:
+    """Strip trailing punctuation / a leading clitic-hyphen a token may carry."""
+    return token.strip(_EDGE_PUNCT + "-")
 
 
 def is_ambiguous(word: str) -> bool:
     """Return True if *word* is a known heterophonic homograph."""
-    return word.lower() in AMBIGUOUS_WORDS
+    return _strip_edge(word).lower() in AMBIGUOUS_WORDS
 
 
-def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> str:
+def disambiguate(words: list, idx: int, pos: str = None, sense: str = None,
+                 postag: str = None) -> str:
     """Return the IPA transcription for the ambiguous word at position *idx*.
 
     The reading is selected by MEANING (`sense`), not POS: most words have one
@@ -61,7 +112,8 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> s
     Parameters
     ----------
     words:
-        Tokenized (lowercased) sentence as returned by :func:`tokenize`.
+        Tokenized (lowercased) sentence as returned by :func:`tokenize`. The
+        target token may carry trailing punctuation or a diacritic (*pára*).
     idx:
         Index of the ambiguous word within *words*.
     pos:
@@ -69,6 +121,9 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> s
         ``"VERB"``, ``"ADJ"``); the sense is then resolved within that POS.
     sense:
         Override entirely with an explicit meaning slug (see the CSV / HOMOGRAPHS).
+    postag:
+        External POS tag passed through to :func:`guess_sense` as the
+        hybrid-ensemble hint. Ignored when *sense* is given.
 
     Raises
     ------
@@ -77,14 +132,16 @@ def disambiguate(words: list, idx: int, pos: str = None, sense: str = None) -> s
     KeyError
         If *sense* is given but has no IPA entry for this word.
     """
-    token = words[idx]
-    # Accept pre-AO1990 / diacritized tokens by normalising to base form first.
+    raw = words[idx]
+    # Drop any trailing sentence punctuation, then accept pre-AO1990 /
+    # diacritized tokens by normalising to the base form.
+    token = _strip_edge(raw)
     word = _DIACRITIZED_TO_BASE.get(token, token)
     if word not in AMBIGUOUS_WORDS:
-        raise ValueError(f"{token!r} is not a known heterophonic homograph")
+        raise ValueError(f"{raw!r} is not a known heterophonic homograph")
 
     if sense is None:
-        sense = guess_sense(words, idx, pos=pos)
+        sense = guess_sense(words, idx, pos=pos, postag=postag)
     return HOMOGRAPHS[word][sense]
 
 
@@ -147,14 +204,228 @@ _DIACRITIZED: dict = {
     ("torre",      "roast"):      "tórre",
     ("transtorno", "disorder"):   "transtôrno",
     ("transtorno", "upset"):      "transtórno",
+    ("torno",      "lathe"):      "tôrno",
+    ("torno",      "turn"):       "tórno",
+    ("troco",      "change"):     "trôco",
+    ("troco",      "exchange"):   "tróco",
+    ("toco",       "stump"):      "tôco",
+    ("toco",       "play"):       "tóco",
+    ("rogo",       "plea"):       "rôgo",
+    ("rogo",       "beg"):        "rógo",
+    ("choco",      "addled"):     "chôco",    # adj/noun = closed o
+    ("choco",      "cuttlefish"): "chôco",
+    ("choco",      "hatch"):      "chóco",    # verb     = open ɔ
+    ("contorno",   "contour"):    "contôrno",
+    ("contorno",   "circumvent"): "contórno",
+    ("entorno",    "surroundings"): "entôrno",
+    ("entorno",    "spill"):      "entórno",
+    ("almoço",     "lunch"):      "almôço",
+    ("almoço",     "dine"):       "almóço",
+    ("rolo",       "roll"):       "rôlo",
+    ("rolo",       "tumble"):     "rólo",
+    ("soco",       "punch"):      "sôco",
+    ("soco",       "strike"):     "sóco",
+    ("esforço",    "effort"):     "esfôrço",
+    ("esforço",    "strive"):     "esfórço",
+    ("conforto",   "comfort"):    "confôrto",
+    ("conforto",   "soothe"):     "confórto",
+    ("aborto",     "abortion"):   "abôrto",
+    ("aborto",     "abort"):      "abórto",
+    ("adorno",     "adornment"):  "adôrno",
+    ("adorno",     "adorn"):      "adórno",
+    ("reforço",    "reinforcement"): "refôrço",
+    ("reforço",    "reinforce"):  "refórço",
+    ("soldo",      "pay"):        "sôldo",
+    ("soldo",      "weld"):       "sóldo",
+    ("esboço",     "sketch"):     "esbôço",
+    ("esboço",     "outline"):    "esbóço",
+    ("governo",    "government"): "govêrno",
+    ("governo",    "govern"):     "govérno",
+    ("emprego",    "job"):        "emprêgo",
+    ("emprego",    "employ"):     "emprégo",
+    ("selo",       "stamp"):      "sêlo",
+    ("selo",       "seal"):       "sélo",
+    ("gelo",       "ice"):        "gêlo",
+    ("gelo",       "freeze"):     "gélo",
+    ("zelo",       "zeal"):       "zêlo",
+    ("zelo",       "tend"):       "zélo",
+    ("cerco",      "siege"):      "cêrco",
+    ("cerco",      "surround"):   "cérco",
+    ("erro",       "error"):      "êrro",
+    ("erro",       "err"):        "érro",
+    ("sopro", "breath"): "sôpro",
+    ("sopro", "blow"): "sópro",
+    ("forro", "lining"): "fôrro",
+    ("forro", "line"): "fórro",
+    ("dobro", "double"): "dôbro",
+    ("dobro", "fold"): "dóbro",
+    ("abono", "allowance"): "abôno",
+    ("abono", "vouch"): "abóno",
+    ("logro", "deceit"): "lôgro",
+    ("logro", "deceive"): "lógro",
+    ("topo", "summit"): "tôpo",
+    ("topo", "bump_into"): "tópo",
+    ("jorro", "jet"): "jôrro",
+    ("jorro", "gush"): "jórro",
+    ("golfo", "gulf"): "gôlfo",
+    ("golfo", "spew"): "gólfo",
+    ("colmo", "culm"): "côlmo",
+    ("colmo", "thatch"): "cólmo",
+    ("fosso", "ditch"): "fôsso",
+    ("fosso", "root_up"): "fósso",
+    ("toldo", "awning"): "tôldo",
+    ("toldo", "cloud_over"): "tóldo",
+    ("arrojo", "boldness"): "arrôjo",
+    ("arrojo", "hurl"): "arrójo",
+    ("despojo", "spoils"): "despôjo",
+    ("despojo", "strip"): "despójo",
+    ("cobro", "cessation"): "côbro",
+    ("cobro", "collect"): "cóbro",
+    ("domo", "dome"): "dômo",
+    ("domo", "tame"): "dómo",
+    ("sobro", "cork_oak"): "sôbro",
+    ("sobro", "be_left_over"): "sóbro",
+    ("retorno", "return"): "retôrno",
+    ("retorno", "go_back"): "retórno",
+    ("desgosto", "sorrow"): "desgôsto",
+    ("desgosto", "dislike"): "desgósto",
+    ("desconforto", "discomfort"): "desconfôrto",
+    ("desconforto", "discomfit"): "desconfórto",
+    ("desdobro", "unfolding"): "desdôbro",
+    ("desdobro", "unfold"): "desdóbro",
+    ("redobro", "redoubling"): "redôbro",
+    ("redobro", "redouble"): "redóbro",
+    ("reboco", "plaster"): "rebôco",
+    ("reboco", "tow"): "rebóco",
+    ("decoro", "decorum"): "decôro",
+    ("decoro", "memorize"): "decóro",
+    ("estofo", "stuffing"): "estôfo",
+    ("estofo", "upholster"): "estófo",
+    ("destroço", "wreckage"): "destrôço",
+    ("destroço", "wreck"): "destróço",
+    ("desafogo", "relief"): "desafôgo",
+    ("desafogo", "relieve"): "desafógo",
+    ("arroto", "belch"): "arrôto",
+    ("arroto", "burp"): "arróto",
+    ("consolo", "consolation"): "consôlo",
+    ("consolo", "console"): "consólo",
+    ("desconsolo", "disconsolation"): "desconsôlo",
+    ("desconsolo", "dishearten"): "desconsólo",
+    ("desacordo", "disagreement"): "desacôrdo",
+    ("desacordo", "disagree"): "desacórdo",
+    ("engodo", "bait"): "engôdo",
+    ("engodo", "lure"): "engódo",
+    ("escorço", "foreshortening"): "escôrço",
+    ("escorço", "foreshorten"): "escórço",
+    ("desaforo", "insolence"): "desafôro",
+    ("desaforo", "affront"): "desafóro",
+    ("abrolho", "caltrop"): "abrôlho",
+    ("abrolho", "sprout"): "abrólho",
+    ("rola", "turtledove"): "rôla",
+    ("rola", "rolls"): "róla",
+    ("solto", "loose"): "sôlto",
+    ("solto", "release"): "sólto",
+    ("encosto", "backrest"): "encôsto",
+    ("encosto", "lean"): "encósto",
+    ("apelo", "appeal"): "apêlo",
+    ("apelo", "call_out"): "apélo",
+    ("desprezo", "contempt"): "desprêzo",
+    ("desprezo", "despise"): "desprézo",
+    ("enredo", "plot"): "enrêdo",
+    ("enredo", "entangle"): "enrédo",
+    ("desenredo", "denouement"): "desenrêdo",
+    ("desenredo", "disentangle"): "desenrédo",
+    ("espeto", "skewer"): "espêto",
+    ("espeto", "stab"): "espéto",
+    ("aperto", "squeeze"): "apêrto",
+    ("aperto", "tighten"): "apérto",
+    ("desvelo", "devotion"): "desvêlo",
+    ("desvelo", "unveil"): "desvélo",
+    ("repelo", "hair_pull"): "repêlo",
+    ("repelo", "pluck"): "repélo",
+    ("arrepelo", "hair_pulling"): "arrepêlo",
+    ("arrepelo", "snatch"): "arrepélo",
+    ("congelo", "freezing"): "congêlo",
+    ("congelo", "freeze"): "congélo",
+    ("arremesso", "throw"): "arremêsso",
+    ("arremesso", "fling"): "arremésso",
+    ("arremedo", "imitation"): "arremêdo",
+    ("arremedo", "mimic"): "arremédo",
+    ("despego", "detachment"): "despêgo",
+    ("despego", "detach"): "despégo",
+    ("desapego", "indifference"): "desapêgo",
+    ("desapego", "let_go"): "desapégo",
+    ("apego", "attachment"): "apêgo",
+    ("apego", "cling"): "apégo",
+    ("desemprego", "noun"): "desemprêgo",
+    ("desemprego", "verb"): "desemprégo",
+    ("desmantelo", "dismantling"): "desmantêlo",
+    ("desmantelo", "dismantle"): "desmantélo",
+    ("atropelo", "trampling"): "atropêlo",
+    ("atropelo", "run_over"): "atropélo",
+    ("degelo", "thaw"): "degêlo",
+    ("degelo", "thaw_out"): "degélo",
+    ("desgelo", "defrosting"): "desgêlo",
+    ("desgelo", "defrost"): "desgélo",
+    ("desespero", "despair"): "desespêro",
+    ("desespero", "despair_at"): "desespéro",
+    ("escabelo", "stool"): "escabêlo",
+    ("escabelo", "dishevel"): "escabélo",
+    ("novelo", "yarn_ball"): "novêlo",
+    ("novelo", "narrate"): "novélo",
+    ("relevo", "relief_terrain"): "relêvo",
+    ("relevo", "emphasize"): "relévo",
+    ("aceno", "nod"): "acêno",
+    ("aceno", "beckon"): "acéno",
+    ("sopeso", "heft"): "sopêso",
+    ("sopeso", "weigh_up"): "sopéso",
+    ("empeno", "warping"): "empêno",
+    ("empeno", "warp"): "empéno",
+    ("desempeno", "straightening"): "desempêno",
+    ("desempeno", "straighten"): "desempéno",
+    ("sossego", "calm"): "sossêgo",
+    ("sossego", "soothe"): "sosségo",
+    ("desassossego", "disquiet"): "desassossêgo",
+    ("desassossego", "disturb"): "desassosségo",
+    ("esmero", "meticulousness"): "esmêro",
+    ("esmero", "perfect"): "esméro",
+    ("azedo", "sour"): "azêdo",
+    ("azedo", "turn_sour"): "azédo",
+    ("desempeço", "riddance"): "desempêço",
+    ("desempeço", "free_up"): "desempéço",
+    ("desemperro", "unjamming"): "desempêrro",
+    ("desemperro", "unjam"): "desempérro",
+    ("emperro", "jam"): "empêrro",
+    ("emperro", "stick"): "empérro",
+    ("tempero",    "seasoning"):  "tempêro",
+    ("tempero",    "season"):     "tempéro",
+    # diacritic-collapse + deverbal additions (acute = open ɔ/ɛ, circumflex = closed o/e)
+    ("bola",       "ball"):       "bóla",     # ball       = open ɔ
+    ("bola",       "loaf"):       "bôla",     # bôla bread = closed o
+    ("cor",        "by_heart"):   "cór",      # "de cor"   = open ɔ
+    ("cor",        "colour"):     "côr",      # colour     = closed o
+    ("lobo",       "lobe"):       "lóbo",     # lobe       = open ɔ
+    ("lobo",       "wolf"):       "lôbo",     # wolf       = closed o
+    ("polo",       "pole"):       "pólo",     # pole/sport = open ɔ
+    ("polo",       "fledgling"):  "pôlo",     # young bird = closed o
+    ("renovo",     "renew"):      "renóvo",   # I renew    = open ɔ
+    ("renovo",     "shoot"):      "renôvo",   # shoot/noun = closed o
+    ("soma",       "add"):        "sóma",     # sums/verb  = open ɔ
+    ("soma",       "sum"):        "sôma",     # sum/noun   = closed o
+    ("força",      "force"):      "fórça",    # force/verb = open ɔ
+    ("força",      "strength"):   "fôrça",    # strength   = closed o
 }
 
 
 # Reverse maps from diacritized form:
-#   → base word   (for test normalisation and pre-AO1990 input stripping)
-#   → sense slug  (for unambiguous pre-AO1990 / already-diacritized input)
-_DIACRITIZED_TO_BASE:  dict = {v: k[0] for k, v in _DIACRITIZED.items()}
-_DIACRITIZED_TO_SENSE: dict = {v: k[1] for k, v in _DIACRITIZED.items()}
+#   → base word    (for test normalisation and pre-AO1990 input stripping)
+#   → sense slugs  (for pre-AO1990 / already-diacritized input; one form can
+#                   serve several senses, e.g. "chôco" = addled or cuttlefish)
+_DIACRITIZED_TO_BASE:   dict = {v: k[0] for k, v in _DIACRITIZED.items()}
+_DIACRITIZED_TO_SENSES: dict = {
+    form: [s for (_, s), f in _DIACRITIZED.items() if f == form]
+    for form in _DIACRITIZED.values()
+}
 
 
 @_lru_cache(maxsize=1)
@@ -167,33 +438,62 @@ def _sense_model():
         return None
 
 
-def _rule_sense(base: str, words: list, idx: int, pos: str = None) -> str:
-    resolved_pos = pos or _scoring_guess_pos(words, idx)
+def _rule_sense(base: str, words: list, idx: int, pos: str = None,
+                proper: bool = False) -> str:
+    resolved_pos = pos or _scoring_guess_pos(words, idx, proper=proper)
     return _resolve_sense(base, words, idx, resolved_pos)
 
 
-def guess_sense(words: list, idx: int, pos: str = None) -> str:
+_UPOS_NORM = {"PROPN": "NOUN", "AUX": "VERB"}
+
+
+def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
+                postag: str = None) -> str:
     """Return the most likely MEANING slug for the ambiguous word at *idx*.
 
     If the token is already a diacritized form (pre-AO1990 orthography or output
     of :func:`add_extra_diacritics`), the sense is read straight off the diacritic
-    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop).
+    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop). When one form serves
+    several senses (*chôco* → addled or cuttlefish), the diacritic only narrows
+    the choice and the context picks among those senses.
 
     Otherwise, where a trained statistical model covers the word and is flagged to
     win over the rules (``route == "model"`` with sufficient margin), the model
     predicts the sense; every other case falls back to the corpus-free rule engine.
-    An explicit *pos* override always uses the rule resolver.
+    An explicit *pos* override always uses the rule resolver. *proper* marks a
+    mid-sentence capitalised token (see :func:`proper_flags`): it biases the
+    NOUN reading and skips the statistical model.
+
+    *postag* is the hybrid-ensemble hint: an external POS tag (e.g. from spaCy).
+    It resolves the reading only when that POS maps to exactly ONE sense
+    (a POS-separable word); for same-POS readings (sede/molho/corte/forma — where
+    a tagger misses by construction) it is ignored and the rules decide. This lets
+    a caller fuse a neural tagger with the rules without adding a dependency.
     """
-    token = words[idx]
-    if token in _DIACRITIZED_TO_SENSE:
-        return _DIACRITIZED_TO_SENSE[token]
+    raw = words[idx]
+    token = _strip_edge(raw)
+    senses = _DIACRITIZED_TO_SENSES.get(token)
+    if senses and len(senses) == 1:
+        return senses[0]
     base = _DIACRITIZED_TO_BASE.get(token, token)
     normalised = words
-    if base != token:                       # normalise a diacritized base form
+    if base != raw:                         # normalise a punctuated/diacritized slot
         normalised = list(words)
         normalised[idx] = base
+    if senses:                              # a form shared by several senses
+        sense = guess_sense(normalised, idx, pos=pos, proper=proper, postag=postag)
+        return sense if sense in senses else senses[0]
+    if postag is not None:                  # hybrid-ensemble hint (see docstring)
+        cands = POS_SENSES.get(base, {}).get(_UPOS_NORM.get(postag, postag))
+        if cands and len(cands) == 1:
+            return cands[0]
+        # ambiguous / unmapped tag → fall through to model + rules below
     if pos is not None:
         return _rule_sense(base, normalised, idx, pos)
+    # A mid-sentence proper noun is a name, not a finite verb — resolve by rules
+    # (with the proper-noun bias) and skip the statistical model.
+    if proper:
+        return _rule_sense(base, normalised, idx, proper=True)
     model = _sense_model()
     if (model is not None and model.has(base) and model.route(base) == "model"
             and model.margin(base, normalised, idx) >= model.margin_tau(base)):
@@ -201,25 +501,89 @@ def guess_sense(words: list, idx: int, pos: str = None) -> str:
     return _rule_sense(base, normalised, idx)
 
 
-def guess_pos(words: list, idx: int) -> str:
-    """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
+def guess_pos(words: list, idx: int, proper: bool = False) -> str:
+    """Return the lexical class that selects this word's pronunciation — NOT a
+    syntactic POS tag.
 
-    Thin wrapper over :func:`guess_sense` that maps the resolved meaning back to
-    its descriptive POS, preserving the pre-existing POS-tagging interface.
-    Diacritized input (e.g. *pára*, *acôrdo*) is resolved without context scoring.
+    .. warning::
+       This is **not a part-of-speech tagger** and must not be used as one. It is
+       an internal pronunciation-disambiguation device: it reports the lexical
+       class whose reading the homograph takes, which can deliberately disagree
+       with the word's syntactic function in the sentence.
+
+       The clearest case is an **adjective used substantively** (a noun-functioning
+       adjective). In *"aquela tola comprou um carro"*, ``tola`` is syntactically a
+       NOUN (subject), but it keeps the *adjective* reading (``foolish``, closed
+       ˈtolɐ) — so ``guess_pos`` returns ``"ADJ"``. The tag is chosen to land on the
+       correct IPA, not to describe the slot. Treat the output purely as an input
+       to :func:`guess_sense`/:func:`disambiguate`; for genuine POS tagging use a
+       real tagger (spaCy, Stanza).
+
+    For a plain token this returns the rule scorer's winning class
+    (:func:`bifonia.scoring.guess_pos`); the statistical model is not consulted.
+    For a diacritized token (e.g. *pára*, *acôrdo*) it maps the sense from
+    :func:`guess_sense` back to its lexical class, so the diacritic decides
+    without context scoring, except a form shared by several senses (*chôco*),
+    which :func:`guess_sense` narrows by context. *proper* biases the NOUN
+    reading for a mid-sentence capitalised token.
     """
-    token = words[idx]
+    raw = words[idx]
+    token = _strip_edge(raw)
     base = _DIACRITIZED_TO_BASE.get(token, token)
-    if token in _DIACRITIZED_TO_SENSE:
-        return SENSE_POS[base][_DIACRITIZED_TO_SENSE[token]]
-    if base != token:
+    if token in _DIACRITIZED_TO_SENSES:
+        return SENSE_POS[base][guess_sense(words, idx, proper=proper)]
+    if base != raw:
         normalised = list(words)
         normalised[idx] = base
-        return _scoring_guess_pos(normalised, idx)
-    return _scoring_guess_pos(words, idx)
+        return _scoring_guess_pos(normalised, idx, proper=proper)
+    return _scoring_guess_pos(words, idx, proper=proper)
 
 
-def add_extra_diacritics(sentence: str) -> str:
+def proper_flags(text: str) -> list:
+    """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
+    noun: a capitalised token inside a sentence. Used to bias the NOUN reading
+    (names like "Cerro Corá" are not finite verbs).
+
+    A word written all in capitals is not a name signal on its own, so it is
+    never flagged inside a sentence. After a first word in title case, an
+    all-caps token (an acronym, a roman numeral or an initial) still marks that
+    first word as a name.
+
+    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after the closing
+    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. A colon does not
+    end the sentence of the word before it: "Governo: PS aprova orçamento." is a
+    label. The word after a colon starts a clause, as in direct speech ("Ele
+    disse: Jogo amanhã."), so it takes the first-word rule."""
+    toks = _tokens(text)
+    # The split turns "n.º" into "n." and "º"; read the pair as "nº".
+    numero = [tok.lower() == "n." and nxt.strip(_EDGE_PUNCT) == "º"
+              for tok, nxt in zip(toks, toks[1:] + [""])]
+    ends = [tok[-1] in _SENTENCE_END for tok in toks]
+    starts = [True] + [end or tok[-1] == ":" for tok, end in zip(toks, ends)]
+    flags = [False] * len(toks)
+    for i, tok in enumerate(toks):
+        core = tok.lstrip("-")
+        if not starts[i]:
+            flags[i] = core[:1].isupper() and not core.isupper()
+            continue
+        # The first word of a sentence is always capitalised, so only flag it
+        # when the *next* token is itself a proper-noun continuation ("Cerro
+        # Corá", "Governo PS", "Choro IV") or nº marking a title ("Choro nº
+        # 13"). A bare number is no title signal ("Choro 2 vezes por semana").
+        # An all-caps next token counts only after a first word in title case;
+        # in text in capitals it has no case signal. A first word that ends its
+        # sentence ("Jogo. Depois descanso.") starts no phrase. A lower-case
+        # word after the first token starts no sentence ("Bem… jogo 3 vezes").
+        if i + 1 == len(toks) or ends[i] or (i > 0 and not core[:1].isupper()):
+            continue
+        title_first = core[:1].isupper() and not core.isupper()
+        nxt = "nº" if numero[i + 1] else toks[i + 1].lstrip("-").strip(_EDGE_PUNCT)
+        flags[i] = bool((nxt[:1].isupper() and (title_first or not nxt.isupper()))
+                        or nxt.lower() in {"nº", "nr"})
+    return flags
+
+
+def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     """Return *sentence* with non-canonical diacritics on heterophonic homographs.
 
     The inserted diacritics are not AO1990-compliant but force a downstream
@@ -229,16 +593,42 @@ def add_extra_diacritics(sentence: str) -> str:
     - circumflex (ô/ê) → closed /o/ or /e/  (typically noun reading)
 
     Words that are not ambiguous, or whose POS reading needs no extra diacritic
-    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Original capitalisation
-    is preserved, so a sentence-initial homograph keeps its capital (*Acórdo …*).
+    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Each letter keeps its
+    case, so a sentence-initial homograph keeps its capital (*Acórdo …*) and an
+    all-caps word stays in capitals (*ACÓRDO*).
+
+    *lang* is the lect tag; ``None`` means the default. The marks follow European
+    Portuguese for every lect that has no rows in ``data/lect_overrides.csv``.
+    ``pt-BR`` and its sub-lects (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows,
+    because Brazilian Portuguese has a closed nasal stressed vowel in every sense
+    of these words: *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay
+    unmarked, and *soma* is always *sôma*. ``pt-UY`` and its sub-lects have the
+    same rows. This is an inference, not a sourced rule; the README gives the
+    evidence.
+
+    After the homographs, a second table marks the words whose mark needs no
+    context (``data/context_free_marks.csv``): a mark that an older spelling norm
+    wrote and that the lect says, such as *pêra* for pt-PT, or *assembléia*,
+    *heróico* and *lingüiça* for pt-BR. Each row names the pt-PT and pt-BR lect
+    codes where orthography2ipa reads the mark better, and a tag takes the rows
+    of its longest matching code. ``None`` and ``pt`` mean ``pt-PT``. Other
+    lects get none of these marks.
     """
+    overrides = lect_overrides(lang)
+    marks = context_free_marks(lang)
     words = tokenize(sentence)
+    caps = proper_flags(sentence)
     replacements = {}
     for i, word in enumerate(words):
-        if is_ambiguous(word):
-            diacritized = _DIACRITIZED.get((word, guess_sense(words, i)))
-            if diacritized:
-                replacements[i] = diacritized
+        base = _strip_edge(word)
+        if not is_ambiguous(base):
+            diacritized = marks.get(base)
+        elif base in overrides:
+            diacritized = overrides[base]
+        else:
+            diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
+        if diacritized:
+            replacements[i] = diacritized
     if not replacements:
         return sentence
 
@@ -250,8 +640,9 @@ def add_extra_diacritics(sentence: str) -> str:
         out.append(sentence[pos:m.start()])
         tok = m.group(0)
         diac = replacements.get(idx)
-        if diac is not None and tok[:1].isupper():
-            diac = diac[:1].upper() + diac[1:]
+        if diac is not None:
+            diac = "".join(mark.upper() if letter.isupper() else mark
+                           for letter, mark in zip(tok, diac))
         out.append(diac if diac is not None else tok)
         pos, idx = m.end(), idx + 1
     out.append(sentence[pos:])

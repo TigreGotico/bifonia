@@ -1,0 +1,15 @@
+# sense: reinforcement
+Gera {n} frases em Português Europeu natural onde "reforço" é SUBSTANTIVO.
+
+Significado: ato ou efeito de reforçar; aquilo que serve para dar mais força, solidez, intensidade, resistência; material colocado em certas partes de determinados objetos (peça de vestuário, mala, encadernação, etc.) para os tornar mais resistentes; conjunto de soldados comandados por um cabo e que durante a noite montam postos de sentinela; unidade de combate, ou outro meio de ação, posta à disposição de um comando durante certo período ou até ao fim de uma
+IPA: /ʁɨˈfoɾsu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "reforço" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o reforço da ponte custou milhões»; «pediram reforço policial para o evento»; «o casaco tem um reforço nos cotovelos»; «chegou um reforço de tropas à fronteira»; «o reforço da equipa foi anunciado ontem»
+Responde APENAS com as frases, uma por linha:

@@ -1,0 +1,18 @@
+# molho_noun_prev.voc — Words BEFORE 'molho' that mark the noun (sauce/bundle),
+# not the verb molhar: interrogative determiners ('qual molho', 'que molho
+# escolhes') and verbs of lack or surplus that take a bare noun ('falta molho').
+# The verb 'molho' takes a direct object or a clitic instead ('molho os pés').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+que
+qual
+quais
+quanto
+quantos
+falta
+faltava
+faltou
+sobra
+sobrava
+sobrou

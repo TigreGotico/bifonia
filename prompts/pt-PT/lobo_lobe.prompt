@@ -1,0 +1,15 @@
+# sense: lobe
+Gera {n} frases em Português Europeu natural onde a palavra "lobo" é usada como SUBSTANTIVO (parte anatómica).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "lobo" (em minúsculas, sem acento diacrítico)
+- A palavra "lobo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: parte arredondada de um órgão (lobo frontal, lobo da orelha, do pulmão, do fígado, da tiroide).
+Exemplos de uso: «o lobo frontal do cérebro», «o lobo da orelha», «o lobo direito do pulmão».
+Pronúncia: /ˈlɔbu/ — vogal O ABERTA (agudo em "lóbo").
+NÃO uses no sentido do animal lobo (O fechado).
+Responde APENAS com as frases, uma por linha:

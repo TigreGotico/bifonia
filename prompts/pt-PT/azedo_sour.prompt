@@ -1,0 +1,14 @@
+# sense: sour
+Gera {n} frases em Português Europeu natural onde "azedo" é ADJETIVO.
+
+Significado: que tem o sabor particular do limão ou do vinagre; de gosto amargo; diz-se de alimento que se deteriorou por ter fermentado; ríspido; mal-humorado; diz-se de pessoa amargurada, de trato difícil
+IPA: /ɐˈzedu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "azedo" em minúsculas, sem acento diacrítico
+- usa em posição predicativa («está azedo») ou atributiva
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:
