@@ -3,7 +3,8 @@ IPA mappings and context wordlists for Portuguese heterophonic homograph disambi
 
 IPA data is loaded from bifonia's own data/heterophonic_homographs.csv and is
 European Portuguese. Per-lect marking overrides are loaded from
-data/lect_overrides.csv.
+data/lect_overrides.csv, and the marks that need no context from
+data/context_free_marks.csv.
 """
 
 import csv
@@ -14,6 +15,7 @@ from bifonia.vocab import voc
 
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
 _LECT_CSV = pathlib.Path(__file__).parent / "data" / "lect_overrides.csv"
+_MARKS_CSV = pathlib.Path(__file__).parent / "data" / "context_free_marks.csv"
 
 # The dataset is keyed on (MEANING, POS) combos: a word's distinct readings are
 # identified by a meaning slug, and each slug carries the set of parts of speech
@@ -52,6 +54,19 @@ AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
 POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
                       if any(len(senses) > 1 for senses in pm.values())}
 
+
+def _form(path: pathlib.Path, line: int, word: str, form: str) -> str:
+    """Return *form* in NFC, or raise if a letter of *word* has no code point."""
+    form = unicodedata.normalize("NFC", form)
+    where = f"{path}, line {line}: the form {form!r} of {word!r}"
+    if form and len(form) != len(word):
+        raise ValueError(f"{where} has {len(form)} code points in NFC, "
+                         f"but the word has {len(word)}")
+    if any(unicodedata.combining(c) for c in form):
+        raise ValueError(f"{where} keeps a combining mark in NFC")
+    return form
+
+
 # Per-lect marking overrides: lect tag → {word: form}. The form replaces the
 # diacritized form of every sense of the word; an empty form leaves the word
 # unmarked. A lect needs rows only where its stressed vowel differs from the
@@ -65,14 +80,36 @@ with _LECT_CSV.open(encoding="utf-8") as fh:
     reader = csv.DictReader(fh)
     for row in reader:
         word = row["word"]
-        form = unicodedata.normalize("NFC", row["form"])
-        where = f"{_LECT_CSV}, line {reader.line_num}: the form {form!r} of {word!r}"
-        if form and len(form) != len(word):
-            raise ValueError(f"{where} has {len(form)} code points in NFC, "
-                             f"but the word has {len(word)}")
-        if any(unicodedata.combining(c) for c in form):
-            raise ValueError(f"{where} keeps a combining mark in NFC")
+        form = _form(_LECT_CSV, reader.line_num, word, row["form"])
         LECT_OVERRIDES.setdefault(row["lang"], {})[word] = form
+
+# Marks that need no context: lect tag → {word: form}. Each row names the lects
+# whose transcription source says the vowel of the mark ("pt-PT|pt-BR"). The
+# context table owns its words, so a row for one of them is rejected.
+# scripts/build_context_free_marks.py builds the file and records the evidence.
+CONTEXT_FREE_MARKS: dict = {}
+with _MARKS_CSV.open(encoding="utf-8") as fh:
+    reader = csv.DictReader(fh)
+    for row in reader:
+        word = row["word"]
+        if word in AMBIGUOUS_WORDS:
+            raise ValueError(f"{_MARKS_CSV}, line {reader.line_num}: {word!r} "
+                             "belongs to the context table")
+        form = _form(_MARKS_CSV, reader.line_num, word, row["form"])
+        for lect in row["lects"].split("|"):
+            CONTEXT_FREE_MARKS.setdefault(lect, {})[word] = form
+
+
+def _for_lect(table: dict, lang: str) -> dict:
+    """Return the entry of *table* whose lect is *lang* or a parent of it."""
+    subtags = lang.strip().replace("_", "-").lower().split("-")
+    if len(subtags) > 1 and len(subtags[1]) == 4 and subtags[1].isalpha():
+        del subtags[1]  # BCP 47 script subtag, e.g. "latn"
+    tag = "-".join(subtags)
+    for lect, rows in table.items():
+        if tag == lect.lower() or tag.startswith(lect.lower() + "-"):
+            return rows
+    return {}
 
 
 def lect_overrides(lang: str) -> dict:
@@ -85,16 +122,18 @@ def lect_overrides(lang: str) -> dict:
     an empty tag and a tag that matches no lect return an empty dict, so they keep
     the default European Portuguese marking.
     """
-    if not lang:
-        return {}
-    subtags = lang.strip().replace("_", "-").lower().split("-")
-    if len(subtags) > 1 and len(subtags[1]) == 4 and subtags[1].isalpha():
-        del subtags[1]  # BCP 47 script subtag, e.g. "latn"
-    tag = "-".join(subtags)
-    for lect, overrides in LECT_OVERRIDES.items():
-        if tag == lect.lower() or tag.startswith(lect.lower() + "-"):
-            return overrides
-    return {}
+    return _for_lect(LECT_OVERRIDES, lang) if lang else {}
+
+
+def context_free_marks(lang: str) -> dict:
+    """Return the {word: form} marks that need no context for the lect tag *lang*.
+
+    A tag matches a lect as in :func:`lect_overrides`. ``None`` and an empty tag
+    mean ``pt-PT``, the default lect. The table has rows for ``pt-PT`` and
+    ``pt-BR`` only, so every other tag, ``pt-AO`` and ``pt-UY`` included, returns
+    an empty dict: no transcription of those lects was checked.
+    """
+    return _for_lect(CONTEXT_FREE_MARKS, lang or "pt-PT")
 
 
 # Membership helpers for the POS scorer (word → representative IPA for that POS).

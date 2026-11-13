@@ -62,6 +62,20 @@ Because the output uses only standard orthographic conventions, no TTS model ret
 
 The polarity tracks **vowel quality**, not POS: where a word's senses share a POS (`sede`, both nouns) or invert the usual mapping (`colher`, `tola`), the diacritic still encodes the correct open/closed vowel. The full `(word, sense) → diacritized` table is in `bifonia/__init__.py`.
 
+### Marks that need no context
+
+A word with one reading can also lose its vowel signal under AO1990. Pre-AO *idéia*, *heróico* and *lingüiça* told a G2P the vowel. *ideia*, *heroico* and *linguiça* do not. After it marks the homographs, `add_extra_diacritics` restores such a mark from a second table, `bifonia/data/context_free_marks.csv`. No sense is predicted for these words, so the restoration is a lookup per lect:
+
+| Canonical | pt-PT | pt-BR | Evidence for the vowel |
+|-----------|-------|-------|------------------------|
+| pera | **pêra** | pera | Infopédia [ˈperɐ]. In pt-BR, orthography2ipa already says [e] |
+| voo | **vôo** | voo | Infopédia [ˈvou]. In pt-BR, orthography2ipa already says [o] |
+| ideia | ideia | **idéia** | Infopédia [iˈdɐjɐ], Michaelis [iˈdɛjɐ] |
+| heroico | heroico | **heróico** | In pt-PT, orthography2ipa already says [ɔ]. Michaelis [eˈɾɔjku] |
+| linguiça | linguiça | **lingüiça** | orthography2ipa reads pt-PT ⟨ü⟩ as [ʒ]. Michaelis [lĩˈɡwisɐ] |
+
+A row enters the table for a lect only when it passes three checks. A cited norm wrote the mark. The lect's transcription says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form. The README section on marks that need no context gives the sources and the classes that stay out.
+
 ## Engines and accuracy
 
 `bifonia` resolves the sense with **two interchangeable engines**, both pure Python (see `docs/methodology.md`):

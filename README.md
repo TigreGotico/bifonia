@@ -90,6 +90,36 @@ add_extra_diacritics(sentence)           # '...desta fórma simples.'  (acute = 
 
 `add_extra_diacritics` rewrites each homograph with a disambiguating diacritic (acute for the open vowel, circumflex for the closed vowel) that a downstream grapheme-to-phoneme stage can read directly.
 
+## Marks that need no context
+
+Some words carry a mark that an older spelling norm wrote and that AO1990 dropped, such as *pêra*, *idéia*, *heróico* and *lingüiça*. These marks do not depend on context, because the word has one reading in the lect. After the homographs, `add_extra_diacritics` writes these marks from `bifonia/data/context_free_marks.csv`.
+
+```python
+add_extra_diacritics("Comi uma pera.")                 # 'Comi uma pêra.'
+add_extra_diacritics("Tive uma ideia.", lang="pt-BR")  # 'Tive uma idéia.'
+add_extra_diacritics("Tive uma ideia.")                # 'Tive uma ideia.'  (pt-PT says [ɐj])
+```
+
+A word enters the table for a lect only when it passes three checks. The CSV records the evidence for each check.
+
+1. **A cited norm wrote the mark.** The word comes from a row of the tugalex AO1990 maps whose old form differs from the new form only by a diacritic. The `norm_source` column names the map row. Where a clause applies, it names the clause too:
+   AO1990 Base IX 3.º for ⟨éi ói⟩, Base IX 8.º for ⟨ôo⟩, Base X 4.º for ⟨í ú⟩ after a diphthong and Base XIV 1.º for the trema.
+   For *pêra* it is the Acordo de 1945 Base XXII.
+2. **The lect says the vowel of the mark.** For pt-PT the source is Infopédia. For pt-BR it is Michaelis, Wiktionary and the NILC entries of o2i-lexicons. Every reading must say that vowel. A word with a homograph of another vowel stays out, unless a cited source marks that homograph archaic, as for *pera*. The `pronunciation_source` and `transcription` columns give the readings.
+3. **orthography2ipa reads the mark and gets closer to the source.** For the lect, `G2P(lect).transcribe_word` gives the source vowel for the marked form. It gives another vowel for the unmarked form.
+
+The table has 123 words: 24 for pt-PT and 100 for pt-BR, and *maoísta* is in both. A lect gets a mark even when its own norm never wrote it. pt-PT gets *vôo* and *enjôo* (Infopédia [ˈvou], [ẽˈʒou]) and *combóio* (Infopédia [kõˈbɔju]). A lect gets no mark when it says a different vowel: pt-PT *ideia* is [iˈdɐjɐ], so *idéia* is pt-BR only. Michaelis gives Brazilian *areia* as [aˈɾejɐ]. So pt-BR keeps *areia*, although the Brazilian norm wrote *aréia*.
+
+The rows apply to `pt-PT`, `pt-BR` and their sub-lects, and `None` means `pt-PT`. Other tags, `pt-AO` and `pt-UY` included, get none of these marks, because no transcription of those lects was checked. The homograph table comes first. Its words, such as *para*, *pelo* and *polo*, never enter this table, and the loader rejects such a row. These marks are not in the table:
+
+- The trema for pt-PT. orthography2ipa reads ⟨ü⟩ as [ʒ] in pt-PT (*lingüiça* gives [lĩˈʒisɐ]), so check 3 fails.
+- *péla*. Its unmarked homograph *pela*, the contraction of *per* and *la*, is a living word (AO1990 Base IX 9.º).
+- Compounds with a hyphen, such as *pára-quedas*, because `add_extra_diacritics` marks single words.
+- Plurals and other inflections that the maps do not list, such as *jóias*.
+- The grave accent of the 1945 norm (*sòmente*) and the silent consonants (*acção*). The maps hold no grave rows, and a consonant is a letter, not a mark.
+
+`scripts/build_context_free_marks.py` builds the CSV. It reads the tugalex maps, the [`TigreGotico/portuguese-unified-pronunciation-lexicon`](https://huggingface.co/datasets/TigreGotico/portuguese-unified-pronunciation-lexicon) dataset, o2i-lexicons and `bifonia/data/infopedia_pt.csv`, and it runs orthography2ipa. The script docstring gives the command. Do not edit the CSV by hand.
+
 ## Datasets
 
 All datasets are on the Hugging Face Hub. Each record has the fields `word`, `sense`, `pos`, `ipa` and `sentence`, and some sets add more fields:
@@ -111,7 +141,7 @@ bifonia/scoring.py   context rules + one generic cue resolver
 bifonia/features.py  language-agnostic features, incl. CUE:<sense> from the registry
 bifonia/model.py     loads and scores the learned NB / perceptron JSON models
 bifonia/corpus.py    loads bifonia/data/corpus.jsonl into CORPUS
-bifonia/data/        roster CSVs, corpus.jsonl, lect_overrides.csv, model JSON
+bifonia/data/        roster CSVs, corpus.jsonl, lect_overrides.csv, context_free_marks.csv, model JSON
 bifonia/locale/<lang>/*.voc   editable context + meaning wordlists
 scripts/             training, dataset export and benchmark scripts
 scripts/baselines.py a Baseline protocol + baselines, imported as a library (no command line)

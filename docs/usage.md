@@ -50,6 +50,8 @@ Returns the IPA transcription for the word at *idx*, selected by **meaning**. Pa
 ### `add_extra_diacritics(sentence, lang="pt-PT") → str`
 Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect, and `None` means the default. `pt-BR`, `pt-UY` and their sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See the README section on Brazilian Portuguese.
 
+After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *idéia* for pt-BR. Those rows apply to `pt-PT`, `pt-BR` and their sub-lects, and `None` means `pt-PT`. See the README section on marks that need no context.
+
 | Diacritic | IPA | Vowel quality |
 |-----------|-----|---------------|
 | `ó` / `é` | /ɔ/ / /ɛ/ | open vowel |

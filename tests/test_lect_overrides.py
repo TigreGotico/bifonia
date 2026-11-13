@@ -45,9 +45,9 @@ CASES = [
     ("abono a fatura do fornecedor",
      "abóno a fatura do fornecedor",
      "abono a fatura do fornecedor"),
-    ("Dei um aceno de despedida enquanto o comboio se afastava lentamente na estação.",
-     "Dei um acêno de despedida enquanto o comboio se afastava lentamente na estação.",
-     "Dei um aceno de despedida enquanto o comboio se afastava lentamente na estação."),
+    ("Dei um aceno de despedida enquanto o barco se afastava lentamente do cais.",
+     "Dei um acêno de despedida enquanto o barco se afastava lentamente do cais.",
+     "Dei um aceno de despedida enquanto o barco se afastava lentamente do cais."),
     ("aceno-te da janela todas as manhãs.",
      "acéno-te da janela todas as manhãs.",
      "aceno-te da janela todas as manhãs."),
@@ -131,6 +131,11 @@ def test_other_lects_keep_european_marking(sentence, european, _brazilian, lang)
 
 
 def test_pt_br_differs_only_on_override_words():
+    # The marks that need no context differ by lect too; each must be the form
+    # of its own lect's table (test_context_free_marks.py tests the table).
+    from bifonia.data import CONTEXT_FREE_MARKS
+
+    pt_marks, br_marks = CONTEXT_FREE_MARKS["pt-PT"], CONTEXT_FREE_MARKS["pt-BR"]
     corpus = Path(__file__).parent / "test_sentences.jsonl"
     sentences = [json.loads(line)["sentence"]
                  for line in corpus.read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -144,7 +149,12 @@ def test_pt_br_differs_only_on_override_words():
             if eu == br:
                 continue
             changed += 1
-            assert src.lower() in BR_WORDS, (sentence, src, eu, br)
+            word = src.lower()
+            if word in pt_marks or word in br_marks:
+                assert eu.lower() == pt_marks.get(word, word), (sentence, src, eu, br)
+                assert br.lower() == br_marks.get(word, word), (sentence, src, eu, br)
+                continue
+            assert word in BR_WORDS, (sentence, src, eu, br)
             assert br.lower() in (src.lower(), "sôma"), (sentence, src, eu, br)
     assert changed > 0
 
@@ -168,7 +178,8 @@ def _load_data_with(tmp_path, extra_rows):
     appended to lect_overrides.csv. Return the module and the csv path."""
     package = Path(bifonia.data.__file__).parent
     (tmp_path / "data").mkdir()
-    shutil.copy(package / "data" / "heterophonic_homographs.csv", tmp_path / "data")
+    for name in ("heterophonic_homographs.csv", "context_free_marks.csv"):
+        shutil.copy(package / "data" / name, tmp_path / "data")
     rows = (package / "data" / "lect_overrides.csv").read_text(encoding="utf-8")
     lect_csv = tmp_path / "data" / "lect_overrides.csv"
     lect_csv.write_text(rows + extra_rows, encoding="utf-8")
