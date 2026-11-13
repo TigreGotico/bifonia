@@ -21,7 +21,8 @@ import re
 from functools import lru_cache as _lru_cache
 
 from bifonia.data import (
-    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS, lect_overrides,
+    AMBIGUOUS_WORDS, HOMOGRAPHS, POS_SENSES, SENSE_POS, context_free_marks,
+    lect_overrides,
 )
 from bifonia.scoring import (
     guess_pos as _scoring_guess_pos,
@@ -604,20 +605,30 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     unmarked, and *soma* is always *sôma*. ``pt-UY`` and its sub-lects have the
     same rows. This is an inference, not a sourced rule; the README gives the
     evidence.
+
+    After the homographs, a second table marks the words whose mark needs no
+    context (``data/context_free_marks.csv``): a mark that an older spelling norm
+    wrote and that the lect says, such as *pêra* for pt-PT, or *assembléia*,
+    *heróico* and *lingüiça* for pt-BR. Each row names the pt-PT and pt-BR lect
+    codes where orthography2ipa reads the mark better, and a tag takes the rows
+    of its longest matching code. ``None`` and ``pt`` mean ``pt-PT``. Other
+    lects get none of these marks.
     """
     overrides = lect_overrides(lang)
+    marks = context_free_marks(lang)
     words = tokenize(sentence)
     caps = proper_flags(sentence)
     replacements = {}
     for i, word in enumerate(words):
         base = _strip_edge(word)
-        if is_ambiguous(base):
-            if base in overrides:
-                diacritized = overrides[base]
-            else:
-                diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
-            if diacritized:
-                replacements[i] = diacritized
+        if not is_ambiguous(base):
+            diacritized = marks.get(base)
+        elif base in overrides:
+            diacritized = overrides[base]
+        else:
+            diacritized = _DIACRITIZED.get((base, guess_sense(words, i, proper=caps[i])))
+        if diacritized:
+            replacements[i] = diacritized
     if not replacements:
         return sentence
 

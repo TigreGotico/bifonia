@@ -10,9 +10,9 @@ bifonia picks the reading of a European-Portuguese heterophonic homograph from i
 | `bifonia/scoring.py` | the rule engine: per-POS context scores and the sense resolvers |
 | `bifonia/cues.py` | the `SENSE_CUES` registry that the rules and the model features share |
 | `bifonia/features.py`, `bifonia/model.py` | features and inference for the learned NB / perceptron models |
-| `bifonia/data/` | `heterophonic_homographs.csv` (roster and IPA), `corpus.jsonl`, `lect_overrides.csv`, model JSON |
+| `bifonia/data/` | `heterophonic_homographs.csv` (roster and IPA), `corpus.jsonl`, `lect_overrides.csv`, `context_free_marks.csv`, model JSON |
 | `bifonia/locale/pt-pt/*.voc` | context and meaning wordlists |
-| `scripts/` | `train.py`, `dataset.py`, `benchmark_tagger.py`, `benchmark_ood.py`, `baselines.py` |
+| `scripts/` | `train.py`, `dataset.py`, `benchmark_tagger.py`, `benchmark_ood.py`, `baselines.py`, `build_context_free_marks.py` |
 | `hf/` | the train and test split published as `TigreGotico/bifonia-pt-homographs` |
 | `tests/` | pytest suite. `test_sentences.jsonl` is also the behavioural set for the route gate |
 | `docs/` | reference pages. [README.md](README.md#documentation) lists them in reading order |
@@ -39,5 +39,6 @@ CI runs the same suite on Python 3.11 to 3.14 (`.github/workflows/build-tests.ym
 - `bifonia/data/corpus.jsonl` is the single source of truth for the corpus (`docs/dataset.md`). Regenerate `hf/` with `python scripts/dataset.py --hf` after a corpus change.
 - `scripts/train.py` trains only on `hf/train.jsonl`, never on the test split (`docs/methodology.md`).
 - Give every row of `bifonia/data/lect_overrides.csv` a source in its `source` column (README, Brazilian Portuguese).
+- Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, one reading of the bare form in the transcriptions of its lect, and an orthography2ipa gain for each lect code it names (README, Marks that need no context).
 - To add a same-POS word to the cue resolver, add its `.voc` wordlists and one `SENSE_CUES` entry in `bifonia/cues.py` (`bifonia/cues.py` docstring).
 - The release workflow sets `bifonia/version.py` from the conventional-commit titles of merged pull requests (`.github/workflows/release_workflow.yml`).
