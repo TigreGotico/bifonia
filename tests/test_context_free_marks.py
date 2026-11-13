@@ -10,14 +10,22 @@ or orthography2ipa:
   Infopédia voo [ˈvou], enjoo [ẽˈʒou].
 - combóio: the pre-AO pt-BR spelling of the verb form (tugalex pt-BR map);
   Infopédia comboio [kõˈbɔju], Michaelis comboio [komˈbojo].
-- idéia, heróico, asteróide: AO1990 Base IX 3.º drops the accent of ⟨ei oi⟩ in
-  «ideia», «heroico» and «alcaloide»; Michaelis ideia [iˈdɛjɐ], heroico
-  [eˈɾɔjku], asteroide [asteˈɾɔjdi]. Infopédia ideia [iˈdɐjɐ] has another vowel,
-  so pt-PT keeps «ideia».
+- assembléia, heróico, asteróide: AO1990 Base IX 3.º drops the accent of ⟨ei
+  oi⟩ in «assembleia», «heroico» and «alcaloide»; Michaelis assembleia
+  [asẽˈblɛjɐ], heroico [eˈɾɔjku], asteroide [asteˈɾɔjdi]. Infopédia assembleia
+  [ɐsẽˈblɐjɐ] has another vowel, so pt-PT keeps «assembleia».
 - lingüiça, tranqüilo: AO1990 Base XIV 1.º drops the trema; Michaelis linguiça
   and tranquilo say [ɡw] and [kw].
 - areia: Michaelis areia [aˈɾejɐ] has a closed vowel, so pt-BR keeps «areia»
   although the pt-BR norm wrote «aréia».
+- ideia, estreia: also forms of idear and estrear, and an ⟨-ear⟩ verb form says
+  [ej] (Cunha & Cintra, Nova Gramática, pp. 437-439), so pt-BR keeps them.
+- ateia: pt.wiktionary gives the verb forms of atear /ɐˈtej.ɐ/ for Brazil, so
+  pt-BR keeps «ateia».
+
+The trema is not written for the pt-BR sub-lects whose orthography2ipa spec
+reads ⟨ü⟩ as a full vowel (pt-BR-x-sp gives tranqüilo [tɾɐ̃kuˈilu]); the accent
+rows are.
 """
 
 import csv
@@ -31,61 +39,97 @@ import pytest
 import bifonia.data
 from bifonia import AMBIGUOUS_WORDS, add_extra_diacritics
 
-PT_LANGS = [None, "", "pt-PT", "pt_pt", "pt-PT-x-lbx", " pt-PT ", "pt-Latn-PT"]
-BR_LANGS = ["pt-BR", "pt_br", "pt-BR-x-rj", "pt-BR-x-sp", "pt-Latn-BR"]
+PT_LANGS = [None, "", "pt", "PT", "pt-PT", "pt_pt", "pt-PT-x-lisbon", "pt-PT-x-unknown",
+            " pt-PT ", "pt-Latn-PT"]
+BR_LANGS = ["pt-BR", "pt_br", "pt-Latn-BR", "pt-BR-x-cuiaba", "pt-BR-x-floripa",
+            "pt-BR-x-unknown"]
+BR_NO_TREMA_LANGS = ["pt-BR-x-sp", "pt-BR-x-rj", "pt-BR-x-mg", "pt-BR-x-recife", "pt-BR-x-sul"]
 UNCHECKED_LANGS = ["pt-AO", "pt-MZ", "pt-UY", "pt-brx", "en"]
 
-# (sentence, pt-PT output, pt-BR output)
+# (sentence, pt-PT output, pt-BR output, output of a pt-BR sub-lect with no trema)
 CASES = [
     ("Comi uma pera madura ao lanche.",
      "Comi uma pêra madura ao lanche.",
+     "Comi uma pera madura ao lanche.",
      "Comi uma pera madura ao lanche."),
     ("O voo foi cancelado por causa do nevoeiro.",
      "O vôo foi cancelado por causa do nevoeiro.",
+     "O voo foi cancelado por causa do nevoeiro.",
      "O voo foi cancelado por causa do nevoeiro."),
     ("Tomei um comprimido para o enjoo.",
      "Tomei um comprimido para o enjôo.",
+     "Tomei um comprimido para o enjoo.",
      "Tomei um comprimido para o enjoo."),
     ("O comboio chegou atrasado.",
      "O combóio chegou atrasado.",
+     "O comboio chegou atrasado.",
      "O comboio chegou atrasado."),
-    ("Tive uma ideia brilhante.",
-     "Tive uma ideia brilhante.",
-     "Tive uma idéia brilhante."),
+    ("A assembleia votou a proposta.",
+     "A assembleia votou a proposta.",
+     "A assembléia votou a proposta.",
+     "A assembléia votou a proposta."),
     ("Foi um gesto heroico.",
      "Foi um gesto heroico.",
+     "Foi um gesto heróico.",
      "Foi um gesto heróico."),
     ("O asteroide passou perto da Terra.",
      "O asteroide passou perto da Terra.",
+     "O asteróide passou perto da Terra.",
      "O asteróide passou perto da Terra."),
     ("Comprei linguiça e pão.",
      "Comprei linguiça e pão.",
-     "Comprei lingüiça e pão."),
+     "Comprei lingüiça e pão.",
+     "Comprei linguiça e pão."),
     ("O mar está tranquilo.",
      "O mar está tranquilo.",
-     "O mar está tranqüilo."),
+     "O mar está tranqüilo.",
+     "O mar está tranquilo."),
     ("A areia da praia está quente.",
      "A areia da praia está quente.",
+     "A areia da praia está quente.",
      "A areia da praia está quente."),
+    ("Tive uma ideia para a estreia.",
+     "Tive uma ideia para a estreia.",
+     "Tive uma ideia para a estreia.",
+     "Tive uma ideia para a estreia."),
+    ("Ele ateia o fogo.",
+     "Ele ateia o fogo.",
+     "Ele ateia o fogo.",
+     "Ele ateia o fogo."),
 ]
 _IDS = [c[0][:30] for c in CASES]
 
 
 @pytest.mark.parametrize("lang", PT_LANGS)
-@pytest.mark.parametrize("sentence,european,_brazilian", CASES, ids=_IDS)
-def test_pt_pt_marks(sentence, european, _brazilian, lang):
+@pytest.mark.parametrize("sentence,european,_brazilian,_no_trema", CASES, ids=_IDS)
+def test_pt_pt_marks(sentence, european, _brazilian, _no_trema, lang):
     assert add_extra_diacritics(sentence, lang=lang) == european
 
 
 def test_default_lect_is_pt_pt():
-    for sentence, european, _ in CASES:
+    for sentence, european, _, _ in CASES:
         assert add_extra_diacritics(sentence) == european
 
 
 @pytest.mark.parametrize("lang", BR_LANGS)
-@pytest.mark.parametrize("sentence,_european,brazilian", CASES, ids=_IDS)
-def test_pt_br_marks(sentence, _european, brazilian, lang):
+@pytest.mark.parametrize("sentence,_european,brazilian,_no_trema", CASES, ids=_IDS)
+def test_pt_br_marks(sentence, _european, brazilian, _no_trema, lang):
     assert add_extra_diacritics(sentence, lang=lang) == brazilian
+
+
+@pytest.mark.parametrize("lang", BR_NO_TREMA_LANGS)
+@pytest.mark.parametrize("sentence,_european,_brazilian,no_trema", CASES, ids=_IDS)
+def test_pt_br_sub_lects_with_no_trema(sentence, _european, _brazilian, no_trema, lang):
+    assert add_extra_diacritics(sentence, lang=lang) == no_trema
+
+
+def test_pt_br_x_sp_gets_no_trema():
+    from bifonia.data import context_free_marks
+
+    marks = context_free_marks("pt-BR-x-sp")
+    assert marks and not any("ü" in form for form in marks.values())
+    assert add_extra_diacritics("Tranquilo, comi linguiça.", lang="pt-BR-x-sp") == \
+        "Tranquilo, comi linguiça."
 
 
 @pytest.mark.parametrize("lang", UNCHECKED_LANGS)
@@ -97,8 +141,8 @@ def test_unchecked_lects_get_no_context_free_mark(sentence, lang):
 @pytest.mark.parametrize("sentence,lang,expected", [
     ("PERA", "pt-PT", "PÊRA"),
     ("Pera e maçã.", "pt-PT", "Pêra e maçã."),
-    ("IDEIA", "pt-BR", "IDÉIA"),
-    ("Ideia nova.", "pt-BR", "Idéia nova."),
+    ("ASSEMBLEIA", "pt-BR", "ASSEMBLÉIA"),
+    ("Assembleia geral.", "pt-BR", "Assembléia geral."),
     ("LingUiça", "pt-BR", "LingÜiça"),
 ])
 def test_case_is_kept(sentence, lang, expected):
@@ -106,10 +150,10 @@ def test_case_is_kept(sentence, lang, expected):
 
 
 @pytest.mark.parametrize("sentence,lang,expected", [
-    ("Que ideia!", "pt-BR", "Que idéia!"),
+    ("Que plateia!", "pt-BR", "Que platéia!"),
     ("Uma pera, duas maçãs.", "pt-PT", "Uma pêra, duas maçãs."),
-    ("«Ideia»", "pt-BR", "«Idéia»"),
-    ("ideia-chave", "pt-BR", "idéia-chave"),
+    ("«Odisseia»", "pt-BR", "«Odisséia»"),
+    ("assembleia-geral", "pt-BR", "assembléia-geral"),
 ])
 def test_punctuation_and_hyphen_around_the_word(sentence, lang, expected):
     assert add_extra_diacritics(sentence, lang=lang) == expected
@@ -117,9 +161,9 @@ def test_punctuation_and_hyphen_around_the_word(sentence, lang, expected):
 
 @pytest.mark.parametrize("sentence,lang", [
     ("Comi uma pêra.", "pt-PT"),
-    ("Tive uma idéia.", "pt-BR"),
+    ("Uma assembléia.", "pt-BR"),
     ("As peras estão maduras.", "pt-PT"),  # 1945 Base XXII: «o plural, peras, sem acento»
-    ("A ideiazinha.", "pt-BR"),
+    ("A assembleiazinha.", "pt-BR"),
 ])
 def test_other_spellings_are_left_alone(sentence, lang):
     assert add_extra_diacritics(sentence, lang=lang) == sentence
@@ -129,8 +173,8 @@ def test_context_table_still_decides_its_words():
     # pelo and polo are context words: the context-free table never marks them.
     assert add_extra_diacritics("Passou pelo parque com a pera.") == \
         "Passou pelo parque com a pêra."
-    assert add_extra_diacritics("O cão tem o pelo macio e uma ideia.", lang="pt-BR") == \
-        "O cão tem o pêlo macio e uma idéia."
+    assert add_extra_diacritics("O cão tem o pelo macio e uma joia.", lang="pt-BR") == \
+        "O cão tem o pêlo macio e uma jóia."
     assert add_extra_diacritics("A pela de pera.", lang="pt-PT") == "A pela de pêra."
 
 
@@ -144,13 +188,15 @@ def test_every_row_cites_its_evidence():
     rows = _rows()
     assert len(rows) > 100
     for row in rows:
-        lects = row["lects"].split("|")
-        assert set(lects) <= {"pt-PT", "pt-BR"}, row
+        codes = row["lects"].split("|")
+        parents = {code[:5] for code in codes}
+        assert parents <= {"pt-PT", "pt-BR"} and all(
+            code[:5] == code or code[5:8] == "-x-" for code in codes), row
         assert row["word"] not in AMBIGUOUS_WORDS, row
         assert row["norm_source"].startswith("tugalex acordo_ortografico_pt_"), row
-        for lect in lects:
-            assert f"{lect}: " in row["pronunciation_source"], row
-            assert f"{lect}: " in row["transcription"], row
+        for parent in parents:
+            assert f"{parent}: " in row["pronunciation_source"], row
+            assert f"{parent}: " in row["transcription"], row
         word, form = row["word"], unicodedata.normalize("NFC", row["form"])
         assert len(word) == len(form) and word != form, row
         changed = [(w, f) for w, f in zip(word, form) if w != f]
@@ -163,13 +209,15 @@ def test_loaded_table_matches_the_csv():
 
     expected = {}
     for row in _rows():
-        for lect in row["lects"].split("|"):
-            expected.setdefault(lect, {})[row["word"]] = row["form"]
+        for code in row["lects"].split("|"):
+            expected.setdefault(code, {})[row["word"]] = row["form"]
     assert CONTEXT_FREE_MARKS == expected
     assert CONTEXT_FREE_MARKS["pt-PT"]["pera"] == "pêra"
-    assert CONTEXT_FREE_MARKS["pt-BR"]["ideia"] == "idéia"
-    assert "ideia" not in CONTEXT_FREE_MARKS["pt-PT"]
+    assert CONTEXT_FREE_MARKS["pt-BR"]["assembleia"] == "assembléia"
+    assert "assembleia" not in CONTEXT_FREE_MARKS["pt-PT"]
     assert "pera" not in CONTEXT_FREE_MARKS["pt-BR"]
+    for word in ("ideia", "estreia", "ateia", "taoismo"):
+        assert word not in CONTEXT_FREE_MARKS["pt-BR"] and word not in CONTEXT_FREE_MARKS["pt-PT"]
 
 
 def _load_data_with(tmp_path, extra_rows):

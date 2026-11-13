@@ -608,10 +608,11 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
 
     After the homographs, a second table marks the words whose mark needs no
     context (``data/context_free_marks.csv``): a mark that an older spelling norm
-    wrote and that the lect says, such as *pêra* for pt-PT, or *idéia*,
-    *heróico* and *lingüiça* for pt-BR. Its rows apply to ``pt-PT``, ``pt-BR``
-    and their sub-lects, and ``None`` means ``pt-PT``. Other lects get none of
-    these marks.
+    wrote and that the lect says, such as *pêra* for pt-PT, or *assembléia*,
+    *heróico* and *lingüiça* for pt-BR. Each row names the pt-PT and pt-BR lect
+    codes where orthography2ipa reads the mark better, and a tag takes the rows
+    of its longest matching code. ``None`` and ``pt`` mean ``pt-PT``. Other
+    lects get none of these marks.
     """
     overrides = lect_overrides(lang)
     marks = context_free_marks(lang)

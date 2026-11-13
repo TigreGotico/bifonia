@@ -39,6 +39,6 @@ CI runs the same suite on Python 3.11 to 3.14 (`.github/workflows/build-tests.ym
 - `bifonia/data/corpus.jsonl` is the single source of truth for the corpus (`docs/dataset.md`). Regenerate `hf/` with `python scripts/dataset.py --hf` after a corpus change.
 - `scripts/train.py` trains only on `hf/train.jsonl`, never on the test split (`docs/methodology.md`).
 - Give every row of `bifonia/data/lect_overrides.csv` a source in its `source` column (README, Brazilian Portuguese).
-- Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, a transcription of each lect it names and an orthography2ipa gain for that lect (README, Marks that need no context).
+- Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, one reading of the bare form in the transcriptions of its lect, and an orthography2ipa gain for each lect code it names (README, Marks that need no context).
 - To add a same-POS word to the cue resolver, add its `.voc` wordlists and one `SENSE_CUES` entry in `bifonia/cues.py` (`bifonia/cues.py` docstring).
 - The release workflow sets `bifonia/version.py` from the conventional-commit titles of merged pull requests (`.github/workflows/release_workflow.yml`).

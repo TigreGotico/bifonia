@@ -64,17 +64,17 @@ The polarity tracks **vowel quality**, not POS: where a word's senses share a PO
 
 ### Marks that need no context
 
-A word with one reading can also lose its vowel signal under AO1990. Pre-AO *idéia*, *heróico* and *lingüiça* told a G2P the vowel. *ideia*, *heroico* and *linguiça* do not. After it marks the homographs, `add_extra_diacritics` restores such a mark from a second table, `bifonia/data/context_free_marks.csv`. No sense is predicted for these words, so the restoration is a lookup per lect:
+A word with one reading can also lose its vowel signal under AO1990. Pre-AO *assembléia*, *heróico* and *lingüiça* told a G2P the vowel. *assembleia*, *heroico* and *linguiça* do not. After it marks the homographs, `add_extra_diacritics` restores such a mark from a second table, `bifonia/data/context_free_marks.csv`. These words have one reading of the bare form in the lect, so the restoration is a lookup per lect code:
 
 | Canonical | pt-PT | pt-BR | Evidence for the vowel |
 |-----------|-------|-------|------------------------|
 | pera | **pêra** | pera | Infopédia [ˈperɐ]. In pt-BR, orthography2ipa already says [e] |
 | voo | **vôo** | voo | Infopédia [ˈvou]. In pt-BR, orthography2ipa already says [o] |
-| ideia | ideia | **idéia** | Infopédia [iˈdɐjɐ], Michaelis [iˈdɛjɐ] |
+| assembleia | assembleia | **assembléia** | Infopédia [ɐsẽˈblɐjɐ], Michaelis [asẽˈblɛjɐ] |
 | heroico | heroico | **heróico** | In pt-PT, orthography2ipa already says [ɔ]. Michaelis [eˈɾɔjku] |
-| linguiça | linguiça | **lingüiça** | orthography2ipa reads pt-PT ⟨ü⟩ as [ʒ]. Michaelis [lĩˈɡwisɐ] |
+| linguiça | linguiça | **lingüiça** | orthography2ipa drops pt-PT ⟨ü⟩, so ⟨gi⟩ gives [ʒi]. Michaelis [lĩˈɡwisɐ]. Not for most pt-BR sub-lects |
 
-A row enters the table for a lect only when it passes three checks. A cited norm wrote the mark. The lect's transcription says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form. The README section on marks that need no context gives the sources and the classes that stay out.
+A row enters the table for a lect code only when it passes three checks. A cited norm wrote the mark. Every reading of the bare form in the lect's sources says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form, in that code. The README section on marks that need no context gives the sources and the classes that stay out.
 
 ## Engines and accuracy
 
