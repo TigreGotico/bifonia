@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0a1](https://github.com/TigreGotico/bifonia/tree/0.5.0a1) (2026-11-15)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.4.0a1...0.5.0a1)
+
+**Merged pull requests:**
+
+- feat: add the homograph fora \(adverb fóra, pluperfect fôra\) [\#64](https://github.com/TigreGotico/bifonia/pull/64) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.4.0a1](https://github.com/TigreGotico/bifonia/tree/0.4.0a1) (2026-11-13)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.3.14a1...0.4.0a1)
