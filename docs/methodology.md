@@ -2,14 +2,14 @@
 
 ## Overview
 
-The `bifonia` package disambiguates 131 Portuguese heterophonic homographs: words spelled identically but pronounced differently depending on their **meaning** (`sense`). Disambiguation is served by **two interchangeable engines**, both pure Python with no heavy runtime dependency:
+The `bifonia` package disambiguates 132 Portuguese heterophonic homographs: words spelled identically but pronounced differently depending on their **meaning** (`sense`). Disambiguation is served by **two interchangeable engines**, both pure Python with no heavy runtime dependency:
 
 1. **A rule engine** (`bifonia/scoring.py`) that predicts the `sense` from the local ±4-word context using hand-written rules and `.voc` wordlists. It needs no corpus, so it is the zero-resource baseline.
 2. **Learned per-word models** (`bifonia/model.py`, trained by `scripts/train.py`): a Naive-Bayes log-odds classifier and an averaged perceptron, fit from the labelled corpus over the features in `bifonia/features.py`.
 
 `guess_sense` combines them as a **per-word ensemble**: a word goes to the model only when the model passes the route gate described below, and the rule engine serves every other word.
 
-Both engines rest on a labelled corpus of 155,204 Portuguese sentences, one ambiguous word per sentence, labelled with a meaning slug (`sense`) and a descriptive `pos` attribute.
+Both engines rest on a labelled corpus of 155,427 Portuguese sentences, one ambiguous word per sentence, labelled with a meaning slug (`sense`) and a descriptive `pos` attribute.
 
 The bucket key is the **meaning**, not part of speech: two senses can share a POS. `sede` *thirst* (closed /ˈsedɨ/) and *seat/HQ* (open /ˈsɛdɨ/) are both nouns, separated only by vowel quality. `pos` is a descriptive attribute (the dominant grammatical reading of a sense) and may repeat across the senses of a word.
 
@@ -29,9 +29,9 @@ The canonical corpus is `bifonia/data/corpus.jsonl`, one JSON record per line, `
 
 | Metric | Value |
 |---|---|
-| Total sentences (`corpus.jsonl`) | 155,204 |
-| Train / test split (`hf/`) | 124,339 / 30,944 |
-| Words covered | 131 |
+| Total sentences (`corpus.jsonl`) | 155,427 |
+| Train / test split (`hf/`) | 124,519 / 30,987 |
+| Words covered | 132 |
 
 The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold ([#44](https://github.com/TigreGotico/bifonia/issues/44)), so the two totals differ. `python scripts/dataset.py --hf --out <dir>` prints the counts for a fresh split.
 
@@ -99,6 +99,8 @@ The structural `.voc` sets encode grammar (generic across Romance languages), no
 | **Frequency adverb before `sobre`** | `sempre sobre uma fatia` | "sobrar" finite VERB |
 | **`pelo` + feminine article** | `pelo as batatas` | `pelar` VERB (por+o ≠ a/as) |
 | **`pelo` + route noun** | `pelo interior` | Geographic ADP pattern |
+| **Past participle after `fora`** | `fora decidido` | Pluperfect passive of ser = closed *fôra* |
+| **Enclitic pronoun on `fora`** | `fora-lhe dito` | Only a verb hosts an enclitic = closed *fôra* |
 
 ### Punctuation stripping
 
@@ -133,7 +135,7 @@ python scripts/benchmark_ood.py                    # OOD real-text set (download
 
 ## Why this approach is tractable for Portuguese
 
-The rule engine works because Portuguese has a small set of heterophonic homographs that matter for TTS. This package covers 131 words. [`word_references.md`](word_references.md) gives the phonological conditions that make a spelling pair heterophonic, and the pairs that fail them.
+The rule engine works because Portuguese has a small set of heterophonic homographs that matter for TTS. This package covers 132 words. [`word_references.md`](word_references.md) gives the phonological conditions that make a spelling pair heterophonic, and the pairs that fail them.
 
 For most words the disambiguation reduces to a few clear grammatical contrasts (NOUN vs VERB, ADP vs VERB) reliably signalled by the ±4-word context: determiners, pronouns, infinitive markers, passive auxiliaries, copular verbs. Where two senses share a POS (`sede`), a meaning resolver reads sense-specific cues from the same window. The scorer does **not** attempt to tag full sentences. It only resolves the meaning of one pre-identified ambiguous token, which is a much easier problem than full POS tagging.
 

@@ -4,7 +4,7 @@ Per-word reference for European-Portuguese (pt-PT) heterophonic homographs: word
 
 The disambiguation key is the **meaning** (`sense`), the `pos` column is the descriptive grammatical reading of that sense and may repeat (both senses of `sede` are nouns).
 
-The page lists all 131 words in `bifonia/data/heterophonic_homographs.csv`. The [Index](#index) and the [Word entries](#word-entries) describe 27 words in full. The [Extended roster](#extended-roster) gives 97 more words in one table, and [Diacritic-collapse and noun/noun pairs](#diacritic-collapse-and-nounnoun-pairs) gives the last 7. The IPA on this page is the Infopédia transcription.
+The page lists all 132 words in `bifonia/data/heterophonic_homographs.csv`. The [Index](#index) and the [Word entries](#word-entries) describe 28 words in full. The [Extended roster](#extended-roster) gives 97 more words in one table, and [Diacritic-collapse and noun/noun pairs](#diacritic-collapse-and-nounnoun-pairs) gives the last 7. The IPA on this page is the Infopédia transcription.
 
 ## Diacritic convention
 
@@ -31,6 +31,7 @@ The diacritic convention encodes vowel quality (acute = open, circumflex = close
 | conserto | NOUN / VERB | E fechado /e/ vs E aberto /ɛ/ | [conserto](https://www.infopedia.pt/dicionarios/lingua-portuguesa/conserto) |
 | coro | NOUN / VERB | O fechado /o/ vs O aberto /ɔ/ | [coro](https://www.infopedia.pt/dicionarios/lingua-portuguesa/coro) |
 | corte | NOUN(court,fem) / VERB(cut+subj,masc) | O fechado /o/ (royal court) vs O aberto /ɔ/ (cut/subj) | [corte](https://www.infopedia.pt/dicionarios/lingua-portuguesa/corte) |
+| fora | ADV / VERB | O aberto /ɔ/ (advérbio, preposição, interjeição) vs O fechado /o/ (mais-que-perfeito de ser e ir) | [fora](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora) |
 | forma | NOUN(mould) / VERB(shape+verb) | O fechado /o/ (fôrma = molde) vs O aberto /ɔ/ (figura, modo, 3sg formar) | [forma](https://www.infopedia.pt/dicionarios/lingua-portuguesa/forma) |
 
 | Word (continued) | Senses (pos) | IPA contrast | Infopédia |
@@ -154,6 +155,19 @@ For non-native speakers: distinct from *concerto* (musical concert, spelled with
 For non-native speakers: "côrte" (court) is grammatically feminine ("a côrte do rei"). "córte" (cut) is masculine ("um córte no dedo") and also the present subjunctive of *cortar*.
 
 [corte](https://www.infopedia.pt/dicionarios/lingua-portuguesa/corte) · verb lemma *cortar*
+
+### fora
+
+| Sense (pos) | IPA | Diacritized | Meaning | Example |
+|-------------|-----|-------------|---------|---------|
+| outside (ADV) | ˈfɔɾɐ | fóra | advérbio «no lado exterior; noutro local que não a própria habitação; no estrangeiro; ao longo de», preposição «salvo, exceto», interjeição «Fora!», outside, out, abroad, except | *Está frio lá fóra.* / «fora de casa» |
+| had_been (VERB) | ˈfoɾɐ | fôra | pretérito mais-que-perfeito do indicativo de *ser* e de *ir* (1.ª e 3.ª pessoas), had been, had gone | *A carta fôra escrita na véspera.* / «se eu fora rico» |
+
+For non-native speakers: the pluperfect is a literary tense, and the adverb is the frequent reading. bifonia reads the verb only on a cue. The cue is a past participle after it (*fora decidido*), an enclitic pronoun on it (*fora-lhe dito*), or a pronoun, relative, *se* or negation right before it (*ela fora rica*, *o homem que fora*).
+
+Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv. interj. ou s.m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
+
+[fora](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora) · [Priberam](https://dicionario.priberam.org/fora) · verb lemmas *ser*, *ir*
 
 ### forma
 

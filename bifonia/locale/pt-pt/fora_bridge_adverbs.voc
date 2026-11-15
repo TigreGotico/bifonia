@@ -1,0 +1,20 @@
+# fora_bridge_adverbs.voc — Adverbs that can stand between the auxiliary 'fora' and
+# its past participle ('fora então decidido', 'fora já aprovada', 'fora muito
+# elogiado'), or between a subject pronoun and 'fora' ('ele já fora avisado').
+# An adverb in -mente is a bridge too, without a row here.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+ainda
+bem
+entretanto
+então
+já
+logo
+mal
+muito
+pouco
+primeiro
+sempre
+também
+tão

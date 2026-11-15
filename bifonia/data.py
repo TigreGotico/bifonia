@@ -293,6 +293,9 @@ DEFAULT_POS: dict = {
     # diacritic-collapse + deverbal additions
     "bola": "NOUN", "cor": "NOUN", "lobo": "NOUN", "polo": "NOUN",
     "renovo": "NOUN", "soma": "NOUN", "força": "NOUN",
+    # adverb (open) vs the pluperfect of ser/ir (closed). The adverb is the
+    # frequent reading, and only a cue of the verb overrides it (scoring.py).
+    "fora": "ADV",
 }
 assert set(DEFAULT_POS) == AMBIGUOUS_WORDS, (
     f"DEFAULT_POS missing: {AMBIGUOUS_WORDS - set(DEFAULT_POS)}"

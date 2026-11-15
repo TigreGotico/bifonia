@@ -61,12 +61,12 @@ The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO h
 
 ## Word coverage
 
-The roster has 131 words and 297 `(word, sense)` readings. The IPA for each reading is in `bifonia/data/heterophonic_homographs.csv`, keyed on `(word, sense)`, and `HOMOGRAPHS` holds the same table in Python:
+The roster has 132 words and 299 `(word, sense)` readings. The IPA for each reading is in `bifonia/data/heterophonic_homographs.csv`, keyed on `(word, sense)`, and `HOMOGRAPHS` holds the same table in Python:
 
 ```python
 from bifonia import HOMOGRAPHS
-len(HOMOGRAPHS)                          # 131
-sum(map(len, HOMOGRAPHS.values()))       # 297
+len(HOMOGRAPHS)                          # 132
+sum(map(len, HOMOGRAPHS.values()))       # 299
 HOMOGRAPHS["sede"]                       # {'seat': 'ˈsɛdɨ', 'thirst': 'ˈsedɨ', 'legal_context': 'ˈsɛdɨ'}
 ```
 
@@ -95,6 +95,7 @@ The disambiguator assigns an integer score to each applicable POS using signals 
 - Infinitive immediately before → −5 (nominal context), guarded against clause boundaries
 - Temporal conjunction before (`quando`, `enquanto`) → +2
 - Subjunctive conjunction before (`caso`, `embora`) → +4
+- `fora` takes none of these signals. A cue of the pluperfect of *ser* or *ir* gives +8: a past participle after it (`fora decidido`), an enclitic pronoun on it (`fora-lhe dito`), or a pronoun, relative, `se` or negation right before it (`ela fora rica`). Without a cue, the adverb wins (`DEFAULT_POS`)
 
 **ADJ signals (score_adj)**
 - Copular verb before (`é`, `está`, `ficou`, and others) → +5

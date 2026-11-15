@@ -26,7 +26,7 @@ configs:
 
 # bifonia: Portuguese Heterophonic Homograph Disambiguation
 
-Labelled European-Portuguese (pt-PT) sentences for **131 heterophonic homographs**:
+Labelled European-Portuguese (pt-PT) sentences for **132 heterophonic homographs**:
 words with identical spelling whose pronunciation (IPA) depends on part of speech
 or meaning, e.g. `para` (preposition `ˈpɐɾɐ` vs verb `ˈpaɾɐ`), `molho`
 (sauce `ˈmoʎu` vs bundle `ˈmɔʎu`), `corte` (royal court `ˈkoɾtɨ` vs cut `ˈkɔɾtɨ`).
@@ -39,7 +39,7 @@ Useful for grapheme-to-phoneme / TTS front-ends and for POS disambiguation.
 |-------|-------------|
 | `word` | the ambiguous headword |
 | `sense` | the **meaning** slug that selects the IPA (e.g. `thirst` / `seat`, `mould` / `shape`), the bucket key |
-| `pos` | descriptive part of speech of this reading (`NOUN` / `VERB` / `ADP` / `ADJ`); may repeat across senses |
+| `pos` | descriptive part of speech of this reading (`NOUN` / `VERB` / `ADP` / `ADJ` / `ADV`); may repeat across senses |
 | `ipa` | European-Portuguese transcription of `word` in this reading |
 | `sentence` | a natural sentence using `word` in that meaning |
 | `diacritized` | `word` with the disambiguating diacritic restored (acute = open vowel, circumflex = closed): `sêde`/`séde`, `fôrma`/`fórma` |
@@ -51,7 +51,7 @@ closed vowel), so `sense`, not `pos`, is the label a model should predict.
 
 ## Splits
 
-- `train`: 80% (124,339 sentences), `test`: 20% (30,944 sentences)
+- `train`: 80% (124,519 sentences), `test`: 20% (30,987 sentences)
 - shuffled and stratified per `(word, sense)` with a fixed seed, so each bucket
   is represented i.i.d. in both splits (no tail/ordering skew).
 
@@ -66,7 +66,7 @@ and idiomatic uses of the same reading (same pronunciation) are kept.
 
 ## Words
 
-The 131 words and their 297 readings are in
+The 132 words and their 299 readings are in
 [`bifonia/data/heterophonic_homographs.csv`](https://github.com/TigreGotico/bifonia/blob/dev/bifonia/data/heterophonic_homographs.csv),
 and [`docs/word_references.md`](https://github.com/TigreGotico/bifonia/blob/dev/docs/word_references.md)
 describes each one.

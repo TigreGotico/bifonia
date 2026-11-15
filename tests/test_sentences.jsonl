@@ -1969,3 +1969,16 @@
 {"sentence": "A professora pediu que soubéssemos o verso de cor.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
 {"sentence": "Ele conhece de cor as regras todas do jogo.", "word": "cor", "sense": "by_heart", "pos": "NOUN", "xfail": null}
 {"sentence": "O falcoeiro alimentou o polo ainda implume no ninho.", "word": "polo", "sense": "fledgling", "pos": "NOUN", "xfail": null}
+{"sentence": "Os miúdos ficaram a brincar cá fora até escurecer.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": null}
+{"sentence": "Esse vestido está fora de moda há anos.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": null}
+{"sentence": "Fora com isso, não quero ouvir mais nada!", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": null}
+{"sentence": "O bolo fora feito pela avó na véspera da festa.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": null}
+{"sentence": "Ela fora a primeira mulher a dirigir a fábrica.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": null}
+{"sentence": "A estrada que fora aberta pelos romanos ainda existe.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": null}
+{"sentence": "Aquele fora o pior ano da sua vida.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": "a demonstrative pronoun as subject is no cue: 'deita isso fora' has one as object"}
+{"sentence": "Fora ele quem abrira a porta aos ladrões.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": "a cleft sentence that opens with 'Fora' has no cue in the ±4 window"}
+{"sentence": "Esteve fora, ocupado com as obras da casa.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": "guess_sense strips the punctuation of the target, so a participle after 'fora,' reads as the pluperfect passive"}
+{"sentence": "Era mais famoso dentro do país do que fora.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": "after a comparative 'do que' the 'que' is no relative, and a rule to tell the two apart needs a source"}
+{"sentence": "Vendem o produto cá dentro, não fora.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": "an elliptic 'não fora' reads as a negated verb"}
+{"sentence": "Deixou o carro fora estacionado na rua.", "word": "fora", "sense": "outside", "pos": "ADV", "xfail": "a depictive adjective in -ado after 'fora' reads as the pluperfect passive"}
+{"sentence": "Sempre fora atlético e saudável.", "word": "fora", "sense": "had_been", "pos": "VERB", "xfail": "a predicate adjective after 'fora' is no cue: in pt-BR this gives open fóra where bare fora reads closed"}

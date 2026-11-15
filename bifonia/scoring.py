@@ -3,6 +3,15 @@ Context-based POS scoring for Portuguese heterophonic bifoniaaphs.
 
 Each scorer returns an integer; higher = more confident.
 Negative scores signal anti-evidence for that POS.
+
+Sources for "fora": the Formulário Ortográfico 1943, rule 14.ª, "Emprega-se o
+acento circunflexo como diferencial ou distintivo no e e no o fechados da
+sílaba tônica das palavras que estão em homografia com outras em que são
+abertos ... fôra (v.) e fora (adv. interj. ou s.m.)"; the Acordo Ortográfico
+1945, "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e
+substantivo"; Priberam (https://dicionario.priberam.org/fora), "fora |ó| ...
+advérbio"; Infopédia (https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora),
+"fora fo.ra ˈfɔrɐ advérbio".
 """
 
 from bifonia.cues import SENSE_CUES
@@ -102,6 +111,13 @@ _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → s
 # The diacritic-collapse / cue-competition words (bola, lobo, polo, cor) are
 # resolved declaratively from bifonia.cues.SENSE_CUES — their cue vocs are loaded
 # on demand inside _resolve_by_cues, not bound here.
+# "fora": cues of the pluperfect of ser/ir (closed o) against the adverb (open ɔ)
+_FORA_VERB_PREV = voc("fora_verb_prev")
+_FORA_ADVERB_PREV = voc("fora_adverb_prev")
+_FORA_ADVERB_NEXT = voc("fora_adverb_next")
+_FORA_BRIDGE = voc("fora_bridge_adverbs")
+_IRREGULAR_PARTICIPLES = voc("irregular_participles")
+_PARTICIPLE_LOOKALIKES = voc("participle_lookalikes")
 # contracted prep+article forms (shared by several scorers)
 _CONTRACTED_DET = voc("contracted_det")
 _VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
@@ -288,6 +304,65 @@ def _molho_takes_object(words: list, idx: int) -> bool:
     return False
 
 
+def _is_participle(word: str) -> bool:
+    """Return True when *word* looks like a past participle: an irregular one
+    ("escrito", "aceite") or an -ado/-ido form ("decidido", "baseada",
+    "construída"), but not a noun such as "lado" or "sábado"."""
+    if word in _IRREGULAR_PARTICIPLES:
+        return True
+    stem = word.removesuffix("s")
+    if stem in _PARTICIPLE_LOOKALIKES:
+        return False
+    return stem.endswith(("ado", "ada", "ido", "ida", "ído", "ída")) and len(stem) >= 4
+
+
+def _fora_is_verb(words: list, idx: int) -> bool:
+    """Return True when "fora" is the pluperfect of ser or ir (closed fôra).
+
+    The adverb, preposition and interjection (open fóra) are the frequent
+    reading, so the verb needs one of these cues:
+
+    - a past participle after it, perhaps after an adverb: the pluperfect
+      passive ("assim fora decidido", "fora então construída");
+    - a subject pronoun, a proclitic, a relative, the conditional "se" or a
+      negation before it, perhaps before an adverb ("se ela fora rica", "lhe
+      fora dito", "o homem que fora", "ele já fora rei", "nunca fora tão
+      feliz");
+    - a clause-initial definite article and noun before it ("O dia fora
+      longo"). An indefinite one opens a span of time ("Uma semana fora
+      cansou-o").
+
+    A preposition or "lá"/"cá" before it ("para fora", "lá fora") and "de" or a
+    contraction of "de" after it ("fora de casa", "fora daqui") mark the
+    adverb whatever else is near. An enclitic pronoun after it marks the verb,
+    because only a verb hosts one ("fora-lhe dito", "fora-se embora").
+    Punctuation after the word before it breaks the cue of that word ("que,
+    fora a Netflix, …").
+    """
+    prev_word = _prev(words, idx)
+    next_word = _next(words, idx)
+    if next_word.startswith("-") and next_word[1:] in _ENCLITICS:
+        return True
+    if prev_word in _FORA_ADVERB_PREV or next_word in _FORA_ADVERB_NEXT:
+        return False
+    j = idx + 1
+    while j < len(words) - 1 and j - idx <= 2 and words[j][-1:] not in ".,;:!?" and (
+            _strip(words[j]) in _FORA_BRIDGE or _strip(words[j]).endswith("mente")):
+        j += 1
+    if j < len(words) and _is_participle(_strip(words[j])):
+        return True
+    subject, gap = prev_word, 1
+    if prev_word in _FORA_BRIDGE and idx > 1:
+        subject, gap = _prev2(words, idx), 2              # "ele já fora rei"
+    if subject in _FORA_VERB_PREV and not any(
+            w[-1:] in ".,;:!?" for w in words[idx - gap:idx]):
+        return True
+    clause_start = idx == 2 or (idx > 2 and words[idx - 3][-1:] in ".,;:!?")
+    return (clause_start and _prev2(words, idx) in _ARTICLES
+            and words[idx - 1][-1:] not in ".,;:!?"
+            and prev_word not in DET | QUANT | PRON | _FUNC_EXTRA)
+
+
 def score_noun(words: list, idx: int) -> int:
     prev_word = _prev(words, idx)
     next_word = _next(words, idx)
@@ -467,6 +542,11 @@ def score_verb(words: list, idx: int) -> int:
     prev_word = _prev(words, idx)
     next_word = _next(words, idx)
     prev2_word = _prev2(words, idx)
+
+    # "fora" takes none of the generic verb signals below: the adverb is the
+    # default reading, and only a cue of the pluperfect of ser/ir overrides it.
+    if word == "fora":
+        return 8 if _fora_is_verb(words, idx) else 0
 
     score = 0
 

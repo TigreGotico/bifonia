@@ -140,9 +140,9 @@ python scripts/dataset.py --out data/
 
 | Metric | Value |
 |--------|-------|
-| Total sentences | 155,204 |
-| Train / test split | 124,339 / 30,944 |
-| Unique ambiguous words | 131 |
+| Total sentences | 155,427 |
+| Train / test split | 124,519 / 30,987 |
+| Unique ambiguous words | 132 |
 | POS attributes | NOUN, VERB, ADP, ADJ |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
 

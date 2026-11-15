@@ -1,0 +1,32 @@
+# fora_verb_prev.voc — Words directly before 'fora' that make it the pluperfect of
+# ser or ir (closed ˈfoɾɐ): a subject pronoun ('ela fora rica'), a proclitic
+# pronoun ('lhe fora dito'), a relative ('o homem que fora'), the conditional
+# 'se' ('se eu fora rico') and a pre-verbal negation ('nunca fora tão feliz').
+# Without one of these cues 'fora' keeps the adverb reading (open ˈfɔɾɐ).
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+eu
+tu
+ele
+ela
+nós
+vós
+eles
+elas
+você
+vocês
+me
+te
+lhe
+lhes
+vos
+se
+que
+quem
+qual
+quais
+onde
+não
+nunca
+jamais
