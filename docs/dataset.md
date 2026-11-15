@@ -24,7 +24,7 @@ The bucket key is the **meaning** (`sense`), not part of speech. Each record als
 | Train / test split (`hf/`) | 124,519 / 30,987 |
 | Ambiguous words | 132 |
 | Senses with sentences | 288 of the 299 in `heterophonic_homographs.csv` |
-| POS attributes | NOUN, VERB, ADP, ADJ, ADV |
+| POS attributes | NOUN, VERB, ADP, ADJ, ADV, and the pairs NOUN\|VERB and ADJ\|NOUN |
 | Language | European Portuguese (pt-PT) |
 | License | Apache-2.0 |
 
@@ -40,7 +40,7 @@ The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold (
 |-------|------|-------------|
 | `word` | str | The ambiguous word (lowercase, no diacritics) |
 | `sense` | str | Meaning slug, the label to predict (e.g. `thirst`, `seat`) |
-| `pos` | str | Descriptive UPOS attribute of that sense: NOUN, VERB, ADP, ADJ or ADV |
+| `pos` | str | Descriptive UPOS attribute of that sense: NOUN, VERB, ADP, ADJ or ADV, or two of them joined by `\|` (`NOUN\|VERB`, `ADJ\|NOUN`) |
 | `ipa` | str | IPA transcription this `(word, sense)` reading carries |
 | `sentence` | str | Full sentence context using the plain (undiacritized) word form |
 
@@ -103,7 +103,7 @@ for i, w in enumerate(words):
 
 Three datasets on the Hub. Each record has the fields `word`, `sense`, `pos`, `ipa` and `sentence`:
 
-- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the committed `hf/` split, 124,519 train and 30,987 test sentences over 132 words, for training and synthetic evaluation. It adds the `diacritized` and `diacritized_sentence` fields.
+- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the synthetic split for training and synthetic evaluation, over 132 words. The committed `hf/` split holds 124,519 train and 30,987 test sentences. It adds the `diacritized` and `diacritized_sentence` fields.
 - [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild): 6,640 real Wikipedia and web sentences over 110 words, forming an out-of-distribution (OOD) test set, labels annotated by an LLM, licensed CC-BY-SA-4.0. `scripts/benchmark_ood.py` evaluates against it.
 - [`TigreGotico/bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold): 2,233 real, sense-balanced sentences over 40 words, labelled independently of the rules, with a `source` field. No script in this repository evaluates against it.
 
