@@ -70,7 +70,7 @@ A consistent result across this project: **models trained on the corpus do not b
 guess_sense(words, i, postag="NOUN")
 ```
 
-The tag decides only where one part of speech maps to exactly one sense. Everywhere else the rules decide. `python scripts/benchmark_ood.py` scores the rules at 88.1% on the encyclopedic wild set (6,640 sentences). No script in this repository scores the hybrid.
+The tag decides only where one part of speech maps to exactly one sense. Everywhere else the rules decide. `python scripts/benchmark_ood.py` scores the rules at 88.0% on the encyclopedic wild set (6,640 sentences). No script in this repository scores the hybrid.
 
 ## API
 
@@ -144,6 +144,8 @@ bifonia/scoring.py   context rules + one generic cue resolver
 bifonia/features.py  language-agnostic features, incl. CUE:<sense> from the registry
 bifonia/model.py     loads and scores the learned NB / perceptron JSON models
 bifonia/corpus.py    loads bifonia/data/corpus.jsonl into CORPUS
+bifonia/vocab.py     loads the .voc wordlists of a locale
+bifonia/infopedia.py loads bifonia/data/infopedia_pt.csv, the Infopédia entries
 bifonia/data/        roster CSVs, corpus.jsonl, lect_overrides.csv, context_free_marks.csv, model JSON
 bifonia/locale/<lang>/*.voc   editable context + meaning wordlists
 scripts/             training, dataset export and benchmark scripts
@@ -160,7 +162,7 @@ The meaning cues that disambiguate same-spelling readings live in **one declarat
 
 bifonia's pronunciations are European Portuguese, taken from Infopédia. A separate Brazilian table is not needed. For 123 of the 132 words, Brazilian Portuguese keeps the same contrast, with the same sense on the same stressed vowel. Many of these words were checked against the Brazilian transcription in Wiktionary, but the repository keeps no list of the checked words. The others follow the general rule: nouns have a closed vowel and the homographic verb forms have an open one, as in *o gosto* [o] and *eu gosto* [ɔ]. One of the 123 words varies: Brazilian speakers say the noun *esmero* with [e] or [ɛ]. bifonia marks it *esmêro*, which is an accepted Brazilian form. *fora* has the opposite pattern, an open adverb and a closed verb form, and Wiktionary gives the same two vowels for Brazil.
 
-`add_extra_diacritics` marks the stressed-vowel quality with é/ê/ó/ô. The pt-BR lect of the phonemizer builds the other segments, such as final [ɪ], palatalised *t* and *d*, coda *s* and *r*, and vocalised *l*. A mark can also change how the phonemizer reads the rest of the word. In tugaphone 1.4.19a1 with `lang="pt-BR-x-rj"`, *abono* gives [aˈbõnʊ] and *abôno* gives [aˈbõnu].
+`add_extra_diacritics` marks the stressed-vowel quality with é/ê/ó/ô. The pt-BR lect of the phonemizer builds the other segments, such as final [ɪ], palatalised *t* and *d*, coda *s* and *r*, and vocalised *l*.
 
 Nine words differ in Brazil:
 
@@ -187,7 +189,9 @@ The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO k
 ## Related projects
 
 - [`TigreGotico/tugaphone`](https://github.com/TigreGotico/tugaphone): a Portuguese G2P for several Lusophone lects. It depends on bifonia and runs `add_extra_diacritics` before it phonemizes.
-- [`TigreGotico/tugalex`](https://github.com/TigreGotico/tugalex): the Portuguese pronunciation lexicon that tugaphone reads.
+- [`TigreGotico/orthography2ipa`](https://github.com/TigreGotico/orthography2ipa): the grapheme-to-phoneme engine that tugaphone runs. `scripts/build_context_free_marks.py` checks each context-free mark against it.
+- [`TigreGotico/o2i-lexicons`](https://github.com/TigreGotico/o2i-lexicons): the `pt-PT` and `pt-BR` residual lexicons of orthography2ipa. Its NILC entries are a pt-BR source for the context-free marks.
+- [`TigreGotico/tugalex`](https://github.com/TigreGotico/tugalex): a Portuguese pronunciation lexicon. Its AO1990 maps are the norm source of the context-free marks.
 - [`TigreGotico/silabificador`](https://github.com/TigreGotico/silabificador): a rule-based Portuguese syllabifier.
 
 ## Documentation

@@ -12,7 +12,7 @@ No runtime dependencies. bifonia uses only the Python standard library.
 ## Quick start
 
 ```python
-from bifonia import tokenize, is_ambiguous, guess_sense, disambiguate, add_extra_diacritics
+from bifonia import tokenize, is_ambiguous, guess_sense, disambiguate, add_extra_diacritics, proper_flags
 
 words = tokenize("A sede de conhecimento move-nos.")
 i = words.index("sede")
@@ -39,13 +39,24 @@ True if the word is a known heterophonic homograph.
 ### `guess_sense(words, idx, pos=None, proper=False, postag=None) → str`
 Primary entry point. Returns the most likely **meaning slug** (the label to predict) for the word at position *idx* based on its context, for example `"thirst"`, `"seat"`, `"stop"`. A diacritized token (*séde*, *pára*) gives its sense directly. Otherwise this uses the **per-word ensemble**: the learned model serves words that it is routed to and clears its margin on, and the rule engine serves the rest. In the shipped model no word is routed to the model, so the rule engine answers for every word. Pass `pos=` to force the rule resolver within that POS. Pass `proper=True` for a mid-sentence capitalised token, which biases the NOUN reading and skips the model. `proper_flags(text)` gives this flag for each token. A word written all in capitals is not a name signal on its own. After a first word in title case, an all-caps token such as an acronym, a roman numeral or an initial still marks that first word as a name. Pass `postag=` to supply an external POS tag (for example from spaCy or Stanza). The tag decides only when that POS maps to exactly one sense of the word. Otherwise the ensemble decides.
 
-### `guess_pos(words, idx) → str`
+### `guess_pos(words, idx, proper=False) → str`
 Returns the **lexical class that selects the word's pronunciation**: `"ADP"`, `"NOUN"`, `"VERB"`, or `"ADJ"`. For a plain token it returns the rule scorer's winning class (`bifonia.scoring.guess_pos`), with no learned model. For a diacritized token it maps the sense from `guess_sense` back to its lexical class.
 
 > **This is not a part-of-speech tagger and must not be used as one.** The tag is chosen to land on the correct IPA, and can deliberately disagree with the word's syntactic function. The clearest case is an **adjective used as a noun**: in *"aquela tola comprou um carro"*, `tola` is syntactically a NOUN (the subject), but keeps the *adjective* reading (`foolish`, closed ˈtolɐ), so `guess_pos` returns `"ADJ"`. The roster even tags that sense `ADJ|NOUN`, so an external NOUN tag defers to the rules rather than forcing the concrete `head` noun (open ˈtɔlɐ). For genuine POS tagging use a real tagger (spaCy, Stanza). For pronunciation use `guess_sense`/`disambiguate`.
 
 ### `disambiguate(words, idx, pos=None, sense=None, postag=None) → str`
 Returns the IPA transcription for the word at *idx*, selected by **meaning**. Pass `sense=` to choose the reading directly (`disambiguate(words, i, sense="seat")`), `pos=` to fix the POS before the sense is resolved within it, or `postag=` to pass an external POS-tag hint through to the ensemble.
+
+### `proper_flags(text) → list[bool]`
+Returns one flag per token of `tokenize(text)`. A flag is `True` for a capitalised token inside the sentence, a likely proper noun. Pass the flag of a token as `proper=` to `guess_sense` or `guess_pos`.
+
+```python
+proper_flags("Ontem o Porto ganhou ao Benfica.")
+# [False, False, True, False, False, True]
+```
+
+### `AMBIGUOUS_WORDS` and `HOMOGRAPHS`
+`AMBIGUOUS_WORDS` is the set of the 132 roster words that `is_ambiguous` tests. `HOMOGRAPHS` maps each word to its `{sense: ipa}` readings. See [Word coverage](#word-coverage).
 
 ### `add_extra_diacritics(sentence, lang="pt-PT") → str`
 Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect, and `None` means the default. `pt-BR`, `pt-UY` and their sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See the README section on Brazilian Portuguese.

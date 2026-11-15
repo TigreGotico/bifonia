@@ -143,7 +143,7 @@ python scripts/dataset.py --out data/
 | Total sentences | 155,427 |
 | Train / test split | 124,519 / 30,987 |
 | Unique ambiguous words | 132 |
-| POS attributes | NOUN, VERB, ADP, ADJ |
+| POS attributes | NOUN, VERB, ADP, ADJ, ADV, and the pairs NOUN\|VERB and ADJ\|NOUN |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
 
 Sense-prediction accuracy for every approach is in [`benchmarks.md`](benchmarks.md).
