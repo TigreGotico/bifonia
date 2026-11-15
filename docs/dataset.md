@@ -20,11 +20,11 @@ The bucket key is the **meaning** (`sense`), not part of speech. Each record als
 
 | Metric | Value |
 |--------|-------|
-| Total sentences (`bifonia/data/corpus.jsonl`) | 155,204 |
-| Train / test split (`hf/`) | 124,339 / 30,944 |
-| Ambiguous words | 131 |
-| Senses with sentences | 286 of the 297 in `heterophonic_homographs.csv` |
-| POS attributes | NOUN, VERB, ADP, ADJ |
+| Total sentences (`bifonia/data/corpus.jsonl`) | 155,427 |
+| Train / test split (`hf/`) | 124,519 / 30,987 |
+| Ambiguous words | 132 |
+| Senses with sentences | 288 of the 299 in `heterophonic_homographs.csv` |
+| POS attributes | NOUN, VERB, ADP, ADJ, ADV |
 | Language | European Portuguese (pt-PT) |
 | License | Apache-2.0 |
 
@@ -40,7 +40,7 @@ The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold (
 |-------|------|-------------|
 | `word` | str | The ambiguous word (lowercase, no diacritics) |
 | `sense` | str | Meaning slug, the label to predict (e.g. `thirst`, `seat`) |
-| `pos` | str | Descriptive UPOS attribute of that sense: NOUN, VERB, ADP, or ADJ |
+| `pos` | str | Descriptive UPOS attribute of that sense: NOUN, VERB, ADP, ADJ or ADV |
 | `ipa` | str | IPA transcription this `(word, sense)` reading carries |
 | `sentence` | str | Full sentence context using the plain (undiacritized) word form |
 
@@ -54,7 +54,7 @@ This dataset supports:
 
 1. **Sense disambiguation**: predict the `sense` of an ambiguous word given its sentence context. Input: `(sentence, word, word_index)`. Output: `sense` (or `ipa`).
 2. **TTS pronunciation prediction**: given a sentence, predict the IPA of each ambiguous word. `bifonia` ships both a corpus-free rule engine and corpus-trained learned models (Naive-Bayes and an averaged perceptron) trained from this corpus. See `docs/methodology.md` for the accuracy comparison on a synthetic split and on a real-text OOD set.
-3. **Portuguese sense disambiguation**: a targeted sub-task for the 131 homograph types in the roster.
+3. **Portuguese sense disambiguation**: a targeted sub-task for the 132 homograph types in the roster.
 
 ---
 
@@ -103,7 +103,7 @@ for i, w in enumerate(words):
 
 Three datasets on the Hub. Each record has the fields `word`, `sense`, `pos`, `ipa` and `sentence`:
 
-- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the committed `hf/` split, 124,339 train and 30,944 test sentences over 131 words, for training and synthetic evaluation. It adds the `diacritized` and `diacritized_sentence` fields.
+- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the committed `hf/` split, 124,519 train and 30,987 test sentences over 132 words, for training and synthetic evaluation. It adds the `diacritized` and `diacritized_sentence` fields.
 - [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild): 6,640 real Wikipedia and web sentences over 110 words, forming an out-of-distribution (OOD) test set, labels annotated by an LLM, licensed CC-BY-SA-4.0. `scripts/benchmark_ood.py` evaluates against it.
 - [`TigreGotico/bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold): 2,233 real, sense-balanced sentences over 40 words, labelled independently of the rules, with a `source` field. No script in this repository evaluates against it.
 

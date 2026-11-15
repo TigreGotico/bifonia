@@ -166,6 +166,7 @@ TARGETS = [
     ("renovo", "shoot", 1000),      ("renovo", "renew", 1000),
     ("soma", "sum", 1000),          ("soma", "add", 1000),
     ("força", "strength", 1000),    ("força", "force", 1000),
+    ("fora", "outside", 1000),      ("fora", "had_been", 1000),
 ]
 
 _PROMPTS_DIR = Path(__file__).parent.parent / "prompts" / "pt-PT"

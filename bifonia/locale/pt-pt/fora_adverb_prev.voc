@@ -1,0 +1,13 @@
+# fora_adverb_prev.voc — Words directly before 'fora' that make it the adverb (open
+# ˈfɔɾɐ) in every context: a preposition ('para fora', 'de fora', 'por fora') or a
+# locative adverb of the fixed pairs 'lá fora' and 'cá fora'. They veto every
+# cue of the pluperfect of ser/ir.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+para
+pra
+de
+por
+lá
+cá

@@ -414,6 +414,8 @@ _DIACRITIZED: dict = {
     ("soma",       "sum"):        "sôma",     # sum/noun   = closed o
     ("força",      "force"):      "fórça",    # force/verb = open ɔ
     ("força",      "strength"):   "fôrça",    # strength   = closed o
+    ("fora",       "outside"):    "fóra",     # adverb     = open ɔ
+    ("fora",       "had_been"):   "fôra",     # ser/ir     = closed o
 }
 
 
