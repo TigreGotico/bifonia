@@ -38,6 +38,11 @@ def _ipa(sentence: str) -> str:
     # a verb cue next to an adverb veto: the veto wins
     "Disse que fora de casa ninguém fuma.",
     "Ficaram lá fora sentados no muro.",
+    # a noun in -ado/-ada after it is no participle
+    "Jantamos fora sábado.",
+    "Ficámos fora madrugada adentro.",
+    # punctuation between the cue word and fora breaks the cue
+    "Ela percebeu que, fora a Netflix, nada mais via.",
 ])
 def test_adverb_preposition_interjection_is_open(sentence):
     assert _ipa(sentence) == OPEN
@@ -52,6 +57,13 @@ def test_adverb_preposition_interjection_is_open(sentence):
     "Ele fora ao Porto na semana anterior.",
     "O dia fora longo e cansativo.",
     "A ponte fora então construída pelos romanos.",
+    # an adverb between the subject and fora
+    "Ele já fora rei.",
+    # an adverb between fora and the participle, with no other cue
+    "Tudo fora já decidido.",
+    # an enclitic pronoun: only a verb hosts one
+    "Fora-lhe dito que esperasse.",
+    "Fora-se embora sem avisar.",
 ])
 def test_pluperfect_of_ser_and_ir_is_closed(sentence):
     assert _ipa(sentence) == CLOSED

@@ -100,6 +100,7 @@ The structural `.voc` sets encode grammar (generic across Romance languages), no
 | **`pelo` + feminine article** | `pelo as batatas` | `pelar` VERB (por+o ≠ a/as) |
 | **`pelo` + route noun** | `pelo interior` | Geographic ADP pattern |
 | **Past participle after `fora`** | `fora decidido` | Pluperfect passive of ser = closed *fôra* |
+| **Enclitic pronoun on `fora`** | `fora-lhe dito` | Only a verb hosts an enclitic = closed *fôra* |
 
 ### Punctuation stripping
 

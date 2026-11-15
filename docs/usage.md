@@ -95,7 +95,7 @@ The disambiguator assigns an integer score to each applicable POS using signals 
 - Infinitive immediately before → −5 (nominal context), guarded against clause boundaries
 - Temporal conjunction before (`quando`, `enquanto`) → +2
 - Subjunctive conjunction before (`caso`, `embora`) → +4
-- `fora` takes none of these signals. A cue of the pluperfect of *ser* or *ir* gives +8: a past participle after it (`fora decidido`), or a pronoun, relative, `se` or negation before it (`ela fora rica`). Without a cue, the adverb wins (`DEFAULT_POS`)
+- `fora` takes none of these signals. A cue of the pluperfect of *ser* or *ir* gives +8: a past participle after it (`fora decidido`), an enclitic pronoun on it (`fora-lhe dito`), or a pronoun, relative, `se` or negation right before it (`ela fora rica`). Without a cue, the adverb wins (`DEFAULT_POS`)
 
 **ADJ signals (score_adj)**
 - Copular verb before (`é`, `está`, `ficou`, and others) → +5

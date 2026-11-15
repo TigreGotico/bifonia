@@ -163,9 +163,9 @@ For non-native speakers: "côrte" (court) is grammatically feminine ("a côrte d
 | outside (ADV) | ˈfɔɾɐ | fóra | advérbio «no lado exterior; noutro local que não a própria habitação; no estrangeiro; ao longo de», preposição «salvo, exceto», interjeição «Fora!», outside, out, abroad, except | *Está frio lá fóra.* / «fora de casa» |
 | had_been (VERB) | ˈfoɾɐ | fôra | pretérito mais-que-perfeito do indicativo de *ser* e de *ir* (1.ª e 3.ª pessoas), had been, had gone | *A carta fôra escrita na véspera.* / «se eu fora rico» |
 
-For non-native speakers: the pluperfect is a literary tense, and the adverb is the frequent reading. bifonia reads the verb only on a cue. The cue is a past participle after it (*fora decidido*), or a pronoun, relative, *se* or negation before it (*ela fora rica*, *o homem que fora*).
+For non-native speakers: the pluperfect is a literary tense, and the adverb is the frequent reading. bifonia reads the verb only on a cue. The cue is a past participle after it (*fora decidido*), an enclitic pronoun on it (*fora-lhe dito*), or a pronoun, relative, *se* or negation right before it (*ela fora rica*, *o homem que fora*).
 
-The Infopédia entry has the adverb, the preposition and the interjection (ˈfɔrɐ), but no verb form, so the verb IPA comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv. interj. ou s.m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
+Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv. interj. ou s.m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
 
 [fora](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora) · [Priberam](https://dicionario.priberam.org/fora) · verb lemmas *ser*, *ir*
 

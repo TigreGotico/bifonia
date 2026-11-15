@@ -334,10 +334,15 @@ def _fora_is_verb(words: list, idx: int) -> bool:
 
     A preposition or "lá"/"cá" before it ("para fora", "lá fora") and "de" or a
     contraction of "de" after it ("fora de casa", "fora daqui") mark the
-    adverb whatever else is near.
+    adverb whatever else is near. An enclitic pronoun after it marks the verb,
+    because only a verb hosts one ("fora-lhe dito", "fora-se embora").
+    Punctuation after the word before it breaks the cue of that word ("que,
+    fora a Netflix, …").
     """
     prev_word = _prev(words, idx)
     next_word = _next(words, idx)
+    if next_word.startswith("-") and next_word[1:] in _ENCLITICS:
+        return True
     if prev_word in _FORA_ADVERB_PREV or next_word in _FORA_ADVERB_NEXT:
         return False
     j = idx + 1
@@ -346,10 +351,11 @@ def _fora_is_verb(words: list, idx: int) -> bool:
         j += 1
     if j < len(words) and _is_participle(_strip(words[j])):
         return True
-    subject = prev_word
+    subject, gap = prev_word, 1
     if prev_word in _FORA_BRIDGE and idx > 1:
-        subject = _prev2(words, idx)                      # "ele já fora rei"
-    if subject in _FORA_VERB_PREV:
+        subject, gap = _prev2(words, idx), 2              # "ele já fora rei"
+    if subject in _FORA_VERB_PREV and not any(
+            w[-1:] in ".,;:!?" for w in words[idx - gap:idx]):
         return True
     clause_start = idx == 2 or (idx > 2 and words[idx - 3][-1:] in ".,;:!?")
     return (clause_start and _prev2(words, idx) in _ARTICLES
