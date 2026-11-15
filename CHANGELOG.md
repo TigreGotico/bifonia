@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0a3](https://github.com/TigreGotico/bifonia/tree/0.5.0a3) (2026-11-15)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0a2...0.5.0a3)
+
+**Merged pull requests:**
+
+- docs: give the Hub and committed word counts apart, and list ADV in guess\_pos [\#68](https://github.com/TigreGotico/bifonia/pull/68) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.5.0a2](https://github.com/TigreGotico/bifonia/tree/0.5.0a2) (2026-11-15)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0a1...0.5.0a2)
