@@ -1,0 +1,24 @@
+# post_verb_adverbs.voc — Adverbs of time, place and manner that follow a finite verb
+# directly ('molho agora os pés', 'molho sozinho o jardim'). Right after a homograph
+# with no other cue they mark the verb.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+agora
+amanhã
+aqui
+ali
+cedo
+cá
+depressa
+devagar
+diariamente
+hoje
+juntas
+juntos
+lá
+ontem
+sozinha
+sozinhas
+sozinho
+sozinhos

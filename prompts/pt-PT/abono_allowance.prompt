@@ -1,0 +1,15 @@
+# sense: allowance
+Gera {n} frases em Português Europeu natural onde "abono" é SUBSTANTIVO.
+
+Significado: ajuda financeira ou quantia em dinheiro concedida a alguem, como subsidio ou adiantamento
+IPA: /ɐˈbonu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "abono" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «recebe um abono de familia todos os meses»; «pediu um abono por conta do ordenado»; «o abono de natal foi pago em dezembro»; «o trabalhador tem direito a um abono de risco»; «o abono ajudou a pagar as despesas dos filhos»
+Responde APENAS com as frases, uma por linha:

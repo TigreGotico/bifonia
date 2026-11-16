@@ -1,0 +1,14 @@
+# sense: play
+Gera {n} frases em Português Europeu natural onde "toco" é a 1.ª pessoa do singular do presente do indicativo de «tocar».
+
+Significado de «tocar»: pôr a mão ou o dedo em; tirar sons musicais de (instrumento musical); estar próximo de; executar (peça musical); confinar com; pôr-se em contacto com; acionar (sistema sonoro) para alertar para a presença de alguém, para um perigo, etc.; dar uma pancada (em); castigar fisicamente; fazer andar (um animal), picando-o com um objeto aguçado; atingir; chegar a; mencionar; dizer respeito a; caber em sorte; ser de direito ou da obrigação de; impelir; as
+IPA: /ˈtɔku/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "toco" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

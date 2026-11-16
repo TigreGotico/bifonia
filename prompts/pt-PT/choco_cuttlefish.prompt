@@ -1,0 +1,15 @@
+# sense: cuttlefish
+Gera {n} frases em Português Europeu natural onde "choco" é SUBSTANTIVO.
+
+Significado: molusco marinho cefalopode comestivel, de corpo largo e achatado, com concha interna e tentaculos, que expele um liquido escuro (sepia)
+IPA: /ˈʃoku/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "choco" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «comemos choco grelhado no restaurante de praia»; «o pescador apanhou varios chocos na rede»; «o choco soltou tinta escura quando se assustou»; «a receita leva choco frito com molho»; «comprei choco fresco na lota esta manha»
+Responde APENAS com as frases, uma por linha:

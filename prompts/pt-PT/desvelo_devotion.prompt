@@ -1,0 +1,14 @@
+# sense: devotion
+Gera {n} frases em Português Europeu natural onde "desvelo" é SUBSTANTIVO.
+
+Significado: cuidado carinhoso; vigilância; zelo; extremo carinho; objeto ou pessoa por quem se têm esses sentimentos
+IPA: /dɨʒˈvelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "desvelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

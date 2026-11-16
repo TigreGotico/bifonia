@@ -1,0 +1,14 @@
+# sense: fold
+Gera {n} frases em Português Europeu natural onde "dobro" é a 1.ª pessoa do singular do presente do indicativo de «dobrar».
+
+Significado de «dobrar»: virar, de modo que uma ou mais partes de um objeto fiquem sobrepostas a outra ou outras; fazer curvar; dar voltas a; enrolar; voltar; passar além de; tornar mais ativo; demover; substituir a parte falada ou cantada de um filme ou a locução de um programa por uma versão equivalente em língua diferente; modificar; crescer outro tanto; tocar; ceder a; aumentar; humilhar-se
+IPA: /ˈdɔbɾu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "dobro" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

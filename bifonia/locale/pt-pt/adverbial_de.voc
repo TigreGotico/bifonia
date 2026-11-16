@@ -1,0 +1,35 @@
+# adverbial_de.voc — Words AFTER 'de' that form an adverbial locution of time or
+# manner (de manhã, de novo, de vez em quando, de propósito). After a verb such
+# phrases do not make the word a noun: 'molho de manhã as plantas' is the verb,
+# 'molho de tomate' is the noun.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+antemão
+cima
+costas
+dia
+forma
+frente
+graça
+hora
+imediato
+improviso
+joelhos
+leve
+madrugada
+maneira
+manhã
+mansinho
+modo
+noite
+novo
+passagem
+pressa
+propósito
+raspão
+repente
+seguida
+tarde
+vez
+véspera

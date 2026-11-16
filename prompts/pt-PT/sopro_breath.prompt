@@ -1,0 +1,15 @@
+# sense: breath
+Gera {n} frases em Português Europeu natural onde "sopro" é SUBSTANTIVO.
+
+Significado: ar expelido pela boca com mais ou menos forca; tambem uma aragem leve ou o ar expirado
+IPA: /ˈsopɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "sopro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «apagou as velas com um sopro»; «sentiu um sopro de vento fresco na cara»; «bastou um sopro para espalhar as folhas»; «encheu o balao com um unico sopro»; «o sopro da brisa agitava as cortinas»
+Responde APENAS com as frases, uma por linha:

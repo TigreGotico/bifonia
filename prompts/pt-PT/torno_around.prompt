@@ -1,0 +1,15 @@
+# sense: around
+Gera {n} frases em Português Europeu natural onde a palavra "torno" é usada como SUBSTANTIVO no sentido de «redor, volta (em torno de)».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "torno" (em minúsculas, sem acento diacrítico)
+- A palavra "torno" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: espaco que rodeia algo; redor ou volta (em torno de).
+IPA: /ˈtoɾnu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «as criancas sentaram-se em torno da fogueira.»; «a conversa girou em torno do futebol.»; «ha muitas arvores em torno da casa.»; «a terra gira em torno do sol.»; «reuniram-se em torno da mesa para jantar.»; «o debate concentrou-se em torno do orcamento.»
+Responde APENAS com as frases, uma por linha:

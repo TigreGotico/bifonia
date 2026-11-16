@@ -12,7 +12,9 @@ _HAS_MODEL = PERCEPTRON_PATH.exists()
 
 def _idx(sentence, word):
     toks = tokenize(sentence.lower())
-    return toks, toks.index(word)
+    # tokens may carry trailing punctuation — locate by the stripped form.
+    i = next(j for j, t in enumerate(toks) if t.strip(".,;:!?") == word)
+    return toks, i
 
 
 # ── feature extractor ─────────────────────────────────────────────────────────

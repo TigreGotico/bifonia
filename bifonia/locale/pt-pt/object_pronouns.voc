@@ -1,0 +1,9 @@
+# object_pronouns.voc — Neuter pronouns that stand as a verb's whole direct object
+# ('molho tudo', 'molho isto primeiro'). Right after a homograph they mark the verb.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+aquilo
+isso
+isto
+tudo

@@ -1,0 +1,15 @@
+# sense: outside
+Gera {n} frases em Português Europeu natural onde a palavra "fora" é usada como ADVÉRBIO, PREPOSIÇÃO ou INTERJEIÇÃO.
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "fora" (em minúsculas, sem acento diacrítico)
+- A palavra "fora" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: no exterior, longe de casa ou do país, para o lixo, ao longo de; exceto; ordem para sair.
+Exemplos de uso: «está frio lá fora», «jantamos fora», «deitar fora», «fora de casa», «pela estrada fora», «todos vieram, fora o João», «Fora daqui!».
+Pronúncia: /ˈfɔɾɐ/ — vogal O ABERTA (agudo em "fóra").
+NÃO uses o pretérito mais-que-perfeito de «ser» ou «ir» («fora escrito», «ela fora rica»), que tem O fechado.
+Responde APENAS com as frases, uma por linha:

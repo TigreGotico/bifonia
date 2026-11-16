@@ -1,0 +1,14 @@
+# sense: adornment
+Gera {n} frases em Português Europeu natural onde "adorno" é SUBSTANTIVO.
+
+Significado: (ver dicionário)
+IPA: /ɐˈdoɾnu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "adorno" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

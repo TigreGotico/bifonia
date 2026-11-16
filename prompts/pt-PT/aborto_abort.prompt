@@ -1,0 +1,14 @@
+# sense: abort
+Gera {n} frases em Português Europeu natural onde "aborto" é a 1.ª pessoa do singular do presente do indicativo de «abortar».
+
+Significado de «abortar»: fazer com que não tenha sucesso | malograr | frustrar; cancelar (comando ou programa); não se desenvolver | malograr-se | fracassar; terminar
+IPA: /ɐˈbɔɾtu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "aborto" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

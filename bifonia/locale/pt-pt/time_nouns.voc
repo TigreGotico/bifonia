@@ -1,0 +1,19 @@
+# time_nouns.voc — Nouns of a span of time. After 'todo', 'toda', 'um' or 'uma', with
+# or without an article ('todo o dia', 'uma noite', 'todas as manhãs'), they form a
+# duration adverbial, not a direct object: 'molho todo o dia ao lume' is the noun,
+# 'molho todos os dias as plantas' is the verb through the object after it.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+dia
+dias
+hora
+horas
+manhã
+manhãs
+noite
+noites
+semana
+semanas
+tarde
+tardes

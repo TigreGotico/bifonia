@@ -1,0 +1,15 @@
+# sense: fledgling
+Gera {n} frases em Português Europeu natural onde a palavra "polo" é usada como SUBSTANTIVO (cria de ave de rapina).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "polo" (em minúsculas, sem acento diacrítico)
+- A palavra "polo" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: o «pôlo» — ave de rapina ainda jovem (falcoaria).
+Exemplos de uso: «o polo do falcão no ninho», «o polo ainda não voa», «o falcoeiro alimentou o polo».
+Pronúncia: /ˈpolu/ — vogal O FECHADA (circunflexo em "pôlo").
+NÃO uses no sentido de polo norte/sul/industrial (O aberto).
+Responde APENAS com as frases, uma por linha:

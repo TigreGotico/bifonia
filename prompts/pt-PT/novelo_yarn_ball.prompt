@@ -1,0 +1,14 @@
+# sense: yarn_ball
+Gera {n} frases em Português Europeu natural onde "novelo" é SUBSTANTIVO.
+
+Significado: bola formada de fio dobado e enrolado sobre si próprio; o que se enrola, assemelhando-se a essa bola; enredo; plantas da família das Hidrangeáceas, cultivadas nos jardins pela beleza das suas flores
+IPA: /nuˈvelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "novelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

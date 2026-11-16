@@ -1,0 +1,13 @@
+# degree_nouns.voc — Nouns that follow 'um'/'uma' in a degree locution ('um pouco',
+# 'um bocado', 'um tanto'). The locution modifies the next word, so it is not a
+# direct object: 'molho um pouco picante' is the noun, 'molho um pouco as plantas'
+# is the verb through the object after it.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+bocadinho
+bocado
+nadinha
+pouco
+pouquinho
+tanto

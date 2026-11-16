@@ -1,0 +1,14 @@
+# sense: ice
+Gera {n} frases em Português Europeu natural onde "gelo" é SUBSTANTIVO.
+
+Significado: água no estado sólido; frio excessivo; indiferença; reação pouco amigável; insensibilidade
+IPA: /ˈʒelu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "gelo" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Responde APENAS com as frases, uma por linha:

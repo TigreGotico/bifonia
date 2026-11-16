@@ -1,0 +1,15 @@
+# sense: ball
+Gera {n} frases em Português Europeu natural onde a palavra "bola" é usada como SUBSTANTIVO (objeto esférico).
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "bola" (em minúsculas, sem acento diacrítico)
+- A palavra "bola" deve ser inequivocamente usada no sentido indicado abaixo
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: objeto redondo usado em jogos e desportos (futebol, ténis, basquete) ou qualquer corpo esférico.
+Exemplos de uso: «chutou a bola à baliza», «a bola saiu pela linha», «encheu a bola de ar».
+Pronúncia: /ˈbɔlɐ/ — vogal O ABERTA (agudo em "bóla").
+NÃO uses no sentido de pão/bolo recheado (bôla, O fechado).
+Responde APENAS com as frases, uma por linha:

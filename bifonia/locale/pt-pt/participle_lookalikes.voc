@@ -1,0 +1,26 @@
+# participle_lookalikes.voc — Words in -ado, -ada, -ido or -ida that are not past participles,
+# so a word after 'fora' in this list is no cue of the pluperfect passive
+# ('jantamos fora sábado').
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+apelido
+bocado
+cada
+estado
+fado
+gado
+lado
+madrugada
+marido
+mercado
+nada
+pecado
+prado
+recado
+ruído
+soldado
+sábado
+tonelada
+vestido
+vida

@@ -1,0 +1,14 @@
+# sense: run_over
+Gera {n} frases em Português Europeu natural onde "atropelo" é a 1.ª pessoa do singular do presente do indicativo de «atropelar».
+
+Significado de «atropelar»: colidir (veículo em movimento) com (pessoa ou animal), provocando a sua queda e passado ou não por cima; abrir caminho de forma agressiva, empurrando e acotovelando; fazer mal; não respeitar os direitos de (outros), passando por cima deles para obter o que se quer; desrespeitar; vencer por larga margem; empurrar-se e acotovelar-se mutuamente; apinhar-se desordenadamente; apresentar-se em desordem; confundir-se
+IPA: /ɐtɾuˈpɛlu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "atropelo" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

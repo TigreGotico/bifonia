@@ -1,0 +1,7 @@
+# frequency_nouns.voc — Nouns that, after a numeral or quantifier, form a frequency
+# adverbial ('duas vezes', 'muitas vezes'). After a homograph that phrase marks the verb.
+#
+# Format: one term per line, lowercase; '#' starts a comment.
+
+vez
+vezes

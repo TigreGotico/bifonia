@@ -1,0 +1,15 @@
+# sense: closure
+Gera {n} frases em Português Europeu natural onde a palavra "corte" é usada como SUBSTANTIVO no sentido de «interdição de via».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "corte" (em minúsculas, sem acento diacrítico)
+- A palavra "corte" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: interdicao ou bloqueio de uma via de circulacao
+IPA: /ˈkɔɾtɨ/ — vogal aberta (ɔ/ɛ).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «o corte da estrada obrigou a um desvio»; «houve um corte de transito por causa das obras»; «a manifestacao provocou o corte da avenida»; «o corte da ponte durou todo o fim de semana»; «avisaram do corte da via no centro da cidade»
+Responde APENAS com as frases, uma por linha:

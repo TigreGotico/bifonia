@@ -1,0 +1,15 @@
+# sense: cessation
+Gera {n} frases em Português Europeu natural onde "cobro" é SUBSTANTIVO.
+
+Significado: lugar seguro ou termo em que algo se recolhe ou cessa; usa-se sobretudo na expressao por cobro a, isto e, fazer cessar
+IPA: /ˈkobɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "cobro" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «a policia pos cobro a onda de assaltos»; «e preciso por cobro a esta confusao»; «o juiz pos cobro ao abuso dos contratos»; «as novas regras puseram cobro ao desperdicio»; «so a chuva pos cobro ao incendio»
+Responde APENAS com as frases, uma por linha:

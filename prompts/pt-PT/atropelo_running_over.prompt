@@ -1,0 +1,15 @@
+# sense: running_over
+Gera {n} frases em Português Europeu natural onde a palavra "atropelo" é usada como SUBSTANTIVO no sentido de «ato de atropelar».
+
+Regras obrigatórias:
+- Exatamente uma frase por linha, sem numeração, marcadores ou explicações
+- Cada frase deve conter a palavra "atropelo" (em minúsculas, sem acento diacrítico)
+- A palavra "atropelo" deve ser inequivocamente usada NESTE sentido específico (não noutro sentido homógrafo)
+- Varia o vocabulário, o registo e o comprimento das frases (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+
+Significado: acidente em que um veiculo embate e passa por cima de um peao ou animal.
+IPA: /ɐtɾuˈpelu/ — vogal fechada (o/e).
+Dica: substantivo — núcleo de um sintagma nominal (com artigo/determinante).
+Exemplos: «o atropelo aconteceu na passadeira.»; «o cao morreu num atropelo na estrada.»; «a policia investiga o atropelo de ontem.»; «houve um atropelo a saida da escola.»; «o condutor fugiu apos o atropelo.»; «o peao ficou ferido no atropelo.»
+Responde APENAS com as frases, uma por linha:

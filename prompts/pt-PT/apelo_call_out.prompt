@@ -1,0 +1,14 @@
+# sense: call_out
+Gera {n} frases em Português Europeu natural onde "apelo" é a 1.ª pessoa do singular do presente do indicativo de «apelar».
+
+Significado de «apelar»: recorrer de uma sentença a juiz ou tribunal superior; pedir auxílio ou proteção para ultrapassar perigo ou dificuldade; solicitar a intervenção ou o testemunho de; apresentar como desculpa ou atenuante
+IPA: /ɐˈpɛlu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "apelo" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

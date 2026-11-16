@@ -1,0 +1,15 @@
+# sense: seasoning
+Gera {n} frases em Português Europeu natural onde "tempero" é SUBSTANTIVO.
+
+Significado: substancia (sal, pimenta, ervas ou especiarias) que se adiciona a comida para realcar ou alterar o sabor
+IPA: /tẽˈpeɾu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "tempero" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «faltava tempero ao guisado»; «esta sopa esta sem tempero nenhum»; «juntou o tempero antes de servir»; «a avo tem um tempero secreto para o arroz»; «o peixe levou um tempero de alho e coentros»
+Responde APENAS com as frases, uma por linha:

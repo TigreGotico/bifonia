@@ -1,0 +1,15 @@
+# sense: return
+Gera {n} frases em Português Europeu natural onde "retorno" é SUBSTANTIVO.
+
+Significado: regresso ao ponto de partida ou ao estado anterior; volta de alguem ou de alguma coisa
+IPA: /ʁɨˈtoɾnu/ — vogal tónica FECHADA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "retorno" em minúsculas, sem acento diacrítico
+- usa um determinante antes («o/um/este»)
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como verbo de 1.ª pessoa (vogal aberta).
+Exemplos: «o retorno a casa demorou varias horas»; «festejaram o retorno dos emigrantes»; «o retorno da primavera enche os campos de flores»; «aguardavam o retorno do barco ao porto»; «o retorno as aulas foi marcado para setembro»
+Responde APENAS com as frases, uma por linha:

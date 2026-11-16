@@ -1,0 +1,14 @@
+# sense: lean
+Gera {n} frases em Português Europeu natural onde "encosto" é a 1.ª pessoa do singular do presente do indicativo de «encostar».
+
+Significado de «encostar»: colocar lado a lado; apoiar (alguém ou alguma coisa) contra um objeto, para que não caia; fechar (porta, janela) deixando-a fora do trinco; pôr de parte; apoiar-se; deitar-se; procurar a proteção de alguém; escapar ou procurar escapar a trabalho ou tarefa
+IPA: /ẽˈkɔʃtu/ — vogal tónica ABERTA.
+
+Regras:
+- uma frase por linha, sem numeração ou marcadores
+- cada frase contém "encosto" em minúsculas, sem acento diacrítico
+- começa a frase com a palavra, ou usa «eu»/clítico/objeto direto
+- cobre os vários sentidos acima; varia vocabulário, registo e comprimento (6 a 20 palavras)
+- NÃO repitas frases já existentes: {existing_sample}
+NÃO uses como substantivo/adjetivo (vogal fechada).
+Responde APENAS com as frases, uma por linha:

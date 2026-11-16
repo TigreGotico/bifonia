@@ -1,5 +1,5 @@
 # sense: shape
-Gera {n} frases em Português Europeu natural onde a palavra "forma" é usada como SUBSTANTIVO no sentido de «figura, feitio, modo/maneira, formato, condição física ou formatura militar».
+Gera {n} frases em Português Europeu natural onde a palavra "forma" é usada como SUBSTANTIVO no sentido de «figura, feitio, formato (de um objeto)».
 
 Regras obrigatórias:
 - Exatamente uma frase por linha, sem numeração, marcadores ou explicações
