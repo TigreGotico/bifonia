@@ -28,7 +28,7 @@ The bucket key is the **meaning** (`sense`), not part of speech. Each record als
 | Language | European Portuguese (pt-PT) |
 | License | Apache-2.0 |
 
-The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold ([#44](https://github.com/TigreGotico/bifonia/issues/44)). `python scripts/dataset.py --out <dir>` prints the corpus totals. The snippet under [Usage](#usage) prints the sentence count of each sense of a word.
+`python scripts/dataset.py --out <dir>` prints the corpus totals. The snippet under [Usage](#usage) prints the sentence count of each sense of a word.
 
 ---
 
