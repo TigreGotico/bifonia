@@ -15,7 +15,7 @@ The script downloads `test.jsonl` from [`TigreGotico/bifonia-pt-homographs-wild`
 |---|---|
 | most-common (corpus-derived majority sense) | 53.2% † |
 | Naive-Bayes (all roster words) | 83.9% |
-| perceptron (all roster words) | 84.8% |
+| perceptron (all roster words) | 85.2% |
 
 | approach (continued) | OOD accuracy |
 |---|---|
@@ -37,7 +37,7 @@ The dataset is keyed on **(sense, POS) combos**: each meaning slug carries the s
 ### Reading these numbers
 
 - bifonia's rule engine is **offline, zero-dependency, and deterministic**. Unlike a POS tagger, it disambiguates **same-POS lexical pairs** (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho` sauce/bundle), where a POS tagger can only fall back to the majority sense.
-- **The learned per-word models (Naive-Bayes, perceptron) cover every roster word** but trail the rules out-of-distribution (83.9% and 84.8% against 88.0%). The rule engine produced the corpus labels, so a model trained on them can at best mimic the rules in-distribution and generalizes worse on real sentences. The models serve as a full-roster baseline and as the corpus QC engine (see [data_quality.md](data_quality.md)).
+- **The learned per-word models (Naive-Bayes, perceptron) cover every roster word** but trail the rules out-of-distribution (83.9% and 85.2% against 88.0%). The rule engine produced the corpus labels, so a model trained on them can at best mimic the rules in-distribution and generalizes worse on real sentences. The models serve as a full-roster baseline and as the corpus QC engine (see [data_quality.md](data_quality.md)).
 - The wild set is encyclopedic and noun-heavy, so one reading dominates most words. A high score on it partly reflects the dominant sense. The balanced sets in the last section test the minority readings.
 
 ## Synthetic (in-distribution)

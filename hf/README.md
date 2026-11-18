@@ -51,7 +51,7 @@ closed vowel), so `sense`, not `pos`, is the label a model should predict.
 
 ## Splits
 
-- `train`: 80% (124,519 sentences), `test`: 20% (30,987 sentences)
+- `train`: 80% (124,459 sentences), `test`: 20% (30,968 sentences)
 - shuffled and stratified per `(word, sense)` with a fixed seed, so each bucket
   is represented i.i.d. in both splits (no tail/ordering skew).
 
