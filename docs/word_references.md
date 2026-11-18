@@ -165,7 +165,7 @@ For non-native speakers: "côrte" (court) is grammatically feminine ("a côrte d
 
 For non-native speakers: the pluperfect is a literary tense, and the adverb is the frequent reading. bifonia reads the verb only on a cue. The cue is a past participle after it (*fora decidido*), an enclitic pronoun on it (*fora-lhe dito*), or a pronoun, relative, *se* or negation right before it (*ela fora rica*, *o homem que fora*).
 
-Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv. interj. ou s.m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
+Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv., interj. ou s. m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
 
 [fora](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora) · [Priberam](https://dicionario.priberam.org/fora) · verb lemmas *ser*, *ir*
 
@@ -499,6 +499,56 @@ A *noun (closed) / verb (open)* spelling pair is genuinely **heterophonic** when
 2. **/e/ before a palatal (ʃ ʒ ʎ ɲ) diphthongises to [ɐj] in both readings, so there is no contrast.** *fecho* (noun) and *eu fecho* (verb) are both [ˈfɐjʃu]/[ˈfeʃu], never *"fécho"*. Infopedia marks these with the `(j)` glide. The -echo / -ejo / -elho / -enho families are therefore not heterophonic (for example *fecho, desejo, espelho, despejo, festejo, manejo, gracejo, arpejo, ensejo, desfecho, empenho, desempenho, desdenho*). **/o/ before a palatal opens normally** (olho /ˈoʎu/ vs /ˈɔʎu/), so *arrojo, jorro, despojo, abrolho* do contrast and are heterophonic.
 
 Two further patterns produce no contrast: a noun whose stressed vowel is already **open** (colo ˈkɔlu, cego ˈsɛɡu, prego ˈpɾɛɡu), and a stressed vowel that is **nasal** (conto, ponto, desconto, since õ has no open/closed contrast).
+
+## Sources for the two readings
+
+The *Pequeno Vocabulário Ortográfico da Língua Portuguesa* of the Academia Brasileira de Letras (1943, [scan on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pequeno_Vocabul%C3%A1rio_Ortogr%C3%A1fico_da_L%C3%ADngua_Portuguesa_(1943).pdf)) shows the contrast for 124 of the 132 words. Three clauses of its Formulário make that possible:
+
+- Instruction 7.º registers a meaning, with a cross-reference, for "homógrafos heterofônicos, — mas não dos homógrafos perfeitos, —". So an entry such as *sôlto, adj. e s. m./Cf. solto, do v. soltar.* lists the two readings as different.
+- Rule 14.ª puts a circumflex on the closed *e* or *o* of such a word: "acêrto (s. m.) e acerto (v.)", "côrte, côrtes (s. f.) e corte, cortes (v.)", "fôra (v.) e fora (adv., interj. ou s. m.)", "sôbre (prep.) e sobre (v.)". Its Observação 1.ª covers pêlo, pôlo and pôr.
+- Rule 15.ª puts an acute accent on the open vowel of such a word, as in pára, pélo and pólo.
+
+The table gives the PDF page of the Commons scan that holds the entry. Where the entry marks a vowel with an accent, the accent agrees with the vowel that `heterophonic_homographs.csv` gives that reading.
+
+| word | page | word | page | word | page | word | page |
+|---|---:|---|---:|---|---:|---|---:|
+| aborto | 57 | abrolho | 59 | acerto | 69 | acordo | 77 |
+| adorno | 90 | almoço | 128 | apego | 185 | apelo | 186 |
+| aperto | 187 | arremedo | 215 | arremesso | 215 | arrepelo | 215 |
+| arrojo | 217 | arroto | 218 | atropelo | 238 | azedo | 250 |
+| cerco | 373 | cerro | 375 | choco | 385 | choro | 385 |
+| cobro | 405 | colher | 411 | colmo | 412 | começo | 415 |
+| conforto | 426 | congelo | 426 | conserto | 429 | consolo | 430 |
+| contorno | 433 | cor | 440 | coro | 444 | corte | 447 |
+| decoro | 476 | degelo | 478 | desacordo | 487 | desafogo | 488 |
+| desaforo | 488 | desapego | 490 | desassossego | 492 | desconforto | 497 |
+| desconsolo | 498 | desdobro | 500 | desemperro | 502 | desempeço | 501 |
+| desemprego | 502 | desenredo | 505 | desespero | 507 | desgelo | 508 |
+| desgosto | 509 | desmantelo | 512 | despego | 516 | despojo | 517 |
+| desprezo | 518 | destroço | 522 | desvelo | 523 | dobro | 542 |
+| emperro | 569 | emprego | 570 | encosto | 578 | engodo | 585 |
+| enredo | 588 | erro | 608 | esboço | 609 | escabelo | 610 |
+| escorço | 617 | esforço | 622 | esmero | 625 | espeto | 631 |
+| estofo | 647 | fora | 702 | forma | 703 | forro | 705 |
+| força | 703 | fosso | 706 | gelo | 733 | golfo | 744 |
+| gosto | 747 | governo | 747 | gozo | 747 | jogo | 848 |
+| jorro | 848 | lobo | 884 | logro | 885 | molho | 952 |
+| novelo | 989 | olho | 1002 | para | 1033 | pelo | 1051 |
+| peso | 1065 | polo | 1090 | porto | 1095 | posto | 1097 |
+| reboco | 1146 | redobro | 1152 | reforço | 1155 | rego | 1157 |
+| relevo | 1159 | renovo | 1163 | repelo | 1164 | retorno | 1173 |
+| rogo | 1183 | rola | 1183 | rolo | 1183 | seco | 1209 |
+| sede | 1210 | selo | 1212 | sobre | 1235 | sobro | 1237 |
+| soco | 1238 | soldo | 1239 | solto | 1241 | sopeso | 1242 |
+| sopro | 1243 | sossego | 1244 | tempero | 1274 | toco | 1289 |
+| tola | 1289 | toldo | 1289 | topo | 1291 | torno | 1293 |
+| torre | 1294 | transtorno | 1301 | troco | 1314 | zelo | 1367 |
+
+The vocabulary does not settle eight words:
+
+- *bola*: the vocabulary has no *bôla*. Infopédia prints both readings, ball /ˈbɔlɐ/ and the bread /ˈbolɐ/ (`bifonia/data/infopedia_pt.csv` holds the definitions of both).
+- *abono, aceno, desempeno, domo, empeno, soma*: the vocabulary gives the noun with no circumflex and the verb with no cross-reference, so it records no contrast. Infopédia prints the closed vowel of the noun. The open vowel of the verb form has no source here yet.
+- *entorno*: the vocabulary does not list the noun. Infopédia prints the closed vowel of the noun, and the open vowel of the verb form has no source here yet.
 
 ---
 [← Diacritics restoration](diacritics_restoration.md) · [Home](../README.md)
