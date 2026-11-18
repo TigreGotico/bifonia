@@ -165,7 +165,7 @@ For non-native speakers: "côrte" (court) is grammatically feminine ("a côrte d
 
 For non-native speakers: the pluperfect is a literary tense, and the adverb is the frequent reading. bifonia reads the verb only on a cue. The cue is a past participle after it (*fora decidido*), an enclitic pronoun on it (*fora-lhe dito*), or a pronoun, relative, *se* or negation right before it (*ela fora rica*, *o homem que fora*).
 
-Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv. interj. ou s.m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
+Infopédia lists *fora* as the pluperfect of *ir* and of *ser*, but it gives a pronunciation only for the adverb and the preposition (ˈfɔrɐ). The verb IPA therefore comes from the spelling norms. The Formulário Ortográfico 1943, rule 14.ª, writes "fôra (v.) e fora (adv., interj. ou s. m.)". The Acordo Ortográfico 1945 writes "fora (ô), flexão de ser e ir, e fora (ó), advérbio, interjeição e substantivo". Priberam gives the adverb as "fora |ó|", and Wiktionary gives the same two vowels for Portugal and Brazil.
 
 [fora](https://www.infopedia.pt/dicionarios/lingua-portuguesa/fora) · [Priberam](https://dicionario.priberam.org/fora) · verb lemmas *ser*, *ir*
 
@@ -502,10 +502,11 @@ Two further patterns produce no contrast: a noun whose stressed vowel is already
 
 ## Sources for the two readings
 
-The *Pequeno Vocabulário Ortográfico da Língua Portuguesa* of the Academia Brasileira de Letras (1943, [scan on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pequeno_Vocabul%C3%A1rio_Ortogr%C3%A1fico_da_L%C3%ADngua_Portuguesa_(1943).pdf)) shows the contrast for 124 of the 132 words. Two rules of its Formulário make that possible:
+The *Pequeno Vocabulário Ortográfico da Língua Portuguesa* of the Academia Brasileira de Letras (1943, [scan on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pequeno_Vocabul%C3%A1rio_Ortogr%C3%A1fico_da_L%C3%ADngua_Portuguesa_(1943).pdf)) shows the contrast for 124 of the 132 words. Three clauses of its Formulário make that possible:
 
-- Instruction 7.º registers a meaning, with a cross-reference, for "homógrafos heterofônicos – mas não dos homógrafos perfeitos". So an entry such as *sôlto, adj. e s. m./Cf. solto, do v. soltar.* lists the two readings as different.
-- Rule 14.ª puts a circumflex on the closed *e* or *o* of such a word: "acêrto (s.m.) e acerto (v.)", "côrte, côrtes (s.f.) e corte, cortes (v.)", "fôra (v.) e fora (adv. interj. ou s.m.)", "sôbre (prep.) e sobre (v.)".
+- Instruction 7.º registers a meaning, with a cross-reference, for "homógrafos heterofônicos, — mas não dos homógrafos perfeitos, —". So an entry such as *sôlto, adj. e s. m./Cf. solto, do v. soltar.* lists the two readings as different.
+- Rule 14.ª puts a circumflex on the closed *e* or *o* of such a word: "acêrto (s. m.) e acerto (v.)", "côrte, côrtes (s. f.) e corte, cortes (v.)", "fôra (v.) e fora (adv., interj. ou s. m.)", "sôbre (prep.) e sobre (v.)". Its Observação 1.ª covers pêlo, pôlo and pôr.
+- Rule 15.ª puts an acute accent on the open vowel of such a word, as in pára, pélo and pólo.
 
 The table gives the PDF page of the Commons scan that holds the entry. Where the entry marks a vowel with an accent, the accent agrees with the vowel that `heterophonic_homographs.csv` gives that reading.
 
