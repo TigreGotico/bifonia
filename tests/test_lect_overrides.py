@@ -210,7 +210,7 @@ def test_every_shipped_override_row_has_one_code_point_per_letter():
     for row in rows:
         form = unicodedata.normalize("NFC", row["form"])
         assert not form or len(form) == len(row["word"]), row
-        assert not any(unicodedata.combining(c) for c in form), row
+        assert not any(unicodedata.category(c).startswith("M") for c in form), row
     assert sum(len(forms) for forms in bifonia.data.LECT_OVERRIDES.values()) == len(rows)
 
 
@@ -256,3 +256,19 @@ def test_an_override_form_with_a_precomposed_double_mark_loads(tmp_path, raw):
     # composes to it.
     data, _ = _load_data_with(tmp_path, f"pt-CV,soma,{raw},probe,probe\n")
     assert data.LECT_OVERRIDES["pt-CV"] == {"soma": "s\u1ed1ma"}
+
+
+@pytest.mark.parametrize("invisible", ["͏", "️"])
+def test_an_override_form_with_an_invisible_mark_in_place_of_a_letter_is_rejected_at_load(
+        tmp_path, invisible):
+    # U+034F (combining grapheme joiner) has combining class 0, and U+FE0F
+    # (variation selector 16) too, but both are marks. "jo" + mark + "g" has as
+    # many code points as "jogo", yet it has no "o" at the last position.
+    shipped = (Path(bifonia.data.__file__).parent / "data" / "lect_overrides.csv")
+    line = len(shipped.read_text(encoding="utf-8").splitlines()) + 1
+    lect_csv = tmp_path / "data" / "lect_overrides.csv"
+    form = f"jo{invisible}g"
+    message = f"{lect_csv}, line {line}: the form {form!r} of 'jogo' keeps a combining mark in NFC"
+    with pytest.raises(ValueError) as err:
+        _load_data_with(tmp_path, f"pt-GW,jogo,{form},probe,probe\n")
+    assert str(err.value) == message

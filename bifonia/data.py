@@ -62,7 +62,7 @@ def _form(path: pathlib.Path, line: int, word: str, form: str) -> str:
     if form and len(form) != len(word):
         raise ValueError(f"{where} has {len(form)} code points in NFC, "
                          f"but the word has {len(word)}")
-    if any(unicodedata.combining(c) for c in form):
+    if any(unicodedata.category(c).startswith("M") for c in form):
         raise ValueError(f"{where} keeps a combining mark in NFC")
     return form
 
