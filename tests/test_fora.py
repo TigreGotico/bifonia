@@ -15,6 +15,7 @@ sources, not from the engine:
 import pytest
 
 from bifonia import add_extra_diacritics, disambiguate, tokenize
+from bifonia.scoring import score_verb
 
 OPEN = "ˈfɔɾɐ"     # Infopédia ˈfɔrɐ, with the tap ɾ that the roster writes
 CLOSED = "ˈfoɾɐ"
@@ -73,3 +74,26 @@ def test_pluperfect_of_ser_and_ir_is_closed(sentence):
 def test_marks_match_the_reading(lang):
     assert add_extra_diacritics("Ele está lá fora.", lang=lang) == "Ele está lá fóra."
     assert add_extra_diacritics("Assim fora decidido.", lang=lang) == "Assim fôra decidido."
+
+
+@pytest.mark.parametrize("sentence, expected", [
+    # the pluperfect has a subject cue before it: 8
+    ("Ele já fora.", 8),
+    ("Ele já fora!", 8),
+    ("Nunca fora, dizia.", 8),
+    # the adverb has no verb cue, or an adverb cue: 0
+    ("Saiu porta fora!", 0),
+    ("Saiu porta fora.", 0),
+    ("Ele está lá fora.", 0),
+    ("Fora!", 0),
+])
+def test_verb_score_ignores_attached_punctuation(sentence, expected):
+    """A token with attached punctuation scores as the bare word: 8 with a
+    pluperfect cue (Formulário Ortográfico 1943, fôra v.), 0 for the adverb
+    (Priberam, fora |ó| advérbio)."""
+    words = tokenize(sentence)
+    idx = next(i for i, t in enumerate(words) if t.strip(".,;:!?") == "fora")
+    assert score_verb(words, idx) == expected
+    bare = list(words)
+    bare[idx] = words[idx].strip(".,;:!?")
+    assert score_verb(words, idx) == score_verb(bare, idx)
