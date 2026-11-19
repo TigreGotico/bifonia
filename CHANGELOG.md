@@ -1,8 +1,22 @@
 # Changelog
 
+## [0.5.3a1](https://github.com/TigreGotico/bifonia/tree/0.5.3a1) (2026-11-19)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.2a1...0.5.3a1)
+
+**Merged pull requests:**
+
+- docs: sync README and docs with dev [\#76](https://github.com/TigreGotico/bifonia/pull/76) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: score "fora" by its stripped form in score\_verb [\#73](https://github.com/TigreGotico/bifonia/pull/73) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: reject marks of combining class 0 in lect and marks forms [\#72](https://github.com/TigreGotico/bifonia/pull/72) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.5.2a1](https://github.com/TigreGotico/bifonia/tree/0.5.2a1) (2026-11-19)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0...0.5.2a1)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.1a1...0.5.2a1)
+
+## [0.5.1a1](https://github.com/TigreGotico/bifonia/tree/0.5.1a1) (2026-11-18)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0...0.5.1a1)
 
 **Merged pull requests:**
 
