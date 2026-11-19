@@ -545,7 +545,7 @@ def score_verb(words: list, idx: int) -> int:
 
     # "fora" takes none of the generic verb signals below: the adverb is the
     # default reading, and only a cue of the pluperfect of ser/ir overrides it.
-    if word == "fora":
+    if _strip(word) == "fora":
         return 8 if _fora_is_verb(words, idx) else 0
 
     score = 0
