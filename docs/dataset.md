@@ -103,7 +103,7 @@ for i, w in enumerate(words):
 
 Three datasets on the Hub. Each record has the fields `word`, `sense`, `pos`, `ipa` and `sentence`:
 
-- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the synthetic split for training and synthetic evaluation. The Hub copy holds 124,339 train sentences over 131 words. The committed `hf/` split holds 124,459 train and 30,968 test sentences over 132 words. It adds the `diacritized` and `diacritized_sentence` fields.
+- [`TigreGotico/bifonia-pt-homographs`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs): the synthetic split for training and synthetic evaluation. The Hub copy holds 124,519 train and 30,987 test sentences over 132 words. The committed `hf/` split holds 124,459 train and 30,968 test sentences over 132 words. About 10,800 sentences of each split are in one copy and not in the other. The dataset adds the `diacritized` and `diacritized_sentence` fields.
 - [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild): 6,640 real Wikipedia and web sentences over 110 words, forming an out-of-distribution (OOD) test set, labels annotated by an LLM, licensed CC-BY-SA-4.0. `scripts/benchmark_ood.py` evaluates against it.
 - [`TigreGotico/bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold): 2,233 real, sense-balanced sentences over 40 words, labelled independently of the rules, with a `source` field. No script in this repository evaluates against it.
 
