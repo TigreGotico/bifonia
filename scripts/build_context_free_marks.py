@@ -110,7 +110,7 @@ def nfc(text: str) -> str:
 
 
 def fold(text: str) -> str:
-    return "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    return "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.category(c).startswith("M"))
 
 
 def stressed_vowel(ipa: str):

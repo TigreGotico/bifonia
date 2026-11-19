@@ -36,7 +36,7 @@ _BEFORE_NO = _gold_rows_before_no()
 
 
 def test_gold_rows_before_no_are_present():
-    assert len(_BEFORE_NO) == 67
+    assert len(_BEFORE_NO) == 60
 
 
 @pytest.mark.parametrize("case", _BEFORE_NO, ids=[c["sentence"][:40] for c in _BEFORE_NO])

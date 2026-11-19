@@ -30,10 +30,10 @@ The canonical corpus is `bifonia/data/corpus.jsonl`, one JSON record per line, `
 | Metric | Value |
 |---|---|
 | Total sentences (`corpus.jsonl`) | 155,427 |
-| Train / test split (`hf/`) | 124,519 / 30,987 |
+| Train / test split (`hf/`) | 124,459 / 30,968 |
 | Words covered | 132 |
 
-The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold ([#44](https://github.com/TigreGotico/bifonia/issues/44)), so the two totals differ. `python scripts/dataset.py --hf --out <dir>` prints the counts for a fresh split.
+The split is built from `corpus.jsonl`, so every split sentence is a corpus sentence. `python scripts/dataset.py --hf --out <dir>` prints the counts for a fresh split.
 
 ---
 

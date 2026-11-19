@@ -255,3 +255,11 @@ def test_loader_reads_an_nfd_form_in_nfc(tmp_path):
 def test_loader_rejects_a_form_of_another_length(tmp_path):
     with pytest.raises(ValueError, match="code points"):
         _load_data_with(tmp_path, "jabuti,jabutí-,pt-PT,probe,probe,probe\n")
+
+
+@pytest.mark.parametrize("invisible", ["͏", "️"])
+def test_loader_rejects_an_invisible_mark_in_place_of_a_letter(tmp_path, invisible):
+    # "fes" + mark + "a" has as many code points as "festa", but the mark takes
+    # the place of the "t". U+034F and U+FE0F have combining class 0.
+    with pytest.raises(ValueError, match="keeps a combining mark"):
+        _load_data_with(tmp_path, f"festa,fes{invisible}a,pt-PT,probe,probe,probe\n")
