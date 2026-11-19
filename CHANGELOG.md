@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.5.1a1](https://github.com/TigreGotico/bifonia/tree/0.5.1a1) (2026-11-19)
+## [0.5.2a1](https://github.com/TigreGotico/bifonia/tree/0.5.2a1) (2026-11-19)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0...0.5.1a1)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.0...0.5.2a1)
 
 **Merged pull requests:**
 
