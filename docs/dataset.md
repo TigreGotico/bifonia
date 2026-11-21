@@ -1,5 +1,13 @@
 # bifonia: Portuguese Homograph Disambiguation Dataset
 
+<!-- agent-hint
+covers: the corpus schema, counts, splits and Hub copies
+source: `bifonia/data/corpus.jsonl`, `scripts/dataset.py`, `hf/`
+generated: no
+verify: sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' docs/dataset.md | grep -vP '^\x60{3}' | python -I - && python -m pytest -q tests/test_hf_split.py
+see: `docs/data_quality.md`, `docs/methodology.md`
+-->
+
 ## Overview
 
 A labeled sentence corpus for **heterophonic homograph disambiguation** in European Portuguese. Heterophonic homographs are words spelled identically but pronounced differently depending on their **meaning** (`sense`). Correct disambiguation matters for TTS pipelines.
@@ -130,4 +138,4 @@ huggingface-cli upload TigreGotico/bifonia-pt-homographs hf/ --repo-type dataset
 ```
 
 ---
-[← Data quality](data_quality.md) · [Home](../README.md) · [Diacritics restoration →](diacritics_restoration.md)
+[← Data quality](data_quality.md) · [Index](index.md) · [Diacritics restoration →](diacritics_restoration.md)

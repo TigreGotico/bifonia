@@ -1,5 +1,13 @@
 # Diacritics restoration as a homograph disambiguation task
 
+<!-- agent-hint
+covers: the homograph task framed as diacritics restoration
+source: `bifonia/__init__.py:add_extra_diacritics`, `tests/test_diacritized_input.py`
+generated: no
+verify: python -m pytest -q tests/test_diacritized_input.py
+see: `docs/dataset.md`, `docs/word_references.md`
+-->
+
 ## The problem
 
 Portuguese has heterophonic homographs: words whose spelling is identical but whose pronunciation depends on their **meaning** (`sense`). A rule-based G2P engine that does not disambiguate the sense will systematically mispronounce them.
@@ -219,4 +227,4 @@ wild = load_dataset("TigreGotico/bifonia-pt-homographs-wild")
 Together they fill a gap: no other PT-PT benchmark targets heterophonic-homograph pronunciation disambiguation at the sense level, and the wild set supplies the out-of-distribution measure that synthetic splits cannot.
 
 ---
-[← Dataset](dataset.md) · [Home](../README.md) · [Word references →](word_references.md)
+[← Dataset](dataset.md) · [Index](index.md) · [Word references →](word_references.md)

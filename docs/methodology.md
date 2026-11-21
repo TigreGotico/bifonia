@@ -1,5 +1,13 @@
 # Methodology: dataset construction and disambiguation algorithm
 
+<!-- agent-hint
+covers: how the corpus is built and how the rule and learned engines decide
+source: `scripts/train.py`, `scripts/dataset.py`, `bifonia/scoring.py`, `bifonia/model.py`
+generated: no
+verify: python -m pytest -q tests/test_scoring.py tests/test_model.py tests/test_hf_split.py
+see: `docs/benchmarks.md`, `docs/dataset.md`
+-->
+
 ## Overview
 
 The `bifonia` package disambiguates 132 Portuguese heterophonic homographs: words spelled identically but pronounced differently depending on their **meaning** (`sense`). Disambiguation is served by **two interchangeable engines**, both pure Python with no heavy runtime dependency:
@@ -125,7 +133,7 @@ The POS taggers (spaCy, Stanza) hit a **structural ceiling**: POS cannot separat
 ```bash
 python scripts/benchmark_tagger.py --no-taggers    # synthetic held-out split
 python scripts/benchmark_tagger.py --word sede     # one word only
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py                    # OOD real-text set (downloads from Hugging Face)
 ```
 
@@ -169,4 +177,4 @@ Some diacritized forms are unambiguous: *pára* (stop), *pêlo* (hair), *côrte*
 - **Dataset licence:** sentence content is original, and no copyrighted text is used. The corpus is published under a permissive licence.
 
 ---
-[← Usage](usage.md) · [Home](../README.md) · [Benchmarks →](benchmarks.md)
+[← Usage](usage.md) · [Index](index.md) · [Benchmarks →](benchmarks.md)

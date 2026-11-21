@@ -1,5 +1,13 @@
 # bifonia
 
+<!-- agent-hint
+covers: what bifonia does, how to install it, its accuracy and how it treats Brazilian and African lects
+source: `bifonia/__init__.py`, `bifonia/data/`, `scripts/benchmark_ood.py`
+generated: no
+verify: diff <(sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' README.md | grep -vP '^\x60{3}' | python -I -) <(sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' README.md | grep -oP '(print\(.*\)\s+|^)# \K.*')
+see: `docs/index.md`, `docs/usage.md`
+-->
+
 **Pronunciation disambiguation for European-Portuguese heterophonic homographs.** These are words spelled the same way whose pronunciation depends on **meaning**, not just part of speech. bifonia has zero runtime dependencies and uses only the Python standard library.
 
 `sede` means *thirst* (`ˈsedɨ`, closed e) or *headquarters* (`ˈsɛdɨ`, open e). `forma` means *mould* (`ˈfoɾmɐ`) or *shape* (`ˈfɔɾmɐ`). `molho` means *sauce* (`ˈmoʎu`) or *bundle* (`ˈmɔʎu`). A text-to-speech front end that guesses wrong says the wrong word out loud. bifonia picks the right reading, and therefore the right IPA, from context.
@@ -9,21 +17,21 @@ from bifonia import tokenize, guess_sense, disambiguate
 
 words = tokenize("Tinha tanta sede que bebi a garrafa toda.")
 i = words.index("sede")
-guess_sense(words, i)    # 'thirst'
-disambiguate(words, i)   # 'ˈsedɨ'   (closed e)
+print(guess_sense(words, i))     # thirst
+print(disambiguate(words, i))    # ˈsedɨ
 
 words = tokenize("A sede da empresa fica em Lisboa.")
 i = words.index("sede")
-disambiguate(words, i)   # 'ˈsɛdɨ'   (open e, same spelling, different word)
+print(disambiguate(words, i))    # ˈsɛdɨ
 ```
 
 ## Install
 
 ```bash
-pip install --pre bifonia
+uv pip install --prerelease=allow bifonia
 ```
 
-bifonia publishes alpha releases from the `dev` branch. Use `--pre` to get the API that this README describes. The package has no runtime dependencies.
+bifonia publishes alpha releases from the `dev` branch. Use `--prerelease=allow` to get the API that this README describes. The package has no runtime dependencies.
 
 ## Why part-of-speech tagging is not enough
 
@@ -66,11 +74,13 @@ The rule engine is self-contained and needs no training data, so it fits a low-r
 A consistent result across this project: **models trained on the corpus do not beat the rules out-of-distribution.** The corpus is rule-labelled, so a model can at best mimic the rules in-distribution and generalizes worse on real text. This holds for Naive-Bayes, the averaged perceptron, and the classic Yarowsky decision list alike. The rules remain the strongest predictor, and an external POS tag can fuse on top:
 
 ```python
-# hybrid: trust an external tagger only where POS uniquely picks a sense, else rules
-guess_sense(words, i, postag="NOUN")
+from bifonia import tokenize, guess_sense
+
+words = tokenize("A sede da empresa fica em Lisboa.")
+print(guess_sense(words, words.index("sede"), postag="NOUN"))   # seat
 ```
 
-The tag decides only where one part of speech maps to exactly one sense. Everywhere else the rules decide. `python scripts/benchmark_ood.py` scores the rules at 88.0% on the encyclopedic wild set (6,640 sentences). No script in this repository scores the hybrid.
+The hybrid mode trusts an external tagger only where one part of speech maps to exactly one sense. Everywhere else the rules decide. `python scripts/benchmark_ood.py` scores the rules at 88.0% on the encyclopedic wild set (6,640 sentences). No script in this repository scores the hybrid.
 
 ## API
 
@@ -82,10 +92,10 @@ sentence = "Resolveu o problema desta forma simples."
 words = tokenize(sentence)
 i = words.index("forma")
 
-guess_sense(words, i)                    # 'shape'
-disambiguate(words, i)                   # 'ˈfɔɾmɐ'
-disambiguate(words, i, sense="mould")    # 'ˈfoɾmɐ'  (override)
-add_extra_diacritics(sentence)           # '...desta fórma simples.'  (acute = open vowel)
+print(guess_sense(words, i))                    # shape
+print(disambiguate(words, i))                   # ˈfɔɾmɐ
+print(disambiguate(words, i, sense="mould"))    # ˈfoɾmɐ
+print(add_extra_diacritics(sentence))           # Resolveu o problema desta fórma simples.
 ```
 
 `add_extra_diacritics` rewrites each homograph with a disambiguating diacritic (acute for the open vowel, circumflex for the closed vowel) that a downstream grapheme-to-phoneme stage can read directly.
@@ -95,11 +105,11 @@ add_extra_diacritics(sentence)           # '...desta fórma simples.'  (acute = 
 Some words carry a mark that an older spelling norm wrote and that AO1990 dropped, such as *pêra*, *assembléia*, *heróico* and *lingüiça*. After the homographs, `add_extra_diacritics` writes these marks from `bifonia/data/context_free_marks.csv`. A word enters this table only when its sources show one reading of the bare form in the lect, so the mark does not need context.
 
 ```python
-add_extra_diacritics("Comi uma pera.")                         # 'Comi uma pêra.'
-add_extra_diacritics("A assembleia votou.", lang="pt-BR")      # 'A assembléia votou.'
-add_extra_diacritics("A assembleia votou.")                    # unchanged: pt-PT says [ɐj]
-add_extra_diacritics("Comi linguiça.", lang="pt-BR")           # 'Comi lingüiça.'
-add_extra_diacritics("Comi linguiça.", lang="pt-BR-x-sp")      # unchanged
+print(add_extra_diacritics("Comi uma pera."))                      # Comi uma pêra.
+print(add_extra_diacritics("A assembleia votou.", lang="pt-BR"))   # A assembléia votou.
+print(add_extra_diacritics("A assembleia votou."))                 # A assembleia votou.
+print(add_extra_diacritics("Comi linguiça.", lang="pt-BR"))        # Comi lingüiça.
+print(add_extra_diacritics("Comi linguiça.", lang="pt-BR-x-sp"))   # Comi linguiça.
 ```
 
 A word enters the table for a lect code only when it passes three checks. The CSV records the evidence for each check.
@@ -176,8 +186,8 @@ Pass `lang="pt-BR"`, or a sub-lect such as `pt-BR-x-rj`, to `add_extra_diacritic
 `pt-UY` and its sub-lects take the same rows as pt-BR. This is an inference, not a sourced rule: no source states how Uruguayan Portuguese pronounces a stressed mid vowel before a nasal. Its vowel system is that of rural Rio Grande do Sul Portuguese (Rona 1965a, as reported by Meirelles 2006, p. 32; Meirelles 2006, pp. 148-149), and Brazilian Portuguese closes these vowels (Câmara Jr. 1977a, as reported by Lenzi & Brenner 2008, p. 59). The one recorded token, the Spanish place name *Canelones*, has a closed [õ] (Meirelles 2006, p. 143), and contact with Spanish gives no open [ɛ] or [ɔ].
 
 ```python
-add_extra_diacritics("Ele soma os números.")                # 'Ele sóma os números.'
-add_extra_diacritics("Ele soma os números.", lang="pt-BR")  # 'Ele sôma os números.'
+print(add_extra_diacritics("Ele soma os números."))                # Ele sóma os números.
+print(add_extra_diacritics("Ele soma os números.", lang="pt-BR"))  # Ele sôma os números.
 ```
 
 Do not use the IPA column of `heterophonic_homographs.csv` as a transcription for Brazilian, African or Timorese lects.
@@ -196,7 +206,7 @@ The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO k
 
 ## Documentation
 
-Read the pages in this order. Each page links to the next one.
+[`docs/index.md`](docs/index.md) lists every page. Read the pages in this order. Each page links to the next one.
 
 1. [`docs/usage.md`](docs/usage.md): the full API reference and the scoring signals.
 2. [`docs/methodology.md`](docs/methodology.md): corpus construction and the two engines.

@@ -1,11 +1,19 @@
 # Benchmarks
 
+<!-- agent-hint
+covers: the accuracy of each approach and which numbers a command in this repository reproduces
+source: `scripts/benchmark_ood.py`, `scripts/benchmark_tagger.py`, `scripts/plot_benchmarks.py`
+generated: no
+verify: diff <(python scripts/benchmark_ood.py | grep -oP '^(most-common|rules\(free\)|NB|perceptron|ensemble)\s+\K[0-9.]+(?=%)' | LC_ALL=C xargs printf '%.1f\n' | sort) <(sed -n '/^## Out-of-distribution/,/^The ensemble equals/p' docs/benchmarks.md | grep -oP '\| \**\K[0-9.]+(?=%)' | sort)
+see: `docs/methodology.md`, `docs/data_quality.md`
+-->
+
 Two scripts in `scripts/` measure sense-prediction accuracy. The first sections of this page give the output of a command that you can run from a fresh clone. The last section gives results that no script in this repository produces.
 
 ## Out-of-distribution (real Wikipedia sentences)
 
 ```bash
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py
 ```
 
@@ -134,4 +142,4 @@ Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100, `g
 The numpy logistic regression is the strongest *learned* model. The CUE: features lift it well past the decision list, yet it **still trails the rules** by about 3 to 4 points. With the same cues the rules use, a learned linear model gets close but does not beat them on real text, because the corpus it learns from is itself rule-labelled. The sense-cue registry alone reaches 87.5% on the same-POS words, so the curated cues carry most of the signal before any POS reasoning or learning.
 
 ---
-[← Methodology](methodology.md) · [Home](../README.md) · [Data quality →](data_quality.md)
+[← Methodology](methodology.md) · [Index](index.md) · [Data quality →](data_quality.md)

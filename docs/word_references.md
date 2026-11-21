@@ -1,5 +1,13 @@
 # bifonia: word references
 
+<!-- agent-hint
+covers: the IPA, senses and cues of each of the 132 roster words
+source: `bifonia/data/heterophonic_homographs.csv`, `bifonia/data/infopedia_pt.csv`
+generated: no
+verify: python -m pytest -q tests/test_infopedia.py
+see: `docs/usage.md`, `README.md`
+-->
+
 Per-word reference for European-Portuguese (pt-PT) heterophonic homographs: words spelled identically across meanings but pronounced differently. The axis of disambiguation for most pairs is open vs. closed stressed vowel. Each entry links to the authoritative dictionary (Infopédia) and notes the disambiguation cue.
 
 The disambiguation key is the **meaning** (`sense`), the `pos` column is the descriptive grammatical reading of that sense and may repeat (both senses of `sede` are nouns).
@@ -551,4 +559,4 @@ The vocabulary does not settle eight words:
 - *entorno*: the vocabulary does not list the noun. Infopédia prints the closed vowel of the noun, and the open vowel of the verb form has no source here yet.
 
 ---
-[← Diacritics restoration](diacritics_restoration.md) · [Home](../README.md)
+[← Diacritics restoration](diacritics_restoration.md) · [Index](index.md)

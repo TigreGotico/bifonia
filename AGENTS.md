@@ -1,4 +1,12 @@
-# AGENTS.md
+# bifonia: agent guide
+
+<!-- agent-hint
+covers: what the repository holds, how to set it up and test it, and the rules its docs and tests state
+source: `pyproject.toml`, `bifonia/`, `tests/`, `.github/workflows/build-tests.yml`
+generated: no
+verify: python -m pytest -q tests
+see: `docs/index.md`, `README.md`
+-->
 
 bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence context. It returns the meaning slug, the IPA, or the sentence with a disambiguating diacritic. It has no runtime dependencies.
 
@@ -15,7 +23,7 @@ bifonia picks the reading of a European-Portuguese heterophonic homograph from i
 | `scripts/` | `train.py`, `dataset.py`, `benchmark_tagger.py`, `benchmark_ood.py`, `baselines.py`, `build_context_free_marks.py` |
 | `hf/` | the train and test split published as `TigreGotico/bifonia-pt-homographs` |
 | `tests/` | pytest suite. `test_sentences.jsonl` is also the behavioural set for the route gate |
-| `docs/` | reference pages. [README.md](README.md#documentation) lists them in reading order |
+| `docs/` | reference pages. [docs/index.md](docs/index.md) lists them in reading order |
 
 ## Setup
 
@@ -42,3 +50,9 @@ CI runs the same suite on Python 3.11 to 3.14 (`.github/workflows/build-tests.ym
 - Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, one reading of the bare form in the transcriptions of its lect, and an orthography2ipa gain for each lect code it names (README, Marks that need no context).
 - To add a same-POS word to the cue resolver, add its `.voc` wordlists and one `SENSE_CUES` entry in `bifonia/cues.py` (`bifonia/cues.py` docstring).
 - The release workflow sets `bifonia/version.py` from the conventional-commit titles of merged pull requests (`.github/workflows/release_workflow.yml`).
+
+## Before you push
+
+1. Run the full test suite.
+2. If you change an output that a page states, rerun the page's `verify` command from its agent-hint.
+3. If you add a docs page, list it in `docs/index.md`, give it an `agent-hint` comment after its H1, and add a footer with the index, previous and next links.

@@ -1,10 +1,18 @@
 # bifonia — usage guide
 
+<!-- agent-hint
+covers: the full API with its scoring signals, and the commands to install and test
+source: `bifonia/__init__.py`, `bifonia/scoring.py`
+generated: no
+verify: sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' docs/usage.md | grep -vP '^\x60{3}' | python -I - && python -m pytest -q tests/test_disambiguate.py
+see: `docs/methodology.md`, `README.md`
+-->
+
 ## Install
 
 ```bash
-pip install --pre bifonia          # latest alpha from PyPI
-pip install -e ".[test]"           # from a clone, with pytest
+uv pip install --prerelease=allow bifonia    # latest alpha from PyPI
+uv pip install --prerelease=allow -e ".[test]"   # from a clone, with pytest
 ```
 
 No runtime dependencies. bifonia uses only the Python standard library.
@@ -140,11 +148,11 @@ Measure sense-prediction accuracy two ways:
 
 ```bash
 python scripts/benchmark_tagger.py --no-taggers   # synthetic held-out split (per-word breakdown)
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py                   # out-of-distribution real-text set (downloads from Hugging Face)
 ```
 
 `benchmark_tagger.py` fails with a `ValueError` on homograph tokens that carry trailing punctuation ([#43](https://github.com/TigreGotico/bifonia/issues/43)). Both scripts also score spaCy and Stanza when those packages and their Portuguese models are installed. [`benchmarks.md`](benchmarks.md) gives the results.
 
 ---
-[Home](../README.md) · [Methodology →](methodology.md)
+[Index](index.md) · [Methodology →](methodology.md)
