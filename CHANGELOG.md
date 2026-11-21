@@ -1,8 +1,20 @@
 # Changelog
 
+## [0.5.5a1](https://github.com/TigreGotico/bifonia/tree/0.5.5a1) (2026-11-21)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.4a2...0.5.5a1)
+
+**Merged pull requests:**
+
+- fix\(scripts\): score punctuated homographs in benchmark\_tagger [\#81](https://github.com/TigreGotico/bifonia/pull/81) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.5.4a2](https://github.com/TigreGotico/bifonia/tree/0.5.4a2) (2026-11-19)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.3a1...0.5.4a2)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.4a1...0.5.4a2)
+
+## [0.5.4a1](https://github.com/TigreGotico/bifonia/tree/0.5.4a1) (2026-11-19)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.3a1...0.5.4a1)
 
 **Merged pull requests:**
 
