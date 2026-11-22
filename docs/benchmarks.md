@@ -55,7 +55,15 @@ python scripts/benchmark_tagger.py --no-taggers
 python scripts/benchmark_tagger.py --word sede
 ```
 
-The script scores the train, test and full splits of the synthetic corpus. It fails with a `ValueError` on homograph tokens that carry trailing punctuation ([#43](https://github.com/TigreGotico/bifonia/issues/43)), so this page gives no synthetic number.
+The script scores the train, test and full splits of the synthetic corpus, then prints the accuracy per word on the test split. `--word` limits both tables to one word.
+
+| split | n | rules (free) | most-common | Naive-Bayes | perceptron | ensemble |
+|---|---|---|---|---|---|---|
+| train | 124,459 | 97.79% | 52.65% | 99.45% | 99.78% | 97.79% |
+| test | 30,968 | 97.79% | 52.67% | 99.13% | 99.37% | 97.79% |
+| full | 155,427 | 97.79% | 52.65% | 99.39% | 99.70% | 97.79% |
+
+The rule engine labelled the synthetic corpus, so the learned models score higher here than out-of-distribution.
 
 ## Why POS-tagging isn't the whole story
 
