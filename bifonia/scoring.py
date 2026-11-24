@@ -506,6 +506,8 @@ def score_verb(words: list, idx: int) -> int:
         return 8 if _fora_is_verb(words, idx) else 0
 
     next2_word = _next2(words, idx)
+    # The infinitive tests read the raw token, as a direct caller may pass glued
+    # quotes: _is_infinitive("comer»") is False, _is_infinitive("comer") is True.
     next2_raw = words[idx + 2] if idx + 2 < len(words) else ""
     score = 0
 
@@ -611,11 +613,9 @@ def score_verb(words: list, idx: int) -> int:
         score += 6
     # A control verb 2 to 4 tokens before "a colher" ("começou a colher"), unless
     # an infinitive sits between them ("aprendeu a usar a colher").
-    prev3 = _strip(words[idx - 3]) if idx >= 3 else ""
-    prev4 = _strip(words[idx - 4]) if idx >= 4 else ""
-    if word == "colher" and prev_word == "a" and not _is_infinitive(prev2_word) and (
-        prev2_word in _COLHER_CTRL or prev3 in _COLHER_CTRL or prev4 in _COLHER_CTRL
-    ):
+    left4 = _left(words, idx, 4)
+    if word == "colher" and prev_word == "a" and not _is_infinitive(prev2_word) and any(
+            w in _COLHER_CTRL for w in left4[1:]):
         score += 6
 
     # "DET NOUN VERB": a subject determiner two places back.
@@ -706,10 +706,11 @@ def score_adj(words: list, idx: int) -> int:
     if prev_word in DET | QUANT | PRON:
         score += 3
 
-    # Postpositive "NOUN ADJ": a content word right before it, in the same clause,
-    # that is not a function word and does not look like a finite verb, and no
-    # determiner after it ("seco os pratos" is a verb + object). An enclitic
-    # ("disse-me") marks a verb host, not a noun.
+    # Postpositive "NOUN ADJ": a content word right before it, in the same clause.
+    # It has more than 2 characters, which skips every one- and two-character word, such
+    # as the prepositions "a", "de" and "em". It is not a function word and does
+    # not look like a finite verb, and no determiner follows ("seco os pratos" is
+    # a verb + object). An enclitic ("disse-me") marks a verb host, not a noun.
     prev_looks_verb = (_looks_verb(prev_word)
                        or ("-" in prev_word and prev_word.rsplit("-", 1)[-1] in _CLITICS_ALL))
     if (prev_word and len(prev_word) > 2
