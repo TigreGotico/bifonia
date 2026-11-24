@@ -7,10 +7,8 @@ one JSON shape and one scoring rule — a sparse dot product:
     score[sense] = bias[word][sense] + Σ_f feats[f] · weights[word][sense][f]
 
 and the predicted sense is the argmax. For NB the weights are per-sense log-odds and
-the bias is the log-prior; for the perceptron they are learned. Either way inference
-is plain dict arithmetic — no numpy, no sklearn (only ``json``
-+ ``pathlib`` + :mod:`bifonia.features`), so it is safe under the zero-dependency
-install.
+the bias is the log-prior; for the perceptron they are learned. Inference is plain
+dict arithmetic with no numpy, so it is safe under the zero-dependency install.
 
 Model JSON::
 
@@ -57,7 +55,6 @@ class SenseModel:
         with open(path, encoding="utf-8") as fh:
             return cls(json.load(fh))
 
-    # ── per-word metadata ─────────────────────────────────────────────────────
     def has(self, word: str) -> bool:
         return word in self.words
 
@@ -69,7 +66,6 @@ class SenseModel:
         entry = self.words.get(word)
         return entry.get("margin_tau", 0.0) if entry else 0.0
 
-    # ── scoring ───────────────────────────────────────────────────────────────
     def scores(self, word: str, words: list, idx: int, vocs: dict = None) -> dict:
         entry = self.words[word]
         if vocs is None:
@@ -88,7 +84,7 @@ class SenseModel:
 
     def predict(self, word: str, words: list, idx: int, vocs: dict = None) -> str:
         scores = self.scores(word, words, idx, vocs)
-        # deterministic tie-break: highest score, then sense name
+        # a tie goes to the first sense name in sort order
         return max(sorted(scores), key=lambda s: scores[s])
 
     def margin(self, word: str, words: list, idx: int, vocs: dict = None) -> float:

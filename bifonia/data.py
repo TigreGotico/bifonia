@@ -17,15 +17,10 @@ _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
 _LECT_CSV = pathlib.Path(__file__).parent / "data" / "lect_overrides.csv"
 _MARKS_CSV = pathlib.Path(__file__).parent / "data" / "context_free_marks.csv"
 
-# The dataset is keyed on (MEANING, POS) combos: a word's distinct readings are
-# identified by a meaning slug, and each slug carries the set of parts of speech
-# it can realise at its pronunciation.  Most readings are single-POS, but a slug
-# may carry several when a noun reading and a homographic verb share one vowel —
-# e.g. «forma» (shape) is the noun "a forma" AND the verb «formar» (3sg "forma"),
-# both open-o ˈfɔɾmɐ → pos = {NOUN, VERB}.  The CSV encodes a multi-POS slug as
-# "NOUN|VERB".  A word is POS-ambiguous (a tagger cannot pick the reading) iff
-# some POS maps to more than one sense — that is the set the hybrid ensemble
-# routes to the rules instead of to a tagger.
+# Each reading of a word is a meaning slug with the parts of speech it takes at
+# that pronunciation. A slug carries several when a noun and a homographic verb
+# share the vowel: «forma» (shape) is the noun and 3sg «formar», both ˈfɔɾmɐ,
+# written "NOUN|VERB" in the CSV.
 #
 #   HOMOGRAPHS   : word → {sense: IPA}       e.g. {"sede": {"thirst": "ˈsedɨ", "seat": "ˈsɛdɨ"}}
 #   SENSE_POS    : word → {sense: pos}        primary (first) POS of each sense
@@ -48,9 +43,7 @@ with _CSV.open(encoding="utf-8") as fh:
 
 AMBIGUOUS_WORDS: set = set(HOMOGRAPHS)
 
-# Words a part-of-speech tag cannot disambiguate (some POS maps to ≥2 senses):
-# the genuine same-POS / overlapping-POS heterophones (e.g. sede, molho,
-# corte, forma, tola, bola, cor, lobo, polo).
+# Words a POS tag cannot disambiguate (sede, molho, corte, forma, tola, bola, …).
 POS_AMBIGUOUS: set = {w for w, pm in POS_SENSES.items()
                       if any(len(senses) > 1 for senses in pm.values())}
 
@@ -70,11 +63,8 @@ def _form(path: pathlib.Path, line: int, word: str, form: str) -> str:
 # Per-lect marking overrides: lect tag → {word: form}. The form replaces the
 # diacritized form of every sense of the word; an empty form leaves the word
 # unmarked. A lect needs rows only where its stressed vowel differs from the
-# European one. Each form is read in NFC, because add_extra_diacritics copies the
-# case of each letter of the word onto the code point of the form at the same
-# position. So each code point of the form must be one letter of the word: a form
-# that is not as long as its word in NFC, or that keeps a combining mark in NFC,
-# would lose letters there, and the loader rejects it.
+# European one. add_extra_diacritics copies the case of each letter onto the code
+# point at the same position, so _form requires one NFC code point per letter.
 LECT_OVERRIDES: dict = {}
 with _LECT_CSV.open(encoding="utf-8") as fh:
     reader = csv.DictReader(fh)
@@ -145,9 +135,8 @@ def context_free_marks(lang: str) -> dict:
     return _for_lect(CONTEXT_FREE_MARKS, "pt-pt" if tag == "pt" else tag)
 
 
-# Membership helpers for the POS scorer (word → representative IPA for that POS).
-# A word "has" a POS candidate iff some sense carries it; the scorer then narrows
-# to a single sense via POS_SENSES (+ resolve_sense when a POS maps to several).
+# word → IPA of its first sense with that POS. The scorer scores a POS only for
+# the words in its table.
 def _ipa_by_pos(pos: str) -> dict:
     return {w: HOMOGRAPHS[w][senses[0]]
             for w, pmap in POS_SENSES.items()
@@ -159,16 +148,14 @@ NOUNS_IPA: dict = _ipa_by_pos("NOUN")
 ADP_IPA: dict = _ipa_by_pos("ADP")
 ADJ_IPA: dict = _ipa_by_pos("ADJ")
 
-# Default sense when a word's guessed POS maps to several senses and no context
-# cue decides (only "sede": thirst is the prototypical reading).  See
-# scoring.resolve_sense.
+# The dominant sense of each same-POS word; in the library only scoring._resolve_sede reads it.
 DEFAULT_SENSE: dict = {
     "sede": "thirst",
     "bola": "ball", "cor": "colour", "lobo": "wolf", "polo": "pole",
     "corte": "cut", "forma": "shape", "molho": "sauce", "tola": "foolish",
 }
 
-# sensible linguistic defaults when context scoring yields no winner
+# The POS when context scoring gives no single winner.
 DEFAULT_POS: dict = {
     "para": "ADP",
     "pelo": "ADP",
@@ -185,9 +172,8 @@ DEFAULT_POS: dict = {
     "conserto": "NOUN",
     "coro": "NOUN",
     "corte": "NOUN",
-    # "forma" NOUN IPA (closed-o) = baking mold only (rare).  All other NOUN
-    # senses (manner, shape, geometric form) share the open-o VERB IPA.
-    # Default to VERB so "uma forma geométrica" / "desta forma" get open-o.
+    # The noun IPA (closed o) is the rare baking mould; shape and manner share
+    # the open-o VERB IPA ("uma forma geométrica", "desta forma").
     "forma": "VERB",
     "gozo": "NOUN",
     "gosto": "NOUN",
@@ -200,8 +186,7 @@ DEFAULT_POS: dict = {
     "transtorno": "NOUN",
     "peso": "NOUN",
     "posto": "NOUN",
-    # noun/verb -o alternation words (closed-o noun citation form is the default;
-    # explicit context cues flip to the open-ɔ verb reading).
+    # Closed-o noun by default; a context cue flips to the open-ɔ 1sg verb.
     "torno": "NOUN",      # «o torno» / «em torno de» (closed) vs «eu torno» (open)
     "troco": "NOUN",      # «o troco» (closed) vs «eu troco» (open)
     "toco": "NOUN",       # «o toco» (closed) vs «eu toco» (open)
@@ -216,7 +201,7 @@ DEFAULT_POS: dict = {
     "esforço": "NOUN", "conforto": "NOUN", "aborto": "NOUN", "adorno": "NOUN",
     "reforço": "NOUN", "soldo": "NOUN", "esboço": "NOUN",
     "governo": "NOUN", "emprego": "NOUN", "selo": "NOUN", "gelo": "NOUN",
-    # wave 3 (agent-discovered, infopedia-validated; n/v slugs)
+    # IPA checked against Infopédia.
     "sopro": "NOUN",
     "forro": "NOUN",
     "dobro": "NOUN",
@@ -290,7 +275,6 @@ DEFAULT_POS: dict = {
     "desemperro": "NOUN",
     "emperro": "NOUN",
     "zelo": "NOUN", "cerco": "NOUN", "erro": "NOUN", "tempero": "NOUN",
-    # diacritic-collapse + deverbal additions
     "bola": "NOUN", "cor": "NOUN", "lobo": "NOUN", "polo": "NOUN",
     "renovo": "NOUN", "soma": "NOUN", "força": "NOUN",
     # adverb (open) vs the pluperfect of ser/ir (closed). The adverb is the
@@ -301,25 +285,17 @@ assert set(DEFAULT_POS) == AMBIGUOUS_WORDS, (
     f"DEFAULT_POS missing: {AMBIGUOUS_WORDS - set(DEFAULT_POS)}"
 )
 
-# ── per-word POS bias (European Portuguese frequency priors) ──────────────────
-# Integer bonus added to each POS score before signal scoring begins.
-# Use to encode corpus-level frequency priors when the default tiebreaker
-# (DEFAULT_POS) is not granular enough.  Tune by running benchmark_tagger.py
-# and inspecting per-word accuracy.  Values are intentionally small (1–3) so
-# they lose to any explicit context signal.
+# European Portuguese frequency priors, added to each POS score before the
+# context signals; kept at 1 or less so any context signal wins (tuned with
+# scripts/benchmark_tagger.py). "sobre" has no ADP prior: score_noun already
+# gives "a/um sobre" (the sail) 12, and an ADP prior would make ties that cost
+# NOUN accuracy. "pelo" is mostly por+o in EP prose, so ADP gets +1 to break
+# bare-context ties. Other words have no safe prior without corpus tuning.
 BASE_SCORE: dict = {
-    # Small frequency priors to break near-ties.
-    # Keep values ≤ 1 to avoid overriding any explicit context signal.
-    # "sobre" ADP prior is intentionally 0: the DET-before+7 NOUN boost already
-    # gives score_noun=12 for unambiguous "a/um sobre" (nautical) sentences, and a
-    # non-zero ADP prior would create ties that degrade NOUN accuracy.
-    # "pelo" most commonly ADP (por+o) in EP prose — +1 to break bare-context ties.
     "pelo": {"ADP": 1, "NOUN": 0, "VERB": 0},
-    # three-way and two-way words: no safe non-zero prior without corpus tuning.
 }
 
-# ── context wordlists (loaded from locale/<lang>/*.voc — see vocab.py) ─────────
-# Edit the .voc files to extend these without touching code.
+# Context wordlists from locale/<lang>/*.voc (see vocab.py).
 
 STOPPABLE_THINGS = set(voc("stoppable_things"))   # "para"=parar (VERB) subjects/objects
 DET   = set(voc("determiners"))                    # determiners + contracted prep+article
@@ -334,7 +310,7 @@ PREP = set(voc("ambiguous_preps"))
 
 BEFORE_PREP = set(voc("before_prep_extra")) | AUX_VERBS
 
-# Tokens that may follow a preposition (ADP complements). Built from the .voc
-# leaf list plus DET|PRON, minus contracted article forms (those signal NOUN).
+# Tokens that may follow a preposition, minus the contracted article forms
+# (those signal NOUN).
 _AFTER_PREP_EXCL = set(voc("after_prep_exclude"))
 AFTER_PREP = (set(voc("after_prep_extra")) | DET | PRON) - _AFTER_PREP_EXCL

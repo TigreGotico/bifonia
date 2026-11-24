@@ -29,7 +29,7 @@ def load() -> dict:
 
 
 def readings(word: str) -> list:
-    """All infopedia readings (rows) for *word*."""
+    """Return every Infopédia reading (row) of *word*, case-insensitively."""
     return load().get(word.lower(), [])
 
 

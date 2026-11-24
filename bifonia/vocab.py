@@ -1,10 +1,8 @@
 """
 Locale-aware vocabulary loader for bifonia.
 
-Wordlists live as ``.voc`` files under ``bifonia/locale/<lang>/`` — one term per
-line, ``#`` comments and blank lines ignored — so they can be edited and extended
-without touching code (data separated from logic). Pure standard library, no
-dependencies.
+Wordlists live as ``.voc`` files under ``bifonia/locale/<lang>/``: one term per
+line, ``#`` comments and blank lines ignored.
 """
 import pathlib
 from functools import lru_cache

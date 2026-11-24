@@ -1,5 +1,5 @@
 """
-Context-based POS scoring for Portuguese heterophonic bifoniaaphs.
+Context-based POS scoring for Portuguese heterophonic homographs.
 
 Each scorer returns an integer; higher = more confident.
 Negative scores signal anti-evidence for that POS.
@@ -16,9 +16,11 @@ advérbio"; Infopédia (https://www.infopedia.pt/dicionarios/lingua-portuguesa/f
 
 from bifonia.cues import SENSE_CUES
 from bifonia.text import (
-    cue_score as _cue_score,   # proximity-weighted, accent-folded cue counter
+    DEVERBAL_SUFFIXES as _DEVERBAL_SFX,
+    cue_score as _cue_score,
     folded as _folded,
-    strip_punct as _strip,     # token punctuation strip (shared with features)
+    looks_verb as _looks_verb,
+    strip_punct as _strip,
 )
 from bifonia.data import (
     ADP_IPA, ADJ_IPA, NOUNS_IPA, VERBS_IPA,
@@ -30,8 +32,7 @@ from bifonia.data import (
 )
 from bifonia.vocab import voc
 
-# Wordlists are externalised to locale/<lang>/*.voc (see vocab.py) so they can
-# be extended without code changes. Derived/structural sets stay in code below.
+# Wordlists live in locale/<lang>/*.voc (see vocab.py).
 _ENCLITICS       = voc("enclitics")         # hyphen-attached enclitic clitics (verb host)
 _AFTER_PREP_WEAK = voc("after_prep_weak")   # time adv/pron: weak ADP credit
 _COPULA          = voc("copula")            # copular/semi-copular verbs
@@ -41,7 +42,7 @@ _CONJ_SUBJ       = voc("conj_subjunctive")  # subjunctive-introducing conjunctio
 _NEG_ADV         = voc("neg_adv")           # negation/frequency adverbs before finite verb
 _PASSIVE_AUX     = voc("passive_aux")       # past/subjunctive of ser (passive)
 
-# per-word semantic lists (formerly inline in the scorers)
+# per-word semantic lists
 _PELO_FIXED   = voc("pelo_fixed")
 _PELO_ROUTE   = voc("pelo_route")
 _SOBRE_INTENS = voc("sobre_intensifiers")
@@ -100,7 +101,7 @@ _PRENOMINAL_ADJ = voc("prenominal_adj")  # adjectives that precede a noun head
 _COMPLEMENT_PREPS = voc("complement_preps")  # prep + homograph = nominal complement
 _COORDINATION = voc("coordination")          # e/ou/nem/como before → noun
 _AROUND_PREP = voc("around_prep")            # "em torno" locution
-# meaning-level cues for words whose senses share a POS (only "sede" today)
+# meaning cues of the two noun senses of "sede"
 _SEDE_SEAT   = voc("sede_seat_cues")
 _SEDE_THIRST = voc("sede_thirst_cues")
 # "molho" bundle/soak cues (open ɔ) vs the default sauce reading (closed o)
@@ -108,9 +109,6 @@ _BUNDLE_THINGS = voc("bundle_things")       # unambiguous bundles: "molho de cha
 _BUNDLE_AMBIG  = voc("bundle_ambiguous")    # greens, bundle only with a gathering verb
 _BUNDLE_VERBS  = voc("bundle_verbs")        # pick/buy/tie/hold → resolves the greens
 _SOAK_VERBS    = voc("soak_verbs")          # "deixar/pôr/estar de molho" → soaking
-# The diacritic-collapse / cue-competition words (bola, lobo, polo, cor) are
-# resolved declaratively from bifonia.cues.SENSE_CUES — their cue vocs are loaded
-# on demand inside _resolve_by_cues, not bound here.
 # "fora": cues of the pluperfect of ser/ir (closed o) against the adverb (open ɔ)
 _FORA_VERB_PREV = voc("fora_verb_prev")
 _FORA_ADVERB_PREV = voc("fora_adverb_prev")
@@ -118,9 +116,18 @@ _FORA_ADVERB_NEXT = voc("fora_adverb_next")
 _FORA_BRIDGE = voc("fora_bridge_adverbs")
 _IRREGULAR_PARTICIPLES = voc("irregular_participles")
 _PARTICIPLE_LOOKALIKES = voc("participle_lookalikes")
-# contracted prep+article forms (shared by several scorers)
+# contracted prep+article forms ("no", "à", "do", …)
 _CONTRACTED_DET = voc("contracted_det")
-_VERB_DET_EXCL = _COLHER_DET_EXCL = _CONTRACTED_DET
+
+_PARTICIPLE_SFX = ("ado", "ido", "ada", "ida", "ados", "idos", "adas", "idas")
+_PARTICIPLE_VOWELS = frozenset("aeiouáéíóúâêîôûãõ")
+# Quantifiers that follow their noun ("o peso todo").
+_POSTPOSED_QUANT = {"todo", "toda", "todos", "todas", "mesmo", "mesma", "inteiro", "inteira"}
+# A contracted preposition opens a prepositional phrase, not a subject.
+_SUBJ_DET = DET - _LOCATIVE_CONTRACTIONS
+_GOZO_EXCL_PREV = DET | QUANT | _PREP_GOVERNING
+_FUNC_WORDS = DET | QUANT | PRON | AUX_VERBS | _FUNC_EXTRA
+_SEDE_ABSTRACT = ("ção", "são", "mento", "dade", "ência", "ância", "ismo", "tude")
 
 
 def _prev(words: list, idx: int) -> str:
@@ -135,6 +142,20 @@ def _prev2(words: list, idx: int) -> str:
     return _strip(words[idx - 2]) if idx > 1 else ""
 
 
+def _next2(words: list, idx: int) -> str:
+    return _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+
+
+def _left(words: list, idx: int, n: int) -> list:
+    """Return the stripped tokens up to *n* places before *idx*, nearest first."""
+    return [_strip(words[idx - k]) for k in range(1, n + 1) if idx - k >= 0]
+
+
+def _right(words: list, idx: int, n: int) -> list:
+    """Return the stripped tokens up to *n* places after *idx*, nearest first."""
+    return [_strip(words[idx + k]) for k in range(1, n + 1) if idx + k < len(words)]
+
+
 def _is_infinitive(word: str) -> bool:
     w = word.rstrip(".,;:!?")
     return w.endswith(("ar", "er", "ir"))
@@ -147,6 +168,13 @@ def _is_numeric(word: str) -> bool:
     digit groups.
     """
     return word.removeprefix("-").isdecimal() or word in NUMERIC
+
+
+def _has_participle_ending(word: str) -> bool:
+    """Return True for an -ado/-ido form whose suffix follows a consonant, so a
+    name such as "samoeida" does not count."""
+    return any(word.endswith(sfx) and len(word) > len(sfx) and word[-len(sfx) - 1] not in _PARTICIPLE_VOWELS
+               for sfx in _PARTICIPLE_SFX)
 
 
 def score_adp(words: list, idx: int) -> int:
@@ -167,89 +195,54 @@ def score_adp(words: list, idx: int) -> int:
     if _is_infinitive(next_word):
         score += 2
 
-    # "para não/nunca/jamais X" is always purpose ADP + negated infinitive.
-    # Limited to pure negation adverbs — frequency adverbs ("sempre", "raramente")
-    # can follow a finite VERB "pára" ("pára sempre" = stops always).
-    if word == "para" and next_word in _PURE_NEG:
-        score += 4
-
     if word == "para":
-        # "para [deverbal noun]" — purpose ADP + nominalised VP (para análise, para
-        # revisão, para avaliação, para consideração, etc.).  Deverbal nouns typically
-        # end in -ção/-são/-ão, -gem, -ura, -ência/-ância, -mento, -ismo, or are
-        # bare infinitive-like forms ending in -ar/-er/-ir (already handled by
-        # _is_infinitive).  Detect by common suffix.
-        _DEVERBAL_SFXS = ("ção", "são", "gem", "ura", "ência", "ância",
-                          "mento", "ismo", "ise")
-        if next_word.endswith(_DEVERBAL_SFXS):
+        # "para não/nunca X" is purpose + a negated infinitive. Frequency adverbs
+        # stay out: "pára sempre" is the verb.
+        if next_word in _PURE_NEG:
             score += 4
-        # "para depois/amanhã" — deferred-purpose ADP.
-        # "depois" is in AFTER_PREP_WEAK (+2) but needs more to beat DET-2back VERB+3.
-        # Keep narrow: "sempre/logo/aqui/lá" can also follow finite VERB "pára".
+        # Purpose + a nominalised verb phrase: "para análise", "para revisão".
+        if next_word.endswith(_DEVERBAL_SFX):
+            score += 4
+        # "para depois/amanhã": the weak +2 alone loses to the verb's DET-2-back +3.
+        # Kept narrow, because "sempre/logo/aqui/lá" also follow the verb "pára".
         if next_word in _DEFERRAL_ADV:
             score += 3
-        # "está/é [ADJ] para quando/…" — copula+predicative ADJ before "para" signals
-        # purpose ADP, not finite VERB "pára".
-        _para_prev2 = _strip(words[idx - 2]) if idx >= 2 else ""
-        if _para_prev2 in _COPULA:
+        # "está pronto para": a copula and a predicative adjective before it.
+        if _prev2(words, idx) in _COPULA:
             score += 4
 
     if word == "pelo":
-        # Fixed idiomatic ADP phrases: "pelo menos", "pelo contrário", "pelo amor",
-        # "pelo visto", "pelo que", "pelo andar", "pelo sim pelo não", etc.
-        # Also possessives: "pelo seu bem", "pelo teu cálculo", "pelo meu entender".
-        # And temporal/occasion nouns: "pelo Natal", "pelo Páscoa", "pelo verão".
+        # Fixed phrases ("pelo menos", "pelo seu bem", "pelo Natal").
         if next_word in _PELO_FIXED:
             score += 6
-        # "pelo [route/place noun]" — por+o contracted ADP, common with geographic/
-        # directional nouns that aren't in AFTER_PREP.
+        # Route and place nouns that AFTER_PREP lacks.
         if next_word in _PELO_ROUTE:
             score += 5
-        # Passive-voice agent: "foi transmitido pelo X", "foi aprovado pelo Y"
-        # A past participle in the ±3 left context strongly signals ADP agent.
-        # Guard: the char before the suffix must be a consonant so that animal/proper
-        # names ending in -ida/-ada (e.g. "samoeida") don't fire as false positives.
-        _PPT_SFXS = ("ado", "ido", "ada", "ida", "ados", "idos", "adas", "idas")
-        _VOWELS = frozenset("aeiouáéíóúâêîôûãõ")
-        _left3 = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
-        def _is_ppt(w):
-            for sfx in _PPT_SFXS:
-                if w.endswith(sfx) and len(w) > len(sfx) and w[-len(sfx)-1] not in _VOWELS:
-                    return True
-            return False
-        if any(_is_ppt(w) for w in _left3):
+        # Passive agent: a participle in the 3 tokens before ("foi aprovado pelo X").
+        if any(_has_participle_ending(w) for w in _left(words, idx, 3)):
             score += 5
-        # "pelo" = por+o (masc.sg.); if followed by any free-standing definite article
-        # it cannot be the ADP contraction (por+o already contains the article "o").
-        # Return strongly negative so score_verb wins.
+        # por+o already holds the article, so an article after it rules out the
+        # contraction.
         if next_word in _ARTICLES:
             score -= 8
         elif idx > 0:
-            # por+o + a common noun is the overwhelmingly dominant reading
-            # ("pelo metro", "pelo diálogo", "pelo caminho"); default to ADP unless
-            # a fur/peel cue in score_noun (preceding article, "pelo do/da X"
-            # genitive, "tem pelo", "de pelo <adj>") outscores this baseline.
-            # Gated on idx>0: sentence-initial "Pelo …" is the 1sg peel verb.
+            # por+o + a noun is the dominant reading ("pelo caminho"); a fur cue in
+            # score_noun can still outscore it. A sentence-initial "Pelo" is the
+            # 1sg verb.
             score += 3
 
     if word == "sobre":
-        # Explicit governing noun/verb before "sobre" (e.g. "caso sobre X",
-        # "falou sobre X") — strongest explicit ADP signal.
+        # A governing noun or verb before it ("falou sobre X").
         if prev_word in SOBRE_GOV:
             score += 6
-        # Intensifier scale quantifiers before "sobre": "sabe muito sobre",
-        # "aprendeu pouco sobre" — always ADP (about/concerning).
+        # A quantifier before it: "sabe muito sobre", "aprendeu pouco sobre".
         if prev_word in _SOBRE_ADP_QUANT:
             score += 5
-        # "sobre + DET/PRON" — "sobre o/a/este/ela..." is a clear ADP pattern
-        # meaning "about the..." (already handled by AFTER_PREP above, but
-        # reinforce it so it beats VERB signals from prev2-DET).
+        # "sobre o/este/ela": reinforces AFTER_PREP to beat the verb's DET-2-back cue.
         if next_word in DET | PRON:
             score += 3
-        # Mild base prior: mid-sentence "sobre" after any non-pronoun is
-        # almost always ADP, not VERB — but when a negation/frequency adverb or
-        # temporal conjunction precedes, the word is likely a finite VERB, so
-        # withhold the prior there.
+        # Mid-sentence "sobre" is almost always the preposition, except after a
+        # pronoun, a negation or frequency adverb, or a temporal conjunction.
         if idx > 0 and prev_word not in PRON | _NEG_ADV | _TEMPORAL_CONJ:
             score += 2
 
@@ -369,150 +362,116 @@ def score_noun(words: list, idx: int) -> int:
 
     word = words[idx]
     score = 0
-    # Intensifiers (muito/pouco/bastante/…) can precede "sobre" as adverbs
-    # ("sabe muito sobre X") — don't treat them as NOUN determiners there.
+    # An intensifier before "sobre" is an adverb ("sabe muito sobre X"), and
+    # "a/uma tola" fits the noun and the substantive adjective equally.
     if prev_word in DET | QUANT and not (word == "sobre" and prev_word in _SOBRE_INTENS) \
-            and word != "tola":  # "a/uma tola" is equally DET+NOUN and DET+subst-ADJ
+            and word != "tola":
         score += 5
-        # "sobre" as a noun (nautical sail) is unambiguous when a DET immediately
-        # precedes — it cannot function as ADP after a determiner.  Boost
-        # strongly so the ADP signal from the following DET doesn't win.
+        # After a determiner "sobre" can only be the noun (the sail).
         if word == "sobre":
             score += 7
-    # "posto" as PPT of "pôr" (to place/put) is pronounced like the NOUN (closed-o),
-    # not like the VERB "postar" (to post, open-o).  Boost NOUN when a passive
-    # auxiliary precedes, e.g. "foi posto", "estava posto", "ficou posto".
+    # "posto" as the participle of "pôr" ("foi posto") has the closed o of the noun.
     if word == "posto" and prev_word in _PASSIVE_AUX:
         score += 8
-    # "do/da/dos/das" strongly indicate a following possessive/partitive phrase.
-    # Plain "de" excluded: ambiguous with "gosto de X" (VERB) constructions.
+    # "do/da/dos/das" open a genitive. Plain "de" stays out: "gosto de X" is a verb.
     if next_word in _DE_CONTRACTIONS:
         score += 3
-    # Fixed closed-o NOUN prepositional locutions that the deverbal-noun /
-    # de-contraction cues miss when a bare "de" or other complement follows:
-    #   «em torno de», «ao/no torno», «do torno»  — around / at the lathe
-    #   «em troco de»                              — in exchange for
-    # The 1sg verbs «tornar»/«trocar» are never introduced by these prepositions,
-    # so a preceding "em/ao/no/do" is decisive for the closed-o NOUN reading.
+    # Closed-o noun locutions «em torno de», «ao/no/do torno» and «em troco de»;
+    # the 1sg verbs «torno»/«troco» never follow these prepositions.
     if word == "torno" and prev_word in _AROUND_PREP:
         score += 6
     if word == "troco" and prev_word == "em":
         score += 6
-    # Prenominal adjective directly before → the word is the modified NOUN head
-    # ("o atual governo", "um pequeno erro", "o último sopro") — distinguishes
-    # DET ADJ NOUN from DET NOUN VERB (where prev is the noun subject).
+    # A prenominal adjective before it makes it the noun head ("o atual governo").
     if prev_word in _PRENOMINAL_ADJ:
         score += 5
-    # A complement/oblique preposition immediately before a homograph marks a
-    # nominal use ("de gelo", "saco de emprego", "sem retorno", "com decoro",
-    # "pelo golfo"). «colher» excluded: "de colher" can be the infinitive verb.
+    # A complement preposition before it ("de gelo", "sem retorno"); not for
+    # «colher», where "de colher" can be the infinitive.
     if prev_word in _COMPLEMENT_PREPS and word != "colher":
         score += 3
-    # Coordination / comparison before the word ("X e Y", "X ou Y", "como X") —
-    # the homograph is almost always a NOUN in a list or a comparison, not a
-    # finite verb. Real-world (encyclopedic) text is noun-dominant, so this
-    # cuts the most common false-VERB error without needing a strong verb cue.
+    # Coordination or comparison before it ("X e Y", "como X"): real text is
+    # noun-dominant, so this cuts the most common false-verb error.
     if prev_word in _COORDINATION:
         score += 3
-    # Object of a transitive finite verb directly before ("encontrou consolo",
-    # "procura emprego") → the homograph is the object NOUN, not a second verb.
+    # The object of a transitive verb ("encontrou consolo", "procura emprego").
     if prev_word in _TRANS_VERB:
         score += 3
-    # "pelo" as fur (NOUN): "tem pelo", "tinha pelo" — transitive possession verb directly
-    # before "pelo" signals body-hair/fur reading, not the ADP contraction (por+o).
+    # "pelo" as fur: "tem pelo", "o pelo", "pelo do cão". por+o never takes an
+    # article of its own.
     if word == "pelo" and prev_word in _TER:
         score += 6
-    # "o pelo" / "um pelo" — a determiner directly before "pelo" makes it the fur
-    # NOUN (por+o already contains its own article, so it never takes one), and
-    # "pelo do/da X" is the fur genitive ("o pelo do cão").
     if word == "pelo" and prev_word in _ARTICLES:
         score += 6
     if word == "pelo" and next_word in ("do", "da"):
         score += 5
-    # "cão de pelo comprido" — genitive "de" directly before "pelo" followed by a
-    # qualitative adjective is always the fur-type construction, not ADP (por+o).
-    # "pelo menos" / "pelo visto" etc. are guarded by _PELO_FIXED in score_adp (+6),
-    # so a NOUN+6 here still loses to those fixed-phrase ADP signals (total ADP≥11).
+    # "cão de pelo comprido". This +6 still loses to the fixed phrases of
+    # score_adp ("de pelo menos" scores ADP 11 or more).
     if word == "pelo" and prev_word == "de":
         score += 6
-    # "tola" as colloquial NOUN (head/skull): detected by verbs of hitting/filling/
-    # possessive clitic contexts — "bater com a tola", "meter na tola", "partir a tola",
-    # "dói-me a tola", "a tola à roda".
-    # "corte" NOUN (royal court, *closed* o) is grammatically feminine in Portuguese:
-    # «a corte», «da corte», «na corte», «à corte», «uma corte»
-    # Feminine determiner before "corte" is a strong signal for this reading.
-    # "corte" NOUN/cut (open o, scored as VERB) is masculine — no boost here.
+    # The royal court (closed o) is feminine: «a corte», «na corte». The cut (open
+    # ɔ, scored as VERB) is masculine.
     if word == "corte" and prev_word in _FEM_DET:
         score += 7
-    # Court-specific adjectives/nouns immediately after also confirm royal court.
-    # NOTE: do NOT include generic "de/do/da" here — the cut sense also takes
-    # them ("o corte do bolo", "corte de cabelo"), so they are not court signals.
+    # Court terms after it. Generic "de/do/da" stay out: "o corte do bolo".
     if word == "corte" and next_word in _COURT_TERMS:
         score += 3
 
     if word == "tola":
-        _left3 = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
-        # head-action verb to the LEFT = tola is its object ("bati com a tola",
-        # "perdeu a tola").  Right-side action verbs are excluded: "a tola perdeu
-        # X" has tola as the SUBJECT (substantivised ADJ), not the head-object.
-        if any(v in _HEAD_VERBS for v in _left3):
+        # The colloquial head (skull) or the tola hardwood.
+        left3 = _left(words, idx, 3)
+        # A head-action verb before it ("bati com a tola"). A verb after it makes
+        # tola the subject, the substantive adjective ("a tola perdeu X").
+        if any(v in _HEAD_VERBS for v in left3):
             score += 6
-        # body-state verb to the RIGHT = head as subject ("a tola dele latejava").
-        _right2h = [_strip(words[idx + k]) for k in range(1, 3) if idx + k < len(words)]
-        if any(v in _HEAD_STATE for v in _right2h):
+        # A body-state verb after it ("a tola dele latejava").
+        if any(v in _HEAD_STATE for v in _right(words, idx, 2)):
             score += 6
-        # "a tola dele/dela" — possessive of person = colloquial head (NOUN)
-        if prev_word in _TOLA_POSS_PREV \
-                and next_word in _PERSON_POSS:
+        # "a tola dele/dela"
+        if prev_word in _TOLA_POSS_PREV and next_word in _PERSON_POSS:
             score += 5
-        # "em tola" / "de tola" — material construction = hardwood (NOUN)
+        # "em tola", "de tola": the material
         if prev_word in _MATERIAL_PREP:
             score += 4
-        # "na tola" / "pela tola" — locative preposition signals body-part head
+        # "na tola", "pela tola": the body part
         if prev_word in _HEAD_LOCATIVE:
             score += 5
-        # "com a tola" — prev2="com" + prev="a" (article)
-        _prev2_tola = _strip(words[idx - 2]) if idx >= 2 else ""
-        if _prev2_tola == "com" and prev_word in _SING_ARTICLES:
+        # "com a tola"
+        if _prev2(words, idx) == "com" and prev_word in _SING_ARTICLES:
             score += 5
-        # "[a] tola à roda" / "tola ao ar" — "à/ao" immediately after signals idiom
+        # "[a] tola à roda", "tola ao ar"
         if next_word in _CONTRACTED_A and prev_word in _TOLA_DET_PREV:
             score += 4
-        # tola = African hardwood: "madeira de tola", "ripas de tola", "em tola"
-        _right3 = [_strip(words[idx + k]) for k in range(1, 4) if idx + k < len(words)]
-        if any(w in _WOOD_CONTEXT for w in _left3 + _right3):
+        # "madeira de tola", "ripas de tola"
+        if any(w in _WOOD_CONTEXT for w in left3 + _right(words, idx, 3)):
             score += 6
 
-    # "forma" NOUN IPA (closed-o) = the baking mould / fôrma ONLY.  All other
-    # senses (figura, modo, maneira, formatura, 3sg formar) share the open-o VERB
-    # reading.  The generic DET-before / de-after bonuses above fire for both, so
-    # for "forma" keep the NOUN score only when an explicit mould cue is present;
-    # otherwise zero it so the open-o reading (VERB default) wins.
+    # The noun IPA of "forma" (closed o) is the baking mould «fôrma» only. Every
+    # other sense (shape, manner, 3sg formar) shares the open-o VERB reading, so
+    # the noun keeps its score only with a mould cue.
     if word == "forma":
-        _next2_f = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-        _toks_f = [_strip(w) for w in words]
-        # Shape/manner idioms force the open-o VERB reading even if a cooking word
-        # happens to appear ("a forma de preparar a massa" = manner, not a tin).
-        _shape = (prev_word in _FORMA_SHAPE_PREV
-                  or next_word == "como"
-                  or (next_word == "de" and _is_infinitive(_next2_f))
-                  or _next2_f in _FORMA_SHAPE_NEXT)
-        # "uma forma para fazer/o <bakeware>" — purpose phrasing of a baking tin.
-        _purpose = (next_word == "para"
-                    and (_next2_f in _BAKE_PURPOSE or _next2_f in _BAKEWARE
-                         or (_next2_f in _SING_ARTICLES
-                             and _strip(words[idx + 3] if idx + 3 < len(words) else "") in _BAKEWARE)))
-        if _shape:
+        next2 = _next2(words, idx)
+        toks = [_strip(w) for w in words]
+        # Shape and manner idioms win over a stray cooking word ("a forma de
+        # preparar a massa").
+        shape = (prev_word in _FORMA_SHAPE_PREV
+                 or next_word == "como"
+                 or (next_word == "de" and _is_infinitive(next2))
+                 or next2 in _FORMA_SHAPE_NEXT)
+        # "uma forma para fazer/o <bakeware>"
+        purpose = (next_word == "para"
+                   and (next2 in _BAKE_PURPOSE or next2 in _BAKEWARE
+                        or (next2 in _SING_ARTICLES
+                            and _strip(words[idx + 3] if idx + 3 < len(words) else "") in _BAKEWARE)))
+        if shape:
             score = 0
-        elif (any(t in _MOULD_CUES for t in _toks_f)
-              or (next_word == "de" and _next2_f in _BAKEWARE) or _purpose):
+        elif (any(t in _MOULD_CUES for t in toks)
+              or (next_word == "de" and next2 in _BAKEWARE) or purpose):
             score += 6
         else:
             score = 0
 
-    # "molho" as the verb molhar takes a direct object or a clitic ("molho os
-    # pés", "molho-as"), often after an adverb ("molho sempre as plantas"). These
-    # mark the noun instead:
+    # The verb molhar takes a direct object or a clitic ("molho os pés",
+    # "molho-as"), often after an adverb. These mark the noun instead:
     #   - an interrogative or a verb of lack before it ("que molho escolhes",
     #     "falta molho"). Interrogative "qual"/"quais" is decisive even before an
     #     article ("Qual molho, o branco?"); after an article or a contraction it
@@ -530,10 +489,8 @@ def score_noun(words: list, idx: int) -> int:
         if idx == 0 or words[idx - 1][-1:] in ",;:":
             if not _molho_takes_object(words, idx):
                 score += 8
-        elif next_word == "de":
-            after_de = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-            if after_de not in _ADVERBIAL_DE:
-                score += 4
+        elif next_word == "de" and _next2(words, idx) not in _ADVERBIAL_DE:
+            score += 4
     return score
 
 
@@ -543,14 +500,18 @@ def score_verb(words: list, idx: int) -> int:
     next_word = _next(words, idx)
     prev2_word = _prev2(words, idx)
 
-    # "fora" takes none of the generic verb signals below: the adverb is the
-    # default reading, and only a cue of the pluperfect of ser/ir overrides it.
+    # The adverb is the default reading of "fora"; only a cue of the pluperfect
+    # of ser/ir overrides it, so the generic signals below do not apply.
     if _strip(word) == "fora":
         return 8 if _fora_is_verb(words, idx) else 0
 
+    next2_word = _next2(words, idx)
+    # The infinitive tests read the raw token, as a direct caller may pass glued
+    # quotes: _is_infinitive("comer»") is False, _is_infinitive("comer") is True.
+    next2_raw = words[idx + 2] if idx + 2 < len(words) else ""
     score = 0
 
-    # Sentence-initial position without a preceding article → likely 1st-person verb.
+    # Sentence-initial, so no article before it: likely a 1st-person verb.
     if idx == 0:
         score += 3
 
@@ -559,155 +520,105 @@ def score_verb(words: list, idx: int) -> int:
         if idx == 1:
             score += 2
 
-    # 1st-person verb forms (choro, começo, acordo, …) without a preceding
-    # determiner are almost certainly finite verbs, not nouns.  The noun reading
-    # needs an article ("o choro", "um começo") which provides DET context.
-    # Guards:
-    #   - DET/QUANT in prev or prev2 → NOUN phrase context, skip
-    #   - Transitive verb in prev ("tem", "tinha", "tenho", …) → NOUN object, skip
-    #     ("tem choro fácil", "tem gosto refinado" are NOUN objects of "ter")
+    # A 1sg form (choro, começo, acordo) with no determiner, transitive verb or
+    # complement preposition before it is a verb: the noun needs a determiner
+    # ("o choro"), and "tem choro fácil" or "de peso" are noun objects.
     if (idx > 0
             and prev_word not in DET | QUANT
             and prev2_word not in DET | QUANT
             and prev_word not in _TRANS_VERB
-            and prev_word not in _COMPLEMENT_PREPS):   # "de/em/com … peso/jogo" = noun object
+            and prev_word not in _COMPLEMENT_PREPS):
         if word in _FIRST_PERSON_NOUNS:
             score += 2
 
-    # "gosto de ti", "olho para ti", "rio de mim" — a 1sg verb form + complement
-    # preposition + pronoun is a finite verb, not the noun reading.
-    _next2_v = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    # A 1sg form + a complement preposition + a pronoun ("gosto de ti", "olho
+    # para ti", "rio de mim").
     if (word in _FIRST_PERSON_NOUNS
             and next_word in _COMPLEMENT_PREPS | {"para", "a", "ao", "à"}
-            and _next2_v in PRON
+            and next2_word in PRON
             and prev_word not in DET | QUANT | _COMPLEMENT_PREPS | _TRANS_VERB):
         score += 5
 
-    # Enclitic clitic hyphenated onto the word ("torno-me", "vejo-o", "fá-lo",
-    # "deu-lhe", "tem-nos") → an unambiguous finite-VERB host. The tokenizer keeps
-    # the attaching hyphen as a leading marker, which rules out the homographic
-    # article/preposition readings of o/a/nos/vos, so the full enclitic inventory
-    # (incl. -lo/-la/-no/-na allomorphs and combined forms) applies here.
-    # "para" excluded: "para se", "para me", "para te" are ADP + proclitic
-    # infinitive, never "para" the finite verb with an enclitic.
+    # An enclitic hyphenated onto it ("torno-me", "fá-lo") marks a finite verb.
+    # The tokenizer keeps the hyphen, which rules out the article and preposition
+    # readings of o/a/nos/vos. "para se/me/te" is the preposition + a proclitic.
     if word != "para" and next_word.startswith("-") and next_word[1:] in _ENCLITICS:
         score += 4
 
-    # DET directly after signals a direct-object NP — strong VERB evidence.
-    # Exclusions:
-    #   "do/da/dos/das" — partitive/possessive PPs, not DOs
-    #   "ao/à/aos/às/no/na/nos/nas" — contracted preposition+article; introduce
-    #     locative or dative PPs, not direct objects ("seco no verão" → ADJ,
-    #     "gozo na prática" → NOUN; keeping these fired false VERB+3 there)
-    #   "para" entirely excluded: "para o/a" is ADP, not VERB
-    # DET/QUANT directly after signals a direct-object NP; excludes contracted
-    # preposition+article forms that introduce locative/dative PPs.
-    # "posto a [infinitive]" = PPT of "pôr" + infinitival complement; "a" is the
-    # infinitive marker, not the article.  Suppress the DET-after signal only for
-    # "posto" (other words like "começo a [inf]" are genuine VERB+DO phrases).
-    _next_next = words[idx + 2] if idx + 2 < len(words) else ""
-    _posto_inf = word == "posto" and next_word == "a" and _is_infinitive(_next_next)
-    _POSTPOSED_QUANT = {"todo", "toda", "todos", "todas", "mesmo", "mesma", "inteiro", "inteira"}
-    if (word != "para" and next_word in DET | QUANT and next_word not in _VERB_DET_EXCL
-            and next_word not in _POSTPOSED_QUANT and not _posto_inf):  # "o peso todo" = noun+modifier
+    # A determiner after it opens a direct object. Excluded: "para o/a" (the
+    # preposition); the contracted forms, which open a prepositional phrase ("seco
+    # no verão", "gozo na prática"); a postposed quantifier ("o peso todo"); and
+    # "posto a [infinitive]", the participle of "pôr" with an infinitive, where
+    # "a" is no article ("começo a [inf]" is still a verb + object).
+    posto_inf = word == "posto" and next_word == "a" and _is_infinitive(next2_raw)
+    if (word != "para" and next_word in DET | QUANT and next_word not in _CONTRACTED_DET
+            and next_word not in _POSTPOSED_QUANT and not posto_inf):
         score += 3
     elif idx == 0 and next_word in _DE_CONTRACTIONS:
         score += 1
 
-    # "corte" VERB bucket covers: (1) cut/incision — masculine noun, open ɔ;
-    # (2) subjunctive/imperative of «cortar» — open ɔ.
-    # Masculine determiner before "corte" is a DECISIVE signal: royal court
-    # (closed o, NOUN) is exclusively feminine «a corte», so any masculine
-    # «o/do/no corte» is the open-ɔ cut / tennis-court reading (VERB bucket).
+    # The verb bucket of "corte" is the cut (a masculine noun) and the
+    # subjunctive of «cortar», both open ɔ. The royal court is only feminine, so
+    # a masculine determiner («o/do/no corte») decides.
     if word == "corte" and prev_word in _MASC_DET:
         score += 10
-    # Cut-specific nouns/adjectives in immediate context: "um corte profundo",
-    # "corte orçamental", "corte de cabelo", "corte de energia".
-    _left2_c = [_strip(words[idx - k]) for k in range(1, 3) if idx - k >= 0]
-    _right2_c = [_strip(words[idx + k]) for k in range(1, 3) if idx + k < len(words)]
-    if word == "corte" and any(w in _CUT_NOUNS for w in _left2_c + _right2_c):
+    # Cut terms within 2 tokens: "um corte profundo", "corte de cabelo".
+    if word == "corte" and any(w in _CUT_NOUNS for w in _left(words, idx, 2) + _right(words, idx, 2)):
         score += 4
 
-    # Temporal or subjunctive-introducing conjunction before → word is a verb.
     if prev_word in _TEMPORAL_CONJ:
         score += 2
     if prev_word in _CONJ_SUBJ:
         score += 4
 
-    # Negation / frequency adverb directly before → finite verb form.
-    # "não gosto", "nunca sobre", "sempre sobre" etc.
+    # Negation or frequency adverb before it: "não gosto", "nunca sobre".
     if prev_word in _NEG_ADV:
         score += 4
 
-    # Passive auxiliary directly before → word is a past participle (VERB).
-    # Restricted to clear past/subjunctive forms of "ser" to avoid firing on
-    # copular/active uses ("tem gosto", "é sobre X" were false positives).
+    # Past or subjunctive of "ser" before it: a passive participle. Copular and
+    # active forms stay out ("tem gosto", "é sobre X").
     if prev_word in _PASSIVE_AUX:
         score += 4
 
-    # Infinitive after the word penalises "para" ADP being scored as VERB.
     if word == "para" and _is_infinitive(next_word):
         score -= 5
 
-    # "para" VERB ("parar") — subject or object is a stoppable thing.
-    # Check prev (subject) and next (object) for semantic stoppable entities
-    # (vehicles, machines, bodily processes, etc.).  European Portuguese usage.
+    # "pára": a stoppable thing (vehicle, machine, bodily process) as its subject
+    # or object.
     if word == "para":
-        _left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
-        if any(w in STOPPABLE_THINGS for w in _left4):
+        if any(w in STOPPABLE_THINGS for w in _left(words, idx, 4)):
             score += 4
         if next_word in STOPPABLE_THINGS:
             score += 3
-        # "pára o/a [STOPPABLE]" — when the object is introduced by a bare article,
-        # look one position further to find the stoppable noun head.
-        _next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-        if next_word in _ARTICLES and _next2 in STOPPABLE_THINGS:
+        # "pára o/a [STOPPABLE]"
+        if next_word in _ARTICLES and next2_word in STOPPABLE_THINGS:
             score += 3
-        # "para a meio" — stops halfway through; "meio" in this sense is never ADP.
-        if next_word == "a" and _next2 == "meio":
+        # "para a meio": stops halfway
+        if next_word == "a" and next2_word == "meio":
             score += 4
 
-    # Infinitive immediately before → word is probably in a nominal/infinitival context.
-    # Guard: if the raw prev token ends in punctuation (clause boundary), the infinitive
-    # is in a separate clause ("Depois de nadar, seco…") and must not penalise here.
-    _prev_raw_v = words[idx - 1] if idx > 0 else ""
-    if _is_infinitive(prev_word) and not (_prev_raw_v and _prev_raw_v[-1] in ".,;:!?"):
+    # An infinitive before it, in the same clause ("Depois de nadar, seco…" is
+    # two clauses).
+    prev_raw = words[idx - 1] if idx > 0 else ""
+    if _is_infinitive(prev_word) and not (prev_raw and prev_raw[-1] in ".,;:!?"):
         score -= 5
 
-    # Word itself is an infinitive → strong VERB evidence.
-    # Guard: if a DET immediately precedes, the word is likely a substantivised
-    # infinitive or a NOUN that happens to end in ar/er/ir (e.g. "colher" = spoon),
-    # so the infinitive VERB signal is unreliable there.
+    # The word itself is an infinitive, unless a determiner makes it a noun
+    # ("a colher", the spoon).
     if _is_infinitive(word) and prev_word not in DET | QUANT:
         score += 5
-    # "a colher <DET>" = infinitive + object NP (to harvest/collect X); contrast with
-    # "a colher de X" = the spoon of X (NOUN).  When "a" precedes and a DET/QUANT
-    # follows (not "de"), the word is an infinitive verb.
-    # "a colher de X" = NOUN (the spoon of X); signal handled by score_noun.
-    # "colher" as infinitive VERB: preceded by "a" and a control verb in recent context.
-    # Control verbs typically appear at prev2/prev3 distance: "começou a colher",
-    # "aprendeu a colher", "voltou a colher", etc.
-    # "a colher [article NP]" = to collect [the X] — article directly after is VERB.
-    # Exclude contracted preposition+article forms (no/na/ao/à/…) — those introduce
-    # locative PPs on the NOUN, not verbal objects.
+    # "a colher o/os X" (to harvest the X), against "a colher de X" (the spoon).
     if word == "colher" and prev_word == "a" and next_word in DET | QUANT \
-            and next_word not in _COLHER_DET_EXCL:
+            and next_word not in _CONTRACTED_DET:
         score += 6
-    # Control verb at prev2/prev3/prev4 distance → "colher" is an infinitive VERB.
-    prev3 = _strip(words[idx - 3]) if idx >= 3 else ""
-    prev4 = _strip(words[idx - 4]) if idx >= 4 else ""
-    # Guard: if prev2 is itself an infinitive (e.g. "aprendeu a usar a colher"),
-    # "colher" is the NOUN object of the intermediate verb, not of the control verb.
-    _colher_ctrl_ok = not _is_infinitive(prev2_word)
-    if word == "colher" and prev_word == "a" and _colher_ctrl_ok and (
-        prev2_word in _COLHER_CTRL or prev3 in _COLHER_CTRL or prev4 in _COLHER_CTRL
-    ):
+    # A control verb 2 to 4 tokens before "a colher" ("começou a colher"), unless
+    # an infinitive sits between them ("aprendeu a usar a colher").
+    left4 = _left(words, idx, 4)
+    if word == "colher" and prev_word == "a" and not _is_infinitive(prev2_word) and any(
+            w in _COLHER_CTRL for w in left4[1:]):
         score += 6
 
-    # DET two positions back indicates "DET NOUN VERB" subject-verb pattern.
-    # Contracted prepositions are excluded: they introduce prepositional phrases,
-    # not nominal subjects.
-    _SUBJ_DET = DET - _LOCATIVE_CONTRACTIONS
+    # "DET NOUN VERB": a subject determiner two places back.
     if prev2_word in _SUBJ_DET:
         score += 3
 
@@ -715,61 +626,43 @@ def score_verb(words: list, idx: int) -> int:
         score += 3
 
     if word == "para":
-        # "pára [contracted-prep/during/after]" — finite verb followed by a
-        # locative/temporal PP.  "para no/ao/durante/após/entre/em" is impossible
-        # as ADP (NEVER_AFTER_PREP already zeros ADP; add VERB signal to tip the tie).
+        # "pára no/durante/após X": NEVER_AFTER_PREP already zeroes ADP; this tips the tie.
         if next_word in _PARA_VERB_NEXT:
             score += 5
-        # "para de [infinitive]" = stops doing X (finite VERB + complement).
-        _next_next_v = words[idx + 2] if idx + 2 < len(words) else ""
-        if next_word == "de" and _is_infinitive(_next_next_v):
+        # "para de [infinitive]": stops doing X
+        if next_word == "de" and _is_infinitive(next2_raw):
             score += 5
-        # "para quando/enquanto" finite VERB: the machine stops when/while…
+        # "para quando/enquanto": the machine stops when…
         if next_word in _TEMPORAL_CONJ:
             score += 3
 
-    # Adverb ending in -mente directly after a word → the word is a finite verb.
-    # "seco rapidamente as mãos", "começo imediatamente".
+    # A -mente adverb after it: "seco rapidamente as mãos".
     if next_word.endswith("mente"):
         score += 3
 
-    # DET/QUANT at distance +2 with a non-DET at +1 → finite verb with an intervening
-    # manner/sequence adverb before its object NP: "seco primeiro as mãos".
-    # Restricted to known short adverbs that commonly appear between a verb and its
-    # object NP; "debaixo/antes/depois/…" are prepositions and must not trigger this.
-    _next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-    if next_word in _ADV_BRIDGE and _next2 in DET | QUANT:
+    # A short adverb between the verb and its object: "seco primeiro as mãos".
+    # Prepositions such as "debaixo/antes/depois" are not in the list.
+    if next_word in _ADV_BRIDGE and next2_word in DET | QUANT:
         score += 1
 
-    # "gozo de X" with no DET/QUANT before = 3rd person of "gozar de" (to enjoy/benefit from).
-    # "o gozo de X" with DET before = the enjoyment of (NOUN); that case gets NOUN+5 elsewhere.
-    # "gozo de X" with a nominal/adj subject before = 3rd person of "gozar de".
-    # Exclude: DET/QUANT before (→ NOUN via score_noun), or a preposition before
-    # ("em gozo de", "com gozo de" are NOUN complement phrases).
-    _GOZO_EXCL_PREV = DET | QUANT | _PREP_GOVERNING
+    # "gozo de X" without a determiner or preposition before it is 3sg «gozar de»;
+    # "o gozo de", "em gozo de" are the noun.
     if word == "gozo" and next_word == "de" and prev_word not in _GOZO_EXCL_PREV:
         score += 5
 
-    # "sempre sobre [uma/um/…]" — frequency adverb + "sobrar" (left over); not ADP.
-    # "sempre sobre" where a DET/QUANT follows and there is no governing verb is a
-    # finite VERB (sobrar) not a preposition.
+    # "sempre sobre um/uma": the verb sobrar (to be left over).
     if word == "sobre" and prev_word == "sempre" and next_word in DET | QUANT:
         score += 8
 
-    # "sobre" as VERB (sobrar, to be left over): expand signals beyond "sempre".
     if word == "sobre":
-        # Degree/frequency adverbs ending in -mente directly before: "raramente sobre",
-        # "dificilmente sobre", "normalmente sobre", etc.  Adverbs of this type modify
-        # finite verbs, not prepositions.
+        # A -mente adverb before it ("raramente sobre") modifies a verb.
         if prev_word.endswith("mente"):
             score += 4
-        # "Depois de X, sobre Y" — leftover-after-subtraction pattern.
-        # "depois" in the ±3 left window strongly implies a subtraction result.
-        _left3s = [_strip(words[max(0, idx - k)]) for k in range(1, 4) if idx - k >= 0]
-        if "depois" in _left3s or "restam" in _left3s:
+        # "Depois de X, sobre Y": what is left after a subtraction.
+        left3 = _left(words, idx, 3)
+        if "depois" in left3 or "restam" in left3:
             score += 3
-        # Optative adverb directly before → present subjunctive of "sobrar"
-        # ("talvez sobre", "oxalá sobre", "tomara que sobre"): always finite VERB.
+        # "talvez sobre", "oxalá sobre": present subjunctive of sobrar.
         if prev_word in _OPTATIVE_ADV:
             score += 6
 
@@ -780,76 +673,51 @@ def score_adj(words: list, idx: int) -> int:
     prev_word = _prev(words, idx)
     prev2_word = _prev2(words, idx)
     next_word = _next(words, idx)
+    prev_raw = words[idx - 1] if idx > 0 else ""
 
     score = 0
 
-    # Predicative position: copula directly before the adjective.
+    # Predicative: a copula before it.
     if prev_word in _COPULA:
         score += 5
 
-    # Comparative/superlative: "mais/menos" before — strong ADJ signal.
+    # Comparative or superlative: "mais/menos seco".
     if prev_word in _COMPARATIVES:
         score += 4
 
-    # Degree intensifier before: "muito seco", "completamente seco".
+    # Degree: "muito seco", "particularmente seco".
     if prev_word in _INTENSIFIERS:
         score += 2
-    # Degree adverb ending in -mente: "particularmente seco", "especialmente seco".
     if prev_word.endswith("mente"):
         score += 4
-    # Copula + degree adverb: "foi particularmente seco" — strong predicative ADJ.
+    # "foi particularmente seco"
     if prev2_word in _COPULA and prev_word.endswith("mente"):
         score += 3
 
-    # Attributive position: "DET NOUN ADJ" or "Que NOUN ADJ" pattern.
-    # _EXCL_DET ("que") is included here only: "Que ideia tola" → ADJ.
-    # QUANT included: "nenhum produto seco", "algum produto seco" → ADJ.
-    # Guard: if prev is empty or the raw prev token ends in punctuation (comma =
-    # clause boundary), the DET-NOUN is in a different clause from the adjective
-    # ("Depois do banho, seco").
-    _prev_raw_adj = words[idx - 1] if idx > 0 else ""
-    _prev_across_boundary = (prev_word == ""
-                              or (_prev_raw_adj and _prev_raw_adj[-1] in ".,;:!?"))
+    # Attributive "DET NOUN ADJ", "Que ideia tola", "nenhum produto seco", in one
+    # clause ("Depois do banho, seco" is two).
+    across_boundary = prev_word == "" or (prev_raw and prev_raw[-1] in ".,;:!?")
     if prev2_word in DET | QUANT | _EXCL_DET \
             and prev_word not in DET | QUANT | _EXCL_DET \
-            and not _prev_across_boundary:
+            and not across_boundary:
         score += 4
 
-    # Bare DET/QUANT immediately before (determiner phrase head, less common for ADJ).
+    # A bare determiner before it (a noun phrase head; less common for ADJ).
     if prev_word in DET | QUANT | PRON:
         score += 3
 
-    # Post-positive attributive position: "NOUN ADJ" (bare noun immediately before,
-    # no clause boundary between them).
-    # Portuguese freely places adjectives after nouns.  If prev is a non-empty content
-    # word that is NOT in any function-word set (DET/QUANT/PRON/AUX/connective) and
-    # is NOT separated from the adjective by punctuation, it is likely a noun head.
-    # Guards: prev not empty, len > 2 (exclude single-char preps), no trailing
-    # punctuation on the raw token (comma/period signals clause boundary), and prev
-    # does not look like a finite verb form (common past-tense endings).
-    _prev_raw = words[idx - 1] if idx > 0 else ""
-    _FUNC_WORDS = DET | QUANT | PRON | AUX_VERBS | _FUNC_EXTRA
-    # Also suppress when next is a DET/article — "seco os pratos" is VERB+DO,
-    # not an ADJ with a following object.
-    # The "-ia" suffix is a verb imperfect ending only when preceded by a consonant
-    # (e.g. "comia", "dormia"); words like "areia", "galeria" end in vowel+"ia" and
-    # are nouns — do not suppress the postpositive signal for them.
-    # Also: an enclitic clitic token ("chamaram-lhe" → prev token "-lhe", "disse-me"
-    # → "-me") carries a leading hyphen, marking the preceding word as a verb host —
-    # so the clitic itself is not a noun head and must not feed the postpositive cue.
-    _vowels = set("aeiouáéíóúâêîôûãõàèìòùäëïöü")
-    _CLITICS = _CLITICS_ALL
-    _prev_looks_verb = (
-        prev_word.endswith(("ou", "eu", "iu", "ei", "ava", "ara", "era"))
-        or (prev_word.endswith("ia") and len(prev_word) >= 4
-            and prev_word[-3] not in _vowels)
-        or ("-" in prev_word and prev_word.rsplit("-", 1)[-1] in _CLITICS)
-    )
+    # Postpositive "NOUN ADJ": a content word right before it, in the same clause.
+    # It has more than 2 characters, which skips every one- and two-character word, such
+    # as the prepositions "a", "de" and "em". It is not a function word and does
+    # not look like a finite verb, and no determiner follows ("seco os pratos" is
+    # a verb + object). An enclitic ("disse-me") marks a verb host, not a noun.
+    prev_looks_verb = (_looks_verb(prev_word)
+                       or ("-" in prev_word and prev_word.rsplit("-", 1)[-1] in _CLITICS_ALL))
     if (prev_word and len(prev_word) > 2
-            and not _prev_raw[-1] in ".,;:!?"
+            and prev_raw[-1] not in ".,;:!?"
             and prev_word not in _FUNC_WORDS
             and next_word not in DET | QUANT
-            and not _prev_looks_verb):
+            and not prev_looks_verb):
         score += 3
 
     return score
@@ -858,29 +726,25 @@ def score_adj(words: list, idx: int) -> int:
 def guess_pos(words: list, idx: int, proper: bool = False) -> str:
     """Return the most likely UDEP POS tag for the ambiguous word at *idx*.
 
-    *proper*: the token is a mid-sentence capitalised word (a likely proper noun
-    — place/person/title, e.g. "Cerro Corá"). Real text is noun-dominant and a
-    proper noun is a NOUN, so this strongly biases the NOUN reading unless an
-    enclitic clitic right after marks a genuine verb host.
+    *proper* marks a mid-sentence capitalised word (a likely proper noun, as in
+    "Cerro Corá"): it adds a strong NOUN bias unless an enclitic after it marks
+    a verb host. When no POS scores above 0, or several tie, the word's
+    DEFAULT_POS wins.
     """
     word = words[idx]
-
-    # Seed each candidate POS with its corpus-frequency prior (BASE_SCORE).
-    # Values are small (1–3) so any explicit context signal overrides them.
-    _bias = BASE_SCORE.get(word, {})
+    # Corpus-frequency priors, small enough that any context signal overrides them.
+    bias = BASE_SCORE.get(word, {})
 
     scores = {}
     if word in ADP_IPA:
-        scores["ADP"] = score_adp(words, idx) + _bias.get("ADP", 0)
+        scores["ADP"] = score_adp(words, idx) + bias.get("ADP", 0)
     if word in NOUNS_IPA:
-        scores["NOUN"] = score_noun(words, idx) + _bias.get("NOUN", 0)
+        scores["NOUN"] = score_noun(words, idx) + bias.get("NOUN", 0)
     if word in VERBS_IPA:
-        scores["VERB"] = score_verb(words, idx) + _bias.get("VERB", 0)
+        scores["VERB"] = score_verb(words, idx) + bias.get("VERB", 0)
     if word in ADJ_IPA:
-        scores["ADJ"] = score_adj(words, idx) + _bias.get("ADJ", 0)
+        scores["ADJ"] = score_adj(words, idx) + bias.get("ADJ", 0)
 
-    # Proper-noun override: a capitalised mid-sentence token is a name, not a
-    # finite verb — unless it hosts an enclitic clitic ("Torno-me…").
     if proper and "NOUN" in scores:
         nxt = _next(words, idx)
         if not (nxt.startswith("-") and nxt[1:] in _ENCLITICS):
@@ -890,7 +754,6 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
     if best_score <= 0:
         return DEFAULT_POS.get(word, "NOUN")
 
-    # When multiple POS share the highest score, fall back to the frequency prior.
     winners = [pos for pos, s in scores.items() if s == best_score]
     if len(winners) == 1:
         return winners[0]
@@ -898,28 +761,25 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 
 
 def _resolve_sede(words: list, idx: int) -> str:
-    """Disambiguate "sede" between SEAT (HQ, open ɛ) and THIRST (closed e).
+    """Return SEAT (HQ, open ɛ) or THIRST (closed e) for "sede".
 
-    Both senses are nouns, so POS scoring cannot separate them — this reads
-    meaning cues from the local context instead. The preposition frame is the
-    strongest signal ("sede de X" → thirst, "sede da/do X" → seat), reinforced
-    by the sede_{seat,thirst}_cues.voc wordlists in the ±3 window.
+    Both senses are nouns. The preposition frame is the strongest cue ("sede de
+    X" → thirst, "sede da/do X" → seat), with the sede_*_cues.voc wordlists in
+    the ±3 window.
     """
     prev_word = _prev(words, idx)
     next_word = _next(words, idx)
-    next2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
+    next2 = _next2(words, idx)
 
     seat = thirst = 0
-    # preposition frame
     if next_word in {"da", "do", "das", "dos"}:
         seat += 3
-    if next_word == "de":                      # "sede de X"
-        _ABSTRACT = ("ção", "são", "mento", "dade", "ência", "ância", "ismo", "tude")
+    if next_word == "de":
         if next2 in DET:                       # "sede de uma organização/do clube" = HQ
             seat += 3
         elif next2 in _SEDE_SEAT:              # "sede de futebol clube" = HQ
             seat += 4
-        elif next2 in _SEDE_THIRST or next2.endswith(_ABSTRACT):  # "sede de poder/reconhecimento"
+        elif next2 in _SEDE_THIRST or next2.endswith(_SEDE_ABSTRACT):  # "sede de poder/reconhecimento"
             thirst += 4
         else:                                  # "sede de Atenas/Lisboa" (place) → HQ
             seat += 2
@@ -929,7 +789,6 @@ def _resolve_sede(words: list, idx: int) -> str:
         seat += 2
     if next_word in {"no", "na", "nos", "nas", "em"}:      # "sede no Porto" = HQ at a place
         seat += 3
-    # content cues in the window
     window = [_strip(words[i]) for i in range(max(0, idx - 3), min(len(words), idx + 4))
               if i != idx]
     seat += sum(w in _SEDE_SEAT for w in window)
@@ -943,50 +802,37 @@ def _resolve_sede(words: list, idx: int) -> str:
 
 
 def _resolve_molho(words: list, idx: int) -> str:
-    """Disambiguate the NOUN reading of "molho": BUNDLE (open ɔ, "um molho de
-    chaves") vs SAUCE (closed o).  The open reading also covers the verb molhar
-    ("eu molho", ˈmɔʎu) — that is handled upstream as pos=VERB → bundle — so here
-    only the noun pair remains.  Bundle requires an explicit bundled thing; the
-    culinary sauce is the default.
+    """Return BUNDLE (open ɔ, "um molho de chaves") or SAUCE (closed o) for the
+    noun "molho". The verb molhar reaches here as pos=VERB, which maps to
+    bundle upstream. Bundle needs an explicit bundled thing; sauce is the default.
     """
     next_word = _next(words, idx)
-    m2 = _strip(words[idx + 2]) if idx + 2 < len(words) else ""
-    left4 = [_strip(words[max(0, idx - k)]) for k in range(1, 5) if idx - k >= 0]
-    if next_word == "de" and m2 in _BUNDLE_THINGS:                 # "molho de chaves/lenha"
+    next2 = _next2(words, idx)
+    if next_word == "de" and next2 in _BUNDLE_THINGS:              # "molho de chaves/lenha"
         return "bundle"
-    if (next_word == "de" and m2 in _BUNDLE_AMBIG                   # "colhi um molho de salsa"
-            and any(v in _BUNDLE_VERBS for v in left4)):
+    if (next_word == "de" and next2 in _BUNDLE_AMBIG                # "colhi um molho de salsa"
+            and any(v in _BUNDLE_VERBS for v in _left(words, idx, 4))):
         return "bundle"
     return "sauce"
 
 
 def _resolve_tola(words: list, idx: int) -> str:
-    """Resolve "tola" once the POS guess is NOUN.
+    """Return "head" for "tola" once its POS guess is NOUN.
 
-    The concrete noun readings — colloquial head/skull and the *tola* hardwood,
-    both open ˈtɔlɐ — share the "head" slug. The foolish adjective (closed ˈtolɐ),
-    even used substantively ("aquela tola comprou…"), is a subject/predicate that
-    the POS scorer routes to ADJ, not NOUN; so reaching this resolver means the
-    open concrete reading. (`foolish` carries pos ``ADJ|NOUN`` only so an external
-    NOUN tag from the hybrid ensemble defers to these rules instead of forcing
-    head.)
+    The colloquial head and the tola hardwood (both open ˈtɔlɐ) share the slug.
+    The POS scorer sends the foolish adjective (closed ˈtolɐ) to ADJ, even when
+    it stands as a noun; ``foolish`` carries ``ADJ|NOUN`` only so an external
+    NOUN tag defers to the rules.
     """
     return "head"
 
 
 def _resolve_by_cues(word: str, words: list, idx: int) -> str:
-    """Resolve a same-spelling reading by weighing its declared cue lists.
+    """Return the sense of *word* whose :data:`bifonia.cues.SENSE_CUES` cue list
+    scores highest with :func:`cue_score`, or the rule's default when none scores.
 
-    Reads :data:`bifonia.cues.SENSE_CUES`: every applicable :class:`~bifonia.cues.Cue`
-    is scored with the proximity-weighted, accent-folded :func:`cue_score`, and
-    the highest-scoring sense wins; the rule's ``default`` (the dominant reading)
-    is returned when nothing scores.  A cue gated by ``requires_prev`` only counts
-    when the token before the homograph matches (e.g. the "de" in "de cor").
-
-    This single function replaces the per-word bola/lobo/polo/cor resolvers —
-    adding a new cue-competition word is now a data edit in ``bifonia.cues``.
-    (Explicit diacritic spellings like «bôla»/«séde» are resolved upstream in
-    :func:`bifonia.guess_sense`, straight off the diacritic, before reaching here.)
+    A cue with ``requires_prev`` counts only when the token before the homograph
+    is that word (the "de" in "de cor").
     """
     rule = SENSE_CUES[word]
     best, best_score = rule.default, 0
@@ -999,29 +845,25 @@ def _resolve_by_cues(word: str, words: list, idx: int) -> str:
     return best
 
 
-# words whose senses share a POS need a meaning-level resolver after guess_pos.
-# sede/molho/tola carry structural logic beyond a cue competition, so they stay
-# hand-written; bola/lobo/polo/cor are data-driven via SENSE_CUES (see
-# resolve_sense, which dispatches to _resolve_by_cues for those).
+# Same-POS words whose resolution needs more than a cue competition.
 _SENSE_RESOLVERS = {"sede": _resolve_sede, "molho": _resolve_molho, "tola": _resolve_tola}
 
 
 def resolve_sense(word: str, words: list, idx: int, pos: str) -> str:
     """Return the meaning slug for *word* at *idx*, given its guessed *pos*.
 
-    For the common case (each POS maps to exactly one sense) this is a direct
-    lookup; only words with two senses under one POS invoke a context resolver.
+    When *pos* maps to one sense this is a lookup. A *pos* the word lacks falls
+    back to its DEFAULT_POS, then to the senses of its first POS. Several senses
+    go to the SENSE_CUES competition, a hand-written resolver, or the first sense.
     """
     senses = POS_SENSES.get(word, {}).get(pos)
     if not senses:
-        # guessed POS has no sense for this word → fall back to its default POS
         senses = POS_SENSES.get(word, {}).get(DEFAULT_POS.get(word, ""))
     if not senses:
-        # last resort: any sense
         senses = next(iter(POS_SENSES.get(word, {}).values()), [None])
     if len(senses) == 1:
         return senses[0]
-    if word in SENSE_CUES:                       # data-driven cue competition
+    if word in SENSE_CUES:
         return _resolve_by_cues(word, words, idx)
-    resolver = _SENSE_RESOLVERS.get(word)        # structurally richer hand-written cases
+    resolver = _SENSE_RESOLVERS.get(word)
     return resolver(words, idx) if resolver else senses[0]
