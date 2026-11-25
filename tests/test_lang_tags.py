@@ -28,3 +28,8 @@ def test_iso_639_2_tag_marks_a_sentence_like_its_two_letter_tag():
 def test_locale_vocabularies_follow_the_closest_locale(tag):
     assert load_structural_vocs(tag) == load_structural_vocs("pt-pt") != {}
     assert voc("articles", tag) == voc("articles", "pt-pt")
+
+
+@pytest.mark.parametrize("lang", ["de-DE", "en", "es"])
+def test_a_tag_of_another_language_gets_no_portuguese_vocabulary(lang):
+    assert not any(load_structural_vocs(lang).values())

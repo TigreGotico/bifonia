@@ -8,10 +8,14 @@ data/context_free_marks.csv.
 """
 
 import csv
+import functools
 import pathlib
 import unicodedata
 
 from linguatag import with_default_region
+
+# Every lookup reads the tag, and linguatag does not cache it.
+_canonical = functools.lru_cache(maxsize=None)(with_default_region)
 
 from bifonia.vocab import voc
 
@@ -96,7 +100,7 @@ with _MARKS_CSV.open(encoding="utf-8") as fh:
 def _for_lect(table: dict, lang: str) -> dict:
     """Return the entry of *table* for the longest lect that is *lang* or a parent
     of it."""
-    tag = with_default_region(lang.strip())
+    tag = _canonical(lang.strip())
     matches = [lect for lect in table if tag == lect or tag.startswith(lect + "-")]
     return table[max(matches, key=len)] if matches else {}
 
@@ -107,7 +111,8 @@ def lect_overrides(lang: str) -> dict:
     A tag matches an override lect when it is that lect or one of its sub-lects,
     case-insensitively and with ``_`` read as ``-``: ``pt-BR``, ``pt_br`` and
     ``pt-BR-x-rj`` all match ``pt-BR``. Surrounding whitespace is ignored, and a
-    script subtag is dropped, so ``pt-Latn-BR`` also matches ``pt-BR``. ``None``,
+    script subtag that IANA suppresses for the language is dropped, so ``pt-Latn-BR``
+    also matches ``pt-BR``, and ``pt-Cyrl-BR`` matches no lect. ``None``,
     an empty tag and a tag that matches no lect return an empty dict, so they keep
     the default European Portuguese marking.
     """
