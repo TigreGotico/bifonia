@@ -11,6 +11,8 @@ import csv
 import pathlib
 import unicodedata
 
+from linguatag import with_default_region
+
 from bifonia.vocab import voc
 
 _CSV = pathlib.Path(__file__).parent / "data" / "heterophonic_homographs.csv"
@@ -91,19 +93,11 @@ with _MARKS_CSV.open(encoding="utf-8") as fh:
             CONTEXT_FREE_MARKS.setdefault(lect, {})[word] = form
 
 
-def _tag(lang: str) -> str:
-    """Return *lang* lowercased, with ``-`` for ``_`` and no script subtag."""
-    subtags = lang.strip().replace("_", "-").lower().split("-")
-    if len(subtags) > 1 and len(subtags[1]) == 4 and subtags[1].isalpha():
-        del subtags[1]  # BCP 47 script subtag, e.g. "latn"
-    return "-".join(subtags)
-
-
-def _for_lect(table: dict, tag: str) -> dict:
-    """Return the entry of *table* for the longest lect that is *tag* or a parent
+def _for_lect(table: dict, lang: str) -> dict:
+    """Return the entry of *table* for the longest lect that is *lang* or a parent
     of it."""
-    matches = [lect for lect in table
-               if tag == lect.lower() or tag.startswith(lect.lower() + "-")]
+    tag = with_default_region(lang.strip())
+    matches = [lect for lect in table if tag == lect or tag.startswith(lect + "-")]
     return table[max(matches, key=len)] if matches else {}
 
 
@@ -117,7 +111,7 @@ def lect_overrides(lang: str) -> dict:
     an empty tag and a tag that matches no lect return an empty dict, so they keep
     the default European Portuguese marking.
     """
-    return _for_lect(LECT_OVERRIDES, _tag(lang)) if lang else {}
+    return _for_lect(LECT_OVERRIDES, lang) if lang else {}
 
 
 def context_free_marks(lang: str) -> dict:
@@ -126,13 +120,12 @@ def context_free_marks(lang: str) -> dict:
     A tag is read as in :func:`lect_overrides` and takes the rows of the longest
     lect code of the table that is the tag or its parent: ``pt-BR-x-sp`` takes
     the rows that passed for ``pt-BR-x-sp``, and ``pt-BR-x-foo`` the rows of
-    ``pt-BR``. ``None``, an empty tag and a bare ``pt`` mean ``pt-PT``, the
-    default lect. The table has codes of pt-PT and pt-BR only, so every other
+    ``pt-BR``. ``None`` and an empty tag mean ``pt-PT``, the default lect, and a tag
+    without a region takes the default region of its language: ``pt`` is ``pt-PT``. The table has codes of pt-PT and pt-BR only, so every other
     tag, ``pt-AO`` and ``pt-UY`` included, returns an empty dict: no
     transcription of those lects was checked.
     """
-    tag = _tag(lang) if lang else "pt-pt"
-    return _for_lect(CONTEXT_FREE_MARKS, "pt-pt" if tag == "pt" else tag)
+    return _for_lect(CONTEXT_FREE_MARKS, lang or "pt-PT")
 
 
 # word → IPA of its first sense with that POS. The scorer scores a POS only for

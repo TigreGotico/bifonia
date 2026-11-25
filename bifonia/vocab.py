@@ -7,23 +7,20 @@ line, ``#`` comments and blank lines ignored.
 import pathlib
 from functools import lru_cache
 
+from linguatag import closest_lang
+
 _LOCALE_ROOT = pathlib.Path(__file__).parent / "locale"
 DEFAULT_LANG = "pt-PT"
+_LOCALES = sorted(d.name for d in _LOCALE_ROOT.iterdir() if d.is_dir())
 
 
 def _lang_dir(lang: str) -> pathlib.Path:
     """Resolve a language code to its locale directory.
 
-    ``pt-PT`` / ``pt_PT`` / ``pt`` all map to ``locale/pt-pt``; an exact match wins,
-    otherwise the first directory sharing the primary subtag is used.
+    ``pt-PT`` / ``pt_PT`` / ``pt`` all map to ``locale/pt-pt``: the directory closest
+    to *lang* wins.
     """
-    norm = lang.lower().replace("_", "-")
-    if (_LOCALE_ROOT / norm).is_dir():
-        return _LOCALE_ROOT / norm
-    for d in sorted(_LOCALE_ROOT.glob("*")):
-        if d.is_dir() and d.name.split("-")[0] == norm.split("-")[0]:
-            return d
-    return _LOCALE_ROOT / norm
+    return _LOCALE_ROOT / (closest_lang(lang, _LOCALES) or lang)
 
 
 @lru_cache(maxsize=None)

@@ -30,7 +30,7 @@ from bifonia.text import (
     DEVERBAL_SUFFIXES as _DEVERBAL_SFX, cue_score as _cue_score, folded as _folded,
     looks_verb as _looks_verb, strip_punct as _strip,
 )
-from bifonia.vocab import voc as _voc
+from bifonia.vocab import _lang_dir, voc as _voc
 
 # Grammatical sets (determiners, pronouns, clitics, copula, …), generic across
 # Romance languages. The per-sense lexical cue lists enter as the CUE: features.
@@ -45,7 +45,6 @@ STRUCTURAL_VOCS = (
     "prep_governing", "optative_adv", "material_prep",
 )
 
-_LOCALE_ROOT = pathlib.Path(__file__).parent / "locale"
 _INF_SFX = ("ar", "er", "ir")
 
 
@@ -62,7 +61,7 @@ def _read_voc(path: pathlib.Path) -> frozenset:
 @functools.lru_cache(maxsize=None)
 def load_structural_vocs(lang: str = "pt-pt") -> dict:
     """Return the STRUCTURAL_VOCS sets of *lang* by name; a missing file is skipped."""
-    lang_dir = _LOCALE_ROOT / lang.lower()
+    lang_dir = _lang_dir(lang)
     vocs = {}
     for name in STRUCTURAL_VOCS:
         path = lang_dir / f"{name}.voc"
