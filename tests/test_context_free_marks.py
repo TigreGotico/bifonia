@@ -15,7 +15,8 @@ or orthography2ipa:
   [asẽˈblɛjɐ], heroico [eˈɾɔjku], asteroide [asteˈɾɔjdi]. Infopédia assembleia
   [ɐsẽˈblɐjɐ] has another vowel, so pt-PT keeps «assembleia».
 - lingüiça, tranqüilo: AO1990 Base XIV 1.º drops the trema; Michaelis linguiça
-  and tranquilo say [ɡw] and [kw].
+  and tranquilo say [ɡw] and [kw], and so do Infopédia linguiça [lĩˈɡwisɐ] and
+  tranquilo [tɾɐ̃ˈkwilu] for pt-PT.
 - areia: Michaelis areia [aˈɾejɐ] has a closed vowel, so pt-BR keeps «areia»
   although the pt-BR norm wrote «aréia».
 - ideia, estreia: also forms of idear and estrear, a second reading
@@ -83,11 +84,11 @@ CASES = [
      "O asteróide passou perto da Terra.",
      "O asteróide passou perto da Terra."),
     ("Comprei linguiça e pão.",
-     "Comprei linguiça e pão.",
+     "Comprei lingüiça e pão.",
      "Comprei lingüiça e pão.",
      "Comprei linguiça e pão."),
     ("O mar está tranquilo.",
-     "O mar está tranquilo.",
+     "O mar está tranqüilo.",
      "O mar está tranqüilo.",
      "O mar está tranquilo."),
     ("A areia da praia está quente.",
