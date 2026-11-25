@@ -82,7 +82,7 @@ A word with one reading can also lose its vowel signal under AO1990. Pre-AO *ass
 | heroico | heroico | **heróico** | In pt-PT, orthography2ipa already says [ɔ]. Michaelis [eˈɾɔjku] |
 | linguiça | linguiça | **lingüiça** | orthography2ipa drops pt-PT ⟨ü⟩, so ⟨gi⟩ gives [ʒi]. Michaelis [lĩˈɡwisɐ]. Not for most pt-BR sub-lects |
 
-A row enters the table for a lect code only when it passes three checks. A cited norm wrote the mark. Every reading of the bare form in the lect's sources says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form, in that code. The README section on marks that need no context gives the sources and the classes that stay out.
+A row enters the table for a lect code only when it passes three checks. A cited norm wrote the mark. Every reading of the bare form in the lect's sources says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form, in that code. [Marks that need no context](context_free_marks.md) gives the sources and the classes that stay out.
 
 ## Engines and accuracy
 
@@ -227,4 +227,4 @@ wild = load_dataset("TigreGotico/bifonia-pt-homographs-wild")
 Together they fill a gap: no other PT-PT benchmark targets heterophonic-homograph pronunciation disambiguation at the sense level, and the wild set supplies the out-of-distribution measure that synthetic splits cannot.
 
 ---
-[← Dataset](dataset.md) · [Index](index.md) · [Word references →](word_references.md)
+[← Dataset](dataset.md) · [Index](index.md) · [Marks that need no context →](context_free_marks.md)

@@ -69,6 +69,10 @@ The rule engine labelled the synthetic corpus, so the learned models score highe
 
 The disambiguation axis is **vowel quality** (open ɔ/ɛ vs closed o/e). POS predicts it for noun/verb pairs, but the lexical/same-POS pairs need **meaning** cues, which is why bifonia is meaning-keyed.
 
+The obvious approach is to tag the part of speech and pick the pronunciation from it. This does not work when two readings share a POS. `sede` thirst and seat are both nouns, and `forma` mould and shape are both nouns.
+
+A system can look as if it solves this problem without solving it. Encyclopedic text such as Wikipedia is noun-skewed: one reading dominates and the minority readings barely occur, so a POS tagger that predicts the majority sense scores well on this text. The honest test is a sense-balanced set where the minority readings occur. `bifonia-pt-homographs-gold` is that set: 2,233 real sentences over 40 words from OpenSubtitles, Wikipedia and web pages, labelled independently of the engine. About 68% of the sentences (1,512) are on words where one part of speech carries two readings. On the POS-ambiguous readings spaCy reaches 89% and the meaning-keyed rules reach 96%. A tagger has no signal to separate two senses that share a part of speech.
+
 ## Results without a reproduction command
 
 No script in this repository produces the numbers in this section, so a fresh clone cannot reproduce them. Each table names the set that it was measured on.
