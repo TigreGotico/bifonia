@@ -17,7 +17,7 @@ uv pip install --prerelease=allow bifonia    # latest alpha from PyPI
 uv pip install --prerelease=allow -e ".[test]"   # from a clone, with pytest
 ```
 
-No runtime dependencies. bifonia uses only the Python standard library. bifonia publishes alpha releases from the `dev` branch, so `--prerelease=allow` gives the API that these pages describe.
+bifonia has one runtime dependency, linguatag, which reads language tags. bifonia publishes alpha releases from the `dev` branch, so `--prerelease=allow` gives the API that these pages describe.
 
 ## Quick start
 

@@ -122,7 +122,7 @@ Rules are conservative: each fires on a clear linguistic pattern, not a statisti
 
 ## Architecture
 
-The design is layered and dependency-free, so a cue behaves the same way in the rules and in the model features:
+The design is layered, so a cue behaves the same way in the rules and in the model features:
 
 ```
 bifonia/__init__.py  public API: tokenize, guess_sense, disambiguate, add_extra_diacritics

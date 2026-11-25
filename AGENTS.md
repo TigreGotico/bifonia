@@ -8,7 +8,7 @@ verify: python -m pytest -q tests
 see: `docs/index.md`, `README.md`
 -->
 
-bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence context. It returns the meaning slug, the IPA, or the sentence with a disambiguating diacritic. It has no runtime dependencies.
+bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence context. It returns the meaning slug, the IPA, or the sentence with a disambiguating diacritic. Its one runtime dependency is linguatag, for language tags.
 
 ## Repository map
 
@@ -42,7 +42,7 @@ CI runs the same suite on Python 3.11 to 3.14 (`.github/workflows/build-tests.ym
 
 ## Rules the repository docs state
 
-- Keep the runtime dependency list empty. The package uses only the Python standard library (`pyproject.toml`, `docs/usage.md`). Evaluation code that needs numpy, spaCy or Hugging Face stays in `scripts/`.
+- Keep linguatag the only runtime dependency (`pyproject.toml`, `docs/usage.md`). Evaluation code that needs numpy, spaCy or Hugging Face stays in `scripts/`.
 - Take pronunciations from Infopédia (`docs/lects.md`, `docs/word_references.md`). `bifonia/data/infopedia_pt.csv` holds the extracted entries. `scripts/rebuild_infopedia.py` builds that file. It needs the `pyinfopedia` client and a FlareSolverr service (`--flaresolverr URL`), because Infopédia refuses plain scripted requests.
 - `bifonia/data/corpus.jsonl` is the single source of truth for the corpus (`docs/dataset.md`). Regenerate `hf/` with `python scripts/dataset.py --hf` after a corpus change.
 - `scripts/train.py` trains only on `hf/train.jsonl`, never on the test split (`docs/methodology.md`).

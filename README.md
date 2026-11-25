@@ -8,7 +8,7 @@ verify: diff <(sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' README.md | grep 
 see: `docs/index.md`, `docs/usage.md`
 -->
 
-bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence. These are words spelled the same way whose pronunciation depends on meaning, such as `sede` (*thirst* `ˈsedɨ` or *headquarters* `ˈsɛdɨ`). It returns the meaning, the IPA, or the sentence with a disambiguating diacritic, for text-to-speech front ends. It has no runtime dependencies.
+bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence. These are words spelled the same way whose pronunciation depends on meaning, such as `sede` (*thirst* `ˈsedɨ` or *headquarters* `ˈsɛdɨ`). It returns the meaning, the IPA, or the sentence with a disambiguating diacritic, for text-to-speech front ends. Its one runtime dependency is linguatag, for language tags.
 
 ## Install
 
