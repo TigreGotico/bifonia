@@ -559,4 +559,4 @@ The vocabulary does not settle eight words:
 - *entorno*: the vocabulary does not list the noun. Infopédia prints the closed vowel of the noun, and the open vowel of the verb form has no source here yet.
 
 ---
-[← Diacritics restoration](diacritics_restoration.md) · [Index](index.md)
+[← Lects](lects.md) · [Index](index.md)
