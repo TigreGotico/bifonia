@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.5a5](https://github.com/TigreGotico/bifonia/tree/0.5.5a5) (2026-11-25)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.5a4...0.5.5a5)
+
+**Merged pull requests:**
+
+- refactor: read language tags with linguatag [\#88](https://github.com/TigreGotico/bifonia/pull/88) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.5.5a4](https://github.com/TigreGotico/bifonia/tree/0.5.5a4) (2026-11-24)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.5.5a3...0.5.5a4)
