@@ -66,10 +66,15 @@ proper_flags("Ontem o Porto ganhou ao Benfica.")
 ### `AMBIGUOUS_WORDS` and `HOMOGRAPHS`
 `AMBIGUOUS_WORDS` is the set of the 132 roster words that `is_ambiguous` tests. `HOMOGRAPHS` maps each word to its `{sense: ipa}` readings. See [Word coverage](#word-coverage).
 
-### `add_extra_diacritics(sentence, lang="pt-PT") → str`
+### `add_extra_diacritics(sentence, lang="pt-PT", *, context_free=True) → str`
 Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect, and `None` means the default. `pt-BR`, `pt-UY` and their sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See the README section on Brazilian Portuguese.
 
-After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *assembléia* for pt-BR. Each row names the pt-PT and pt-BR lect codes where it passed, and a tag takes the rows of its longest matching code. `None` and a bare `pt` mean `pt-PT`. See the README section on marks that need no context.
+After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *assembléia* for pt-BR. Each row names the pt-PT and pt-BR lect codes where it passed, and a tag takes the rows of its longest matching code. `None` and a bare `pt` mean `pt-PT`. See the README section on marks that need no context. The table follows the readings of orthography2ipa. A caller with another G2P can pass `context_free=False`, and the function then writes the homograph marks only:
+
+```python
+add_extra_diacritics("Comi linguiça.", lang="pt-BR")                       # 'Comi lingüiça.'
+add_extra_diacritics("Comi linguiça.", lang="pt-BR", context_free=False)  # 'Comi linguiça.'
+```
 
 | Diacritic | IPA | Vowel quality |
 |-----------|-----|---------------|

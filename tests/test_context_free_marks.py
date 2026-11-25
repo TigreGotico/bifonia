@@ -263,3 +263,21 @@ def test_loader_rejects_an_invisible_mark_in_place_of_a_letter(tmp_path, invisib
     # the place of the "t". U+034F and U+FE0F have combining class 0.
     with pytest.raises(ValueError, match="keeps a combining mark"):
         _load_data_with(tmp_path, f"festa,fes{invisible}a,pt-PT,probe,probe,probe\n")
+
+
+@pytest.mark.parametrize("sentence, lang", [
+    ("Comi uma pera.", "pt-PT"),
+    ("Comi linguiça.", "pt-BR"),
+    ("A assembleia votou.", "pt-BR"),
+    ("O tranquilo voo.", "pt-BR"),
+])
+def test_context_free_false_writes_no_context_free_mark(sentence, lang):
+    assert add_extra_diacritics(sentence, lang=lang, context_free=False) == sentence
+
+
+def test_context_free_false_still_marks_the_homographs():
+    """«forma» is a homograph (the README example gives «desta fórma»), so its mark
+    stays. The flag removes only the context-free table, here «pêra»."""
+    sentence = "Resolveu o problema desta forma simples e comeu uma pera."
+    assert add_extra_diacritics(sentence) == "Resolveu o problema desta fórma simples e comeu uma pêra."
+    assert add_extra_diacritics(sentence, context_free=False) == "Resolveu o problema desta fórma simples e comeu uma pera."
