@@ -281,3 +281,11 @@ def test_context_free_false_still_marks_the_homographs():
     sentence = "Resolveu o problema desta forma simples e comeu uma pera."
     assert add_extra_diacritics(sentence) == "Resolveu o problema desta fórma simples e comeu uma pêra."
     assert add_extra_diacritics(sentence, context_free=False) == "Resolveu o problema desta fórma simples e comeu uma pera."
+
+
+def test_context_free_false_keeps_the_brazilian_overrides():
+    """pt-BR leaves «abono» unmarked (data/lect_overrides.csv), where pt-PT
+    writes «abôno». The flag must not drop the lect overrides."""
+    sentence = "O abono de família subiu."
+    assert add_extra_diacritics(sentence, lang="pt-BR", context_free=False) == sentence
+    assert add_extra_diacritics(sentence, lang="pt-PT", context_free=False) != sentence
