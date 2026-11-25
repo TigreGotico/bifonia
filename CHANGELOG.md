@@ -1,8 +1,20 @@
 # Changelog
 
+## [0.7.0a1](https://github.com/TigreGotico/bifonia/tree/0.7.0a1) (2026-11-25)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.6.0a3...0.7.0a1)
+
+**Merged pull requests:**
+
+- feat: write the trema for the pt-PT lects where Infopédia says \[ɡw\] or \[kw\] [\#96](https://github.com/TigreGotico/bifonia/pull/96) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.6.0a3](https://github.com/TigreGotico/bifonia/tree/0.6.0a3) (2026-11-25)
 
-[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.6.0a1...0.6.0a3)
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.6.0a2...0.6.0a3)
+
+## [0.6.0a2](https://github.com/TigreGotico/bifonia/tree/0.6.0a2) (2026-11-25)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.6.0a1...0.6.0a2)
 
 **Merged pull requests:**
 
