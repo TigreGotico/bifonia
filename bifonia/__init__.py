@@ -523,7 +523,7 @@ def proper_flags(text: str) -> list:
     return flags
 
 
-def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
+def add_extra_diacritics(sentence: str, lang: str = "pt-PT", *, context_free: bool = True) -> str:
     """Return *sentence* with non-AO1990 diacritics on its heterophonic homographs.
 
     The marks make a rule-based G2P say the right vowel: acute (ó/é) is open
@@ -545,9 +545,11 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     Each row names the pt-PT and pt-BR lect codes where orthography2ipa reads the
     mark better, and a tag takes the rows of its longest matching code. ``None``
     and ``pt`` mean ``pt-PT``; other lects get none of these marks.
+    The table follows what orthography2ipa reads, so a caller with another G2P
+    can pass ``context_free=False`` to write the homograph marks only.
     """
     overrides = lect_overrides(lang)
-    marks = context_free_marks(lang)
+    marks = context_free_marks(lang) if context_free else {}
     words = tokenize(sentence)
     caps = proper_flags(sentence)
     replacements = {}
