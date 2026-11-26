@@ -2,13 +2,13 @@
 
 <!-- agent-hint
 covers: the accuracy of each approach and which numbers a command in this repository reproduces
-source: `scripts/benchmark_ood.py`, `scripts/benchmark_tagger.py`, `scripts/plot_benchmarks.py`
-generated: no
+source: `benchmarks/results.json`, `scripts/benchmark_table.py`, `scripts/benchmark_ood.py`, `scripts/benchmark_tagger.py`, `scripts/plot_benchmarks.py`
+generated: yes
 verify: diff <(python scripts/benchmark_ood.py | grep -oP '^(most-common|rules\(free\)|NB|perceptron|ensemble)\s+\K[0-9.]+(?=%)' | LC_ALL=C xargs printf '%.1f\n' | sort) <(sed -n '/^## Out-of-distribution/,/^The ensemble equals/p' docs/benchmarks.md | grep -oP '\| \**\K[0-9.]+(?=%)' | sort)
 see: `docs/methodology.md`, `docs/data_quality.md`
 -->
 
-Two scripts in `scripts/` measure sense-prediction accuracy. The first sections of this page give the output of a command that you can run from a fresh clone. The last section gives results that no script in this repository produces.
+Two scripts in `scripts/` measure sense-prediction accuracy. `benchmarks/results.json` holds every score on this page, and `python scripts/benchmark_table.py` writes the tables from that file. The first sections of this page give the output of a command that you can run from a fresh clone. The last section gives results that no script in this repository produces.
 
 ## Out-of-distribution (real Wikipedia sentences)
 
@@ -19,6 +19,7 @@ python scripts/benchmark_ood.py
 
 The script downloads `test.jsonl` from [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild): **6,640 real sentences over 110 words**. It prints one accuracy per approach and a per-word breakdown.
 
+<!-- results:ood -->
 | approach | OOD accuracy |
 |---|---|
 | most-common (corpus-derived majority sense) | 53.2% † |
@@ -29,6 +30,7 @@ The script downloads `test.jsonl` from [`TigreGotico/bifonia-pt-homographs-wild`
 |---|---|
 | **rules (no model)** | **88.0%** |
 | ensemble (`guess_sense`) | 88.0% |
+<!-- /results:ood -->
 
 The ensemble equals the rules, because the shipped perceptron model routes no word to the model.
 
@@ -57,11 +59,13 @@ python scripts/benchmark_tagger.py --word sede
 
 The script scores the train, test and full splits of the synthetic corpus, then prints the accuracy per word on the test split. `--word` limits both tables to one word.
 
+<!-- results:synthetic -->
 | split | n | rules (free) | most-common | Naive-Bayes | perceptron | ensemble |
 |---|---|---|---|---|---|---|
 | train | 124,459 | 97.79% | 52.65% | 99.45% | 99.78% | 97.79% |
 | test | 30,968 | 97.79% | 52.67% | 99.13% | 99.37% | 97.79% |
 | full | 155,427 | 97.79% | 52.65% | 99.39% | 99.70% | 97.79% |
+<!-- /results:synthetic -->
 
 The rule engine labelled the synthetic corpus, so the learned models score higher here than out-of-distribution.
 
@@ -81,6 +85,7 @@ No script in this repository produces the numbers in this section, so a fresh cl
 
 [`TigreGotico/bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold) is mined from open sources (OpenSubtitles, news/food/health sites, Wikipedia) and labelled independently of the rules, with every label individually verified. It has 2,233 sentences over 40 words. Unlike the encyclopedic wild set it is **sense-balanced**: 1,512 of its sentences (about 68%) are on POS-ambiguous words, so it is a fair test of disambiguation, not dominant-sense prediction.
 
+<!-- results:realgold -->
 | approach | balanced real gold (2,233 sentences, 40 words) | POS-ambiguous subset (n=1,512) |
 |---|:---:|:---:|
 | most-common | 57.1% | 59% |
@@ -93,6 +98,7 @@ No script in this repository produces the numbers in this section, so a fresh cl
 | logistic regression (numpy, +cues) | 92.2% | 94% |
 | **rules (no model)** | **95.2%** | **96%** |
 | **hybrid ensemble (POS tag ⊕ rules)** | **96.0%** | **97%** |
+<!-- /results:realgold -->
 
 ![Balanced real gold: accuracy by approach](img/realgold_approaches.png)
 
@@ -102,19 +108,23 @@ Scoring is by **reading** (open/closed IPA), the G2P-relevant target. On the POS
 
 These numbers were measured on 7,119 sentences over 112 words. The published wild set has 6,640 sentences over 110 words, so the rules row here does not match the reproducible table above.
 
+<!-- results:wild_hybrid -->
 | approach | OOD accuracy |
 |---|---|
 | spaCy `pt_core_news_lg` (POS → sense) | 91.6% |
 | rules (no model) | 89.9% |
 | hybrid ensemble (POS tag ⊕ rules) | 95.3% |
+<!-- /results:wild_hybrid -->
 
 ![Out-of-distribution accuracy by approach](img/ood_accuracy.png)
 
+<!-- results:wild_subsets -->
 | subset | n | spaCy | rules | **ensemble** |
 |---|---|---|---|---|
 | POS-separable | 6583 | 94.8% | 89.9% | **95.8%** |
 | POS-ambiguous | 536 | **52.6%** | 89.7% | **89.9%** |
 | **all** | 7119 | 91.6% | 89.9% | **95.3%** |
+<!-- /results:wild_subsets -->
 
 ![Per-subset accuracy: spaCy vs rules vs ensemble](img/ensemble_breakdown.png)
 
@@ -124,11 +134,13 @@ On that set the tagger is strong on POS-separable readings and near chance on PO
 
 The wild set is **sense-skewed**: Wikipedia is encyclopedic (noun-heavy), so for most words one reading dominates and minority senses barely occur. A fair test is **balanced** (equal senses per word), on words a POS tagger **cannot** separate (same-POS or POS-unreliable readings):
 
+<!-- results:balanced_hard -->
 | approach | balanced hard subset (8 words, n=1280) |
 |---|---|
 | most-common | 50% |
 | spaCy `pt_core_news_lg` (POS→sense) | 59% |
 | **bifonia rules** | **94%** |
+<!-- /results:balanced_hard -->
 
 ![Balanced hard subset: rules vs spaCy per word](img/balanced_hard.png)
 
@@ -138,6 +150,7 @@ Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100, `g
 
 `scripts/baselines.py` defines the baselines below as classes behind one `Baseline` protocol, with `load_examples` and `score` helpers. It has no command-line entry point. All the baselines except logistic regression are **pure stdlib**. They were fit on the synthetic train split and scored on a real-text set.
 
+<!-- results:baselines -->
 | baseline | all words | POS-ambiguous (same-POS) |
 |---|---|---|
 | most-common (training majority) | 46.5% | 72.0% |
@@ -148,6 +161,7 @@ Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100, `g
 |---|---|---|
 | logistic regression (numpy, same features incl. CUE:) | 92.2% | 93.3% |
 | **rules (no model)** | **96.2%** | **98.3%** |
+<!-- /results:baselines -->
 
 ![Baselines without a model on real text](img/baselines.png)
 
