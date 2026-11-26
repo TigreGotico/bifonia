@@ -291,4 +291,3 @@ def test_context_free_false_keeps_the_brazilian_overrides():
     sentence = "O abono de família subiu."
     assert add_extra_diacritics(sentence, lang="pt-BR", context_free=False) == sentence
     assert add_extra_diacritics(sentence, lang="pt-PT", context_free=False) != sentence
-
