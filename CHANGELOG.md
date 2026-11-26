@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1a1](https://github.com/TigreGotico/bifonia/tree/0.7.1a1) (2026-11-26)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.0a1...0.7.1a1)
+
+**Merged pull requests:**
+
+- fix: drop the trema where orthography2ipa reads the glide unmarked [\#100](https://github.com/TigreGotico/bifonia/pull/100) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.7.0a1](https://github.com/TigreGotico/bifonia/tree/0.7.0a1) (2026-11-25)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.6.0a3...0.7.0a1)
