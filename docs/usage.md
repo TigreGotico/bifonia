@@ -100,8 +100,8 @@ Returns the sentence with non-canonical diacritics inserted on ambiguous words, 
 After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *assembléia* for pt-BR. Each row names the pt-PT and pt-BR lect codes where it passed, and a tag takes the rows of its longest matching code. `None` and a bare `pt` mean `pt-PT`. See [Marks that need no context](context_free_marks.md). The table follows the readings of orthography2ipa. A caller with another G2P can pass `context_free=False`, and the function then writes the homograph marks only:
 
 ```python
-add_extra_diacritics("Comi linguiça.", lang="pt-BR")                       # 'Comi lingüiça.'
-add_extra_diacritics("Comi linguiça.", lang="pt-BR", context_free=False)  # 'Comi linguiça.'
+add_extra_diacritics("O dia subsequente.", lang="pt-BR")                       # 'O dia subseqüente.'
+add_extra_diacritics("O dia subsequente.", lang="pt-BR", context_free=False)  # 'O dia subsequente.'
 ```
 
 | Diacritic | IPA | Vowel quality |

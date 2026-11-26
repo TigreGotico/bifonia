@@ -14,9 +14,10 @@ or orthography2ipa:
   oi⟩ in «assembleia», «heroico» and «alcaloide»; Michaelis assembleia
   [asẽˈblɛjɐ], heroico [eˈɾɔjku], asteroide [asteˈɾɔjdi]. Infopédia assembleia
   [ɐsẽˈblɐjɐ] has another vowel, so pt-PT keeps «assembleia».
-- lingüiça, tranqüilo: AO1990 Base XIV 1.º drops the trema; Michaelis linguiça
-  and tranquilo say [ɡw] and [kw], and so do Infopédia linguiça [lĩˈɡwisɐ] and
-  tranquilo [tɾɐ̃ˈkwilu] for pt-PT.
+- linguiça, tranquilo: AO1990 Base XIV 1.º drops the trema. Michaelis and
+  Infopédia say [ɡw] and [kw], and orthography2ipa says the glide for the bare
+  form, so they take no trema (check 3 of the build script). A rarer word such
+  as «sequela» keeps it.
 - areia: Michaelis areia [aˈɾejɐ] has a closed vowel, so pt-BR keeps «areia»
   although the pt-BR norm wrote «aréia».
 - ideia, estreia: also forms of idear and estrear, a second reading
@@ -84,12 +85,12 @@ CASES = [
      "O asteróide passou perto da Terra.",
      "O asteróide passou perto da Terra."),
     ("Comprei linguiça e pão.",
-     "Comprei lingüiça e pão.",
-     "Comprei lingüiça e pão.",
+     "Comprei linguiça e pão.",
+     "Comprei linguiça e pão.",
      "Comprei linguiça e pão."),
     ("O mar está tranquilo.",
-     "O mar está tranqüilo.",
-     "O mar está tranqüilo.",
+     "O mar está tranquilo.",
+     "O mar está tranquilo.",
      "O mar está tranquilo."),
     ("A areia da praia está quente.",
      "A areia da praia está quente.",
@@ -136,7 +137,7 @@ def test_no_trema_sub_lects_get_no_trema_row(lang):
 
     marks = context_free_marks(lang)
     assert marks and not any("ü" in form for form in marks.values())
-    assert add_extra_diacritics("Tranquilo, comi linguiça.", lang=lang) == "Tranquilo, comi linguiça."
+    assert add_extra_diacritics("O dia subsequente.", lang=lang) == "O dia subsequente."
 
 
 @pytest.mark.parametrize("lang", UNCHECKED_LANGS)
@@ -150,7 +151,7 @@ def test_unchecked_lects_get_no_context_free_mark(sentence, lang):
     ("Pera e maçã.", "pt-PT", "Pêra e maçã."),
     ("ASSEMBLEIA", "pt-BR", "ASSEMBLÉIA"),
     ("Assembleia geral.", "pt-BR", "Assembléia geral."),
-    ("LingUiça", "pt-BR", "LingÜiça"),
+    ("SubseqUente", "pt-BR", "SubseqÜente"),
 ])
 def test_case_is_kept(sentence, lang, expected):
     assert add_extra_diacritics(sentence, lang=lang) == expected
@@ -290,3 +291,4 @@ def test_context_free_false_keeps_the_brazilian_overrides():
     sentence = "O abono de família subiu."
     assert add_extra_diacritics(sentence, lang="pt-BR", context_free=False) == sentence
     assert add_extra_diacritics(sentence, lang="pt-PT", context_free=False) != sentence
+
