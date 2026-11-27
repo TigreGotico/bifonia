@@ -10,6 +10,8 @@ see: `docs/index.md`, `docs/usage.md`
 
 bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence. These are words spelled the same way whose pronunciation depends on meaning, such as `sede` (*thirst* `ˈsedɨ` or *headquarters* `ˈsɛdɨ`). It returns the meaning, the IPA, or the sentence with a disambiguating diacritic, for text-to-speech front ends. Its one runtime dependency is linguatag, for language tags.
 
+Try it in your browser: [TigreGotico/bifonia on Hugging Face](https://huggingface.co/spaces/TigreGotico/bifonia).
+
 ## Install
 
 ```bash
