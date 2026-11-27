@@ -27,8 +27,6 @@ def _lang_dir(lang: str) -> pathlib.Path:
 def voc(name: str, lang: str = DEFAULT_LANG) -> frozenset:
     """Return the terms in ``<locale>/<lang>/<name>.voc`` as a lowercased frozenset."""
     path = _lang_dir(lang) / f"{name}.voc"
-    if not path.exists():
-        raise FileNotFoundError(f"vocabulary file not found: {path}")
     return frozenset(
         t.strip().lower()
         for t in path.read_text(encoding="utf-8").splitlines()

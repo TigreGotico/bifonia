@@ -401,12 +401,8 @@ _DIACRITIZED_TO_SENSES: dict = {
 
 @_lru_cache(maxsize=1)
 def _sense_model():
-    """Return the learned sense model, or None when it cannot load (the rules decide)."""
-    try:
-        from bifonia.model import SenseModel
-        return SenseModel.load()
-    except Exception:
-        return None
+    from bifonia.model import SenseModel
+    return SenseModel.load()
 
 
 def _rule_sense(base: str, words: list, idx: int, pos: str = None,
@@ -454,7 +450,7 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
     if proper:
         return _rule_sense(base, normalised, idx, proper=True)
     model = _sense_model()
-    if (model is not None and model.has(base) and model.route(base) == "model"
+    if (model.has(base) and model.route(base) == "model"
             and model.margin(base, normalised, idx) >= model.margin_tau(base)):
         return model.predict(base, normalised, idx)
     return _rule_sense(base, normalised, idx)
