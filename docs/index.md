@@ -24,6 +24,15 @@ Read the pages in this order:
 
 The runnable scripts are in [examples/](../examples/).
 
+## Language support
+
+| lect | level | gold set |
+|---|---|---|
+| pt-PT | full: senses, IPA and diacritics from Infopédia, for every roster word | [`bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold) (2,233 sentences) and [`bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild) (6,640 sentences) |
+| pt-BR | diacritics only: the pt-PT senses with the sourced rows of `bifonia/data/lect_overrides.csv` and `bifonia/data/context_free_marks.csv` | no sentence gold set; `tests/test_lect_overrides.py` and `tests/test_context_free_marks.py` check the rows |
+
+No other language is in scope, including es-CO, fr-FR, it-IT, de-DE, nl-NL, da-DK, kab, hi-IN, bn-IN and mwr. [orthography2ipa](https://github.com/TigreGotico/orthography2ipa) covers these languages.
+
 ## Related projects
 
 - [`TigreGotico/tugaphone`](https://github.com/TigreGotico/tugaphone): a Portuguese G2P for several Lusophone lects. It depends on bifonia and runs `add_extra_diacritics` before it phonemizes.
