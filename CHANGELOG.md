@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2a2](https://github.com/TigreGotico/bifonia/tree/0.7.2a2) (2026-11-28)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.2a1...0.7.2a2)
+
+**Merged pull requests:**
+
+- docs: the support table gives the measured rules accuracy [\#117](https://github.com/TigreGotico/bifonia/pull/117) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.7.2a1](https://github.com/TigreGotico/bifonia/tree/0.7.2a1) (2026-11-28)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.1a5...0.7.2a1)
