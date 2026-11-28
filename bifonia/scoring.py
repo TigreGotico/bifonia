@@ -92,6 +92,7 @@ _POR_CONTRACTIONS = voc("por_contractions")
 _BAKE_PURPOSE = voc("bake_purpose")
 _FIRST_PERSON_NOUNS = voc("first_person_nouns")
 _PARA_PREV_SUBJ = voc("para_prev_subj")
+_DEMONSTRATIVE_SUBJ = {"isto", "isso", "aquilo", "tudo"}
 _PREP_GOVERNING = voc("prep_governing")
 _CLITICS_ALL  = voc("clitics_all")
 _EXCL_DET     = voc("exclamative_det")
@@ -628,10 +629,13 @@ def score_verb(words: list, idx: int) -> int:
     # "Olho sempre para": the adverb modifies the clause-initial verb before it, so
     # "para" is the preposition. A subject before the adverb keeps the verb: "ele
     # sempre pára", "o carro nunca pára".
-    if word == "para" and prev_word in _NEG_ADV and idx >= 2:
+    # At the end of the sentence "para" has no object, so it is the verb: "Isso não pára."
+    if word == "para" and prev_word in _NEG_ADV and idx >= 2 and next_word \
+            and words[idx][-1] not in ".,;:!?":
         before = words[idx - 3] if idx >= 3 else ""
         clause_start = not before or before[-1] in ".,;:!?"
-        subject = prev2_word in PRON or _prev(words, idx - 2) in _SUBJ_DET
+        subject = (prev2_word in PRON or prev2_word in _DEMONSTRATIVE_SUBJ
+                   or _prev(words, idx - 2) in _SUBJ_DET)
         if clause_start and not subject:
             score -= 4 + (3 if prev_word in _PARA_PREV_SUBJ else 0)
 

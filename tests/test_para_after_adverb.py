@@ -11,8 +11,14 @@ from bifonia import guess_sense, tokenize
     ("Ele sempre para o carro aqui.", "stop"),
     ("O comboio sempre para aqui.", "stop"),
     ("Ela nunca para de falar.", "stop"),
+    ("Isso não para.", "stop"),
+    ("Isto não para o carro.", "stop"),
+    ("Ana já para.", "stop"),
+    ("Corre, nunca para.", "stop"),
+    ("Chove, não para!", "stop"),
 ])
 def test_para_after_an_adverb(sentence, sense):
     words = tokenize(sentence)
-    i = next(k for k, w in enumerate(words) if w.strip(".,").lower() == "para")
+    i = next(k for k, w in enumerate(words) if w.strip(".,;:!?").lower() == "para")
+    words[i] = "para"
     assert guess_sense(words, i) == sense
