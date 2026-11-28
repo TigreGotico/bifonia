@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1a5](https://github.com/TigreGotico/bifonia/tree/0.7.1a5) (2026-11-28)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.1a4...0.7.1a5)
+
+**Merged pull requests:**
+
+- ci: check the docs standard on each pull request [\#111](https://github.com/TigreGotico/bifonia/pull/111) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.7.1a4](https://github.com/TigreGotico/bifonia/tree/0.7.1a4) (2026-11-27)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.1a3...0.7.1a4)
