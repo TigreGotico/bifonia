@@ -625,6 +625,16 @@ def score_verb(words: list, idx: int) -> int:
     if word == "para" and prev_word in _PARA_PREV_SUBJ:
         score += 3
 
+    # "Olho sempre para": the adverb modifies the clause-initial verb before it, so
+    # "para" is the preposition. A subject before the adverb keeps the verb: "ele
+    # sempre pára", "o carro nunca pára".
+    if word == "para" and prev_word in _NEG_ADV and idx >= 2:
+        before = words[idx - 3] if idx >= 3 else ""
+        clause_start = not before or before[-1] in ".,;:!?"
+        subject = prev2_word in PRON or _prev(words, idx - 2) in _SUBJ_DET
+        if clause_start and not subject:
+            score -= 4 + (3 if prev_word in _PARA_PREV_SUBJ else 0)
+
     if word == "para":
         # "pára no/durante/após X": NEVER_AFTER_PREP already zeroes ADP; this tips the tie.
         if next_word in _PARA_VERB_NEXT:
