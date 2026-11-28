@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2a1](https://github.com/TigreGotico/bifonia/tree/0.7.2a1) (2026-11-28)
+
+[Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.1a5...0.7.2a1)
+
+**Merged pull requests:**
+
+- fix: an adverb after a clause-initial verb does not make para the verb [\#114](https://github.com/TigreGotico/bifonia/pull/114) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.7.1a5](https://github.com/TigreGotico/bifonia/tree/0.7.1a5) (2026-11-28)
 
 [Full Changelog](https://github.com/TigreGotico/bifonia/compare/0.7.1a4...0.7.1a5)
