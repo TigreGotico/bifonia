@@ -14,8 +14,10 @@ or orthography2ipa:
   oi⟩ in «assembleia», «heroico» and «alcaloide»; Michaelis assembleia
   [asẽˈblɛjɐ], heroico [eˈɾɔjku], asteroide [asteˈɾɔjdi]. Infopédia assembleia
   [ɐsẽˈblɐjɐ] has another vowel, so pt-PT keeps «assembleia».
-- lingüiça, tranqüilo: AO1990 Base XIV 1.º drops the trema; Michaelis linguiça
-  and tranquilo say [ɡw] and [kw].
+- linguiça, tranquilo: AO1990 Base XIV 1.º drops the trema. Michaelis and
+  Infopédia say [ɡw] and [kw], and orthography2ipa says the glide for the bare
+  form, so they take no trema (check 3 of the build script). A rarer word such
+  as «sequela» keeps it.
 - areia: Michaelis areia [aˈɾejɐ] has a closed vowel, so pt-BR keeps «areia»
   although the pt-BR norm wrote «aréia».
 - ideia, estreia: also forms of idear and estrear, a second reading
@@ -84,11 +86,11 @@ CASES = [
      "O asteróide passou perto da Terra."),
     ("Comprei linguiça e pão.",
      "Comprei linguiça e pão.",
-     "Comprei lingüiça e pão.",
+     "Comprei linguiça e pão.",
      "Comprei linguiça e pão."),
     ("O mar está tranquilo.",
      "O mar está tranquilo.",
-     "O mar está tranqüilo.",
+     "O mar está tranquilo.",
      "O mar está tranquilo."),
     ("A areia da praia está quente.",
      "A areia da praia está quente.",
@@ -135,7 +137,7 @@ def test_no_trema_sub_lects_get_no_trema_row(lang):
 
     marks = context_free_marks(lang)
     assert marks and not any("ü" in form for form in marks.values())
-    assert add_extra_diacritics("Tranquilo, comi linguiça.", lang=lang) == "Tranquilo, comi linguiça."
+    assert add_extra_diacritics("O dia subsequente.", lang=lang) == "O dia subsequente."
 
 
 @pytest.mark.parametrize("lang", UNCHECKED_LANGS)
@@ -149,7 +151,7 @@ def test_unchecked_lects_get_no_context_free_mark(sentence, lang):
     ("Pera e maçã.", "pt-PT", "Pêra e maçã."),
     ("ASSEMBLEIA", "pt-BR", "ASSEMBLÉIA"),
     ("Assembleia geral.", "pt-BR", "Assembléia geral."),
-    ("LingUiça", "pt-BR", "LingÜiça"),
+    ("SubseqUente", "pt-BR", "SubseqÜente"),
 ])
 def test_case_is_kept(sentence, lang, expected):
     assert add_extra_diacritics(sentence, lang=lang) == expected
@@ -255,3 +257,37 @@ def test_loader_reads_an_nfd_form_in_nfc(tmp_path):
 def test_loader_rejects_a_form_of_another_length(tmp_path):
     with pytest.raises(ValueError, match="code points"):
         _load_data_with(tmp_path, "jabuti,jabutí-,pt-PT,probe,probe,probe\n")
+
+
+@pytest.mark.parametrize("invisible", ["͏", "️"])
+def test_loader_rejects_an_invisible_mark_in_place_of_a_letter(tmp_path, invisible):
+    # "fes" + mark + "a" has as many code points as "festa", but the mark takes
+    # the place of the "t". U+034F and U+FE0F have combining class 0.
+    with pytest.raises(ValueError, match="keeps a combining mark"):
+        _load_data_with(tmp_path, f"festa,fes{invisible}a,pt-PT,probe,probe,probe\n")
+
+
+@pytest.mark.parametrize("sentence, lang", [
+    ("Comi uma pera.", "pt-PT"),
+    ("Comi linguiça.", "pt-BR"),
+    ("A assembleia votou.", "pt-BR"),
+    ("O tranquilo voo.", "pt-BR"),
+])
+def test_context_free_false_writes_no_context_free_mark(sentence, lang):
+    assert add_extra_diacritics(sentence, lang=lang, context_free=False) == sentence
+
+
+def test_context_free_false_still_marks_the_homographs():
+    """«forma» is a homograph (the README example gives «desta fórma»), so its mark
+    stays. The flag removes only the context-free table, here «pêra»."""
+    sentence = "Resolveu o problema desta forma simples e comeu uma pera."
+    assert add_extra_diacritics(sentence) == "Resolveu o problema desta fórma simples e comeu uma pêra."
+    assert add_extra_diacritics(sentence, context_free=False) == "Resolveu o problema desta fórma simples e comeu uma pera."
+
+
+def test_context_free_false_keeps_the_brazilian_overrides():
+    """pt-BR leaves «abono» unmarked (data/lect_overrides.csv), where pt-PT
+    writes «abôno». The flag must not drop the lect overrides."""
+    sentence = "O abono de família subiu."
+    assert add_extra_diacritics(sentence, lang="pt-BR", context_free=False) == sentence
+    assert add_extra_diacritics(sentence, lang="pt-PT", context_free=False) != sentence

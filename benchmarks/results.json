@@ -1,0 +1,403 @@
+{
+ "tables": {
+  "ood": {
+   "columns": [
+    "approach",
+    "OOD accuracy"
+   ],
+   "align": "|---|---|",
+   "format": [
+    "{:.1f}%"
+   ],
+   "rows": [
+    {
+     "label": "most-common (corpus-derived majority sense)",
+     "scores": [
+      53.2
+     ],
+     "note": "†"
+    },
+    {
+     "label": "Naive-Bayes (all roster words)",
+     "scores": [
+      83.9
+     ]
+    },
+    {
+     "label": "perceptron (all roster words)",
+     "scores": [
+      85.2
+     ]
+    },
+    {
+     "label": "rules (no model)",
+     "scores": [
+      88.0
+     ],
+     "bold": [
+      0,
+      1
+     ]
+    },
+    {
+     "label": "ensemble (`guess_sense`)",
+     "scores": [
+      88.0
+     ]
+    }
+   ],
+   "split_at": 3
+  },
+  "synthetic": {
+   "columns": [
+    "split",
+    "n",
+    "rules (free)",
+    "most-common",
+    "Naive-Bayes",
+    "perceptron",
+    "ensemble"
+   ],
+   "align": "|---|---|---|---|---|---|---|",
+   "format": [
+    "{:,}",
+    "{:.2f}%",
+    "{:.2f}%",
+    "{:.2f}%",
+    "{:.2f}%",
+    "{:.2f}%"
+   ],
+   "rows": [
+    {
+     "label": "train",
+     "scores": [
+      124459,
+      97.79,
+      52.65,
+      99.45,
+      99.78,
+      97.79
+     ]
+    },
+    {
+     "label": "test",
+     "scores": [
+      30968,
+      97.79,
+      52.67,
+      99.13,
+      99.37,
+      97.79
+     ]
+    },
+    {
+     "label": "full",
+     "scores": [
+      155427,
+      97.79,
+      52.65,
+      99.39,
+      99.7,
+      97.79
+     ]
+    }
+   ]
+  },
+  "realgold": {
+   "columns": [
+    "approach",
+    "balanced real gold (2,233 sentences, 40 words)",
+    "POS-ambiguous subset (n=1,512)"
+   ],
+   "align": "|---|:---:|:---:|",
+   "format": [
+    "{:.1f}%",
+    "{:.0f}%"
+   ],
+   "rows": [
+    {
+     "label": "most-common",
+     "scores": [
+      57.1,
+      59.0
+     ]
+    },
+    {
+     "label": "cue-only (wordlists, no POS, no learning)",
+     "scores": [
+      60.2,
+      64.0
+     ]
+    },
+    {
+     "label": "Yarowsky decision list (trained)",
+     "scores": [
+      87.3,
+      86.0
+     ]
+    },
+    {
+     "label": "spaCy `pt_core_news_lg` (POS→sense)",
+     "scores": [
+      90.6,
+      89.0
+     ]
+    },
+    {
+     "label": "logistic regression (numpy, +cues)",
+     "scores": [
+      92.2,
+      94.0
+     ]
+    },
+    {
+     "label": "rules (no model)",
+     "scores": [
+      95.2,
+      96.0
+     ],
+     "bold": [
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "label": "hybrid ensemble (POS tag ⊕ rules)",
+     "scores": [
+      96.0,
+      97.0
+     ],
+     "bold": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "split_at": 3
+  },
+  "wild_hybrid": {
+   "columns": [
+    "approach",
+    "OOD accuracy"
+   ],
+   "align": "|---|---|",
+   "format": [
+    "{:.1f}%"
+   ],
+   "rows": [
+    {
+     "label": "spaCy `pt_core_news_lg` (POS → sense)",
+     "scores": [
+      91.6
+     ]
+    },
+    {
+     "label": "rules (no model)",
+     "scores": [
+      89.9
+     ]
+    },
+    {
+     "label": "hybrid ensemble (POS tag ⊕ rules)",
+     "scores": [
+      95.3
+     ]
+    }
+   ]
+  },
+  "wild_subsets": {
+   "columns": [
+    "subset",
+    "n",
+    "spaCy",
+    "rules",
+    "**ensemble**"
+   ],
+   "align": "|---|---|---|---|---|",
+   "format": [
+    "{:d}",
+    "{:.1f}%",
+    "{:.1f}%",
+    "{:.1f}%"
+   ],
+   "rows": [
+    {
+     "label": "POS-separable",
+     "scores": [
+      6583,
+      94.8,
+      89.9,
+      95.8
+     ],
+     "bold": [
+      4
+     ]
+    },
+    {
+     "label": "POS-ambiguous",
+     "scores": [
+      536,
+      52.6,
+      89.7,
+      89.9
+     ],
+     "bold": [
+      2,
+      4
+     ]
+    },
+    {
+     "label": "all",
+     "scores": [
+      7119,
+      91.6,
+      89.9,
+      95.3
+     ],
+     "bold": [
+      0,
+      4
+     ]
+    }
+   ]
+  },
+  "balanced_hard": {
+   "columns": [
+    "approach",
+    "balanced hard subset (8 words, n=1280)"
+   ],
+   "align": "|---|---|",
+   "format": [
+    "{:.0f}%"
+   ],
+   "rows": [
+    {
+     "label": "most-common",
+     "scores": [
+      50.0
+     ]
+    },
+    {
+     "label": "spaCy `pt_core_news_lg` (POS→sense)",
+     "scores": [
+      59.0
+     ]
+    },
+    {
+     "label": "bifonia rules",
+     "scores": [
+      94.0
+     ],
+     "bold": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  "baselines": {
+   "columns": [
+    "baseline",
+    "all words",
+    "POS-ambiguous (same-POS)"
+   ],
+   "align": "|---|---|---|",
+   "format": [
+    "{:.1f}%",
+    "{:.1f}%"
+   ],
+   "rows": [
+    {
+     "label": "most-common (training majority)",
+     "scores": [
+      46.5,
+      72.0
+     ]
+    },
+    {
+     "label": "cue-only (sense-cue registry, no POS, no learning)",
+     "scores": [
+      52.6,
+      87.5
+     ]
+    },
+    {
+     "label": "decision-list (Yarowsky, one-sense-per-collocation)",
+     "scores": [
+      89.0,
+      86.4
+     ]
+    },
+    {
+     "label": "logistic regression (numpy, same features incl. CUE:)",
+     "scores": [
+      92.2,
+      93.3
+     ]
+    },
+    {
+     "label": "rules (no model)",
+     "scores": [
+      96.2,
+      98.3
+     ],
+     "bold": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "split_at": 3
+  },
+  "support": {
+   "columns": [
+    "lect",
+    "level",
+    "gold set",
+    "rules accuracy"
+   ],
+   "align": "|---|---|---|---|",
+   "format": [
+    "{}",
+    "{}",
+    "{}"
+   ],
+   "rows": [
+    {
+     "label": "pt-PT",
+     "scores": [
+      "full: senses, IPA and diacritics from Infopédia, for every roster word",
+      "[`bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold) (2,233 sentences) and [`bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild) (6,640 sentences)",
+      {
+       "ref": [
+        [
+         "realgold",
+         "rules (no model)",
+         0,
+         "gold"
+        ],
+        [
+         "ood",
+         "rules (no model)",
+         0,
+         "wild"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "label": "pt-BR",
+     "scores": [
+      "diacritics only: the pt-PT senses with the sourced rows of `bifonia/data/lect_overrides.csv` and `bifonia/data/context_free_marks.csv`",
+      "no sentence gold set; `tests/test_lect_overrides.py` and `tests/test_context_free_marks.py` check the rows",
+      "no sentence gold"
+     ]
+    }
+   ]
+  }
+ }
+}

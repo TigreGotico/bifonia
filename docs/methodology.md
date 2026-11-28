@@ -1,5 +1,13 @@
 # Methodology: dataset construction and disambiguation algorithm
 
+<!-- agent-hint
+covers: how the corpus is built and how the rule and learned engines decide
+source: `scripts/train.py`, `scripts/dataset.py`, `bifonia/scoring.py`, `bifonia/model.py`
+generated: no
+verify: python -m pytest -q tests/test_scoring.py tests/test_model.py tests/test_hf_split.py
+see: `docs/benchmarks.md`, `docs/dataset.md`
+-->
+
 ## Overview
 
 The `bifonia` package disambiguates 132 Portuguese heterophonic homographs: words spelled identically but pronounced differently depending on their **meaning** (`sense`). Disambiguation is served by **two interchangeable engines**, both pure Python with no heavy runtime dependency:
@@ -30,10 +38,10 @@ The canonical corpus is `bifonia/data/corpus.jsonl`, one JSON record per line, `
 | Metric | Value |
 |---|---|
 | Total sentences (`corpus.jsonl`) | 155,427 |
-| Train / test split (`hf/`) | 124,519 / 30,987 |
+| Train / test split (`hf/`) | 124,459 / 30,968 |
 | Words covered | 132 |
 
-The committed `hf/` split holds 79 sentences that `corpus.jsonl` does not hold ([#44](https://github.com/TigreGotico/bifonia/issues/44)), so the two totals differ. `python scripts/dataset.py --hf --out <dir>` prints the counts for a fresh split.
+The split is built from `corpus.jsonl`, so every split sentence is a corpus sentence. `python scripts/dataset.py --hf --out <dir>` prints the counts for a fresh split.
 
 ---
 
@@ -112,11 +120,38 @@ Rules are conservative: each fires on a clear linguistic pattern, not a statisti
 
 ---
 
+## Architecture
+
+The design is layered, so a cue behaves the same way in the rules and in the model features:
+
+```
+bifonia/__init__.py  public API: tokenize, guess_sense, disambiguate, add_extra_diacritics
+bifonia/data.py      loads the roster CSVs and lect overrides (HOMOGRAPHS, POS_SENSES)
+bifonia/text.py      strip / accent-fold / proximity-weighted cue scoring   (shared, stdlib)
+bifonia/cues.py      SENSE_CUES + FEATURE_CUES: the cue registry             (single source of truth)
+bifonia/scoring.py   context rules + one generic cue resolver
+bifonia/features.py  language-agnostic features, incl. CUE:<sense> from the registry
+bifonia/model.py     loads and scores the learned NB / perceptron JSON models
+bifonia/corpus.py    loads bifonia/data/corpus.jsonl into CORPUS
+bifonia/vocab.py     loads the .voc wordlists of a locale
+bifonia/infopedia.py loads bifonia/data/infopedia_pt.csv, the Infopédia entries
+bifonia/data/        roster CSVs, corpus.jsonl, lect_overrides.csv, context_free_marks.csv, model JSON
+bifonia/locale/<lang>/*.voc   editable context + meaning wordlists
+scripts/             training, dataset export and benchmark scripts
+scripts/baselines.py a Baseline protocol + baselines, imported as a library (no command line)
+```
+
+The meaning cues that disambiguate same-spelling readings live in **one declarative registry** (`bifonia/cues.py`), read by both the rule resolver and the model feature extractor. To add a same-POS word to the cue resolver, add its `.voc` wordlists and one `SENSE_CUES` entry, with no new resolver code. Each word also needs its rows in `bifonia/data/heterophonic_homographs.csv`. Porting to a related language means supplying `.voc` files and, optionally, a corpus, since the algorithm carries no hardcoded Portuguese.
+
+---
+
 ## Benchmark comparison
 
 Sense-prediction accuracy is measured two ways. `scripts/benchmark_tagger.py` evaluates on a **synthetic** held-out split (the test partition of the generated corpus). `scripts/benchmark_ood.py` evaluates on an **out-of-distribution (OOD)** set of real Wikipedia and web sentences (`TigreGotico/bifonia-pt-homographs-wild`, downloaded on demand). Each approach sees the plain (un-diacritised) form, and the POS taggers map their POS output back to a sense.
 
 Synthetic splits overstate accuracy, because their train and test sentences share phrasing. The OOD set is the reliable measure. On it, the corpus-trained models trail the rules, because the corpus labels come from the rules.
+
+Models trained on the corpus do not beat the rules out-of-distribution. The corpus is rule-labelled, so a model can at best mimic the rules in-distribution, and it generalizes worse on real text. This holds for Naive-Bayes, the averaged perceptron and the classic Yarowsky decision list alike. The rules remain the strongest predictor, and an external POS tag can fuse on top of them (see `postag` in [`usage.md`](usage.md)). The hybrid mode trusts an external tagger only where one part of speech maps to exactly one sense. Everywhere else the rules decide.
 
 The POS taggers (spaCy, Stanza) hit a **structural ceiling**: POS cannot separate two senses that share a part of speech, so a tagger gets the majority sense right and the minority sense wrong by construction.
 
@@ -125,7 +160,7 @@ The POS taggers (spaCy, Stanza) hit a **structural ceiling**: POS cannot separat
 ```bash
 python scripts/benchmark_tagger.py --no-taggers    # synthetic held-out split
 python scripts/benchmark_tagger.py --word sede     # one word only
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py                    # OOD real-text set (downloads from Hugging Face)
 ```
 
@@ -162,11 +197,11 @@ Some diacritized forms are unambiguous: *pára* (stop), *pêlo* (hair), *côrte*
 
 ## Limitations
 
-- **European Portuguese first:** the IPA, wordlists, and orthographic conventions are those of **European Portuguese (EP)**. `add_extra_diacritics(..., lang="pt-BR")` applies the Brazilian differences in `bifonia/data/lect_overrides.csv`, and the README lists the words that differ. The IPA column stays European for every lect.
+- **European Portuguese first:** the IPA, wordlists, and orthographic conventions are those of **European Portuguese (EP)**. `add_extra_diacritics(..., lang="pt-BR")` applies the Brazilian differences in `bifonia/data/lect_overrides.csv`, and [Lects](lects.md) lists the words that differ. The IPA column stays European for every lect.
 - **`pelo` hair vs by_the:** the body-hair NOUN reading is recognised by possession verbs (`ter`, `possuir`) governing `pelo` and by past-participle context for the passive-agent `by_the` ADP pattern, handled by suffix heuristics in the scorer.
 - **Context window:** the scorer inspects only ±4 words. Long-range dependencies, for example a subject noun phrase 5+ words before the verb, are outside its reach and are an irreducible error source for a local rule-based system.
 - **Sentence-level ambiguity:** a small number of sentences are genuinely ambiguous without full semantic interpretation, for example `para sempre` = *stop* "stops always" vs *purpose* "forever". These are handled as known limitations rather than with fragile rules.
 - **Dataset licence:** sentence content is original, and no copyrighted text is used. The corpus is published under a permissive licence.
 
 ---
-[← Usage](usage.md) · [Home](../README.md) · [Benchmarks →](benchmarks.md)
+[← Usage](usage.md) · [Index](index.md) · [Benchmarks →](benchmarks.md)

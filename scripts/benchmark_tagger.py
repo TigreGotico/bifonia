@@ -124,6 +124,7 @@ def main():
         idx = _locate(toks, r["word"])
         if idx is None:
             return None
+        toks[idx] = r["word"]
         return _rule_resolve(r["word"], toks, idx, _rule_pos(toks, idx))
 
     nb = SenseModel.load(str(NB_PATH)) if NB_PATH.exists() else None
@@ -134,6 +135,7 @@ def main():
         idx = _locate(toks, r["word"])
         if not model or idx is None or not model.has(r["word"]):
             return None
+        toks[idx] = r["word"]
         return model.predict(r["word"], toks, idx)
 
     def ensemble(r):  # production guess_sense: per-word model routing + rule fallback

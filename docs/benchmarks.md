@@ -1,26 +1,36 @@
 # Benchmarks
 
-Two scripts in `scripts/` measure sense-prediction accuracy. The first sections of this page give the output of a command that you can run from a fresh clone. The last section gives results that no script in this repository produces.
+<!-- agent-hint
+covers: the accuracy of each approach and which numbers a command in this repository reproduces
+source: `benchmarks/results.json`, `scripts/benchmark_table.py`, `scripts/benchmark_ood.py`, `scripts/benchmark_tagger.py`, `scripts/plot_benchmarks.py`
+generated: yes
+verify: diff <(python scripts/benchmark_ood.py | grep -oP '^(most-common|rules\(free\)|NB|perceptron|ensemble)\s+\K[0-9.]+(?=%)' | LC_ALL=C xargs printf '%.1f\n' | sort) <(sed -n '/^## Out-of-distribution/,/^The ensemble equals/p' docs/benchmarks.md | grep -oP '\| \**\K[0-9.]+(?=%)' | sort)
+see: `docs/methodology.md`, `docs/data_quality.md`
+-->
+
+Two scripts in `scripts/` measure sense-prediction accuracy. `benchmarks/results.json` holds every score on this page, and `python scripts/benchmark_table.py` writes the tables from that file. The first sections of this page give the output of a command that you can run from a fresh clone. The last section gives results that no script in this repository produces.
 
 ## Out-of-distribution (real Wikipedia sentences)
 
 ```bash
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py
 ```
 
 The script downloads `test.jsonl` from [`TigreGotico/bifonia-pt-homographs-wild`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-wild): **6,640 real sentences over 110 words**. It prints one accuracy per approach and a per-word breakdown.
 
+<!-- results:ood -->
 | approach | OOD accuracy |
 |---|---|
 | most-common (corpus-derived majority sense) | 53.2% † |
 | Naive-Bayes (all roster words) | 83.9% |
-| perceptron (all roster words) | 84.8% |
+| perceptron (all roster words) | 85.2% |
 
 | approach (continued) | OOD accuracy |
 |---|---|
-| **rules (zero-dependency)** | **88.0%** |
+| **rules (no model)** | **88.0%** |
 | ensemble (`guess_sense`) | 88.0% |
+<!-- /results:ood -->
 
 The ensemble equals the rules, because the shipped perceptron model routes no word to the model.
 
@@ -32,12 +42,12 @@ The script also scores spaCy (`pt_core_news_lg`) and Stanza (`pt`) when those pa
 
 The dataset is keyed on **(sense, POS) combos**: each meaning slug carries the set of parts of speech it can realize. A word is **POS-separable** when every POS maps to exactly one reading, so a tagger resolves it. A word is **POS-ambiguous** when one POS carries two readings with different IPA (`sede`, `molho`, `corte`, `forma`, `tola`, `bola`, `cor`, `lobo`, `polo`). A tagger cannot separate those readings by construction.
 
-`guess_sense(words, idx, postag=<tag>)` and `disambiguate(words, idx, postag=<tag>)` fuse any external POS tagger with the rules. The tag decides only when it maps to exactly one sense, and the rules decide otherwise. The package stays zero-dependency, and the caller supplies the tag. No script in this repository scores the hybrid. The recorded numbers are in [Results without a reproduction command](#results-without-a-reproduction-command).
+`guess_sense(words, idx, postag=<tag>)` and `disambiguate(words, idx, postag=<tag>)` fuse any external POS tagger with the rules. The tag decides only when it maps to exactly one sense, and the rules decide otherwise. The package needs no tagger, and the caller supplies the tag. No script in this repository scores the hybrid. The recorded numbers are in [Results without a reproduction command](#results-without-a-reproduction-command).
 
 ### Reading these numbers
 
-- bifonia's rule engine is **offline, zero-dependency, and deterministic**. Unlike a POS tagger, it disambiguates **same-POS lexical pairs** (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho` sauce/bundle), where a POS tagger can only fall back to the majority sense.
-- **The learned per-word models (Naive-Bayes, perceptron) cover every roster word** but trail the rules out-of-distribution (83.9% and 84.8% against 88.0%). The rule engine produced the corpus labels, so a model trained on them can at best mimic the rules in-distribution and generalizes worse on real sentences. The models serve as a full-roster baseline and as the corpus QC engine (see [data_quality.md](data_quality.md)).
+- bifonia's rule engine is **offline and deterministic, with no model**. Unlike a POS tagger, it disambiguates **same-POS lexical pairs** (`sede` thirst/seat, `corte` cut/court, `forma` mould/shape, `molho` sauce/bundle), where a POS tagger can only fall back to the majority sense.
+- **The learned per-word models (Naive-Bayes, perceptron) cover every roster word** but trail the rules out-of-distribution (83.9% and 85.2% against 88.0%). The rule engine produced the corpus labels, so a model trained on them can at best mimic the rules in-distribution and generalizes worse on real sentences. The models serve as a full-roster baseline and as the corpus QC engine (see [data_quality.md](data_quality.md)).
 - The wild set is encyclopedic and noun-heavy, so one reading dominates most words. A high score on it partly reflects the dominant sense. The balanced sets in the last section test the minority readings.
 
 ## Synthetic (in-distribution)
@@ -47,11 +57,25 @@ python scripts/benchmark_tagger.py --no-taggers
 python scripts/benchmark_tagger.py --word sede
 ```
 
-The script scores the train, test and full splits of the synthetic corpus. It fails with a `ValueError` on homograph tokens that carry trailing punctuation ([#43](https://github.com/TigreGotico/bifonia/issues/43)), so this page gives no synthetic number.
+The script scores the train, test and full splits of the synthetic corpus, then prints the accuracy per word on the test split. `--word` limits both tables to one word.
+
+<!-- results:synthetic -->
+| split | n | rules (free) | most-common | Naive-Bayes | perceptron | ensemble |
+|---|---|---|---|---|---|---|
+| train | 124,459 | 97.79% | 52.65% | 99.45% | 99.78% | 97.79% |
+| test | 30,968 | 97.79% | 52.67% | 99.13% | 99.37% | 97.79% |
+| full | 155,427 | 97.79% | 52.65% | 99.39% | 99.70% | 97.79% |
+<!-- /results:synthetic -->
+
+The rule engine labelled the synthetic corpus, so the learned models score higher here than out-of-distribution.
 
 ## Why POS-tagging isn't the whole story
 
 The disambiguation axis is **vowel quality** (open ɔ/ɛ vs closed o/e). POS predicts it for noun/verb pairs, but the lexical/same-POS pairs need **meaning** cues, which is why bifonia is meaning-keyed.
+
+The obvious approach is to tag the part of speech and pick the pronunciation from it. This does not work when two readings share a POS. `sede` thirst and seat are both nouns, and `forma` mould and shape are both nouns.
+
+A system can look as if it solves this problem without solving it. Encyclopedic text such as Wikipedia is noun-skewed: one reading dominates and the minority readings barely occur, so a POS tagger that predicts the majority sense scores well on this text. The honest test is a sense-balanced set where the minority readings occur. `bifonia-pt-homographs-gold` is that set: 2,233 real sentences over 40 words from OpenSubtitles, Wikipedia and web pages, labelled independently of the engine. About 68% of the sentences (1,512) are on words where one part of speech carries two readings. On the POS-ambiguous readings spaCy reaches 89% and the meaning-keyed rules reach 96%. A tagger has no signal to separate two senses that share a part of speech.
 
 ## Results without a reproduction command
 
@@ -61,6 +85,7 @@ No script in this repository produces the numbers in this section, so a fresh cl
 
 [`TigreGotico/bifonia-pt-homographs-gold`](https://huggingface.co/datasets/TigreGotico/bifonia-pt-homographs-gold) is mined from open sources (OpenSubtitles, news/food/health sites, Wikipedia) and labelled independently of the rules, with every label individually verified. It has 2,233 sentences over 40 words. Unlike the encyclopedic wild set it is **sense-balanced**: 1,512 of its sentences (about 68%) are on POS-ambiguous words, so it is a fair test of disambiguation, not dominant-sense prediction.
 
+<!-- results:realgold -->
 | approach | balanced real gold (2,233 sentences, 40 words) | POS-ambiguous subset (n=1,512) |
 |---|:---:|:---:|
 | most-common | 57.1% | 59% |
@@ -71,8 +96,9 @@ No script in this repository produces the numbers in this section, so a fresh cl
 |---|:---:|:---:|
 | spaCy `pt_core_news_lg` (POS→sense) | 90.6% | 89% |
 | logistic regression (numpy, +cues) | 92.2% | 94% |
-| **rules (zero-dependency)** | **95.2%** | **96%** |
+| **rules (no model)** | **95.2%** | **96%** |
 | **hybrid ensemble (POS tag ⊕ rules)** | **96.0%** | **97%** |
+<!-- /results:realgold -->
 
 ![Balanced real gold: accuracy by approach](img/realgold_approaches.png)
 
@@ -82,19 +108,23 @@ Scoring is by **reading** (open/closed IPA), the G2P-relevant target. On the POS
 
 These numbers were measured on 7,119 sentences over 112 words. The published wild set has 6,640 sentences over 110 words, so the rules row here does not match the reproducible table above.
 
+<!-- results:wild_hybrid -->
 | approach | OOD accuracy |
 |---|---|
 | spaCy `pt_core_news_lg` (POS → sense) | 91.6% |
-| rules (zero-dependency) | 89.9% |
+| rules (no model) | 89.9% |
 | hybrid ensemble (POS tag ⊕ rules) | 95.3% |
+<!-- /results:wild_hybrid -->
 
 ![Out-of-distribution accuracy by approach](img/ood_accuracy.png)
 
+<!-- results:wild_subsets -->
 | subset | n | spaCy | rules | **ensemble** |
 |---|---|---|---|---|
 | POS-separable | 6583 | 94.8% | 89.9% | **95.8%** |
 | POS-ambiguous | 536 | **52.6%** | 89.7% | **89.9%** |
 | **all** | 7119 | 91.6% | 89.9% | **95.3%** |
+<!-- /results:wild_subsets -->
 
 ![Per-subset accuracy: spaCy vs rules vs ensemble](img/ensemble_breakdown.png)
 
@@ -104,20 +134,23 @@ On that set the tagger is strong on POS-separable readings and near chance on PO
 
 The wild set is **sense-skewed**: Wikipedia is encyclopedic (noun-heavy), so for most words one reading dominates and minority senses barely occur. A fair test is **balanced** (equal senses per word), on words a POS tagger **cannot** separate (same-POS or POS-unreliable readings):
 
+<!-- results:balanced_hard -->
 | approach | balanced hard subset (8 words, n=1280) |
 |---|---|
 | most-common | 50% |
 | spaCy `pt_core_news_lg` (POS→sense) | 59% |
 | **bifonia rules** | **94%** |
+<!-- /results:balanced_hard -->
 
 ![Balanced hard subset: rules vs spaCy per word](img/balanced_hard.png)
 
 Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100, `gozo` 98, `coro` 99, `posto` 94. On the same-POS pairs (`sede`, `molho`, `coro`, `gozo`) spaCy is pinned at about 50% (chance), since it has no POS signal to use, while the meaning-keyed rules resolve them.
 
-### Zero-dependency baselines
+### Baselines without a model
 
 `scripts/baselines.py` defines the baselines below as classes behind one `Baseline` protocol, with `load_examples` and `score` helpers. It has no command-line entry point. All the baselines except logistic regression are **pure stdlib**. They were fit on the synthetic train split and scored on a real-text set.
 
+<!-- results:baselines -->
 | baseline | all words | POS-ambiguous (same-POS) |
 |---|---|---|
 | most-common (training majority) | 46.5% | 72.0% |
@@ -127,11 +160,12 @@ Per word (rules): `sede` 88, `forma` 78, `molho` 94, `gosto` 99, `corte` 100, `g
 | baseline (continued) | all words | POS-ambiguous (same-POS) |
 |---|---|---|
 | logistic regression (numpy, same features incl. CUE:) | 92.2% | 93.3% |
-| **rules (zero-dependency)** | **96.2%** | **98.3%** |
+| **rules (no model)** | **96.2%** | **98.3%** |
+<!-- /results:baselines -->
 
-![Zero-dependency baselines on real text](img/baselines.png)
+![Baselines without a model on real text](img/baselines.png)
 
 The numpy logistic regression is the strongest *learned* model. The CUE: features lift it well past the decision list, yet it **still trails the rules** by about 3 to 4 points. With the same cues the rules use, a learned linear model gets close but does not beat them on real text, because the corpus it learns from is itself rule-labelled. The sense-cue registry alone reaches 87.5% on the same-POS words, so the curated cues carry most of the signal before any POS reasoning or learning.
 
 ---
-[← Methodology](methodology.md) · [Home](../README.md) · [Data quality →](data_quality.md)
+[← Methodology](methodology.md) · [Index](index.md) · [Data quality →](data_quality.md)

@@ -1,6 +1,14 @@
-# AGENTS.md
+# bifonia: agent guide
 
-bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence context. It returns the meaning slug, the IPA, or the sentence with a disambiguating diacritic. It has no runtime dependencies.
+<!-- agent-hint
+covers: what the repository holds, how to set it up and test it, and the rules its docs and tests state
+source: `pyproject.toml`, `bifonia/`, `tests/`, `.github/workflows/build-tests.yml`
+generated: no
+verify: python -m pytest -q tests
+see: `docs/index.md`, `README.md`
+-->
+
+bifonia picks the reading of a European-Portuguese heterophonic homograph from its sentence context. It returns the meaning slug, the IPA, or the sentence with a disambiguating diacritic. Its one runtime dependency is linguatag, for language tags.
 
 ## Repository map
 
@@ -15,7 +23,7 @@ bifonia picks the reading of a European-Portuguese heterophonic homograph from i
 | `scripts/` | `train.py`, `dataset.py`, `benchmark_tagger.py`, `benchmark_ood.py`, `baselines.py`, `build_context_free_marks.py` |
 | `hf/` | the train and test split published as `TigreGotico/bifonia-pt-homographs` |
 | `tests/` | pytest suite. `test_sentences.jsonl` is also the behavioural set for the route gate |
-| `docs/` | reference pages. [README.md](README.md#documentation) lists them in reading order |
+| `docs/` | reference pages. [docs/index.md](docs/index.md) lists them in reading order |
 
 ## Setup
 
@@ -34,11 +42,17 @@ CI runs the same suite on Python 3.11 to 3.14 (`.github/workflows/build-tests.ym
 
 ## Rules the repository docs state
 
-- Keep the runtime dependency list empty. The package uses only the Python standard library (`pyproject.toml`, README). Evaluation code that needs numpy, spaCy or Hugging Face stays in `scripts/`.
-- Take pronunciations from Infopédia (README, `docs/word_references.md`). `bifonia/data/infopedia_pt.csv` holds the extracted entries. `scripts/rebuild_infopedia.py` builds that file. It needs the `pyinfopedia` client and a FlareSolverr service (`--flaresolverr URL`), because Infopédia refuses plain scripted requests.
+- Keep linguatag the only runtime dependency (`pyproject.toml`, `docs/usage.md`). Evaluation code that needs numpy, spaCy or Hugging Face stays in `scripts/`.
+- Take pronunciations from Infopédia (`docs/lects.md`, `docs/word_references.md`). `bifonia/data/infopedia_pt.csv` holds the extracted entries. `scripts/rebuild_infopedia.py` builds that file. It needs the `pyinfopedia` client and a FlareSolverr service (`--flaresolverr URL`), because Infopédia refuses plain scripted requests.
 - `bifonia/data/corpus.jsonl` is the single source of truth for the corpus (`docs/dataset.md`). Regenerate `hf/` with `python scripts/dataset.py --hf` after a corpus change.
 - `scripts/train.py` trains only on `hf/train.jsonl`, never on the test split (`docs/methodology.md`).
-- Give every row of `bifonia/data/lect_overrides.csv` a source in its `source` column (README, Brazilian Portuguese).
-- Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, one reading of the bare form in the transcriptions of its lect, and an orthography2ipa gain for each lect code it names (README, Marks that need no context).
+- Give every row of `bifonia/data/lect_overrides.csv` a source in its `source` column (`docs/lects.md`).
+- Build `bifonia/data/context_free_marks.csv` with `scripts/build_context_free_marks.py`, never by hand. A row needs a norm source, one reading of the bare form in the transcriptions of its lect, and an orthography2ipa gain for each lect code it names (`docs/context_free_marks.md`).
 - To add a same-POS word to the cue resolver, add its `.voc` wordlists and one `SENSE_CUES` entry in `bifonia/cues.py` (`bifonia/cues.py` docstring).
 - The release workflow sets `bifonia/version.py` from the conventional-commit titles of merged pull requests (`.github/workflows/release_workflow.yml`).
+
+## Before you push
+
+1. Run the full test suite.
+2. If you change an output that a page states, rerun the page's `verify` command from its agent-hint.
+3. If you add a docs page, list it in `docs/index.md`, give it an `agent-hint` comment after its H1, and add a footer with the index, previous and next links.

@@ -1,13 +1,23 @@
 # bifonia — usage guide
 
+<!-- agent-hint
+covers: the full API with its scoring signals, and the commands to install and test
+source: `bifonia/__init__.py`, `bifonia/scoring.py`
+generated: no
+verify: sed -n '/^\x60\x60\x60python/,/^\x60\x60\x60/p' docs/usage.md | grep -vP '^\x60{3}' | python -I - && python -m pytest -q tests/test_disambiguate.py
+see: `docs/methodology.md`, `README.md`
+-->
+
+bifonia picks the reading of a Portuguese heterophonic homograph from its sentence. These are words spelled the same way whose pronunciation depends on meaning, not only on part of speech. `sede` means *thirst* (`ˈsedɨ`, closed e) or *headquarters* (`ˈsɛdɨ`, open e). `forma` means *mould* (`ˈfoɾmɐ`) or *shape* (`ˈfɔɾmɐ`). `molho` means *sauce* (`ˈmoʎu`) or *bundle* (`ˈmɔʎu`). A text-to-speech front end that guesses wrong says the wrong word out loud. bifonia picks the right reading, and therefore the right IPA, from context.
+
 ## Install
 
 ```bash
-pip install --pre bifonia          # latest alpha from PyPI
-pip install -e ".[test]"           # from a clone, with pytest
+uv pip install --prerelease=allow bifonia    # latest alpha from PyPI
+uv pip install --prerelease=allow -e ".[test]"   # from a clone, with pytest
 ```
 
-No runtime dependencies. bifonia uses only the Python standard library.
+bifonia has one runtime dependency, linguatag, which reads language tags. bifonia publishes alpha releases from the `dev` branch, so `--prerelease=allow` gives the API that these pages describe.
 
 ## Quick start
 
@@ -55,20 +65,51 @@ proper_flags("Ontem o Porto ganhou ao Benfica.")
 # [False, False, True, False, False, True]
 ```
 
+An external tag decides only where one part of speech maps to exactly one sense. Both readings of `sede` are nouns, so the rules decide here:
+
+```python
+from bifonia import tokenize, guess_sense
+
+words = tokenize("A sede da empresa fica em Lisboa.")
+print(guess_sense(words, words.index("sede"), postag="NOUN"))   # seat
+```
+
+This example runs the calls on one sentence and shows the `sense` override of `disambiguate`:
+
+```python
+from bifonia import tokenize, guess_sense, disambiguate, add_extra_diacritics
+
+sentence = "Resolveu o problema desta forma simples."
+words = tokenize(sentence)
+i = words.index("forma")
+
+print(guess_sense(words, i))                    # shape
+print(disambiguate(words, i))                   # ˈfɔɾmɐ
+print(disambiguate(words, i, sense="mould"))    # ˈfoɾmɐ
+print(add_extra_diacritics(sentence))           # Resolveu o problema desta fórma simples.
+```
+
+`add_extra_diacritics` rewrites each homograph with a disambiguating diacritic (acute for the open vowel, circumflex for the closed vowel) that a downstream grapheme-to-phoneme stage can read directly.
+
 ### `AMBIGUOUS_WORDS` and `HOMOGRAPHS`
 `AMBIGUOUS_WORDS` is the set of the 132 roster words that `is_ambiguous` tests. `HOMOGRAPHS` maps each word to its `{sense: ipa}` readings. See [Word coverage](#word-coverage).
 
-### `add_extra_diacritics(sentence, lang="pt-PT") → str`
-Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect, and `None` means the default. `pt-BR`, `pt-UY` and their sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See the README section on Brazilian Portuguese.
+### `add_extra_diacritics(sentence, lang="pt-PT", *, context_free=True) → str`
+Returns the sentence with non-canonical diacritics inserted on ambiguous words, to force correct downstream G2P output. *lang* selects the lect, and `None` means the default. `pt-BR`, `pt-UY` and their sub-lects apply the rows in `bifonia/data/lect_overrides.csv`; every other tag keeps the European marks. See [Lects](lects.md).
 
-After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *assembléia* for pt-BR. Each row names the pt-PT and pt-BR lect codes where it passed, and a tag takes the rows of its longest matching code. `None` and a bare `pt` mean `pt-PT`. See the README section on marks that need no context.
+After the homographs, the function writes the marks that need no context from `bifonia/data/context_free_marks.csv`, such as *pêra* for pt-PT and *assembléia* for pt-BR. Each row names the pt-PT and pt-BR lect codes where it passed, and a tag takes the rows of its longest matching code. `None` and a bare `pt` mean `pt-PT`. See [Marks that need no context](context_free_marks.md). The table follows the readings of orthography2ipa. A caller with another G2P can pass `context_free=False`, and the function then writes the homograph marks only:
+
+```python
+add_extra_diacritics("O dia subsequente.", lang="pt-BR")                       # 'O dia subseqüente.'
+add_extra_diacritics("O dia subsequente.", lang="pt-BR", context_free=False)  # 'O dia subsequente.'
+```
 
 | Diacritic | IPA | Vowel quality |
 |-----------|-----|---------------|
 | `ó` / `é` | /ɔ/ / /ɛ/ | open vowel |
 | `ô` / `ê` | /o/ / /e/ | closed vowel |
 
-The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO have no rows and keep the European marks. See the README section on African and Asian lects.
+The African and Asian lects pt-AO, pt-MZ, pt-CV, pt-GW, pt-ST, pt-TL and pt-MO have no rows and keep the European marks. See [Lects](lects.md).
 
 ## Word coverage
 
@@ -80,6 +121,8 @@ len(HOMOGRAPHS)                          # 132
 sum(map(len, HOMOGRAPHS.values()))       # 299
 HOMOGRAPHS["sede"]                       # {'seat': 'ˈsɛdɨ', 'thirst': 'ˈsedɨ', 'legal_context': 'ˈsɛdɨ'}
 ```
+
+The disambiguation axis is **vowel quality** (open ɔ/ɛ against closed o/e). The hard core is the same-POS pairs that a tagger cannot separate: `sede`, `corte`, `forma`, `molho`, `bola`, `cor`, `lobo`, `polo` and `tola`.
 
 [`word_references.md`](word_references.md) lists every word with its senses, IPA and diacritized forms.
 
@@ -140,11 +183,11 @@ Measure sense-prediction accuracy two ways:
 
 ```bash
 python scripts/benchmark_tagger.py --no-taggers   # synthetic held-out split (per-word breakdown)
-pip install huggingface_hub
+uv pip install --prerelease=allow huggingface_hub
 python scripts/benchmark_ood.py                   # out-of-distribution real-text set (downloads from Hugging Face)
 ```
 
 `benchmark_tagger.py` fails with a `ValueError` on homograph tokens that carry trailing punctuation ([#43](https://github.com/TigreGotico/bifonia/issues/43)). Both scripts also score spaCy and Stanza when those packages and their Portuguese models are installed. [`benchmarks.md`](benchmarks.md) gives the results.
 
 ---
-[Home](../README.md) · [Methodology →](methodology.md)
+[Index](index.md) · [Methodology →](methodology.md)

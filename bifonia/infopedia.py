@@ -20,8 +20,6 @@ _CSV = pathlib.Path(__file__).parent / "data" / "infopedia_pt.csv"
 def load() -> dict:
     """Return ``word -> [row]``, each row a dict of the CSV columns (sense, pos, ipa, …)."""
     out: dict = {}
-    if not _CSV.exists():
-        return out
     with _CSV.open(encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             out.setdefault(row["word"], []).append(dict(row))
@@ -29,7 +27,7 @@ def load() -> dict:
 
 
 def readings(word: str) -> list:
-    """All infopedia readings (rows) for *word*."""
+    """Return every Infopédia reading (row) of *word*, case-insensitively."""
     return load().get(word.lower(), [])
 
 

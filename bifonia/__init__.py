@@ -47,41 +47,31 @@ __all__ = [
 # quotes » ” ’ › " ' or the closing brackets ) ] ("Jogo»." or "(Jogo)."); the
 # closer itself is not kept.
 _TOKEN = re.compile(r"(-?\w+)(?:[»”’›\"')\]]*([.,;:!?…]+))?")
+_WORD = re.compile(r"\w+")
 
 
 def _tokens(text: str) -> list:
-    """Split *text* into the tokens of :func:`tokenize`, in their original case.
-
-    The ellipsis character is written as three full stops, so every rule reads
-    ``…`` as it reads ``...``."""
+    """Split *text* into the tokens of :func:`tokenize`, in their original case,
+    with ``…`` written ``...``."""
     return [(word + punct).replace("…", "...") for word, punct in _TOKEN.findall(text)]
 
 
 def tokenize(text: str) -> list:
-    """Lowercase and split *text* into word tokens.
+    """Lowercase and split *text* into word tokens, one per ``\\w+`` match.
 
-    Two pieces of orthography are kept so the context scorer can use them, both
-    chosen so the token count and order are identical to a bare ``\\w+`` split
-    (keeping the position-indexed replacement walk in
-    :func:`add_extra_diacritics` aligned):
+    The scorer reads two marks, and neither changes the token count or order, so
+    :func:`add_extra_diacritics` can walk the ``\\w+`` matches by position:
 
-    - Trailing sentence punctuation (``. , ; : ! ? …``) stays attached to the
-      token it follows (``"querer,"``) → clause-boundary guards
-      (``_prev_raw[-1] in punct``). It stays attached after the closing quotes
-      ``» ” ’ › " '`` and the closing brackets ``) ]`` too (``"jogo»."`` →
+    - Trailing ``. , ; : ! ? …`` stays on its token (``"querer,"``) as a clause
+      boundary, also after a closing quote or bracket (``"jogo»."`` →
       ``"jogo."``), and ``…`` is written ``...``.
-    - A hyphen that attaches an *enclitic* clitic is kept as a leading marker on
-      the clitic token (``"torno-me"`` → ``["torno", "-me"]``). The marker
-      distinguishes an enclitic from a homographic article/preposition
-      (``"torno-o"`` clitic vs ``"torno o carro"``), an unambiguous finite-verb
-      signal — see the enclitic rule in :mod:`bifonia.scoring`.
+    - The hyphen of an enclitic stays as a leading marker (``"torno-me"`` →
+      ``["torno", "-me"]``). It tells the clitic from a homographic article
+      (``"torno-o"`` against ``"torno o carro"``), a sure finite-verb signal.
 
-    Lookup sites strip both with :func:`_strip_edge`, and the target slot is
-    normalised before scoring.
-
-    Each token is lowercased after the split, not before. Lowercasing can split
-    a word (``"İ".lower()`` is ``"i"`` plus a combining dot, which is not a word
-    character), and then the tokens no longer align with :func:`proper_flags`.
+    Each token is lowercased after the split: lowercasing first can split a word
+    (``"İ".lower()`` adds a combining dot), and the tokens would no longer align
+    with :func:`proper_flags`.
     """
     return [t.lower() for t in _tokens(text)]
 
@@ -92,7 +82,7 @@ _SENTENCE_END = ".!?"
 
 
 def _strip_edge(token: str) -> str:
-    """Strip trailing punctuation / a leading clitic-hyphen a token may carry."""
+    """Strip the edge punctuation and the leading clitic hyphen a token may carry."""
     return token.strip(_EDGE_PUNCT + "-")
 
 
@@ -103,38 +93,20 @@ def is_ambiguous(word: str) -> bool:
 
 def disambiguate(words: list, idx: int, pos: str = None, sense: str = None,
                  postag: str = None) -> str:
-    """Return the IPA transcription for the ambiguous word at position *idx*.
+    """Return the IPA of the ambiguous word at *idx* of *words* (from :func:`tokenize`).
 
-    The reading is selected by MEANING (`sense`), not POS: most words have one
-    sense per POS, so a POS guess resolves directly, but words like ``sede``
-    (thirst vs seat — both nouns) are disambiguated by context meaning cues.
+    The reading is chosen by meaning, not POS, so a same-POS pair such as
+    ``sede`` (thirst, seat) is told apart by context. The target token may carry
+    trailing punctuation or a pre-AO1990 diacritic (*pára*).
+    *pos* forces a UDEP tag (``"ADP"``, ``"NOUN"``, ``"VERB"``, ``"ADJ"``) and the
+    sense is resolved within it. *sense* forces a meaning slug of HOMOGRAPHS.
+    *postag* goes to :func:`guess_sense` as the external-tagger hint; *sense*
+    overrides it.
 
-    Parameters
-    ----------
-    words:
-        Tokenized (lowercased) sentence as returned by :func:`tokenize`. The
-        target token may carry trailing punctuation or a diacritic (*pára*).
-    idx:
-        Index of the ambiguous word within *words*.
-    pos:
-        Override POS guessing with an explicit UDEP tag (``"ADP"``, ``"NOUN"``,
-        ``"VERB"``, ``"ADJ"``); the sense is then resolved within that POS.
-    sense:
-        Override entirely with an explicit meaning slug (see the CSV / HOMOGRAPHS).
-    postag:
-        External POS tag passed through to :func:`guess_sense` as the
-        hybrid-ensemble hint. Ignored when *sense* is given.
-
-    Raises
-    ------
-    ValueError
-        If the word is not a known homograph.
-    KeyError
-        If *sense* is given but has no IPA entry for this word.
+    Raises ValueError if the word is not a known homograph, and KeyError if
+    *sense* has no IPA for the word.
     """
     raw = words[idx]
-    # Drop any trailing sentence punctuation, then accept pre-AO1990 /
-    # diacritized tokens by normalising to the base form.
     token = _strip_edge(raw)
     word = _DIACRITIZED_TO_BASE.get(token, token)
     if word not in AMBIGUOUS_WORDS:
@@ -399,7 +371,6 @@ _DIACRITIZED: dict = {
     ("emperro", "stick"): "empérro",
     ("tempero",    "seasoning"):  "tempêro",
     ("tempero",    "season"):     "tempéro",
-    # diacritic-collapse + deverbal additions (acute = open ɔ/ɛ, circumflex = closed o/e)
     ("bola",       "ball"):       "bóla",     # ball       = open ɔ
     ("bola",       "loaf"):       "bôla",     # bôla bread = closed o
     ("cor",        "by_heart"):   "cór",      # "de cor"   = open ɔ
@@ -419,10 +390,8 @@ _DIACRITIZED: dict = {
 }
 
 
-# Reverse maps from diacritized form:
-#   → base word    (for test normalisation and pre-AO1990 input stripping)
-#   → sense slugs  (for pre-AO1990 / already-diacritized input; one form can
-#                   serve several senses, e.g. "chôco" = addled or cuttlefish)
+# Diacritized form → base word, and → its senses (one form can serve several:
+# "chôco" is addled or cuttlefish). They read pre-AO1990 and marked input.
 _DIACRITIZED_TO_BASE:   dict = {v: k[0] for k, v in _DIACRITIZED.items()}
 _DIACRITIZED_TO_SENSES: dict = {
     form: [s for (_, s), f in _DIACRITIZED.items() if f == form]
@@ -432,12 +401,8 @@ _DIACRITIZED_TO_SENSES: dict = {
 
 @_lru_cache(maxsize=1)
 def _sense_model():
-    """Lazy-load the learned sense model; None if absent (→ rule fallback)."""
-    try:
-        from bifonia.model import SenseModel
-        return SenseModel.load()
-    except Exception:
-        return None
+    from bifonia.model import SenseModel
+    return SenseModel.load()
 
 
 def _rule_sense(base: str, words: list, idx: int, pos: str = None,
@@ -451,26 +416,17 @@ _UPOS_NORM = {"PROPN": "NOUN", "AUX": "VERB"}
 
 def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
                 postag: str = None) -> str:
-    """Return the most likely MEANING slug for the ambiguous word at *idx*.
+    """Return the most likely meaning slug for the ambiguous word at *idx*.
 
-    If the token is already a diacritized form (pre-AO1990 orthography or output
-    of :func:`add_extra_diacritics`), the sense is read straight off the diacritic
-    (e.g. *séde* → seat, *sêde* → thirst, *pára* → stop). When one form serves
-    several senses (*chôco* → addled or cuttlefish), the diacritic only narrows
-    the choice and the context picks among those senses.
-
-    Otherwise, where a trained statistical model covers the word and is flagged to
-    win over the rules (``route == "model"`` with sufficient margin), the model
-    predicts the sense; every other case falls back to the corpus-free rule engine.
-    An explicit *pos* override always uses the rule resolver. *proper* marks a
-    mid-sentence capitalised token (see :func:`proper_flags`): it biases the
-    NOUN reading and skips the statistical model.
-
-    *postag* is the hybrid-ensemble hint: an external POS tag (e.g. from spaCy).
-    It resolves the reading only when that POS maps to exactly ONE sense
-    (a POS-separable word); for same-POS readings (sede/molho/corte/forma — where
-    a tagger misses by construction) it is ignored and the rules decide. This lets
-    a caller fuse a neural tagger with the rules without adding a dependency.
+    A diacritized token (pre-AO1990, or output of :func:`add_extra_diacritics`)
+    gives its sense directly (*séde* → seat, *pára* → stop); a form shared by
+    several senses (*chôco*: addled, cuttlefish) only narrows the choice.
+    *postag*, an external POS tag (e.g. from spaCy; ``PROPN`` reads as ``NOUN``,
+    ``AUX`` as ``VERB``), decides only when that POS maps to exactly one sense of
+    the word. *pos* forces a UDEP tag and the rule resolver. *proper* marks a
+    mid-sentence capitalised token (:func:`proper_flags`): it biases the NOUN
+    reading and skips the model. Otherwise the learned model decides when it
+    routes the word to itself with enough margin, and the rules decide the rest.
     """
     raw = words[idx]
     token = _strip_edge(raw)
@@ -479,55 +435,39 @@ def guess_sense(words: list, idx: int, pos: str = None, proper: bool = False,
         return senses[0]
     base = _DIACRITIZED_TO_BASE.get(token, token)
     normalised = words
-    if base != raw:                         # normalise a punctuated/diacritized slot
+    if base != raw:
         normalised = list(words)
         normalised[idx] = base
-    if senses:                              # a form shared by several senses
+    if senses:
         sense = guess_sense(normalised, idx, pos=pos, proper=proper, postag=postag)
         return sense if sense in senses else senses[0]
-    if postag is not None:                  # hybrid-ensemble hint (see docstring)
+    if postag is not None:
         cands = POS_SENSES.get(base, {}).get(_UPOS_NORM.get(postag, postag))
         if cands and len(cands) == 1:
             return cands[0]
-        # ambiguous / unmapped tag → fall through to model + rules below
     if pos is not None:
         return _rule_sense(base, normalised, idx, pos)
-    # A mid-sentence proper noun is a name, not a finite verb — resolve by rules
-    # (with the proper-noun bias) and skip the statistical model.
     if proper:
         return _rule_sense(base, normalised, idx, proper=True)
     model = _sense_model()
-    if (model is not None and model.has(base) and model.route(base) == "model"
+    if (model.has(base) and model.route(base) == "model"
             and model.margin(base, normalised, idx) >= model.margin_tau(base)):
         return model.predict(base, normalised, idx)
     return _rule_sense(base, normalised, idx)
 
 
 def guess_pos(words: list, idx: int, proper: bool = False) -> str:
-    """Return the lexical class that selects this word's pronunciation — NOT a
-    syntactic POS tag.
+    """Return the lexical class (a UDEP tag) whose pronunciation the word at *idx* takes.
 
-    .. warning::
-       This is **not a part-of-speech tagger** and must not be used as one. It is
-       an internal pronunciation-disambiguation device: it reports the lexical
-       class whose reading the homograph takes, which can deliberately disagree
-       with the word's syntactic function in the sentence.
-
-       The clearest case is an **adjective used substantively** (a noun-functioning
-       adjective). In *"aquela tola comprou um carro"*, ``tola`` is syntactically a
-       NOUN (subject), but it keeps the *adjective* reading (``foolish``, closed
-       ˈtolɐ) — so ``guess_pos`` returns ``"ADJ"``. The tag is chosen to land on the
-       correct IPA, not to describe the slot. Treat the output purely as an input
-       to :func:`guess_sense`/:func:`disambiguate`; for genuine POS tagging use a
-       real tagger (spaCy, Stanza).
-
-    For a plain token this returns the rule scorer's winning class
-    (:func:`bifonia.scoring.guess_pos`); the statistical model is not consulted.
-    For a diacritized token (e.g. *pára*, *acôrdo*) it maps the sense from
-    :func:`guess_sense` back to its lexical class, so the diacritic decides
-    without context scoring, except a form shared by several senses (*chôco*),
-    which :func:`guess_sense` narrows by context. *proper* biases the NOUN
-    reading for a mid-sentence capitalised token.
+    This is not a POS tagger: the class can differ from the syntactic slot. In
+    "aquela tola comprou um carro" ``tola`` is a subject but keeps the adjective
+    reading (foolish, closed ˈtolɐ), so the result is ``"ADJ"``. Use a real
+    tagger (spaCy, Stanza) for syntax.
+    A plain token gets the rule scorer's class (:func:`bifonia.scoring.guess_pos`),
+    never the model's. A diacritized token (*pára*, *acôrdo*) gets the class of
+    the sense :func:`guess_sense` reads off its diacritic, which context narrows
+    for a shared form (*chôco*). *proper* biases the NOUN reading for a
+    mid-sentence capitalised token.
     """
     raw = words[idx]
     token = _strip_edge(raw)
@@ -542,20 +482,16 @@ def guess_pos(words: list, idx: int, proper: bool = False) -> str:
 
 
 def proper_flags(text: str) -> list:
-    """Per-token flags (aligned with :func:`tokenize`) marking a likely proper
-    noun: a capitalised token inside a sentence. Used to bias the NOUN reading
-    (names like "Cerro Corá" are not finite verbs).
+    """Return one bool per :func:`tokenize` token: True for a likely proper noun,
+    a capitalised token inside a sentence ("Cerro Corá" is no finite verb).
 
-    A word written all in capitals is not a name signal on its own, so it is
-    never flagged inside a sentence. After a first word in title case, an
-    all-caps token (an acronym, a roman numeral or an initial) still marks that
-    first word as a name.
-
-    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after the closing
-    quotes ``» ” ’ › " '`` and the closing brackets ``) ]``. A colon does not
-    end the sentence of the word before it: "Governo: PS aprova orçamento." is a
-    label. The word after a colon starts a clause, as in direct speech ("Ele
-    disse: Jogo amanhã."), so it takes the first-word rule."""
+    An all-caps word is never flagged inside a sentence, but after a first word
+    in title case it still marks that first word as a name (an acronym, a roman
+    numeral, an initial).
+    A sentence ends at ``.``, ``!``, ``?`` or ``...``, also after a closing quote
+    or bracket. A colon ends no sentence ("Governo: PS aprova orçamento." is a
+    label), but the word after it takes the first-word rule, as in direct speech
+    ("Ele disse: Jogo amanhã.")."""
     toks = _tokens(text)
     # The split turns "n.º" into "n." and "º"; read the pair as "nº".
     numero = [tok.lower() == "n." and nxt.strip(_EDGE_PUNCT) == "º"
@@ -568,14 +504,12 @@ def proper_flags(text: str) -> list:
         if not starts[i]:
             flags[i] = core[:1].isupper() and not core.isupper()
             continue
-        # The first word of a sentence is always capitalised, so only flag it
-        # when the *next* token is itself a proper-noun continuation ("Cerro
-        # Corá", "Governo PS", "Choro IV") or nº marking a title ("Choro nº
-        # 13"). A bare number is no title signal ("Choro 2 vezes por semana").
-        # An all-caps next token counts only after a first word in title case;
-        # in text in capitals it has no case signal. A first word that ends its
-        # sentence ("Jogo. Depois descanso.") starts no phrase. A lower-case
-        # word after the first token starts no sentence ("Bem… jogo 3 vezes").
+        # A first word is capitalised anyway, so it is flagged only when the next
+        # token continues a name ("Cerro Corá", "Governo PS", "Choro IV") or is nº
+        # ("Choro nº 13"); a bare number is no signal ("Choro 2 vezes"). An
+        # all-caps next token counts only after a title-case first word. A first
+        # word that ends its sentence ("Jogo. Depois.") and a lower-case word after
+        # the first token ("Bem… jogo 3 vezes") start no name.
         if i + 1 == len(toks) or ends[i] or (i > 0 and not core[:1].isupper()):
             continue
         title_first = core[:1].isupper() and not core.isupper()
@@ -585,39 +519,33 @@ def proper_flags(text: str) -> list:
     return flags
 
 
-def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
-    """Return *sentence* with non-canonical diacritics on heterophonic homographs.
+def add_extra_diacritics(sentence: str, lang: str = "pt-PT", *, context_free: bool = True) -> str:
+    """Return *sentence* with non-AO1990 diacritics on its heterophonic homographs.
 
-    The inserted diacritics are not AO1990-compliant but force a downstream
-    rule-based G2P to emit the correct vowel quality:
-
-    - acute  (ó/é) → open  /ɔ/ or /ɛ/  (typically verb reading)
-    - circumflex (ô/ê) → closed /o/ or /e/  (typically noun reading)
-
-    Words that are not ambiguous, or whose POS reading needs no extra diacritic
-    (e.g. ADP *para*, ADP *pelo*), are returned unchanged. Each letter keeps its
-    case, so a sentence-initial homograph keeps its capital (*Acórdo …*) and an
-    all-caps word stays in capitals (*ACÓRDO*).
+    The marks make a rule-based G2P say the right vowel: acute (ó/é) is open
+    /ɔ ɛ/, usually the verb; circumflex (ô/ê) is closed /o e/, usually the noun.
+    A word that is not ambiguous, or whose reading needs no mark (ADP *para*,
+    *pelo*), is unchanged. Each letter keeps its case (*Acórdo*, *ACÓRDO*).
 
     *lang* is the lect tag; ``None`` means the default. The marks follow European
-    Portuguese for every lect that has no rows in ``data/lect_overrides.csv``.
-    ``pt-BR`` and its sub-lects (``pt-BR-x-rj``, ``pt-BR-x-sp``) have rows,
-    because Brazilian Portuguese has a closed nasal stressed vowel in every sense
-    of these words: *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay
-    unmarked, and *soma* is always *sôma*. ``pt-UY`` and its sub-lects have the
-    same rows. This is an inference, not a sourced rule; the README gives the
-    evidence.
+    Portuguese for every lect without rows in ``data/lect_overrides.csv``.
+    ``pt-BR``, ``pt-UY`` and their sub-lects have rows, because Brazilian
+    Portuguese has a closed nasal stressed vowel in every sense of these words:
+    *abono*, *aceno*, *domo*, *empeno* and *desempeno* stay unmarked, and *soma*
+    is always *sôma*. This is an inference, not a sourced rule; the README gives
+    the evidence.
 
-    After the homographs, a second table marks the words whose mark needs no
-    context (``data/context_free_marks.csv``): a mark that an older spelling norm
-    wrote and that the lect says, such as *pêra* for pt-PT, or *assembléia*,
-    *heróico* and *lingüiça* for pt-BR. Each row names the pt-PT and pt-BR lect
-    codes where orthography2ipa reads the mark better, and a tag takes the rows
-    of its longest matching code. ``None`` and ``pt`` mean ``pt-PT``. Other
-    lects get none of these marks.
+    Words outside the homograph table take the context-free marks of
+    ``data/context_free_marks.csv``: a mark an older spelling norm wrote and the
+    lect says (*pêra* for pt-PT; *assembléia*, *heróico*, *lingüiça* for pt-BR).
+    Each row names the pt-PT and pt-BR lect codes where orthography2ipa reads the
+    mark better, and a tag takes the rows of its longest matching code. ``None``
+    and ``pt`` mean ``pt-PT``; other lects get none of these marks.
+    The table follows what orthography2ipa reads, so a caller with another G2P
+    can pass ``context_free=False`` to write the homograph marks only.
     """
     overrides = lect_overrides(lang)
-    marks = context_free_marks(lang)
+    marks = context_free_marks(lang) if context_free else {}
     words = tokenize(sentence)
     caps = proper_flags(sentence)
     replacements = {}
@@ -634,11 +562,10 @@ def add_extra_diacritics(sentence: str, lang: str = "pt-PT") -> str:
     if not replacements:
         return sentence
 
-    # Walk the same \w+ tokens over the original string so each replacement lands
-    # on the right occurrence with its case preserved (a plain str.replace would
-    # miss a capitalised token and could hit a substring of another word).
+    # Walk the \w+ matches by position: str.replace would miss a capitalised token
+    # and could hit a substring of another word.
     out, pos, idx = [], 0, 0
-    for m in re.finditer(r"\w+", sentence, re.UNICODE):
+    for m in _WORD.finditer(sentence):
         out.append(sentence[pos:m.start()])
         tok = m.group(0)
         diac = replacements.get(idx)

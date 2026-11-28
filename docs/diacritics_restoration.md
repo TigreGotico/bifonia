@@ -1,5 +1,13 @@
 # Diacritics restoration as a homograph disambiguation task
 
+<!-- agent-hint
+covers: the homograph task framed as diacritics restoration
+source: `bifonia/__init__.py:add_extra_diacritics`, `tests/test_diacritized_input.py`
+generated: no
+verify: python -m pytest -q tests/test_diacritized_input.py
+see: `docs/dataset.md`, `docs/word_references.md`
+-->
+
 ## The problem
 
 Portuguese has heterophonic homographs: words whose spelling is identical but whose pronunciation depends on their **meaning** (`sense`). A rule-based G2P engine that does not disambiguate the sense will systematically mispronounce them.
@@ -64,7 +72,7 @@ The polarity tracks **vowel quality**, not POS: where a word's senses share a PO
 
 ### Marks that need no context
 
-A word with one reading can also lose its vowel signal under AO1990. Pre-AO *assembléia*, *heróico* and *lingüiça* told a G2P the vowel. *assembleia*, *heroico* and *linguiça* do not. After it marks the homographs, `add_extra_diacritics` restores such a mark from a second table, `bifonia/data/context_free_marks.csv`. These words have one reading of the bare form in the lect, so the restoration is a lookup per lect code:
+A word with one reading can also lose its vowel signal under AO1990. Pre-AO *assembléia*, *heróico* and *seqüela* told a G2P the vowel. *assembleia*, *heroico* and *sequela* do not. After it marks the homographs, `add_extra_diacritics` restores such a mark from a second table, `bifonia/data/context_free_marks.csv`. These words have one reading of the bare form in the lect, so the restoration is a lookup per lect code:
 
 | Canonical | pt-PT | pt-BR | Evidence for the vowel |
 |-----------|-------|-------|------------------------|
@@ -72,9 +80,9 @@ A word with one reading can also lose its vowel signal under AO1990. Pre-AO *ass
 | voo | **vôo** | voo | Infopédia [ˈvou]. In pt-BR, orthography2ipa already says [o] |
 | assembleia | assembleia | **assembléia** | Infopédia [ɐsẽˈblɐjɐ], Michaelis [asẽˈblɛjɐ] |
 | heroico | heroico | **heróico** | In pt-PT, orthography2ipa already says [ɔ]. Michaelis [eˈɾɔjku] |
-| linguiça | linguiça | **lingüiça** | orthography2ipa drops pt-PT ⟨ü⟩, so ⟨gi⟩ gives [ʒi]. Michaelis [lĩˈɡwisɐ]. Not for most pt-BR sub-lects |
+| sequela | **seqüela** | **seqüela** | Infopédia [sɨˈkwɛlɐ], Michaelis [seˈkwɛlɐ]. orthography2ipa reads the bare form without the glide. Not for most pt-BR sub-lects |
 
-A row enters the table for a lect code only when it passes three checks. A cited norm wrote the mark. Every reading of the bare form in the lect's sources says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form, in that code. The README section on marks that need no context gives the sources and the classes that stay out.
+A row enters the table for a lect code only when it passes three checks. A cited norm wrote the mark. Every reading of the bare form in the lect's sources says the vowel of the mark. orthography2ipa gives that vowel for the marked form and another vowel for the unmarked form, in that code. [Marks that need no context](context_free_marks.md) gives the sources and the classes that stay out.
 
 ## Engines and accuracy
 
@@ -124,7 +132,7 @@ The learned models were trained to address these cases. On the real-text OOD set
 - **Naive-Bayes**: per-sense log-odds of each feature. It is interpretable, and the weights *are* the learned lexicons.
 - **Averaged perceptron**: warm-started from the NB weights, discounting correlated cues NB double-counts. This is the model the ensemble ships.
 
-Inference is a sparse dot product in pure stdlib (no numpy/sklearn), so the learned engine runs under the same zero-dependency install as the rules. The rule engine is the corpus-free baseline and the fallback for any word the model is not routed to.
+Inference is a sparse dot product in pure stdlib (no numpy/sklearn), so the learned engine needs no package beyond the rules' own install. The rule engine is the corpus-free baseline and the fallback for any word the model is not routed to.
 
 The rule scorer is a manual decision tree with soft (additive) edges: it degrades gracefully when signals conflict, and each of its signals corresponds to a learnable feature (DET before, PRON before, CONJ_SUBJ before) that the learned models pick up automatically from the corpus.
 
@@ -141,7 +149,7 @@ python scripts/dataset.py --out data/
 | Metric | Value |
 |--------|-------|
 | Total sentences | 155,427 |
-| Train / test split | 124,519 / 30,987 |
+| Train / test split | 124,459 / 30,968 |
 | Unique ambiguous words | 132 |
 | POS attributes | NOUN, VERB, ADP, ADJ, ADV, and the pairs NOUN\|VERB and ADJ\|NOUN |
 | Domain coverage | science, medicine, engineering, biology, animals, objects, day-to-day, chit-chat, news, books/literature |
@@ -162,7 +170,7 @@ The IPA table `bifonia/data/heterophonic_homographs.csv` carries the same fields
 
 ## Heavier model architectures
 
-The learned engine is a lightweight per-word linear model. Larger neural models can push past it, particularly on the long-range and shared-POS cases, at the cost of the zero-dependency runtime. The corpus and `{word, sense, ipa}` labels support all of them.
+The learned engine is a lightweight per-word linear model. Larger neural models can push past it, particularly on the long-range and shared-POS cases, at the cost of a heavier runtime. The corpus and `{word, sense, ipa}` labels support all of them.
 
 ### BiLSTM (sequence labeller)
 
@@ -219,4 +227,4 @@ wild = load_dataset("TigreGotico/bifonia-pt-homographs-wild")
 Together they fill a gap: no other PT-PT benchmark targets heterophonic-homograph pronunciation disambiguation at the sense level, and the wild set supplies the out-of-distribution measure that synthetic splits cannot.
 
 ---
-[← Dataset](dataset.md) · [Home](../README.md) · [Word references →](word_references.md)
+[← Dataset](dataset.md) · [Index](index.md) · [Marks that need no context →](context_free_marks.md)
